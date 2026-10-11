@@ -3,23 +3,20 @@ import { computed, ref } from "vue";
 import LanguageSelector from "@/components/footer/LanguageSelector.vue";
 import SeabedButton from "@/components/footer/SeabedButton.vue";
 import MobiusDesertButton from "@/components/footer/MobiusDesertButton.vue";
+import KoFiButton from "@/components/footer/KoFiButton.vue";
 import DefaultTooltip from "@/components/tooltip/DefaultTooltip.vue";
 import Tooltip from "@/components/tooltip/Tooltip.vue";
 import { useI18n } from "vue-i18n";
 import { useTooltipPosition } from "@/composables/use-tooltip-position";
-import { useGameStore } from "@/stores/use-game-store";
 import { useGameState } from "@/composables/use-game-state";
 import { FooterPresenter } from "@/presenters/footer/footer.presenter";
 
-const store = useGameStore();
 const gameState = useGameState();
 const { t } = useI18n();
 
 const playerBits = computed(() => {
   return gameState.value.player.bits;
 });
-
-const isConnected = computed(() => store.isConnected);
 
 const tooltipPosition = useTooltipPosition(300);
 const { show: tooltipShow, x: tooltipX, y: tooltipY, showAt, move, hide } = tooltipPosition;
@@ -55,6 +52,22 @@ const moveMobiusDesertTooltip = (event: MouseEvent) => {
 };
 
 const hideMobiusDesertTooltip = () => {
+  hide();
+  isTitleOnlyTooltip.value = false;
+};
+
+const showKoFiTooltip = (event: MouseEvent) => {
+  isTitleOnlyTooltip.value = true;
+  tooltipTitle.value = t("koFi.title");
+  tooltipText.value = "";
+  showAt(event, { maxWidth: 300, placement: "above", align: "left" });
+};
+
+const moveKoFiTooltip = (event: MouseEvent) => {
+  move(event, "above");
+};
+
+const hideKoFiTooltip = () => {
   hide();
   isTitleOnlyTooltip.value = false;
 };
@@ -153,11 +166,12 @@ const groupPartyLevel = computed(() => {
         <LanguageSelector />
       </div>
 
-      <div class="flex items-center gap-2">
-        <span
-          class="w-3 h-3 rounded-full"
-          :class="isConnected ? 'bg-green-500' : 'bg-red-500'"
-        ></span>
+      <div class="flex items-center">
+        <KoFiButton
+          @show-tooltip="showKoFiTooltip"
+          @move-tooltip="moveKoFiTooltip"
+          @hide-tooltip="hideKoFiTooltip"
+        />
       </div>
     </div>
   </footer>

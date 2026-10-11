@@ -1,5 +1,6 @@
 import seabed from "./seabed.json";
 import mobiusDesert from "./mobius-desert.json";
+import koFi from "./ko-fi.json";
 import enemy from "./enemy/enemy.json";
 import species from "./enemy/specie.json";
 import conditions from "./enemy/condition.json";
@@ -54,6 +55,7 @@ import npcs from "./npcs.json";
 export default {
   ...seabed,
   ...mobiusDesert,
+  ...koFi,
   ...enemy,
   ...species,
   ...conditions,
