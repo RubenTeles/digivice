@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import Modal from "@/components/modal/Modal.vue";
+import SupportOption from "@/components/ko-fi-modal/SupportOption.vue";
+import { ExternalLink } from "@/constants/external-link.constant";
+import livePixQrCode from "@/assets/buy-me-a-coffee/LivePixQrCode.png";
+import koFiQrCode from "@/assets/buy-me-a-coffee/KoFiQrCode.png";
 
 defineProps<{
   isOpen: boolean;
@@ -27,5 +31,27 @@ function closeModal(): void {
         {{ $t("koFi.title") }}
       </h2>
     </template>
+
+    <div class="flex flex-col gap-3 px-12 pt-6 pb-4 text-center text-white">
+      <p class="font-bold">{{ $t("koFi.introFree") }}</p>
+      <p class="text-sm text-white/90 leading-relaxed">{{ $t("koFi.introSupport") }}</p>
+    </div>
+
+    <div class="grid grid-cols-2 flex-1 min-h-0 py-4">
+      <div class="border-r border-[#0055ff]/50">
+        <SupportOption
+          :description="$t('koFi.livePixDescription')"
+          :qr-code-url="livePixQrCode"
+          qr-code-alt="LivePix QR Code"
+          :link="ExternalLink.livePix"
+        />
+      </div>
+      <SupportOption
+        :description="$t('koFi.koFiDescription')"
+        :qr-code-url="koFiQrCode"
+        qr-code-alt="Ko-fi QR Code"
+        :link="ExternalLink.koFi"
+      />
+    </div>
   </Modal>
 </template>
