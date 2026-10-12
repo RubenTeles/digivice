@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { open } from "@tauri-apps/plugin-shell";
-import { AppConfig } from "@/config";
-import koFiIcon from "@/assets/others/ko-fi.png";
-
-const KoFiUrl = "https://ko-fi.com/R5R028MD8Y";
+import { ref } from "vue";
+import KoFiModal from "@/components/ko-fi-modal/KoFiModal.vue";
 
 const emit = defineEmits<{
   (e: "show-tooltip", event: MouseEvent): void;
@@ -11,12 +8,14 @@ const emit = defineEmits<{
   (e: "hide-tooltip"): void;
 }>();
 
-async function onClick(): Promise<void> {
-  if (AppConfig.isTauri) {
-    await open(KoFiUrl);
-    return;
-  }
-  window.open(KoFiUrl, "_blank", "noopener,noreferrer");
+const isKoFiModalOpen = ref(false);
+
+function onClick(): void {
+  isKoFiModalOpen.value = true;
+}
+
+function closeKoFiModal(): void {
+  isKoFiModalOpen.value = false;
 }
 
 function onMouseEnter(event: MouseEvent): void {
@@ -35,12 +34,14 @@ function onMouseLeave(): void {
 <template>
   <button
     type="button"
-    class="bg-transparent border-0 px-1 py-0.5 leading-none hover:scale-110 transition-transform cursor-pointer flex items-center justify-center"
+    class="inline-flex items-center justify-center leading-none text-[1.2rem] -translate-y-px cursor-pointer hover:opacity-100 opacity-90 transition-opacity"
     @click="onClick"
     @mouseenter="onMouseEnter"
     @mousemove="onMouseMove"
     @mouseleave="onMouseLeave"
   >
-    <img :src="koFiIcon" alt="Ko-fi" class="h-5 w-auto block" />
+    ☕
   </button>
+
+  <KoFiModal :is-open="isKoFiModalOpen" @close="closeKoFiModal" />
 </template>
