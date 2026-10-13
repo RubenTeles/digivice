@@ -38,7 +38,7 @@ sticky through the last snapshot.
 | 62 | Talk to Datamon | `0x4B3B8` | `0x08` | — |
 | 63 | Enter/leave Secret Room | `0x4B3B8` | `0x10` | `0x4B3E5` `0x04` |
 | 64 | Nicky & Keith at Suzaku UG Lake | `0x4B3DE` | `0x08` | — |
-| 65 | Find Personal Pass | `0x4B3CA` | `0x40` | item `0x48F41` `0→1`; `0x4B3E5` `0x20` |
+| 65 | Find Staff Pass | `0x4B3CA` | `0x40` | item `0x48F41` `0→1`; `0x4B3E5` `0x20` |
 | 66 | Datamon opens the gate | `0x4B3B8` | `0x20` | `0x4B3DE` `0x20` |
 | 67–69 | Admin Center B1F tamers 1, 2, 4 | `0x4B394` | `0x10`, `0x20`, `0x80` | — |
 | 70–72 | Basement Stairs tamers 5, 6, 7 | `0x4B393` | `0x01`, `0x04`, `0x02` | — |
