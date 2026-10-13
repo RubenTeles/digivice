@@ -27,6 +27,12 @@
     "trooper3AdminCenterB1F": {
       "name": "Patrulheiro"
     },
+    "optionalTrooper1AdminCenterB1F": {
+      "name": "Patrulheiro"
+    },
+    "optionalTrooper2AdminCenterB1F": {
+      "name": "Patrulheiro"
+    },
     "trooper1BasementStairs": {
       "name": "Patrulheiro"
     },
@@ -42,6 +48,9 @@
     "trooper2AdminFloor1": {
       "name": "Patrulheiro"
     },
+    "optionalTrooperAdminFloor1": {
+      "name": "Patrulheiro"
+    },
     "trooper1AdminFloor2": {
       "name": "Patrulheiro"
     },
@@ -53,6 +62,15 @@
     },
     "generalAdminFloor2": {
       "name": "General"
+    },
+    "optionalTrooperAdminFloor2": {
+      "name": "Patrulheiro"
+    },
+    "optionalSoldier1AdminFloor2": {
+      "name": "Soldado"
+    },
+    "optionalSoldier2AdminFloor2": {
+      "name": "Soldado"
     },
     "guardsHeadquarters": {
       "name": "Guardas"

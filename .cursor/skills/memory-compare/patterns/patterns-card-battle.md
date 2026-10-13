@@ -134,6 +134,27 @@ steps 48/49/60 on other bits). Secondary: `0x48E29` `0→1` (unmapped;
 lower confidence — reward/session?). Needs lose control + fresh-save
 validation before wiring.
 
+**Optional Admin Center NPC digimon battles (confirmed 2026-10-13):**
+`antes/durante/depois-{patrulheiro,soldado}-opcional-*` snaps (MQ ~66–77).
+Each win added exactly **one** new bit in `0x4B370–0x4B3F0` (no other delta
+in that band or `0x48DB0–0x48DC8`); none collide with `MainQuestAddresses.json`.
+Rewards match existing groups (Bits delta 580 / 590 / 890).
+
+| Digivice `npcId` | MapId | groupId | Address | BitMask |
+|------------------|-------|---------|---------|---------|
+| `optionalTrooper1AdminCenterB1F` | `021A` | 192 | `0x4B395` | `0x01` |
+| `optionalTrooper2AdminCenterB1F` | `021A` | 192 | `0x4B394` | `0x40` |
+| `optionalTrooperAdminFloor1` | `0214` | 189 | `0x4B392` | `0x40` |
+| `optionalTrooperAdminFloor2` | `0217` | 189 | `0x4B393` | `0x10` |
+| `optionalSoldier1AdminFloor2` | `0217` | 190 | `0x4B394` | `0x01` |
+| `optionalSoldier2AdminFloor2` | `0217` | 189 | `0x4B393` | `0x20` |
+
+Not yet validated against a lose / reload.
+
+**Backend integrated (2026-10-13):** all six wired in
+[`NpcAddresses.json`](../../../../Backend/Memory/Definitions/NpcAddresses.json)
+(battle id `first`) and through the Npcs pipeline / frontend sync.
+
 **Natsumi card:** no duel flag in those snaps — only booster `0x48F19`.
 Map script does not SET a bit on `CardBattle#5`.
 

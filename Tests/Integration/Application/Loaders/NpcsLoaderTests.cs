@@ -24,6 +24,10 @@ public class NpcsLoaderTests : LoaderIntegrationTestBase
         memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3E0)).Returns((byte)0x40);
         memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3E1)).Returns((byte)0x40);
         memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3E5)).Returns((byte)0x08);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B392)).Returns((byte)0xFF);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B393)).Returns((byte)0xFF);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B394)).Returns((byte)0xFF);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B395)).Returns((byte)0xFF);
 
         var npcsReader = new NpcsReader(memoryReaderMock.Object);
         var npcsLoader = new NpcsLoader(addressesRepository, npcsReader);
@@ -52,5 +56,11 @@ public class NpcsLoaderTests : LoaderIntegrationTestBase
         Assert.Equal(0x40, Assert.Single(resource.FakeByakkoLeader.Battles).Value);
         Assert.Equal(0x01, Assert.Single(resource.ByakkoLeader.Battles).Value);
         Assert.Equal(0x08, Assert.Single(resource.AoaAttacker.Battles).Value);
+        Assert.Equal(0x01, Assert.Single(resource.OptionalTrooper1AdminCenterB1F.Battles).Value);
+        Assert.Equal(0x40, Assert.Single(resource.OptionalTrooper2AdminCenterB1F.Battles).Value);
+        Assert.Equal(0x40, Assert.Single(resource.OptionalTrooperAdminFloor1.Battles).Value);
+        Assert.Equal(0x10, Assert.Single(resource.OptionalTrooperAdminFloor2.Battles).Value);
+        Assert.Equal(0x01, Assert.Single(resource.OptionalSoldier1AdminFloor2.Battles).Value);
+        Assert.Equal(0x20, Assert.Single(resource.OptionalSoldier2AdminFloor2.Battles).Value);
     }
 }

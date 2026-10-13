@@ -55,7 +55,7 @@ public class NpcsAssemblerTests
         var result = NpcsAssembler.Assemble(resource);
 
         var modelProperties = typeof(Npcs).GetProperties();
-        Assert.Equal(23, resourceProperties.Length);
+        Assert.Equal(29, resourceProperties.Length);
         Assert.Equal(
             resourceProperties.Select(property => property.Name).Order(),
             modelProperties.Select(property => property.Name).Order());

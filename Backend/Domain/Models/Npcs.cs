@@ -25,5 +25,11 @@ namespace Backend.Domain.Models
         public Npc FakeByakkoLeader { get; set; } = new();
         public Npc ByakkoLeader { get; set; } = new();
         public Npc AoaAttacker { get; set; } = new();
+        public Npc OptionalTrooper1AdminCenterB1F { get; set; } = new();
+        public Npc OptionalTrooper2AdminCenterB1F { get; set; } = new();
+        public Npc OptionalTrooperAdminFloor1 { get; set; } = new();
+        public Npc OptionalTrooperAdminFloor2 { get; set; } = new();
+        public Npc OptionalSoldier1AdminFloor2 { get; set; } = new();
+        public Npc OptionalSoldier2AdminFloor2 { get; set; } = new();
     }
 }
