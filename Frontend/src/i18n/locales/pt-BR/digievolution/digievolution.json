@@ -5,7 +5,6 @@
     "requirementDigievolutions": "Requisitos de Digievolução",
     "nextDigievolutions": "Próximas Digievoluções",
     "noTechData": "Nenhum dado de técnica disponível.",
-    "signature": "SIG",
     "neutral": "Neutro",
     "noEvolutionData": "Nenhum dado de evolução disponível",
     "pinFamily": "Fixar ao topo",
@@ -18,7 +17,6 @@
     "mpCost": "Custo de MP",
     "levelToLearn": "Nível para aprender",
     "levelToLoad": "Nível para carregar",
-    "signatureTechnique": "Técnica Assinatura",
-    "element": "Elemento"
+    "signatureTechnique": "Técnica Assinatura"
   }
 }

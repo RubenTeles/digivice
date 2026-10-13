@@ -1,6 +1,5 @@
 {
   "auction": {
-    "title": "Leilões",
     "cardIdleTitle": "Nenhum Leilão agora",
     "cardIdleSubtitle": "Quem sabe mais tarde...",
     "cardActiveTitle": "Leilão disponível!",

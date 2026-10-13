@@ -18,27 +18,6 @@
     "aoaAttacker": {
       "name": "Terrorista"
     },
-    "adminBasementPatrol": {
-      "name": "Patrulheiro"
-    },
-    "adminFloor1Patrol": {
-      "name": "Patrulheiro"
-    },
-    "adminFloor2Patrol": {
-      "name": "Patrulheiro"
-    },
-    "basementStairsPatrol": {
-      "name": "Patrulheiro"
-    },
-    "adminGeneral": {
-      "name": "General"
-    },
-    "adminSoldier": {
-      "name": "Soldado"
-    },
-    "gameMaster": {
-      "name": "Game Master"
-    },
     "trooper1AdminCenterB1F": {
       "name": "Patrulheiro"
     },
