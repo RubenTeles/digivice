@@ -36,9 +36,9 @@ public static class NpcsConverter
             OptionalTrooper1AdminCenterB1F = ToNpcDTO(npcs.OptionalTrooper1AdminCenterB1F),
             OptionalTrooper2AdminCenterB1F = ToNpcDTO(npcs.OptionalTrooper2AdminCenterB1F),
             OptionalTrooperAdminFloor1 = ToNpcDTO(npcs.OptionalTrooperAdminFloor1),
-            OptionalTrooperAdminFloor2 = ToNpcDTO(npcs.OptionalTrooperAdminFloor2),
+            OptionalTrooper1AdminFloor2 = ToNpcDTO(npcs.OptionalTrooper1AdminFloor2),
             OptionalSoldier1AdminFloor2 = ToNpcDTO(npcs.OptionalSoldier1AdminFloor2),
-            OptionalSoldier2AdminFloor2 = ToNpcDTO(npcs.OptionalSoldier2AdminFloor2),
+            OptionalTrooper2AdminFloor2 = ToNpcDTO(npcs.OptionalTrooper2AdminFloor2),
         };
     }
 

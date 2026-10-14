@@ -48,9 +48,9 @@ public static class NpcsDiffer
         dto = ApplyNpcDelta(dto, previousNpcs.OptionalTrooper1AdminCenterB1F, newNpcs.OptionalTrooper1AdminCenterB1F, (current, npcDto) => current with { OptionalTrooper1AdminCenterB1F = npcDto });
         dto = ApplyNpcDelta(dto, previousNpcs.OptionalTrooper2AdminCenterB1F, newNpcs.OptionalTrooper2AdminCenterB1F, (current, npcDto) => current with { OptionalTrooper2AdminCenterB1F = npcDto });
         dto = ApplyNpcDelta(dto, previousNpcs.OptionalTrooperAdminFloor1, newNpcs.OptionalTrooperAdminFloor1, (current, npcDto) => current with { OptionalTrooperAdminFloor1 = npcDto });
-        dto = ApplyNpcDelta(dto, previousNpcs.OptionalTrooperAdminFloor2, newNpcs.OptionalTrooperAdminFloor2, (current, npcDto) => current with { OptionalTrooperAdminFloor2 = npcDto });
+        dto = ApplyNpcDelta(dto, previousNpcs.OptionalTrooper1AdminFloor2, newNpcs.OptionalTrooper1AdminFloor2, (current, npcDto) => current with { OptionalTrooper1AdminFloor2 = npcDto });
         dto = ApplyNpcDelta(dto, previousNpcs.OptionalSoldier1AdminFloor2, newNpcs.OptionalSoldier1AdminFloor2, (current, npcDto) => current with { OptionalSoldier1AdminFloor2 = npcDto });
-        dto = ApplyNpcDelta(dto, previousNpcs.OptionalSoldier2AdminFloor2, newNpcs.OptionalSoldier2AdminFloor2, (current, npcDto) => current with { OptionalSoldier2AdminFloor2 = npcDto });
+        dto = ApplyNpcDelta(dto, previousNpcs.OptionalTrooper2AdminFloor2, newNpcs.OptionalTrooper2AdminFloor2, (current, npcDto) => current with { OptionalTrooper2AdminFloor2 = npcDto });
 
         return dto;
     }

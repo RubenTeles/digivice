@@ -35,9 +35,9 @@ namespace Backend.Domain.Assemblers
                 OptionalTrooper1AdminCenterB1F = AssembleNpc(resource.OptionalTrooper1AdminCenterB1F),
                 OptionalTrooper2AdminCenterB1F = AssembleNpc(resource.OptionalTrooper2AdminCenterB1F),
                 OptionalTrooperAdminFloor1 = AssembleNpc(resource.OptionalTrooperAdminFloor1),
-                OptionalTrooperAdminFloor2 = AssembleNpc(resource.OptionalTrooperAdminFloor2),
+                OptionalTrooper1AdminFloor2 = AssembleNpc(resource.OptionalTrooper1AdminFloor2),
                 OptionalSoldier1AdminFloor2 = AssembleNpc(resource.OptionalSoldier1AdminFloor2),
-                OptionalSoldier2AdminFloor2 = AssembleNpc(resource.OptionalSoldier2AdminFloor2),
+                OptionalTrooper2AdminFloor2 = AssembleNpc(resource.OptionalTrooper2AdminFloor2),
             };
         }
 

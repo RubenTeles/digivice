@@ -19,58 +19,58 @@
       "name": "Terrorista"
     },
     "trooper1AdminCenterB1F": {
-      "name": "Patrulheiro"
+      "name": "1º Patrulheiro"
     },
     "trooper2AdminCenterB1F": {
-      "name": "Patrulheiro"
+      "name": "2º Patrulheiro"
     },
     "trooper3AdminCenterB1F": {
-      "name": "Patrulheiro"
+      "name": "3º Patrulheiro"
     },
     "optionalTrooper1AdminCenterB1F": {
-      "name": "Patrulheiro"
+      "name": "4º Patrulheiro"
     },
     "optionalTrooper2AdminCenterB1F": {
-      "name": "Patrulheiro"
+      "name": "5º Patrulheiro"
     },
     "trooper1BasementStairs": {
-      "name": "Patrulheiro"
+      "name": "6º Patrulheiro"
     },
     "trooper2BasementStairs": {
-      "name": "Patrulheiro"
+      "name": "7º Patrulheiro"
     },
     "trooper3BasementStairs": {
-      "name": "Patrulheiro"
+      "name": "8º Patrulheiro"
     },
     "trooper1AdminFloor1": {
-      "name": "Patrulheiro"
+      "name": "9º Patrulheiro"
     },
     "trooper2AdminFloor1": {
-      "name": "Patrulheiro"
+      "name": "10º Patrulheiro"
     },
     "optionalTrooperAdminFloor1": {
-      "name": "Patrulheiro"
+      "name": "11º Patrulheiro"
     },
     "trooper1AdminFloor2": {
-      "name": "Patrulheiro"
+      "name": "12º Patrulheiro"
     },
     "trooper2AdminFloor2": {
-      "name": "Patrulheiro"
+      "name": "13º Patrulheiro"
     },
     "soldierAdminFloor2": {
-      "name": "Soldado"
+      "name": "1º Soldado"
     },
     "generalAdminFloor2": {
       "name": "General"
     },
-    "optionalTrooperAdminFloor2": {
-      "name": "Patrulheiro"
+    "optionalTrooper1AdminFloor2": {
+      "name": "14º Patrulheiro"
     },
     "optionalSoldier1AdminFloor2": {
-      "name": "Soldado"
+      "name": "2º Soldado"
     },
-    "optionalSoldier2AdminFloor2": {
-      "name": "Soldado"
+    "optionalTrooper2AdminFloor2": {
+      "name": "15º Patrulheiro"
     },
     "guardsHeadquarters": {
       "name": "Guardas"

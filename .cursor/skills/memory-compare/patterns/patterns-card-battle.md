@@ -145,9 +145,9 @@ Rewards match existing groups (Bits delta 580 / 590 / 890).
 | `optionalTrooper1AdminCenterB1F` | `021A` | 192 | `0x4B395` | `0x01` |
 | `optionalTrooper2AdminCenterB1F` | `021A` | 192 | `0x4B394` | `0x40` |
 | `optionalTrooperAdminFloor1` | `0214` | 189 | `0x4B392` | `0x40` |
-| `optionalTrooperAdminFloor2` | `0217` | 189 | `0x4B393` | `0x10` |
+| `optionalTrooper1AdminFloor2` | `0217` | 189 | `0x4B393` | `0x10` |
 | `optionalSoldier1AdminFloor2` | `0217` | 190 | `0x4B394` | `0x01` |
-| `optionalSoldier2AdminFloor2` | `0217` | 189 | `0x4B393` | `0x20` |
+| `optionalTrooper2AdminFloor2` | `0217` | 189 | `0x4B393` | `0x20` |
 
 Not yet validated against a lose / reload.
 

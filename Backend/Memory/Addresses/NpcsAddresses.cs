@@ -28,8 +28,8 @@ namespace Backend.Memory.Addresses
         public NpcAddresses OptionalTrooper1AdminCenterB1F { get; set; } = new();
         public NpcAddresses OptionalTrooper2AdminCenterB1F { get; set; } = new();
         public NpcAddresses OptionalTrooperAdminFloor1 { get; set; } = new();
-        public NpcAddresses OptionalTrooperAdminFloor2 { get; set; } = new();
+        public NpcAddresses OptionalTrooper1AdminFloor2 { get; set; } = new();
         public NpcAddresses OptionalSoldier1AdminFloor2 { get; set; } = new();
-        public NpcAddresses OptionalSoldier2AdminFloor2 { get; set; } = new();
+        public NpcAddresses OptionalTrooper2AdminFloor2 { get; set; } = new();
     }
 }

@@ -2,8 +2,8 @@ namespace Tests.Integration.Application.Loaders;
 
 using Backend.Application.Loaders;
 using Backend.Memory.Readers;
-using Moq;
 using Backend.Memory.Readers.Interfaces;
+using Moq;
 
 public class NpcsLoaderTests : LoaderIntegrationTestBase
 {
@@ -59,8 +59,8 @@ public class NpcsLoaderTests : LoaderIntegrationTestBase
         Assert.Equal(0x01, Assert.Single(resource.OptionalTrooper1AdminCenterB1F.Battles).Value);
         Assert.Equal(0x40, Assert.Single(resource.OptionalTrooper2AdminCenterB1F.Battles).Value);
         Assert.Equal(0x40, Assert.Single(resource.OptionalTrooperAdminFloor1.Battles).Value);
-        Assert.Equal(0x10, Assert.Single(resource.OptionalTrooperAdminFloor2.Battles).Value);
+        Assert.Equal(0x10, Assert.Single(resource.OptionalTrooper1AdminFloor2.Battles).Value);
         Assert.Equal(0x01, Assert.Single(resource.OptionalSoldier1AdminFloor2.Battles).Value);
-        Assert.Equal(0x20, Assert.Single(resource.OptionalSoldier2AdminFloor2.Battles).Value);
+        Assert.Equal(0x20, Assert.Single(resource.OptionalTrooper2AdminFloor2.Battles).Value);
     }
 }

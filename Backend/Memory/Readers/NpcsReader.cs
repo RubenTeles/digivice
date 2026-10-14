@@ -36,9 +36,9 @@ namespace Backend.Memory.Readers
                 OptionalTrooper1AdminCenterB1F = ReadNpc(addresses.OptionalTrooper1AdminCenterB1F),
                 OptionalTrooper2AdminCenterB1F = ReadNpc(addresses.OptionalTrooper2AdminCenterB1F),
                 OptionalTrooperAdminFloor1 = ReadNpc(addresses.OptionalTrooperAdminFloor1),
-                OptionalTrooperAdminFloor2 = ReadNpc(addresses.OptionalTrooperAdminFloor2),
+                OptionalTrooper1AdminFloor2 = ReadNpc(addresses.OptionalTrooper1AdminFloor2),
                 OptionalSoldier1AdminFloor2 = ReadNpc(addresses.OptionalSoldier1AdminFloor2),
-                OptionalSoldier2AdminFloor2 = ReadNpc(addresses.OptionalSoldier2AdminFloor2),
+                OptionalTrooper2AdminFloor2 = ReadNpc(addresses.OptionalTrooper2AdminFloor2),
             };
         }
 

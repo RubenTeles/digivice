@@ -86,11 +86,11 @@ public record class NpcsDTO : IDTO
     public Optional<NpcDTO> OptionalTrooperAdminFloor1 { get; init; } = Optional<NpcDTO>.Empty;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public Optional<NpcDTO> OptionalTrooperAdminFloor2 { get; init; } = Optional<NpcDTO>.Empty;
+    public Optional<NpcDTO> OptionalTrooper1AdminFloor2 { get; init; } = Optional<NpcDTO>.Empty;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public Optional<NpcDTO> OptionalSoldier1AdminFloor2 { get; init; } = Optional<NpcDTO>.Empty;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public Optional<NpcDTO> OptionalSoldier2AdminFloor2 { get; init; } = Optional<NpcDTO>.Empty;
+    public Optional<NpcDTO> OptionalTrooper2AdminFloor2 { get; init; } = Optional<NpcDTO>.Empty;
 }
