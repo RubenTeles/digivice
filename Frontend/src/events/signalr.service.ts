@@ -1,5 +1,4 @@
 import * as signalR from "@microsoft/signalr";
-import { invoke } from "@tauri-apps/api/core";
 import type { EventsMap } from "./events.map";
 import type { EventDTO } from "./dto/event.dto";
 import { signalRLogger } from "./logger";
@@ -32,24 +31,6 @@ class SignalRService {
     }
   }
 
-  private async getHubUrl(): Promise<string> {
-    // In development (Vite), we use the relative proxy.
-    if (AppConfig.isDev) {
-      return AppConfig.backend.hubPath;
-    }
-
-    // In production (Tauri), we are trying to obtain the dynamic port from the backend.
-    try {
-      const port = await invoke<number>("get_backend_port");
-      return `http://localhost:${port}${AppConfig.backend.hubPath}`;
-    } catch (err) {
-      signalRLogger.warn(
-        `Failed to get backend port via Tauri. Using fallback: ${AppConfig.backend.defaultPort}`,
-      );
-      return AppConfig.backend.fallbackUrl;
-    }
-  }
-
   private createConnection(hubUrl: string): signalR.HubConnection {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(hubUrl)
@@ -63,7 +44,8 @@ class SignalRService {
   }
 
   public async startConnection() {
-    const hubUrl = await this.getHubUrl();
+    // Compare mode is dev-only: the Vite proxy forwards the hub path to the backend started with dotnet run.
+    const hubUrl = AppConfig.backend.hubPath;
     const connection = this.createConnection(hubUrl);
     let lastError: unknown = null;
 

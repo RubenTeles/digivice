@@ -13,10 +13,6 @@
     "beforeBuildCommand": {
       "script": "npm run build",
       "cwd": "../Frontend"
-    },
-    "beforeBundleCommand": {
-      "script": "powershell -ExecutionPolicy Bypass -File ../Tauri/scripts/copy-sidecar-runtime.ps1",
-      "cwd": "../Frontend"
     }
   },
   "app": {
@@ -42,13 +38,6 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ],
-    "externalBin": [
-      "binaries/backend"
-    ],
-    "resources": {
-      "binaries/appsettings.json": "appsettings.json",
-      "binaries/Memory/": "Memory/"
-    }
+    ]
   }
 }

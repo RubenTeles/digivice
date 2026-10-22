@@ -16,7 +16,7 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | 5d | Journal | Concluída |
 | 5e | Party | Concluída |
 | 6 | Patch in-place e troca da fonte | Concluída |
-| 7 | Produção sem sidecar | Pendente |
+| 7 | Produção sem sidecar | Implementada; aguardando validação manual |
 | 8 | Fechamento de docs | Pendente |
 
 ## Contexto e motivação
@@ -88,7 +88,7 @@ Pontos que motivam ou afetam a migração:
 
 ### 1. Rust (Tauri)
 
-- **Remover (etapa 7):** spawn do sidecar, porta livre, `get_backend_port`, evento `backend-crashed` em `Tauri/src/lib.rs`.
+- **Removido (etapa 7):** spawn do sidecar, porta livre, `get_backend_port`, evento `backend-crashed` em `Tauri/src/lib.rs`.
 - **Novo:** achar o PID do DuckStation e abrir o mapping `duckstation_{pid}` (equivalente a `DuckstationConnector` + `WindowsMemoryProvider`). Crate `windows` (`OpenFileMappingW`/`MapViewOfFile`; processos via ToolHelp, sem `sysinfo`). Nome do processo (`duckstation-qt-x64-ReleaseLTCG`) vira constante.
 - **Novo:** comando `read_ram` que copia a RAM e devolve binário, ou código de erro.
   - **Cuidado:** usar `tauri::ipc::Response` (binário). Serializar `Vec<u8>` como JSON vira um array de 2 milhões de números.
@@ -355,6 +355,15 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - Testes: `state.patcher.spec.ts` (referências preservadas, primitivo igual sem escrita, inimigo aparecendo/saindo/ficando, listas fora de ordem, itens novos e removidos, as três regras, aviso único e reaviso após preencher ou trocar o Digimon, Central Park → party da batalha) e `tests/stores/use-game-store.spec.ts` (primeiro tick, patch, erro, recuperação). Total: 367 testes.
 - Docs: `digivice-business.mdc` (arquitetura), `digivice-frontend-sync.mdc` (reescrita), `digivice-frontend.mdc`, `digivice-frontend-tests.mdc`, skill `frontend-memory-tests`. As skills `address-field-frontend` e `memory-entity-frontend` ainda descrevem o caminho SignalR; reescrita na Etapa 8 (nada novo é adicionado durante a migração).
 - **Validação manual (aprovada):** Tauri com o DuckStation; UI alimentada só pelo loop TS, dados conferidos no jogo, sem problemas.
+
+### Etapa 7 — Produção sem sidecar (implementada; aguardando validação manual)
+
+- `Tauri/src/lib.rs`: só plugin shell (`open` dos links externos), `MemoryState` e `read_ram`. Removidos spawn do sidecar, porta livre, `get_backend_port`, evento `backend-crashed` e o kill do processo ao fechar a janela.
+- `Tauri/tauri.conf.json`: sem `externalBin`, `resources` (appsettings, `Memory/`) e `beforeBundleCommand`. Capabilities: só `core:default` e `shell:allow-open`. `Tauri/.gitignore` sem `/binaries/`; a pasta local `Tauri/binaries/` (backend publicado) pode ser apagada à mão.
+- Scripts: `Tauri/scripts/copy-sidecar-runtime.ps1` apagado; `build_app.ps1` enxuto (só `npm install` + `npx tauri build`, sem `dotnet publish`).
+- Frontend: `signalr.service.ts` conecta sempre pelo proxy `/gamehub` do Vite (sem `get_backend_port` nem fallback de porta); `AppConfig.backend` só com `hubPath`; `VITE_MEMORY_MODE=compare` fora de dev gera warn e cai para `typescript`.
+- C# continua no repositório (`Backend/`, `Tests/`, `Digivice.slnx`) e `Tools/` intocado; o backend só roda à mão (`dotnet run`) para o `compare` em dev.
+- Verificação: `cargo build` sem warnings; type-check, 367 testes, build e eslint dos arquivos alterados ok.
 
 ## Decisões em aberto
 

@@ -25,12 +25,17 @@ function resolveMemoryMode(value: string | undefined): MemoryMode {
     return "typescript";
   }
 
-  if (isMemoryMode(value)) {
-    return value;
+  if (!isMemoryMode(value)) {
+    memoryLogger.warn(`Unknown VITE_MEMORY_MODE '${value}'. Falling back to 'typescript'.`);
+    return "typescript";
   }
 
-  memoryLogger.warn(`Unknown VITE_MEMORY_MODE '${value}'. Falling back to 'typescript'.`);
-  return "typescript";
+  if (value === "compare" && !AppConfig.isDev) {
+    memoryLogger.warn("Compare mode only runs in development. Falling back to 'typescript'.");
+    return "typescript";
+  }
+
+  return value;
 }
 
 function formatValue(value: unknown): string {

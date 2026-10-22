@@ -4,12 +4,7 @@
 
 export const AppConfig = {
   backend: {
-    defaultPort: 5000,
     hubPath: "/gamehub",
-    // Helper to get the absolute fallback URL
-    get fallbackUrl() {
-      return `http://localhost:${this.defaultPort}${this.hubPath}`;
-    },
   },
   memory: {
     mode: import.meta.env.VITE_MEMORY_MODE,

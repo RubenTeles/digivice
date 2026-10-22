@@ -11,7 +11,7 @@ Contexto da migração: `AI/MIGRATION_PLAN.md`.
 ## Responsabilidade
 
 - O Rust é uma **ponte mínima**: acha o DuckStation, abre a memória compartilhada `duckstation_{pid}` e entrega **bytes brutos**. Nenhuma lógica de domínio (endereços, sentinelas, assemblers) vive aqui; isso é da camada TS `Frontend/src/memory/`.
-- Enquanto a migração não termina, o `lib.rs` também sobe o sidecar C# (`get_backend_port`, `backend-crashed`). Não alterar até a etapa 7.
+- `lib.rs` registra só o plugin shell (usado pelo `open` de `external-link.service.ts`, capability `shell:allow-open`), o `MemoryState` e o comando `read_ram`. Sem sidecar: o backend C# não é empacotado nem iniciado pelo Tauri (só roda à mão, com `dotnet run`, para o modo `compare` em dev).
 
 ## Contrato do `read_ram`
 
