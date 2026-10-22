@@ -11,7 +11,7 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | 3 | Snapshot e definitions | Concluída |
 | 4 | Fatia vertical: Player | Concluída |
 | 5a | ImportantItems, Auctions, CardBattle | Concluída |
-| 5b | Npcs | Implementada; aguardando validação manual |
+| 5b | Npcs | Concluída |
 | 5c | DigimonBattle | Pendente |
 | 5d | Journal | Pendente |
 | 5e | Party | Pendente |
@@ -298,14 +298,14 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - Testes: porte de `ReaderTests`, `LoaderTests`, `AssemblerTests` e `ProviderTests` das três entidades, mais bordas (`0xFF`, bits fora das máscaras, `-1`/`0`/`1`, `Int32` com sinal) e a fixture do Central Park (Tree Boots e Fishing Pole; Divine Barrier, Hazard Shield e Dramon Shield consumidos; CardBattle `-1` → `null`). Total: 197 testes.
 - **Validação manual (aprovada):** modo `compare` no Tauri com o DuckStation, sem divergências nem logs inesperados.
 
-### Etapa 5b — Npcs (implementada; aguardando validação manual)
+### Etapa 5b — Npcs (concluída)
 
 - `Frontend/src/memory/`: `resources/npcs.resource.ts` (`NpcsResource = Record<keyof Npcs, NpcResource>`), `readers/npcs.reader.ts`, `assemblers/npcs.assembler.ts`, `providers/npcs.provider.ts`; `npcs` no `ComposedState`, `compose` e `pick`.
 - Decisão: reader e assembler percorrem os NPCs de forma genérica pelas chaves dos endereços (o C# lista os 29 à mão); o teste do repositório garante os 29 NPCs com batalhas.
 - Batalhas via `Object.entries(npc.battles)`: mantém a ordem do JSON porque as chaves (`first`, `second`) não são numéricas. `won = value !== 0`.
 - Valores esperados da fixture do Central Park centralizados em `tests/fixtures/snapshots/field-central-park.expected.ts` (`ComposedState`), usados pelos specs do composer, do loop e dos providers.
 - Testes: porte de `NpcsReaderTests`, `NpcsLoaderTests`, `NpcsAssemblerTests` e `NpcsProviderTests`, mais ordem `first`/`second`, NPC sem batalhas e endereço fora do snapshot. Total: 210 testes.
-- **Validação manual pendente:** modo `compare` com o jogo pausado em pontos diferentes, sem divergências; opcional: vencer um NPC (no máximo divergência breve em `state.npcs.<nome>.battles[0].won`).
+- **Validação manual (aprovada):** modo `compare` no Tauri com o DuckStation, sem divergências; NPCs vencidos conferidos no jogo.
 
 ## Decisões em aberto
 
