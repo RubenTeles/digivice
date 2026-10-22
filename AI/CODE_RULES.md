@@ -7,6 +7,7 @@ A fonte única das regras de código é a pasta `.cursor/`. Este arquivo existe 
 | Diretrizes gerais (tom, foco, aprovação de planos, naming, `if` com chaves, comentários) | [.cursor/rules/digivice-core.mdc](../.cursor/rules/digivice-core.mdc) |
 | Backend C# (construtores primários, ordem de membros, camadas de memória) | [.cursor/rules/digivice-backend.mdc](../.cursor/rules/digivice-backend.mdc) |
 | Testes Backend (legado / paridade) | [.cursor/rules/digivice-tests.mdc](../.cursor/rules/digivice-tests.mdc) |
+| Tauri / Rust (ponte de leitura da RAM, `read_ram`, `unsafe`) | [.cursor/rules/digivice-tauri.mdc](../.cursor/rules/digivice-tauri.mdc) |
 | Frontend básico (sintaxe, imports, converters, escopo de testes) | [.cursor/rules/digivice-frontend.mdc](../.cursor/rules/digivice-frontend.mdc) |
 | Testes Frontend (Vitest, camada de leitura de memória) | [.cursor/rules/digivice-frontend-tests.mdc](../.cursor/rules/digivice-frontend-tests.mdc) |
 | Frontend dados estáticos (presenters, services, repositories, i18n, assets) | [.cursor/rules/digivice-frontend-data.mdc](../.cursor/rules/digivice-frontend-data.mdc) |

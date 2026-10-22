@@ -7,7 +7,7 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | Etapa | Descrição | Status |
 |---|---|---|
 | 1 | Fundação de testes | Concluída |
-| 2 | Rust: conexão e `read_ram` | Pendente (próxima a detalhar) |
+| 2 | Rust: conexão e `read_ram` | Concluída |
 | 3 | Snapshot e definitions | Pendente |
 | 4 | Fatia vertical: Player | Pendente |
 | 5 | Demais entidades | Pendente |
@@ -85,12 +85,12 @@ Pontos que motivam ou afetam a migração:
 ### 1. Rust (Tauri)
 
 - **Remover (etapa 7):** spawn do sidecar, porta livre, `get_backend_port`, evento `backend-crashed` em `Tauri/src/lib.rs`.
-- **Novo:** achar o PID do DuckStation e abrir o mapping `duckstation_{pid}` (equivalente a `DuckstationConnector` + `WindowsMemoryProvider`). Crate `windows` (`OpenFileMappingW`/`MapViewOfFile`) e algo como `sysinfo`. Nome do processo (`duckstation-qt-x64-ReleaseLTCG`) vira constante.
+- **Novo:** achar o PID do DuckStation e abrir o mapping `duckstation_{pid}` (equivalente a `DuckstationConnector` + `WindowsMemoryProvider`). Crate `windows` (`OpenFileMappingW`/`MapViewOfFile`; processos via ToolHelp, sem `sysinfo`). Nome do processo (`duckstation-qt-x64-ReleaseLTCG`) vira constante.
 - **Novo:** comando `read_ram` que copia a RAM e devolve binário, ou código de erro.
   - **Cuidado:** usar `tauri::ipc::Response` (binário). Serializar `Vec<u8>` como JSON vira um array de 2 milhões de números.
   - **Cuidado:** comando `async`. Comandos síncronos rodam na thread principal e podem travar a janela.
-- **Cuidado — mapping "congelado":** com o handle aberto, o Windows mantém a memória viva mesmo após o DuckStation fechar. A leitura continuaria devolvendo RAM congelada, sem erro. Manter a checagem de processo vivo a cada tick (hoje é o `ProcessIdChanged`).
-- **Cuidado — tamanho da RAM:** 2 MB, mas o DuckStation tem opção de 8 MB. Copiar o tamanho real da view; o TS valida que o snapshot cobre o maior endereço usado.
+- **Cuidado — mapping "congelado":** com o handle aberto, o Windows mantém a memória viva mesmo após o DuckStation fechar. A leitura continuaria devolvendo RAM congelada, sem erro. Checagem de processo vivo a cada chamada pelo handle do processo (`WaitForSingleObject` com timeout 0), em vez de listar processos a cada tick como o `ProcessIdChanged` do C#.
+- **Tamanho da RAM (decidido na etapa 2):** snapshot **fixo em 2 MiB**, mesmo com a opção de 8 MB do DuckStation (todos os endereços ficam abaixo de `0x200000`). Mesmo formato dos `.bin` do `MemoryScanner` e do `FakeSnapshotBuilder`. View menor que 2 MiB = `memory_read_failed`.
 - **Códigos de erro mantidos:** `process_not_found`, `mapping_not_found`, `connection_failed`, `memory_read_failed`.
 - **Capabilities (etapa 7):** remover `shell:allow-execute` do sidecar; manter `shell:allow-open` (usado por `external-link.service.ts`).
 
@@ -223,6 +223,20 @@ Removido do caminho de produção:
 - `Frontend/tests/fixtures/snapshots/README.md` com geração e catálogo (ainda sem fixtures; as primeiras entram na etapa 4).
 - `PlayStationRamSize` vive em `tests/helpers/snapshot.constant.ts`; sobe para `src/memory/` na etapa 3.
 - Docs: `digivice-frontend.mdc` (escopo de testes e sufixos), nova `digivice-frontend-tests.mdc`, nova skill `frontend-memory-tests`, `digivice-tests.mdc`/`backend-tests` marcados como legado, `AI/CODE_RULES.md` e `docs-auditor` atualizados.
+
+### Etapa 2 — Rust: conexão e `read_ram` (concluída)
+
+- Crate `windows` 0.61 (mesma versão já usada pelo Tauri). Módulo `Tauri/src/memory/` (`process`, `mapping`, `handle`, `session`, `error`) e comando `read_ram` em `Tauri/src/commands.rs`, registrado no `lib.rs` com `MemoryState`. Sidecar inalterado.
+- `read_ram` (`async`): confere processo vivo, conecta/reconecta, copia 2 MiB e devolve binário (`tauri::ipc::Response`). Erros `{ code, detail }`: `process_not_found`, `mapping_not_found`, `connection_failed`, `memory_read_failed`. Qualquer erro descarta a sessão.
+- Paridade de erros com o C#: qualquer falha ao abrir/mapear a memória compartilhada vira `mapping_not_found` (como o `WindowsMemoryProvider`); falha ao listar/abrir o processo vira `connection_failed`.
+- Sem `cargo test` (decisão): validação manual no DevTools **da janela do Tauri** (`npm run tauri:dev`, `Ctrl+Shift+I`). No navegador comum não existe a ponte com o Rust.
+- Docs: nova regra `digivice-tauri.mdc`, linha em `AI/CODE_RULES.md`.
+- **Validação manual (aprovada):**
+  - `read_ram` devolve 2097152 bytes; o byte em `0x4B3F8` bate com o mapa atual do jogo.
+  - Tempo por chamada: 21–27 ms (build debug, 5 chamadas seguidas). O custo é a transferência pela IPC, não a cópia; folga ampla no tick de 500 ms.
+  - DuckStation fechado → `process_not_found`. Exportação de memória compartilhada desligada → `mapping_not_found`. Fechar e reabrir o DuckStation reconecta sozinho, sem reiniciar o Tauri.
+  - UI atual (C# via SignalR) continua funcionando em paralelo.
+- **Observação para a etapa 4:** com a exportação ligada, o DuckStation cria a memória compartilhada ao abrir, mesmo **sem jogo carregado**; o `read_ram` conecta e devolve a RAM (quase toda zerada). O C# tem o mesmo comportamento (paridade), mas o health TS precisa considerar o caso "conectado sem jogo".
 
 ## Decisões em aberto
 

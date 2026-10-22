@@ -1,3 +1,6 @@
+mod commands;
+mod memory;
+
 use tauri::Manager;
 use tauri_plugin_shell::ShellExt;
 use std::sync::Mutex;
@@ -28,7 +31,8 @@ fn emit_backend_crashed(app_handle: &tauri::AppHandle, exit_code: Option<i32>) {
 pub fn run() {
   tauri::Builder::default()
     .plugin(tauri_plugin_shell::init())
-    .invoke_handler(tauri::generate_handler![get_backend_port])
+    .manage(memory::MemoryState::default())
+    .invoke_handler(tauri::generate_handler![get_backend_port, commands::read_ram])
     .setup(|app| {
       let port = get_free_port();
       app.manage(BackendPort(port));
