@@ -9,7 +9,7 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | 1 | Fundação de testes | Concluída |
 | 2 | Rust: conexão e `read_ram` | Concluída |
 | 3 | Snapshot e definitions | Concluída |
-| 4 | Fatia vertical: Player | Implementada; aguardando validação manual |
+| 4 | Fatia vertical: Player | Concluída |
 | 5 | Demais entidades | Pendente |
 | 6 | Patch in-place e troca da fonte | Pendente |
 | 7 | Produção sem sidecar | Pendente |
@@ -259,7 +259,7 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - Testes portados: `MemoryReaderTests`, os 3 testes de conversores e `AddressesRepositoryDefinitionsTests` (+ ordem das quests). Mais specs dos providers com `invoke`/`fetch` simulados e o teste de paridade das definitions (mesmo conjunto de arquivos e mesmo conteúdo interpretado). Total: 116 testes.
 - Docs: `digivice-frontend.mdc` (estrutura de `src/memory/`, sufixos, terceiro contexto de converters), `digivice-frontend-tests.mdc` e skill `frontend-memory-tests` (mocks, checklist de paridade com status), `digivice-backend.mdc` (cópia das definitions no frontend), skills/agents de investigação apontando para a cópia do frontend.
 
-### Etapa 4 — Fatia vertical do Player (implementada; aguardando validação manual)
+### Etapa 4 — Fatia vertical do Player (concluída)
 
 - Leitura do Player em `Frontend/src/memory/`: `resources/player.resource.ts`, `readers/player.reader.ts`, `assemblers/player.assembler.ts` (hex `X4` com `& 0xffff`, `0` → `null`), `providers/player.provider.ts` (substitui Loader + Provider do C#) e `state.composer.ts` (`ComposedState = Pick<State, "player">`, cresce por etapa; `pick` recorta o `State` do C# para comparar).
 - Loop em `src/memory/loop/`: `GameLoop` (`setTimeout` encadeado de 500 ms, sem sobreposição, leitura em andamento descartada no `stop`), `SnapshotProviderFactory` (`VITE_MEMORY_SNAPSHOT_URL` → arquivo; senão Tauri → `read_ram`; senão nada) e `initializeMemoryLoop` (no `main.ts`, para o loop no `import.meta.hot.dispose`).
@@ -270,7 +270,12 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - Testes: porte de `PlayerReaderTests`, `PlayerLoaderTests`, `PlayerAssemblerTests` e `PlayerProviderTests` (+ `-1` → `"FFFF"`, sentinelas), provider e composer sobre a fixture, `GameLoop` com timers falsos, comparator, tracker e factory. Total: 166 testes.
 - Verificação automática: em dev com `VITE_MEMORY_MODE=compare` e a fixture, o loop lê o `.bin` a cada 500 ms, health TS `Healthy`, sem erros e sem divergências contra o C# conectado ao DuckStation pausado no mesmo ponto da fixture.
 - Docs: `digivice-frontend.mdc` (camadas, sufixos, variáveis `VITE_MEMORY_*`), `digivice-frontend-tests.mdc` (escopo), skill `frontend-memory-tests` (formatos de teste por camada, checklist).
-- **Validação manual pendente** (Tauri + DuckStation, `VITE_MEMORY_MODE=compare`, sem `VITE_MEMORY_SNAPSHOT_URL`): emulador pausado em mapas variados (rota do fundo do mar e mapa com variante) sem divergências; jogo rodando com no máximo divergências breves; fechar o DuckStation → os dois lados em `Error`/`process_not_found`; reabrir → os dois se recuperam; sem a variável, app igual ao atual.
+- **Validação manual (aprovada)** (Tauri + DuckStation, `VITE_MEMORY_MODE=compare`, sem `VITE_MEMORY_SNAPSHOT_URL`):
+  - Emulador pausado em mapas variados: sem divergências.
+  - Jogo rodando e trocando de mapa: sem divergências persistentes.
+  - Fechar o DuckStation: os dois lados em `Error`/`process_not_found`; reabrir: os dois se recuperam.
+  - Sem a variável: app igual ao atual, sem logs `[Memory]`.
+  - Não feita: checagem opcional de divergência proposital (`VITE_MEMORY_SNAPSHOT_URL` com o jogo em outro mapa). Risco baixo: o reporte de divergências é coberto pelos testes do comparator e do tracker.
 
 ## Decisões em aberto
 
