@@ -12,7 +12,9 @@ description: >-
 # Backend Tests
 
 Rules (1:1 file mapping, corner cases): `.cursor/rules/digivice-tests.mdc`.
-This skill is the practical how-to. Frontend has **no** tests.
+This skill is the practical how-to.
+
+**Legacy / parity:** the C# backend is frozen during the memory-layer migration to TS (`AI/MIGRATION_PLAN.md`) and kept only as parity reference. New memory-layer tests go to `Frontend/tests/` (skill `frontend-memory-tests`); the rest of the frontend has no tests.
 
 ## Stack
 

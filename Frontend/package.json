@@ -13,6 +13,8 @@
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
     "format": "prettier --write --experimental-cli src/",
+    "test": "vitest",
+    "test:run": "vitest run",
     "tauri:dev": "powershell -ExecutionPolicy Bypass -File ../Tauri/run-tauri.ps1 dev",
     "tauri:build": "powershell -ExecutionPolicy Bypass -File ../Tauri/run-tauri.ps1 build"
   },
@@ -45,6 +47,7 @@
     "typescript": "~5.9.3",
     "vite": "^7.3.1",
     "vite-plugin-vue-devtools": "^8.0.6",
+    "vitest": "^5.0.5",
     "vue-tsc": "^3.2.4"
   },
   "engines": {

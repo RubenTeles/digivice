@@ -1,5 +1,5 @@
 ---
-description: Convenções básicas Frontend Vue/TS Digivice — sintaxe, imports, naming, sem testes
+description: Convenções básicas Frontend Vue/TS Digivice — sintaxe, imports, naming, escopo de testes
 globs: Frontend/**/*
 alwaysApply: false
 ---
@@ -10,17 +10,18 @@ Regras especializadas por pasta:
 - `digivice-frontend-data.mdc` — presenters, services, repositories, viewmodels, extensions, assets.
 - `digivice-frontend-components.mdc` — componentes Vue, estilo DW3, tooltips, modais.
 - `digivice-frontend-sync.mdc` — events (DTO/converter), stores/syncers, models.
+- `digivice-frontend-tests.mdc` — testes da camada de leitura de memória (`tests/`).
 
 ## Convenções básicas
 
 1. Sempre `;` no fim das instruções.
 2. Prefira aspas duplas `"` em strings.
 3. Importações com `@/` (ex.: `@/models`, `@/presenters/map/map.presenter`) em vez de caminhos relativos longos; sem extensão `.ts` (`.vue` mantém a extensão).
-4. Arquivos kebab-case com sufixo de papel (`.converter.ts`, `.dto.ts`, `.viewmodel.ts`, `.presenter.ts`, `.service.ts`, `.repository.ts`, `.syncer.ts`, `.selector.ts`, `.extensions.ts`); classes/tipos PascalCase.
+4. Arquivos kebab-case com sufixo de papel (`.converter.ts`, `.dto.ts`, `.viewmodel.ts`, `.presenter.ts`, `.service.ts`, `.repository.ts`, `.syncer.ts`, `.selector.ts`, `.extensions.ts`, `.reader.ts`, `.assembler.ts`, `.provider.ts`, `.spec.ts`); classes/tipos PascalCase.
 5. **Converters:** classe `{AlgumaCoisa}Converter`; arquivo `{alguma-coisa}.converter.ts`; API pública estática `convert` (helpers privados permitidos). Dois contextos, pastas distintas:
    - `events/converters/` — DTO (SignalR) → Model (Pinia)
    - `presenters/converter/` — Raw → ViewModel (dados estáticos)
-6. **Sem testes no Frontend** (Vitest, `*.spec.ts`, `__tests__`): decisão intencional. Não criar, sugerir nem incluir, salvo pedido explícito.
+6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, definitions, snapshot) e, quando existir, o patch da store têm testes Vitest em `Frontend/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels, syncers) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
 
 ## Constants e types
 

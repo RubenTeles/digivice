@@ -1,13 +1,13 @@
 # Plano de migração — leitura de memória em TS (Tauri + Rust mínimo)
 
-Documento de continuidade do planejamento. Registra o diagnóstico, as decisões tomadas, a arquitetura alvo, a lista de mudanças e as etapas. Nenhuma etapa foi implementada ainda.
+Documento de continuidade do planejamento. Registra o diagnóstico, as decisões tomadas, a arquitetura alvo, a lista de mudanças e as etapas.
 
 ## Status
 
 | Etapa | Descrição | Status |
 |---|---|---|
-| 1 | Fundação de testes | Pendente (próxima a detalhar) |
-| 2 | Rust: conexão e `read_ram` | Pendente |
+| 1 | Fundação de testes | Concluída |
+| 2 | Rust: conexão e `read_ram` | Pendente (próxima a detalhar) |
 | 3 | Snapshot e definitions | Pendente |
 | 4 | Fatia vertical: Player | Pendente |
 | 5 | Demais entidades | Pendente |
@@ -39,6 +39,9 @@ O motivo **não** é abandonar o C#; é eliminar a separação em duas aplicaç�
 9. **Comparação permanente em dev:** após a troca da fonte, o caminho SignalR no frontend fica como modo `compare` só para desenvolvimento, por tempo indeterminado. O C# nunca volta para a build de produção.
 10. **Docs progressivos:** cada etapa atualiza as regras, skills e docs que ela muda. Etapa só é concluída com docs atualizados.
 11. **Etapas revisáveis:** migração em partes, cada uma revisada antes da próxima.
+12. **Pasta da camada nova:** `Frontend/src/memory/` (espelha `Backend/Memory/`). Sufixos `.reader.ts`, `.assembler.ts`, `.provider.ts`.
+13. **Testes:** Vitest, ambiente `node`, em `Frontend/tests/` espelhando `src/`, arquivos `*.spec.ts` 1:1 com produção. Regra `digivice-frontend-tests.mdc`, skill `frontend-memory-tests`.
+14. **Fixtures `.bin`:** versionadas no git em `Frontend/tests/fixtures/snapshots/`, poucas e catalogadas no README da pasta. Geradas pelo `MemoryScanner snapshot`.
 
 ## Desenvolvimento local
 
@@ -209,9 +212,19 @@ Removido do caminho de produção:
 7. **Produção sem sidecar:** `lib.rs`, `tauri.conf.json`, capabilities. SignalR fica só no modo `compare`.
 8. **Fechamento de docs:** revisão final de regras, skills, agents e índices (o grosso já foi feito em cada etapa).
 
+## Registro das etapas
+
+### Etapa 1 — Fundação de testes (concluída)
+
+- Vitest 5 (compatível com o Vite 7) com scripts `npm run test` (watch) e `npm run test:run`.
+- `Frontend/vitest.config.ts` herda `vite.config.ts`; inclui apenas `tests/**/*.spec.ts`; ambiente `node`.
+- `Frontend/tsconfig.vitest.json` (referenciado no `tsconfig.json`) faz o `npm run type-check` cobrir `tests/`.
+- Helpers em `Frontend/tests/helpers/`: `FakeSnapshotBuilder` (snapshot sintético little-endian, aceita negativos, valida limites e faixas) e `SnapshotFixtureLoader` (carrega `.bin` de 2 MiB), com testes.
+- `Frontend/tests/fixtures/snapshots/README.md` com geração e catálogo (ainda sem fixtures; as primeiras entram na etapa 4).
+- `PlayStationRamSize` vive em `tests/helpers/snapshot.constant.ts`; sobe para `src/memory/` na etapa 3.
+- Docs: `digivice-frontend.mdc` (escopo de testes e sufixos), nova `digivice-frontend-tests.mdc`, nova skill `frontend-memory-tests`, `digivice-tests.mdc`/`backend-tests` marcados como legado, `AI/CODE_RULES.md` e `docs-auditor` atualizados.
+
 ## Decisões em aberto
 
-- Pasta e nome da camada nova no frontend (ex.: `src/memory/`).
-- Convenção de testes: `*.spec.ts` ao lado do código ou pasta `tests/` separada.
 - Patch genérico por chaves de lista vs. patch específico por entidade.
 - Confirmar suporte de configuração de background throttling do Tauri no WebView2.

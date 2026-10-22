@@ -6,7 +6,9 @@ alwaysApply: false
 
 # Digivice — Tests (Backend)
 
-Aplica-se ao projeto `Tests/`. Frontend não tem testes automatizados. Padrões concretos (mocks, bases, onde colocar cada teste): skill `backend-tests`.
+Aplica-se ao projeto `Tests/`. Padrões concretos (mocks, bases, onde colocar cada teste): skill `backend-tests`.
+
+**Legado / paridade:** o backend C# está congelado durante a migração da leitura de memória para TS (`AI/MIGRATION_PLAN.md`) e serve só como referência de paridade. Testes novos da camada de leitura vão para `Frontend/tests/` (regra `digivice-frontend-tests.mdc`).
 
 1. **Corner cases:** ao finalizar testes de unidade, revisar caminhos alternativos, fallbacks, nulos/concorrência, I/O e fronteiras no código de produção; adicionar testes focados nesses casos.
 2. **Um arquivo de produção ↔ um arquivo de testes:** espelhar o nome (ex.: `OptionalJsonConverterFactory.cs` → `OptionalJsonConverterFactoryTests.cs`) na pasta/namespace correspondente em `Tests/`. Vale para código novo e refactors; retrofit legado sob demanda.
