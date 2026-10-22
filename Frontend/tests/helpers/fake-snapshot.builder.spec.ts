@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { PlayStationRamSize } from "@/memory/snapshot/snapshot.constant";
 import { FakeSnapshotBuilder } from "./fake-snapshot.builder";
-import { PlayStationRamSize } from "./snapshot.constant";
 
 describe("FakeSnapshotBuilder", () => {
   describe("build", () => {

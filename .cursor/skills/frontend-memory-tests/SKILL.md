@@ -39,19 +39,22 @@ Helpers and fixtures:
 |---|---|
 | `tests/helpers/fake-snapshot.builder.ts` | `FakeSnapshotBuilder`: synthetic snapshot |
 | `tests/helpers/snapshot-fixture.loader.ts` | `SnapshotFixtureLoader`: real `.bin` dumps |
-| `tests/helpers/snapshot.constant.ts` | `PlayStationRamSize` (2 MiB) |
 | `tests/fixtures/snapshots/` | `.bin` fixtures + catalog `README.md` |
+
+`PlayStationRamSize` (2 MiB) is production code: `@/memory/snapshot/snapshot.constant`.
 
 ## Synthetic snapshot (`FakeSnapshotBuilder`)
 
 Replaces the C# `Mock<IMemoryReader>` and `LoaderIntegrationTestBase.WriteInt16/WriteInt32`.
 
 ```ts
-const snapshot = new FakeSnapshotBuilder()
-  .writeInt16(0x0004b3f8, 0x0600)
-  .writeInt32(0x00048da0, 1500)
-  .writeByte(0x00048d78, 0)
-  .build();
+const snapshot = new MemorySnapshot(
+  new FakeSnapshotBuilder()
+    .writeInt16(0x0004b3f8, 0x0600)
+    .writeInt32(0x00048da0, 1500)
+    .writeByte(0x00048d78, 0)
+    .build(),
+);
 ```
 
 - Zeroed 2 MiB `ArrayBuffer` by default (custom size via constructor, only for helper-level tests).
@@ -62,24 +65,33 @@ const snapshot = new FakeSnapshotBuilder()
 ## Real snapshot (`SnapshotFixtureLoader`)
 
 ```ts
-const snapshot = SnapshotFixtureLoader.load("field-asuka-city");
+const snapshot = new MemorySnapshot(SnapshotFixtureLoader.load("field-asuka-city"));
 ```
 
 - Reads `tests/fixtures/snapshots/{name}.bin`, validates 2 MiB, returns a standalone `ArrayBuffer`.
 - Generate with `Tools/MemoryScanner` (`dotnet run -- snapshot Snapshots/{name}.bin`), copy here and add a row to the catalog in `tests/fixtures/snapshots/README.md`. Uncatalogued fixtures are not allowed.
 - Keep fixtures few and purposeful (about 2 MB each in git history).
 
+## Mocking the outside world
+
+- Tauri bridge: `vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }))` + `vi.mocked(invoke)`. Rust errors reject with `{ code, detail }`. Reference: `tests/memory/snapshot/tauri-snapshot.provider.spec.ts`.
+- `fetch`: `vi.stubGlobal("fetch", fetchMock)` with `new Response(buffer)`, and `vi.unstubAllGlobals()` in `afterEach`. Reference: `tests/memory/snapshot/file-snapshot.provider.spec.ts`.
+- Definitions: never mock. Specs that need addresses use `AddressesRepository` (real JSONs from `Backend/Memory/Definitions/` via `@definitions`); converter specs build `...Raw` objects inline.
+
 ## Parity checklist with the C# `Tests/`
 
 The C# project is frozen as parity reference. When porting a backend piece to TS, port its tests too:
 
-| C# test | TS equivalent |
-|---|---|
-| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` | reader spec with `FakeSnapshotBuilder` |
-| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` | reader spec using the real definitions JSON |
-| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` | assembler spec (pure functions) |
-| `AddressesRepositoryDefinitionsTests`, `Memory/Converters/*Tests` | definitions/parser specs |
-| Differ, DTO Converter, EventFactory, Hub, DI, `Optional`, `GameStateStore` | none (layers do not exist in the TS model) |
+| C# test | TS equivalent | Status |
+|---|---|---|
+| `Tests/Unit/Memory/Readers/MemoryReaderTests.cs` | `tests/memory/snapshot/memory.snapshot.spec.ts` | ported |
+| `Tests/Unit/Memory/Converters/*Tests.cs` (3 files) | `tests/memory/converters/address-value.converter.spec.ts` | ported (invalid values throw instead of falling back to `0`) |
+| `Tests/Integration/Memory/Repositories/AddressesRepositoryDefinitionsTests.cs` | `tests/memory/repositories/addresses.repository.spec.ts` | ported |
+| `WindowsMemoryProviderTests`, `DuckstationConnectorTests`, `MemoryBlockReaderTests` | none (Rust bridge validated manually; no memory blocks in TS) | n/a |
+| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` | reader spec with `FakeSnapshotBuilder` | pending (steps 4–5) |
+| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` | reader spec using the real definitions JSON | pending (steps 4–5) |
+| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` | assembler spec (pure functions) | pending (steps 4–5) |
+| Differ, DTO Converter, EventFactory, Hub, DI, `Optional`, `GameStateStore` | none (layers do not exist in the TS model) | n/a |
 
 Reader and assembler test shapes are documented here once the first ones exist (migration step 4).
 

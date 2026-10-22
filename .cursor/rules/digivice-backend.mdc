@@ -34,6 +34,8 @@ alwaysApply: false
 | **Provider** | `Application/Providers/` | `Get()` = Loader + Assembler; consumido pelo `StateComposer`. |
 | **Assembler** | `Domain/Assemblers/` (classes `static`) | `Resource` → modelo de domínio no `State`; normalizações de domínio (sentinelas → `null`, cascades). |
 
+**Definitions compartilhadas com o TS:** `Memory/Definitions/**` também é lido pelo frontend (`Frontend/src/memory/repositories/addresses.repository.ts`, alias `@definitions`). Renomear chave, mudar formato ou mover arquivo quebra os dois lados (e o `Tools/MemoryScanner`, que usa o caminho do `MainQuestAddresses.json`). No TS, valor inválido lança erro ao carregar (no C# cai para `0`).
+
 Eventos: `Events/Converters/` (`ToDTO` completo), `Events/Diffing/` (delta `Optional<T>`), `Events/Factory/` (`{Entity}EventFactory` + `StateEventFactory`), `Events/DTO/`.
 
 **Decisão de tipos:**

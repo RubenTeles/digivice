@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { PlayStationRamSize } from "./snapshot.constant";
+import { PlayStationRamSize } from "@/memory/snapshot/snapshot.constant";
 
 const FixturesDirectory = fileURLToPath(new URL("../fixtures/snapshots/", import.meta.url));
 

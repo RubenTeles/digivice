@@ -1,4 +1,4 @@
-import { PlayStationRamSize } from "./snapshot.constant";
+import { PlayStationRamSize } from "@/memory/snapshot/snapshot.constant";
 
 export class FakeSnapshotBuilder {
   private readonly buffer: ArrayBuffer;

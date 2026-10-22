@@ -8,7 +8,7 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 |---|---|---|
 | 1 | Fundação de testes | Concluída |
 | 2 | Rust: conexão e `read_ram` | Concluída |
-| 3 | Snapshot e definitions | Pendente |
+| 3 | Snapshot e definitions | Implementada; aguardando revisão |
 | 4 | Fatia vertical: Player | Pendente |
 | 5 | Demais entidades | Pendente |
 | 6 | Patch in-place e troca da fonte | Pendente |
@@ -96,10 +96,10 @@ Pontos que motivam ou afetam a migração:
 
 ### 2. Camada de leitura em TS
 
-- **Novo — provedores de snapshot:** via `invoke` (Tauri) e via arquivo `.bin` (formato do `MemoryScanner snapshot`, 2 MiB).
-- **Novo — readers puros sobre `DataView`.**
+- **Feito na etapa 3 — provedores de snapshot:** `TauriSnapshotProvider` (`invoke("read_ram")`) e `FileSnapshotProvider` (`fetch` de um `.bin` de 2 MiB, formato do `MemoryScanner snapshot`). Ambos devolvem `MemorySnapshot` ou lançam `EmulatorConnectionError` (`code`, `detail`).
+- **Novo — readers puros sobre `MemorySnapshot`** (feito na etapa 3: `readByte`/`readByte(bitMask)`/`readInt16`/`readInt32`/`readBytes`, equivalente ao `IMemoryReader`).
   - **Cuidado — sinal e endianness:** `Int16` → `getInt16(addr, true)`, `Int32` → `getInt32(addr, true)`, byte → `getUint8`. Ler `Int16` sem sinal faria o sentinela `0xFFFF` (hoje `-1` → `null`) virar `65535`.
-- **Definitions:** importar os JSONs de `Backend/Memory/Definitions/`. Parser para hex (`"0x48"`), decimal (`"20"`) e negativo (`"-4"` em `ActiveDigievolution`). Quests por pasta via `import.meta.glob`. Vite com `server.fs.allow` para fora de `Frontend`; `tsconfig` incluindo os JSONs.
+- **Definitions (feito na etapa 3):** `AddressesRepository` importa os JSONs de `Backend/Memory/Definitions/` via alias `@definitions`. Parser para hex (`"0x48"`), decimal (`"20"`) e negativo (`"-4"` em `ActiveDigievolution`); valor inválido **lança** (o C# cai para `0`). Quests por pasta via `import.meta.glob`, ordenadas pelo nome do arquivo como no C#. Vite com `server.fs.allow` para a pasta; `tsconfig` incluindo os JSONs.
 - **Sem blocos de memória:** com o snapshot, tudo é endereço absoluto (base + offset). O bloco de 1500 bytes do Digimon deixa de existir.
 - **Comportamentos de leitura a preservar exatamente:**
   - `StepReader`: sem máscara lê o byte; uma máscara aplica `&`; várias exigem todas ativas e o valor final usa a primeira.
@@ -221,7 +221,7 @@ Removido do caminho de produção:
 - `Frontend/tsconfig.vitest.json` (referenciado no `tsconfig.json`) faz o `npm run type-check` cobrir `tests/`.
 - Helpers em `Frontend/tests/helpers/`: `FakeSnapshotBuilder` (snapshot sintético little-endian, aceita negativos, valida limites e faixas) e `SnapshotFixtureLoader` (carrega `.bin` de 2 MiB), com testes.
 - `Frontend/tests/fixtures/snapshots/README.md` com geração e catálogo (ainda sem fixtures; as primeiras entram na etapa 4).
-- `PlayStationRamSize` vive em `tests/helpers/snapshot.constant.ts`; sobe para `src/memory/` na etapa 3.
+- `PlayStationRamSize` vivia em `tests/helpers/snapshot.constant.ts`; subiu para `src/memory/snapshot/` na etapa 3.
 - Docs: `digivice-frontend.mdc` (escopo de testes e sufixos), nova `digivice-frontend-tests.mdc`, nova skill `frontend-memory-tests`, `digivice-tests.mdc`/`backend-tests` marcados como legado, `AI/CODE_RULES.md` e `docs-auditor` atualizados.
 
 ### Etapa 2 — Rust: conexão e `read_ram` (concluída)
@@ -237,6 +237,18 @@ Removido do caminho de produção:
   - DuckStation fechado → `process_not_found`. Exportação de memória compartilhada desligada → `mapping_not_found`. Fechar e reabrir o DuckStation reconecta sozinho, sem reiniciar o Tauri.
   - UI atual (C# via SignalR) continua funcionando em paralelo.
 - **Observação para a etapa 4:** com a exportação ligada, o DuckStation cria a memória compartilhada ao abrir, mesmo **sem jogo carregado**; o `read_ram` conecta e devolve a RAM (quase toda zerada). O C# tem o mesmo comportamento (paridade), mas o health TS precisa considerar o caso "conectado sem jogo".
+
+### Etapa 3 — Snapshot e definitions (implementada; aguardando revisão)
+
+- `Frontend/src/memory/` criado, espelhando `Backend/Memory/`:
+  - `snapshot/`: `MemorySnapshot`, `SnapshotProvider`, `TauriSnapshotProvider`, `FileSnapshotProvider`, `MemoryReadError`, `EmulatorConnectionError`, `PlayStationRamSize`.
+  - `addresses/`: tipos de endereço de todos os 30 JSONs (tipo final camelCase + `...Raw` PascalCase no mesmo arquivo). `NpcsAddresses` derivado das chaves do model `Npcs` (29 NPCs).
+  - `converters/`: `AddressValueConverter` + um converter por arquivo de definitions.
+  - `repositories/addresses.repository.ts`: mesmos métodos do `AddressesRepository` C#, cache lazy.
+- Config: alias `@definitions` e `server.fs.allow` no `vite.config.ts`; `paths`/`include` no `tsconfig.app.json` e `include` no `tsconfig.vitest.json`. Build de produção embute os JSONs no bundle.
+- Decisões: todos os JSONs nesta etapa; valor inválido ou campo escalar ausente **lança** ao carregar (divergência intencional do C#; listas ausentes continuam `[]`); o provedor por arquivo recebe a URL no construtor; a escolha do provedor (e a variável `VITE_MEMORY_SNAPSHOT_URL`) fica para a etapa 4.
+- Testes portados: `MemoryReaderTests`, os 3 testes de conversores e `AddressesRepositoryDefinitionsTests` (+ ordem das quests). Mais specs dos providers com `invoke`/`fetch` simulados. Total: 85 testes.
+- Docs: `digivice-frontend.mdc` (estrutura de `src/memory/`, sufixos, terceiro contexto de converters), `digivice-frontend-tests.mdc` e skill `frontend-memory-tests` (mocks, checklist de paridade com status), `digivice-backend.mdc` (definitions compartilhadas).
 
 ## Decisões em aberto
 

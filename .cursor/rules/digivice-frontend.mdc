@@ -17,11 +17,25 @@ Regras especializadas por pasta:
 1. Sempre `;` no fim das instruções.
 2. Prefira aspas duplas `"` em strings.
 3. Importações com `@/` (ex.: `@/models`, `@/presenters/map/map.presenter`) em vez de caminhos relativos longos; sem extensão `.ts` (`.vue` mantém a extensão).
-4. Arquivos kebab-case com sufixo de papel (`.converter.ts`, `.dto.ts`, `.viewmodel.ts`, `.presenter.ts`, `.service.ts`, `.repository.ts`, `.syncer.ts`, `.selector.ts`, `.extensions.ts`, `.reader.ts`, `.assembler.ts`, `.provider.ts`, `.spec.ts`); classes/tipos PascalCase.
-5. **Converters:** classe `{AlgumaCoisa}Converter`; arquivo `{alguma-coisa}.converter.ts`; API pública estática `convert` (helpers privados permitidos). Dois contextos, pastas distintas:
+4. Arquivos kebab-case com sufixo de papel (`.converter.ts`, `.dto.ts`, `.viewmodel.ts`, `.presenter.ts`, `.service.ts`, `.repository.ts`, `.syncer.ts`, `.selector.ts`, `.extensions.ts`, `.reader.ts`, `.assembler.ts`, `.provider.ts`, `.addresses.ts`, `.snapshot.ts`, `.raw.ts`, `.error.ts`, `.spec.ts`); classes/tipos PascalCase.
+5. **Converters:** classe `{AlgumaCoisa}Converter`; arquivo `{alguma-coisa}.converter.ts`; API pública estática `convert` (helpers privados permitidos). Três contextos, pastas distintas:
    - `events/converters/` — DTO (SignalR) → Model (Pinia)
    - `presenters/converter/` — Raw → ViewModel (dados estáticos)
+   - `memory/converters/` — JSON de definitions (`...Raw`, PascalCase) → tipos de endereço (camelCase, `number`)
 6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, definitions, snapshot) e, quando existir, o patch da store têm testes Vitest em `Frontend/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels, syncers) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
+
+## Camada de leitura de memória (`src/memory/`)
+
+Em construção pela migração (`AI/MIGRATION_PLAN.md`). Espelha `Backend/Memory/`:
+
+| Pasta | Conteúdo |
+|---|---|
+| `snapshot/` | `MemorySnapshot` (leituras little-endian sobre os 2 MiB; `readInt16`/`readInt32` com sinal), `SnapshotProvider` (`TauriSnapshotProvider` via `read_ram`, `FileSnapshotProvider` via `fetch` de `.bin`), `MemoryReadError`, `EmulatorConnectionError`, `PlayStationRamSize`. |
+| `addresses/` | Tipos de endereço (`{nome}.addresses.ts`): tipo final + `...Raw` no mesmo arquivo. |
+| `converters/` | `AddressValueConverter` (hex `0x`, decimal, negativo; inválido **lança**) + um converter por arquivo de definitions. |
+| `repositories/` | `AddressesRepository` (estático, cache lazy). Importa `Backend/Memory/Definitions/` via alias `@definitions`; pastas de quests via `import.meta.glob`, ordenadas pelo nome do arquivo (igual ao C#). |
+
+- Definitions continuam em `Backend/Memory/Definitions/` (fonte única para C# e TS; o `MemoryScanner` depende do caminho).
 
 ## Constants e types
 
