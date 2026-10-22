@@ -5,34 +5,12 @@ import type { ComposedState } from "@/memory/state.composer";
 import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.error";
 import { MemoryReadError } from "@/memory/snapshot/memory-read.error";
 import { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
+import { FieldCentralParkExpected } from "../../fixtures/snapshots/field-central-park.expected";
 import { FakeSnapshotBuilder } from "../../helpers/fake-snapshot.builder";
 
 const IntervalMs = 500;
 
-const ComposedStateSample: ComposedState = {
-  player: {
-    bits: 42206,
-    mapId: "021D",
-    previousMapId: "1000",
-    seabedRoute: null,
-    mapVariant: null,
-  },
-  importantItems: {
-    treeBoots: true,
-    fishingPole: true,
-    asukaTrophy: false,
-    sunTrophy: false,
-  },
-  auctions: {
-    divineBarrier: true,
-    hazardShield: true,
-    sniperShield: false,
-    dramonShield: true,
-    yinYangWand: false,
-    hazardFang: false,
-  },
-  cardBattle: { id: null },
-};
+const ComposedStateSample: ComposedState = FieldCentralParkExpected;
 
 function createSnapshot(): MemorySnapshot {
   return new MemorySnapshot(new FakeSnapshotBuilder().build());

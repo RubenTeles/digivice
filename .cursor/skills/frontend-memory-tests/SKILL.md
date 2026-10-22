@@ -40,6 +40,7 @@ Helpers and fixtures:
 | `tests/helpers/fake-snapshot.builder.ts` | `FakeSnapshotBuilder`: synthetic snapshot |
 | `tests/helpers/snapshot-fixture.loader.ts` | `SnapshotFixtureLoader`: real `.bin` dumps |
 | `tests/fixtures/snapshots/` | `.bin` fixtures + catalog `README.md` |
+| `tests/fixtures/snapshots/{name}.expected.ts` | Expected `ComposedState` of a fixture, shared by provider, composer and loop specs |
 
 `PlayStationRamSize` (2 MiB) is production code: `@/memory/snapshot/snapshot.constant`.
 
@@ -96,9 +97,10 @@ The C# project is frozen as parity reference. When porting a backend piece to TS
 | `ImportantItems`, `Auctions`, `CardBattle` `AssemblerTests` | `tests/memory/assemblers/{important-items,auctions,card-battle}.assembler.spec.ts` | ported |
 | `ImportantItems`, `Auctions`, `CardBattle` `ProviderTests` | `tests/memory/providers/{important-items,auctions,card-battle}.provider.spec.ts` | ported |
 | `GameLoopService`, `HealthEventFactory` (no C# tests) | `tests/memory/loop/game.loop.spec.ts` | new |
-| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` (Npcs, DigimonBattle, Journal, Party) | reader spec with `FakeSnapshotBuilder` | pending (steps 5b–5e) |
-| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` (same) | reader spec using the real definitions JSON | pending (steps 5b–5e) |
-| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` (same) | assembler spec (pure functions) | pending (steps 5b–5e) |
+| `NpcsReaderTests` + `NpcsLoaderTests`, `NpcsAssemblerTests`, `NpcsProviderTests` | `tests/memory/{readers,assemblers,providers}/npcs.*.spec.ts` | ported |
+| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` (DigimonBattle, Journal, Party) | reader spec with `FakeSnapshotBuilder` | pending (steps 5c–5e) |
+| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` (same) | reader spec using the real definitions JSON | pending (steps 5c–5e) |
+| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` (same) | assembler spec (pure functions) | pending (steps 5c–5e) |
 | Differ, DTO Converter, EventFactory, Hub, DI, `Optional`, `GameStateStore` | none (layers do not exist in the TS model) | n/a |
 
 ## Test shapes per layer
