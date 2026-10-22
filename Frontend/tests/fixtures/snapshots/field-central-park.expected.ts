@@ -1,4 +1,12 @@
-import type { Npc, Quest, Requisite } from "@/models";
+import type {
+  DigievolutionSlot,
+  Digimon,
+  InBattle,
+  Npc,
+  Quest,
+  Requisite,
+  StoredDigievolution,
+} from "@/models";
 import type { QuestAddresses } from "@/memory/addresses/journals/quest.addresses";
 import type { RequisiteAddresses } from "@/memory/addresses/journals/quests/requisite.addresses";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";
@@ -45,6 +53,93 @@ function questIn(questsAddresses: QuestAddresses[], id: string, progress?: Quest
   return quest(addresses, progress);
 }
 
+export function digievolutionSlot(
+  index: number,
+  digievolutionId: number,
+  level: number,
+  dvexp: number,
+): DigievolutionSlot {
+  return { index, digievolutionId, digievolution: { level, dvexp } };
+}
+
+export function stored(
+  ...entries: [digievolutionId: number, level: number][]
+): StoredDigievolution[] {
+  return entries.map(([digievolutionId, level]) => ({ digievolutionId, level }));
+}
+
+export const OutOfBattle: InBattle = {
+  condition: 0,
+  strength: 0,
+  defense: 0,
+  speed: 0,
+  hp: { current: 0, max: 0 },
+  mp: { current: 0, max: 0 },
+};
+
+export const CentralParkKotemon: Digimon = {
+  level: 24,
+  tp: 5,
+  blast: 0,
+  experience: 12357,
+  hp: { current: 2003, max: 2003 },
+  mp: { current: 1230, max: 1230 },
+  inBattle: OutOfBattle,
+  attributes: { strength: 363, defense: 381, spirit: 196, wisdom: 249, speed: 500, charisma: 167 },
+  elements: { fire: 104, water: 154, ice: 97, wind: 100, thunder: 148, machine: 130, dark: 128 },
+  equipments: { head: 219, body: 253, right: 178, left: 178, accessory1: 314, accessory2: 314 },
+  // Dinohumon, Greymon and Kyukimon (active).
+  digievolutions: [
+    digievolutionSlot(1, 386, 99, 985),
+    digievolutionSlot(2, 5, 1, 0),
+    digievolutionSlot(3, 389, 9, 86),
+  ],
+  storedDigievolutions: stored([386, 99], [5, 1], [389, 9]),
+  activeDigievolutionId: 389,
+};
+
+const CentralParkPatamon: Digimon = {
+  level: 20,
+  tp: 10,
+  blast: 0,
+  experience: 8562,
+  hp: { current: 1206, max: 1206 },
+  mp: { current: 1508, max: 1508 },
+  inBattle: OutOfBattle,
+  attributes: { strength: 209, defense: 245, spirit: 417, wisdom: 264, speed: 277, charisma: 143 },
+  elements: { fire: 94, water: 146, ice: 121, wind: 142, thunder: 73, machine: 95, dark: 150 },
+  equipments: { head: 219, body: 253, right: 134, left: 134, accessory1: null, accessory2: null },
+  // Angemon, Digitamamon (active) and Angewomon.
+  digievolutions: [
+    digievolutionSlot(1, 20, 47, 464),
+    digievolutionSlot(2, 56, 58, 574),
+    digievolutionSlot(3, 234, 1, 0),
+  ],
+  storedDigievolutions: stored([20, 47], [56, 58], [234, 1], [211, 1]),
+  activeDigievolutionId: 56,
+};
+
+const CentralParkRenamon: Digimon = {
+  level: 20,
+  tp: 5,
+  blast: 0,
+  experience: 6466,
+  hp: { current: 1390, max: 1390 },
+  mp: { current: 1443, max: 1443 },
+  inBattle: OutOfBattle,
+  attributes: { strength: 195, defense: 306, spirit: 339, wisdom: 228, speed: 368, charisma: 174 },
+  elements: { fire: 119, water: 127, ice: 143, wind: 92, thunder: 155, machine: 72, dark: 122 },
+  equipments: { head: 219, body: 253, right: 185, left: 185, accessory1: null, accessory2: null },
+  // Stingmon, Kabuterimon (active) and Taomon.
+  digievolutions: [
+    digievolutionSlot(1, 260, 61, 607),
+    digievolutionSlot(2, 19, 1, 0),
+    digievolutionSlot(3, 375, 1, 0),
+  ],
+  storedDigievolutions: stored([374, 20], [260, 61], [367, 1], [19, 1], [375, 1]),
+  activeDigievolutionId: 19,
+};
+
 const SideQuests = AddressesRepository.getAllSideQuests();
 const LegendaryWeapons = AddressesRepository.getAllLegendaryWeapons();
 const DriAgents = AddressesRepository.getAllDriAgents();
@@ -63,6 +158,13 @@ export const FieldCentralParkExpected: ComposedState = {
     fishingPole: true,
     asukaTrophy: false,
     sunTrophy: false,
+  },
+  party: {
+    slots: [
+      { index: 1, digimonId: 0, digimon: CentralParkKotemon },
+      { index: 2, digimonId: 7, digimon: CentralParkPatamon },
+      { index: 3, digimonId: 6, digimon: CentralParkRenamon },
+    ],
   },
   auctions: {
     divineBarrier: true,

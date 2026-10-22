@@ -105,9 +105,10 @@ The C# project is frozen as parity reference. When porting a backend piece to TS
 | `RequisiteAssemblerTests`, `StepAssemblerTests`, `QuestAssemblerTests` | `tests/memory/assemblers/quest.assembler.spec.ts` | ported |
 | `MainQuestAssemblerTests`, `DuelIslandAssemblerTests`, `JournalAssemblerTests` | `tests/memory/assemblers/{main-quest,duel-island,journal}.assembler.spec.ts` | ported (plus "does not mutate the resource") |
 | `JournalProviderTests` | `tests/memory/providers/journal.provider.spec.ts` | ported |
-| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` (Party) | reader spec with `FakeSnapshotBuilder` | pending (step 5e) |
-| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` (same) | reader spec using the real definitions JSON | pending (step 5e) |
-| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` (same) | assembler spec (pure functions) | pending (step 5e) |
+| `InBattleReaderTests`, `DigimonReaderTests`, `DigievolutionSlotReaderTests`, `StoredDigievolutionReaderTests` + `DigimonLoaderTests` | `tests/memory/readers/{in-battle,digimon}.reader.spec.ts` | ported (`DigimonLoader` "block too short → null" is n/a: no block reads in TS; out of bounds throws) |
+| `PartyReaderTests`, `DigimonSlotReaderTests` + `PartyLoaderTests` | `tests/memory/readers/party.reader.spec.ts` | ported |
+| `DigimonAssemblerTests`, `DigievolutionSlotAssemblerTests`, `StoredDigievolutionAssemblerTests`, `DigimonSlotAssemblerTests`, `PartyAssemblerTests` | `tests/memory/assemblers/{digimon,party}.assembler.spec.ts` | ported |
+| `PartyProviderTests` | `tests/memory/providers/party.provider.spec.ts` | ported |
 | Differ, DTO Converter, EventFactory, Hub, DI, `Optional`, `GameStateStore` | none (layers do not exist in the TS model) | n/a |
 
 ## Test shapes per layer

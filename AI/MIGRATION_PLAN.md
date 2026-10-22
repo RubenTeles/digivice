@@ -14,7 +14,7 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | 5b | Npcs | Concluída |
 | 5c | DigimonBattle | Concluída |
 | 5d | Journal | Concluída |
-| 5e | Party | Pendente |
+| 5e | Party | Implementada; aguardando validação manual |
 | 6 | Patch in-place e troca da fonte | Pendente |
 | 7 | Produção sem sidecar | Pendente |
 | 8 | Fechamento de docs | Pendente |
@@ -326,6 +326,19 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - DRI agents Kotemon, Patamon e Renamon têm só o step 3 feito na RAM: é o estado normal dos Digimons da party inicial (qualquer DRI agent fica assim quando o Digimon é escolhido no início do jogo). Sem cascade, como no C#.
 - Testes: porte de `RequisiteReaderTests`, `StepReaderTests`, `QuestReaderTests`, `QuestLoaderTests`, `JournalLoaderTests`, assemblers (`Requisite`, `Step`, `Quest`, `MainQuest`, `DuelIsland`, `Journal`) e `JournalProviderTests`, mais bordas (bits fora das máscaras, requisito de step fora do snapshot, cascade com buracos, Duel Island sem steps, não mutação do resource, RAM vazia). Total: 289 testes.
 - **Validação manual (aprovada):** modo `compare` no Tauri com o DuckStation avançando a side quest do DRI agent Veemon; steps marcando normalmente, sem divergências nem logs inesperados.
+
+### Etapa 5e — Party (implementada; aguardando validação manual)
+
+- `Frontend/src/memory/`: resources (`parties/digimons/{attributes,elements,equipments,digievolution-slot,stored-digievolution,in-battle}`, `parties/digimon`, `parties/digimon-slot`, `party`), `addresses/party-memory.addresses.ts` (party, digimons, status e inBattle, montado pelo provider com os getters do repositório), `readers/{in-battle,digimon,party}.reader.ts`, `assemblers/{digimon,party}.assembler.ts` e `providers/party.provider.ts`; `party` no `ComposedState`, `compose` e `pick` (as 8 entidades do `State` agora vêm do TS).
+- Decisões:
+  - Sem `MemoryBlockReader`: o Digimon é lido de forma absoluta em `memoryBlockAddress + offset` (offsets reais abaixo de 1500; `activeDigievolution` em `-4`). Endereço fora do snapshot lança erro em vez de devolver `null`.
+  - `PartyReader` concentra a lógica dos loaders: id `0xFF` ou ausente dos endereços → `digimon null` (Kotemon é o id `0`); o resource guarda o id cru e o assembler transforma o slot sem Digimon em `digimonId null`.
+  - Digievoluções guardadas: a partir de `0x50`, passo 20, até 60 entradas, parando no primeiro id `<= 0`.
+  - `InBattle` do slot N em `0xA4470 + (N - 1) × 0x20`.
+  - Assembler: `activeDigievolutionId` e equipamentos `<= 0` → `null`; slot de digievolução com id `<= 0` → vazio, senão cruza com as guardadas (ausente → level 1 e DVEXP 0; DVEXP negativo → `0`); guardadas sem DVEXP.
+- Fixtures: Central Park com Kotemon (24, Kyukimon ativa), Patamon (20, Digitamamon ativa) e Renamon (20, Kabuterimon ativa), `inBattle` zerado; batalha contra a Natsumi só com Kotemon (`inBattle` HP 1989/2003) e slots 2 e 3 vazios. Expected com helpers (`digievolutionSlot`, `stored`, `OutOfBattle`) e o Kotemon do Central Park reaproveitado com sobrescritas.
+- Divergências esperadas no modo `compare` (tratadas na Etapa 6, porque o C# as resolve no syncer e não na leitura): slot de digievolução preenchido → vazio (o syncer do C# ignora) e `storedDigievolutions` que só cresce.
+- Testes: porte de `InBattleReaderTests`, `DigimonReaderTests`, `DigievolutionSlotReaderTests`, `StoredDigievolutionReaderTests`, `DigimonSlotReaderTests`, `PartyReaderTests`, `DigimonLoaderTests`, `PartyLoaderTests`, assemblers (`Digimon`, `DigievolutionSlot`, `StoredDigievolution`, `DigimonSlot`, `Party`) e `PartyProviderTests`, mais bordas (id desconhecido, Kotemon id `0`, lista de guardadas com lixo após entrada vazia, DVEXP `Int32` mínimo, slot 3 de batalha, endereço fora do snapshot, não compartilhamento de objetos) e as duas fixtures. Total: 345 testes.
 
 ## Decisões em aberto
 

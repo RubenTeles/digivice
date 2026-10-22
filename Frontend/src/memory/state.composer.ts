@@ -5,13 +5,21 @@ import { DigimonBattleProvider } from "@/memory/providers/digimon-battle.provide
 import { ImportantItemsProvider } from "@/memory/providers/important-items.provider";
 import { JournalProvider } from "@/memory/providers/journal.provider";
 import { NpcsProvider } from "@/memory/providers/npcs.provider";
+import { PartyProvider } from "@/memory/providers/party.provider";
 import { PlayerProvider } from "@/memory/providers/player.provider";
 import type { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
 
 // Grows one entity per migration step until it becomes the full State.
 export type ComposedState = Pick<
   State,
-  "player" | "importantItems" | "auctions" | "cardBattle" | "npcs" | "digimonBattle" | "journal"
+  | "player"
+  | "importantItems"
+  | "party"
+  | "auctions"
+  | "cardBattle"
+  | "npcs"
+  | "digimonBattle"
+  | "journal"
 >;
 
 export class StateComposer {
@@ -19,6 +27,7 @@ export class StateComposer {
     return {
       player: PlayerProvider.get(snapshot),
       importantItems: ImportantItemsProvider.get(snapshot),
+      party: PartyProvider.get(snapshot),
       auctions: AuctionsProvider.get(snapshot),
       cardBattle: CardBattleProvider.get(snapshot),
       npcs: NpcsProvider.get(snapshot),
@@ -31,6 +40,7 @@ export class StateComposer {
     return {
       player: state.player,
       importantItems: state.importantItems,
+      party: state.party,
       auctions: state.auctions,
       cardBattle: state.cardBattle,
       npcs: state.npcs,

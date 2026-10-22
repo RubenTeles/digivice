@@ -16,26 +16,27 @@ describe("StateComposer", () => {
       expect(state).toEqual(FieldCentralParkExpected);
     });
 
-    it("should compose the enemy in battle when the snapshot is the battle against Natsumi fixture", () => {
+    it("should compose the battle state when the snapshot is the battle against Natsumi fixture", () => {
       const snapshot = new MemorySnapshot(SnapshotFixtureLoader.load("battle-against-natsumi"));
 
       const state = StateComposer.compose(snapshot);
 
+      expect(state.party).toEqual(BattleAgainstNatsumiExpected.party);
       expect(state.digimonBattle).toEqual(BattleAgainstNatsumiExpected.digimonBattle);
       expect(state.journal).toEqual(BattleAgainstNatsumiExpected.journal);
     });
   });
 
   describe("pick", () => {
-    it("should keep only the migrated entities when the state is complete", () => {
-      const state = { ...FieldCentralParkExpected, party: { slots: [] } } as unknown as State;
+    it("should keep only the migrated entities when the state has extra properties", () => {
+      const state = { ...FieldCentralParkExpected, unknownEntity: {} } as unknown as State;
 
       const pickedState = StateComposer.pick(state);
 
       expect(pickedState).toEqual(FieldCentralParkExpected);
-      expect(pickedState).not.toHaveProperty("party");
+      expect(pickedState).not.toHaveProperty("unknownEntity");
       expect(pickedState.player).toBe(FieldCentralParkExpected.player);
-      expect(pickedState.npcs).toBe(FieldCentralParkExpected.npcs);
+      expect(pickedState.party).toBe(FieldCentralParkExpected.party);
     });
   });
 });
