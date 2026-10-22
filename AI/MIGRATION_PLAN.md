@@ -8,8 +8,8 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 |---|---|---|
 | 1 | Fundação de testes | Concluída |
 | 2 | Rust: conexão e `read_ram` | Concluída |
-| 3 | Snapshot e definitions | Implementada; aguardando revisão |
-| 4 | Fatia vertical: Player | Pendente |
+| 3 | Snapshot e definitions | Concluída |
+| 4 | Fatia vertical: Player | Implementada; aguardando validação manual |
 | 5 | Demais entidades | Pendente |
 | 6 | Patch in-place e troca da fonte | Pendente |
 | 7 | Produção sem sidecar | Pendente |
@@ -244,9 +244,9 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
   - Tempo por chamada: 21–27 ms (build debug, 5 chamadas seguidas). O custo é a transferência pela IPC, não a cópia; folga ampla no tick de 500 ms.
   - DuckStation fechado → `process_not_found`. Exportação de memória compartilhada desligada → `mapping_not_found`. Fechar e reabrir o DuckStation reconecta sozinho, sem reiniciar o Tauri.
   - UI atual (C# via SignalR) continua funcionando em paralelo.
-- **Observação para a etapa 4:** com a exportação ligada, o DuckStation cria a memória compartilhada ao abrir, mesmo **sem jogo carregado**; o `read_ram` conecta e devolve a RAM (quase toda zerada). O C# tem o mesmo comportamento (paridade), mas o health TS precisa considerar o caso "conectado sem jogo".
+- **Observação para a etapa 4:** com a exportação ligada, o DuckStation cria a memória compartilhada ao abrir, mesmo **sem jogo carregado**; o `read_ram` conecta e devolve a RAM (quase toda zerada). O C# tem o mesmo comportamento (paridade), mas o health TS precisa considerar o caso "conectado sem jogo". Decidido na etapa 4: manter a paridade, sem tratamento especial.
 
-### Etapa 3 — Snapshot e definitions (implementada; aguardando revisão)
+### Etapa 3 — Snapshot e definitions (concluída)
 
 - `Frontend/src/memory/` criado, espelhando `Backend/Memory/`:
   - `snapshot/`: `MemorySnapshot`, `SnapshotProvider`, `TauriSnapshotProvider`, `FileSnapshotProvider`, `MemoryReadError`, `EmulatorConnectionError`, `PlayStationRamSize`.
@@ -258,6 +258,19 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - Decisões: todos os JSONs nesta etapa; definitions copiadas para o frontend (o backend será apagado no futuro), com teste de paridade enquanto as duas cópias existirem; valor inválido ou campo escalar ausente **lança** ao carregar (divergência intencional do C#; listas ausentes continuam `[]`); o provedor por arquivo recebe a URL no construtor; a escolha do provedor (e a variável `VITE_MEMORY_SNAPSHOT_URL`) fica para a etapa 4.
 - Testes portados: `MemoryReaderTests`, os 3 testes de conversores e `AddressesRepositoryDefinitionsTests` (+ ordem das quests). Mais specs dos providers com `invoke`/`fetch` simulados e o teste de paridade das definitions (mesmo conjunto de arquivos e mesmo conteúdo interpretado). Total: 116 testes.
 - Docs: `digivice-frontend.mdc` (estrutura de `src/memory/`, sufixos, terceiro contexto de converters), `digivice-frontend-tests.mdc` e skill `frontend-memory-tests` (mocks, checklist de paridade com status), `digivice-backend.mdc` (cópia das definitions no frontend), skills/agents de investigação apontando para a cópia do frontend.
+
+### Etapa 4 — Fatia vertical do Player (implementada; aguardando validação manual)
+
+- Leitura do Player em `Frontend/src/memory/`: `resources/player.resource.ts`, `readers/player.reader.ts`, `assemblers/player.assembler.ts` (hex `X4` com `& 0xffff`, `0` → `null`), `providers/player.provider.ts` (substitui Loader + Provider do C#) e `state.composer.ts` (`ComposedState = Pick<State, "player">`, cresce por etapa; `pick` recorta o `State` do C# para comparar).
+- Loop em `src/memory/loop/`: `GameLoop` (`setTimeout` encadeado de 500 ms, sem sobreposição, leitura em andamento descartada no `stop`), `SnapshotProviderFactory` (`VITE_MEMORY_SNAPSHOT_URL` → arquivo; senão Tauri → `read_ram`; senão nada) e `initializeMemoryLoop` (no `main.ts`, para o loop no `import.meta.hot.dispose`).
+- Health sombra equivalente ao `HealthEventFactory`: `Loading` até o primeiro sucesso, `Healthy` com estado, `Error` limpa o estado e guarda código e detalhe. Emulador aberto sem jogo: sem tratamento especial (paridade com o C#; tratar seria funcionalidade nova).
+- Ativação: `VITE_MEMORY_MODE=compare` (padrão `csharp`, loop desligado), em `Frontend/.env.development.local`. Estado em `useMemoryShadowStore` (nenhum componente lê).
+- Comparador: `StateComparator` (deep-compare com caminho) + `DivergenceTracker` (reporta após 3 leituras seguidas e avisa a resolução). A cada leitura do TS compara `health.status`/`health.errorCode` e `state` (entidades migradas; um lado `null` e o outro não = divergência em `state`). Saída no console (`[Compare]`); health do TS logado em `[Memory]` quando muda.
+- Primeira fixture real: `field-central-park.bin` (catalogada).
+- Testes: porte de `PlayerReaderTests`, `PlayerLoaderTests`, `PlayerAssemblerTests` e `PlayerProviderTests` (+ `-1` → `"FFFF"`, sentinelas), provider e composer sobre a fixture, `GameLoop` com timers falsos, comparator, tracker e factory. Total: 166 testes.
+- Verificação automática: em dev com `VITE_MEMORY_MODE=compare` e a fixture, o loop lê o `.bin` a cada 500 ms, health TS `Healthy`, sem erros e sem divergências contra o C# conectado ao DuckStation pausado no mesmo ponto da fixture.
+- Docs: `digivice-frontend.mdc` (camadas, sufixos, variáveis `VITE_MEMORY_*`), `digivice-frontend-tests.mdc` (escopo), skill `frontend-memory-tests` (formatos de teste por camada, checklist).
+- **Validação manual pendente** (Tauri + DuckStation, `VITE_MEMORY_MODE=compare`, sem `VITE_MEMORY_SNAPSHOT_URL`): emulador pausado em mapas variados (rota do fundo do mar e mapa com variante) sem divergências; jogo rodando com no máximo divergências breves; fechar o DuckStation → os dois lados em `Error`/`process_not_found`; reabrir → os dois se recuperam; sem a variável, app igual ao atual.
 
 ## Decisões em aberto
 

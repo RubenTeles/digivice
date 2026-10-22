@@ -24,3 +24,4 @@ Copiar o arquivo para esta pasta e registrar no catálogo abaixo.
 
 | Arquivo | Local no jogo | Party | Ponto da main quest | Uso nos testes |
 |---|---|---|---|---|
+| `field-central-park.bin` | Central Park (`mapId` `021D`, anterior `1000`, sem rota e sem variante); 42206 bits | Kotemon (24), Patamon (20), Renamon (20) | Passo 61 concluído, no passo 62 | Player (`player.provider.spec.ts`, `state.composer.spec.ts`); depois party e journal |

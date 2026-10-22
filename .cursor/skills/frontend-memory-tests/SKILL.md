@@ -65,7 +65,7 @@ const snapshot = new MemorySnapshot(
 ## Real snapshot (`SnapshotFixtureLoader`)
 
 ```ts
-const snapshot = new MemorySnapshot(SnapshotFixtureLoader.load("field-asuka-city"));
+const snapshot = new MemorySnapshot(SnapshotFixtureLoader.load("field-central-park"));
 ```
 
 - Reads `tests/fixtures/snapshots/{name}.bin`, validates 2 MiB, returns a standalone `ArrayBuffer`.
@@ -89,12 +89,27 @@ The C# project is frozen as parity reference. When porting a backend piece to TS
 | `Tests/Unit/Memory/Converters/*Tests.cs` (3 files) | `tests/memory/converters/address-value.converter.spec.ts` | ported (invalid values throw instead of falling back to `0`) |
 | `Tests/Integration/Memory/Repositories/AddressesRepositoryDefinitionsTests.cs` | `tests/memory/repositories/addresses.repository.spec.ts` | ported |
 | `WindowsMemoryProviderTests`, `DuckstationConnectorTests`, `MemoryBlockReaderTests` | none (Rust bridge validated manually; no memory blocks in TS) | n/a |
-| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` | reader spec with `FakeSnapshotBuilder` | pending (steps 4–5) |
-| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` | reader spec using the real definitions JSON | pending (steps 4–5) |
-| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` | assembler spec (pure functions) | pending (steps 4–5) |
+| `PlayerReaderTests`, `PlayerLoaderTests` | `tests/memory/readers/player.reader.spec.ts` | ported |
+| `PlayerAssemblerTests` | `tests/memory/assemblers/player.assembler.spec.ts` | ported |
+| `PlayerProviderTests` (C# unit, mocks) | `tests/memory/providers/player.provider.spec.ts` (real fixture + real definitions) | ported |
+| `GameLoopService`, `HealthEventFactory` (no C# tests) | `tests/memory/loop/game.loop.spec.ts` | new |
+| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` | reader spec with `FakeSnapshotBuilder` | pending (step 5) |
+| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` | reader spec using the real definitions JSON | pending (step 5) |
+| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` | assembler spec (pure functions) | pending (step 5) |
 | Differ, DTO Converter, EventFactory, Hub, DI, `Optional`, `GameStateStore` | none (layers do not exist in the TS model) | n/a |
 
-Reader and assembler test shapes are documented here once the first ones exist (migration step 4).
+## Test shapes per layer
+
+Reference implementation: Player (migration step 4).
+
+| Layer | Spec | Shape |
+|---|---|---|
+| Reader | `tests/memory/readers/{x}.reader.spec.ts` | Synthetic addresses + `FakeSnapshotBuilder` (port of `{X}ReaderTests`); real addresses from `AddressesRepository` written at the definition offsets (port of `{X}LoaderTests`); signed `0xFFFF`; empty RAM; address outside the snapshot → `MemoryReadError`. Assert the whole resource with `toEqual`. |
+| Assembler | `tests/memory/assemblers/{x}.assembler.spec.ts` | Build the resource inline (`createResource(overrides)`); port every `{X}AssemblerTests` case and add sentinel boundaries (`-1`, `0`, `1`). No snapshot. |
+| Provider | `tests/memory/providers/{x}.provider.spec.ts` | Real fixture (`SnapshotFixtureLoader`) with values confirmed in game (catalog), plus one synthetic snapshot at the real addresses. |
+| Composer | `tests/memory/state.composer.spec.ts` | Real fixture → full `ComposedState`; `pick` keeps only migrated entities. |
+| Loop | `tests/memory/loop/game.loop.spec.ts` | Fake `SnapshotProvider` (`{ read: vi.fn() }`), `vi.useFakeTimers()` + `await vi.advanceTimersByTimeAsync(ms)`; always `stop()` at the end of the test. |
+| Comparison | `tests/memory/comparison/*.spec.ts` | Plain objects; assert the exact divergence list (`path`, `expected`, `actual`). |
 
 ## Corner-case pass (before finishing)
 

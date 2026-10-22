@@ -10,7 +10,8 @@ Padrões concretos (helpers, fixtures, onde colocar cada teste): skill `frontend
 
 ## Escopo
 
-- Só a camada de leitura de memória tem testes: `src/memory/**` (snapshot, definitions, readers, assemblers) e, quando existir, o patch da store.
+- Só a camada de leitura de memória tem testes: `src/memory/**` (snapshot, definitions, readers, assemblers, providers, composer, loop, comparison) e, quando existir, o patch da store.
+- Exceção: `loop/memory-loop.initializer.ts` só liga stores, config e loggers (como o `main.ts`); sem spec.
 - O restante do Frontend não tem testes (regra 6 de `digivice-frontend.mdc`).
 
 ## Stack
