@@ -10,7 +10,11 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | 2 | Rust: conexão e `read_ram` | Concluída |
 | 3 | Snapshot e definitions | Concluída |
 | 4 | Fatia vertical: Player | Concluída |
-| 5 | Demais entidades | Pendente |
+| 5a | ImportantItems, Auctions, CardBattle | Concluída |
+| 5b | Npcs | Pendente |
+| 5c | DigimonBattle | Pendente |
+| 5d | Journal | Pendente |
+| 5e | Party | Pendente |
 | 6 | Patch in-place e troca da fonte | Pendente |
 | 7 | Produção sem sidecar | Pendente |
 | 8 | Fechamento de docs | Pendente |
@@ -215,7 +219,14 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 2. **Rust:** conexão, `read_ram`, códigos de erro, checagem de processo vivo. Convive com o sidecar; nada consome ainda.
 3. **Snapshot e definitions:** provedores (Tauri e arquivo `.bin`), cópia dos JSONs de definitions para o frontend, parser e testes de integridade e de paridade das definitions.
 4. **Fatia vertical do Player:** reader, assembler, testes, game loop TS em modo sombra, health básico e comparador. Prova a arquitetura inteira.
-5. **Uma entidade por etapa (simples → complexa):** ImportantItems, Auctions, CardBattle, Npcs, Journal (cascades), Party/Digimon, DigimonBattle (heurística do inimigo). Cada uma com testes e entrando no comparador.
+5. **Demais entidades, em subetapas (simples → complexa):** cada uma com plano, testes, validação em `compare` e commit próprios; entra no `StateComposer` e no comparador.
+   - **5a:** ImportantItems, Auctions, CardBattle.
+   - **5b:** Npcs (lista de batalhas na ordem do JSON).
+   - **5c:** DigimonBattle (inimigo + heurística do slot ativo). Fixture nova: batalha com vários inimigos.
+   - **5d:** Journal (steps/requisitos com várias bitmasks, cascade da main quest, regras da Duel Island).
+   - **5e:** Party (Kotemon é o id `0`, id desconhecido = slot vazio, cruzamento com digievoluções guardadas). O `MemoryBlockReader` não ganha equivalente: os offsets reais ficam abaixo dos 1500 bytes do bloco, então a leitura absoluta no snapshot dá o mesmo resultado.
+   - Fixtures novas são geradas na subetapa que precisar delas.
+   - Divergências do comparador vindas das regras dos syncers da Party (slot de digievolução preenchido → vazio ignorado; `storedDigievolutions` só cresce) são analisadas caso a caso; o tratamento é da etapa 6.
 6. **Patch in-place e troca da fonte:** regras dependentes do estado anterior, com testes. A store principal passa a ser alimentada pelo TS; o C# vira o lado sombra.
 7. **Produção sem sidecar:** `lib.rs`, `tauri.conf.json`, capabilities. SignalR fica só no modo `compare`.
 8. **Fechamento de docs:** revisão final de regras, skills, agents e índices (o grosso já foi feito em cada etapa).
@@ -276,6 +287,16 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
   - Fechar o DuckStation: os dois lados em `Error`/`process_not_found`; reabrir: os dois se recuperam.
   - Sem a variável: app igual ao atual, sem logs `[Memory]`.
   - Não feita: checagem opcional de divergência proposital (`VITE_MEMORY_SNAPSHOT_URL` com o jogo em outro mapa). Risco baixo: o reporte de divergências é coberto pelos testes do comparator e do tracker.
+
+### Etapa 5a — ImportantItems, Auctions e CardBattle (concluída)
+
+- Mesmo molde do Player em `Frontend/src/memory/` (resource, reader, assembler, provider por entidade):
+  - ImportantItems: 4 x `readByte`; `!= 0` → `true`.
+  - Auctions: 6 x `readByte(address, bitMask)` no byte `0x4B38A`; `!= 0` → `true`.
+  - CardBattle: `readInt32`; `<= 0` → `null`.
+- `ComposedState` passa a `Pick<State, "player" | "importantItems" | "auctions" | "cardBattle">`; `compose` e `pick` com as quatro entidades. Comparador e initializer sem mudança.
+- Testes: porte de `ReaderTests`, `LoaderTests`, `AssemblerTests` e `ProviderTests` das três entidades, mais bordas (`0xFF`, bits fora das máscaras, `-1`/`0`/`1`, `Int32` com sinal) e a fixture do Central Park (Tree Boots e Fishing Pole; Divine Barrier, Hazard Shield e Dramon Shield consumidos; CardBattle `-1` → `null`). Total: 197 testes.
+- **Validação manual (aprovada):** modo `compare` no Tauri com o DuckStation, sem divergências nem logs inesperados.
 
 ## Decisões em aberto
 

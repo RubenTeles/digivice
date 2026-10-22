@@ -92,10 +92,13 @@ The C# project is frozen as parity reference. When porting a backend piece to TS
 | `PlayerReaderTests`, `PlayerLoaderTests` | `tests/memory/readers/player.reader.spec.ts` | ported |
 | `PlayerAssemblerTests` | `tests/memory/assemblers/player.assembler.spec.ts` | ported |
 | `PlayerProviderTests` (C# unit, mocks) | `tests/memory/providers/player.provider.spec.ts` (real fixture + real definitions) | ported |
+| `ImportantItems`, `Auctions`, `CardBattle` `ReaderTests` + `LoaderTests` | `tests/memory/readers/{important-items,auctions,card-battle}.reader.spec.ts` | ported |
+| `ImportantItems`, `Auctions`, `CardBattle` `AssemblerTests` | `tests/memory/assemblers/{important-items,auctions,card-battle}.assembler.spec.ts` | ported |
+| `ImportantItems`, `Auctions`, `CardBattle` `ProviderTests` | `tests/memory/providers/{important-items,auctions,card-battle}.provider.spec.ts` | ported |
 | `GameLoopService`, `HealthEventFactory` (no C# tests) | `tests/memory/loop/game.loop.spec.ts` | new |
-| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` | reader spec with `FakeSnapshotBuilder` | pending (step 5) |
-| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` | reader spec using the real definitions JSON | pending (step 5) |
-| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` | assembler spec (pure functions) | pending (step 5) |
+| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` (Npcs, DigimonBattle, Journal, Party) | reader spec with `FakeSnapshotBuilder` | pending (steps 5b–5e) |
+| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` (same) | reader spec using the real definitions JSON | pending (steps 5b–5e) |
+| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` (same) | assembler spec (pure functions) | pending (steps 5b–5e) |
 | Differ, DTO Converter, EventFactory, Hub, DI, `Optional`, `GameStateStore` | none (layers do not exist in the TS model) | n/a |
 
 ## Test shapes per layer

@@ -24,4 +24,4 @@ Copiar o arquivo para esta pasta e registrar no catálogo abaixo.
 
 | Arquivo | Local no jogo | Party | Ponto da main quest | Uso nos testes |
 |---|---|---|---|---|
-| `field-central-park.bin` | Central Park (`mapId` `021D`, anterior `1000`, sem rota e sem variante); 42206 bits | Kotemon (24), Patamon (20), Renamon (20) | Passo 61 concluído, no passo 62 | Player (`player.provider.spec.ts`, `state.composer.spec.ts`); depois party e journal |
+| `field-central-park.bin` | Central Park (`mapId` `021D`, anterior `1000`, sem rota e sem variante); 42206 bits | Kotemon (24), Patamon (20), Renamon (20) | Passo 61 concluído, no passo 62 | Player, ImportantItems (Tree Boots e Fishing Pole), Auctions (byte `0x0B`: Divine Barrier, Hazard Shield e Dramon Shield consumidos), CardBattle (fora de card battle, RAM `-1`) nos `providers/*.provider.spec.ts` e `state.composer.spec.ts`; depois party e journal |

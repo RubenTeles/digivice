@@ -17,6 +17,21 @@ const ComposedStateSample: ComposedState = {
     seabedRoute: null,
     mapVariant: null,
   },
+  importantItems: {
+    treeBoots: true,
+    fishingPole: true,
+    asukaTrophy: false,
+    sunTrophy: false,
+  },
+  auctions: {
+    divineBarrier: true,
+    hazardShield: true,
+    sniperShield: false,
+    dramonShield: true,
+    yinYangWand: false,
+    hazardFang: false,
+  },
+  cardBattle: { id: null },
 };
 
 function createSnapshot(): MemorySnapshot {
