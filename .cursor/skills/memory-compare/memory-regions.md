@@ -17,7 +17,7 @@ each investigation. Append new entries; do not remove without strong evidence.
 | 0x00048DA0 | Player bits (money etc.) | PlayerAddresses.json — **volatile** |
 | 0x0004B3F8 | MapId | PlayerAddresses.json — changes on map transition; **`0x0700`** = in card battle screen |
 | 0x0004B400 | PreviousMapId | PlayerAddresses.json — map just left on each transition; during card battle holds pre-battle world MapId (e.g. `0x0200` Genji, `0x021D` Natsumi) |
-| 0x0004B404 | Card battle config id (Int32) | **integrated** — [`CardBattleAddresses.json`](../../../Backend/Memory/Definitions/CardBattleAddresses.json) `Id` → `CardBattle.Id`; maps to `cardBattles.*.id` in tamer/duel-island JSON; Genji `first=1` / `second=2` (confirmed); other NPCs provisional on `first` only; `0` outside card battle |
+| 0x0004B404 | Card battle config id (Int32) | **integrated** — [`CardBattleAddresses.json`](../../../Frontend/src/memory/definitions/CardBattleAddresses.json) `Id` → `CardBattle.Id`; maps to `cardBattles.*.id` in tamer/duel-island JSON; Genji `first=1` / `second=2` (confirmed); other NPCs provisional on `first` only; `0` outside card battle |
 | 0x0004B40C | Card battle id mirror (Int32, suspected) | genji first mid-battle mirrored `1`; second series `0`; not needed for Digivice |
 | 0x0004B41C | Card deck level (Int32, suspected) | genji mid-battle — `4` (matches RA deck-level note); not config id |
 | 0x0004B410 | MapId mirror | seabed-routing investigation — tracks current MapId |
@@ -60,7 +60,7 @@ Details: [seabed-routing-investigation.md](../../docs/investigations/seabed-rout
 
 ## Quest / progress flags
 
-Definitions root: `Backend/Memory/Definitions/Quests/`
+Definitions root: `Frontend/src/memory/definitions/Quests/`
 
 | Range / Address | Purpose | Source |
 |-----------------|---------|--------|
@@ -78,7 +78,7 @@ Definitions root: `Backend/Memory/Definitions/Quests/`
 
 ## DRI agents
 
-Definitions: `Backend/Memory/Definitions/Quests/DriAgents/`
+Definitions: `Frontend/src/memory/definitions/Quests/DriAgents/`
 
 | Address | Purpose | Source |
 |---------|---------|--------|
@@ -207,7 +207,7 @@ Offsets in `DigimonStatusAddresses.json` → `Digievolutions` (`UnlockedDigievol
 | Digimon stats | ~0x494xxx | Multi-byte numeric deltas |
 | Common item possession | ~0x48ECx | Often 0x00 ↔ 0x01 |
 | Auction | 0x4B370, 0x4B38A | Bit flags, story window |
-| NPC digimon battle | `0x4B3DF` (`#0`), `0x4B39A+` (`#1+`) | **integrated** — [`NpcAddresses.json`](../../../Backend/Memory/Definitions/NpcAddresses.json); BattledTamer bitfield — see [patterns-card-battle.md](patterns/patterns-card-battle.md) |
+| NPC digimon battle | `0x4B3DF` (`#0`), `0x4B39A+` (`#1+`) | **integrated** — [`NpcAddresses.json`](../../../Frontend/src/memory/definitions/NpcAddresses.json); BattledTamer bitfield — see [patterns-card-battle.md](patterns/patterns-card-battle.md) |
 | NPC card battle | `0x48E0B`, `0x48F19` (shared counters) | Not per-NPC flags — win counters across tamer groups; see [patterns-card-battle.md](patterns/patterns-card-battle.md); discard transient `0x48ABC` |
 | Duel Island gauntlet (round progress) | `0x4B3B2` bit `0x80`, `0x4B3B3` bits `0x01`–`0x08` | NPC gates for current run; reset after final — duel-island snaps 2026-08-30 |
 | Duel Island booster rewards | `0x48F1C`–`0x48F1F`, `0x48F36`, `0x48F37` | Booster qty `0→1` on win (RA: 05a–08a, R-01, R-02) — **not** quest steps |

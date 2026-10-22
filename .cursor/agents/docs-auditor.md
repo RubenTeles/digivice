@@ -22,7 +22,7 @@ You audit whether the Digivice guidance files still match the codebase. You neve
 3. **Coverage** — entities and categories present in code but missing from guidance:
    - `State` properties in `Backend/Domain/Models/State.cs` vs `digivice-business.mdc` and the `address-field-backend` / `address-field-frontend` entity maps
    - `EventType` values in `Backend/Events/Models/EventType.cs` vs `digivice-business.mdc`
-   - Quest folders under `Backend/Memory/Definitions/Quests/` vs `quest-pattern-backend` category map and `backend-status.md`
+   - Quest folders under `Frontend/src/memory/definitions/Quests/` (and its backend copy `Backend/Memory/Definitions/Quests/`) vs `quest-pattern-backend` category map and `backend-status.md`
    - Quest ids in `Frontend/src/repositories/quest.repository.ts` vs `frontend-status.md`
    - Accents in `Frontend/src/components/journal/journal-section-palette.ts` vs `quest-pattern-frontend`
    - `*Addresses.json` files vs `memory-regions.md` "integrated" markers

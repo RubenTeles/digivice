@@ -33,7 +33,7 @@ O motivo **não** é abandonar o C#; é eliminar a separação em duas aplicaç�
 3. **Diff:** a reatividade do Vue substitui o diff. O loop faz patch in-place na store (primitivo igual não dispara reatividade).
 4. **Testes:** a nova camada de leitura (readers, assemblers, definitions, patch da store) **terá testes** (Vitest). O restante do frontend continua sem testes.
 5. **Tools:** tudo em `Tools/` deve continuar funcionando **sem alterações**.
-6. **Definitions:** ficam em `Backend/Memory/Definitions/` (o `MemoryScanner` depende desse caminho). O TS importa os JSONs de lá, com parser equivalente ao `HexOrIntStringToIntConverter`. Fonte única para C# e TS.
+6. **Definitions:** a cópia em `Frontend/src/memory/definitions/` é a fonte do TS (parser equivalente ao `HexOrIntStringToIntConverter`). A cópia em `Backend/Memory/Definitions/` continua existindo só para o C# e o `MemoryScanner` até o backend ser apagado. As duas são mantidas iguais por um teste de paridade (`tests/memory/definitions/definitions-parity.spec.ts`). Ver "Pendências para a remoção do backend".
 7. **C# permanece no repositório** como referência de paridade. Não é deletado.
 8. **Projeto pausado:** nada novo é adicionado (nem no C#, nem no TS) até a migração estar completa, aprovada e funcional.
 9. **Comparação permanente em dev:** após a troca da fonte, o caminho SignalR no frontend fica como modo `compare` só para desenvolvimento, por tempo indeterminado. O C# nunca volta para a build de produção.
@@ -99,7 +99,7 @@ Pontos que motivam ou afetam a migração:
 - **Feito na etapa 3 — provedores de snapshot:** `TauriSnapshotProvider` (`invoke("read_ram")`) e `FileSnapshotProvider` (`fetch` de um `.bin` de 2 MiB, formato do `MemoryScanner snapshot`). Ambos devolvem `MemorySnapshot` ou lançam `EmulatorConnectionError` (`code`, `detail`).
 - **Novo — readers puros sobre `MemorySnapshot`** (feito na etapa 3: `readByte`/`readByte(bitMask)`/`readInt16`/`readInt32`/`readBytes`, equivalente ao `IMemoryReader`).
   - **Cuidado — sinal e endianness:** `Int16` → `getInt16(addr, true)`, `Int32` → `getInt32(addr, true)`, byte → `getUint8`. Ler `Int16` sem sinal faria o sentinela `0xFFFF` (hoje `-1` → `null`) virar `65535`.
-- **Definitions (feito na etapa 3):** `AddressesRepository` importa os JSONs de `Backend/Memory/Definitions/` via alias `@definitions`. Parser para hex (`"0x48"`), decimal (`"20"`) e negativo (`"-4"` em `ActiveDigievolution`); valor inválido **lança** (o C# cai para `0`). Quests por pasta via `import.meta.glob`, ordenadas pelo nome do arquivo como no C#. Vite com `server.fs.allow` para a pasta; `tsconfig` incluindo os JSONs.
+- **Definitions (feito na etapa 3):** `AddressesRepository` importa os JSONs de `Frontend/src/memory/definitions/` (`@/memory/definitions/...`). Parser para hex (`"0x48"`), decimal (`"20"`) e negativo (`"-4"` em `ActiveDigievolution`); valor inválido **lança** (o C# cai para `0`). Quests por pasta via `import.meta.glob`, ordenadas pelo nome do arquivo como no C#. O frontend não depende de nada fora de `Frontend/`.
 - **Sem blocos de memória:** com o snapshot, tudo é endereço absoluto (base + offset). O bloco de 1500 bytes do Digimon deixa de existir.
 - **Comportamentos de leitura a preservar exatamente:**
   - `StepReader`: sem máscara lê o byte; uma máscara aplica `&`; várias exigem todas ativas e o valor final usa a primeira.
@@ -174,8 +174,8 @@ Removido do caminho de produção:
 
 ### 8. Tools
 
-- Devem continuar funcionando **sem alteração**.
-- `Tools/MemoryScanner/Program.cs` procura `Backend/Memory/Definitions/Quests/MainQuestAddresses.json` por caminho fixo → definitions não podem mudar de lugar.
+- Devem continuar funcionando **sem alteração** durante a migração.
+- `Tools/MemoryScanner/Program.cs` (`FindMainQuestDefinitionsPath`) procura `Backend/Memory/Definitions/Quests/MainQuestAddresses.json` por caminho fixo → a cópia do backend não pode mudar de lugar enquanto existir. Quando o backend for apagado, a ferramenta precisa ser atualizada (ver "Pendências para a remoção do backend").
 - `MemoryScanner snapshot <file.bin>` já gera o dump de 2 MiB que a camada TS consome (fixtures e modo navegador).
 - `analyze_snapshots.py` e `Tools/Scripts/Spliting-images.py` não são afetados.
 
@@ -184,6 +184,14 @@ Removido do caminho de produção:
 - **Reescrever/fundir:** `digivice-backend.mdc` e `digivice-tests.mdc` (marcar como legado/paridade), `digivice-frontend-sync.mdc`, `digivice-frontend.mdc` (exceção de testes), `digivice-business.mdc` (diagrama de arquitetura, menções a GameLoopService/eventos/Differs).
 - **Skills:** `address-field-backend` + `address-field-frontend`, `memory-entity-backend` + `memory-entity-frontend`, `quest-pattern-backend`, `backend-tests` → novas skills para a camada TS.
 - **Ajustar:** agent `memory-investigator`, skills `memory-compare` e `battle-memory-investigate`, agent `docs-auditor`, índices em `AI/*.md`.
+
+### 10. Pendências para a remoção do backend
+
+O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento:
+
+- **Atualizar `Tools/MemoryScanner/Program.cs` (`FindMainQuestDefinitionsPath`)** para procurar `Frontend/src/memory/definitions/Quests/MainQuestAddresses.json`, para a ferramenta continuar funcionando. Única exceção prevista à regra "Tools sem alteração", feita junto com a remoção.
+- Apagar `Frontend/tests/memory/definitions/definitions-parity.spec.ts` (não haverá mais cópia do backend para comparar).
+- Revisar referências a `Backend/Memory/Definitions/` em regras, skills e agents (as skills legadas do backend saem junto).
 
 ## Comparação C# × TS
 
@@ -205,7 +213,7 @@ Removido do caminho de produção:
 
 1. **Fundação de testes:** Vitest restrito à camada nova, convenção de local/nome dos testes, helper de snapshot falso, uso dos `.bin` como fixtures, exceção na regra de testes.
 2. **Rust:** conexão, `read_ram`, códigos de erro, checagem de processo vivo. Convive com o sidecar; nada consome ainda.
-3. **Snapshot e definitions:** provedores (Tauri e arquivo `.bin`), import dos JSONs de `Backend/Memory/Definitions/`, parser e testes de integridade das definitions.
+3. **Snapshot e definitions:** provedores (Tauri e arquivo `.bin`), cópia dos JSONs de definitions para o frontend, parser e testes de integridade e de paridade das definitions.
 4. **Fatia vertical do Player:** reader, assembler, testes, game loop TS em modo sombra, health básico e comparador. Prova a arquitetura inteira.
 5. **Uma entidade por etapa (simples → complexa):** ImportantItems, Auctions, CardBattle, Npcs, Journal (cascades), Party/Digimon, DigimonBattle (heurística do inimigo). Cada uma com testes e entrando no comparador.
 6. **Patch in-place e troca da fonte:** regras dependentes do estado anterior, com testes. A store principal passa a ser alimentada pelo TS; o C# vira o lado sombra.
@@ -245,10 +253,11 @@ Removido do caminho de produção:
   - `addresses/`: tipos de endereço de todos os 30 JSONs (tipo final camelCase + `...Raw` PascalCase no mesmo arquivo). `NpcsAddresses` derivado das chaves do model `Npcs` (29 NPCs).
   - `converters/`: `AddressValueConverter` + um converter por arquivo de definitions.
   - `repositories/addresses.repository.ts`: mesmos métodos do `AddressesRepository` C#, cache lazy.
-- Config: alias `@definitions` e `server.fs.allow` no `vite.config.ts`; `paths`/`include` no `tsconfig.app.json` e `include` no `tsconfig.vitest.json`. Build de produção embute os JSONs no bundle.
-- Decisões: todos os JSONs nesta etapa; valor inválido ou campo escalar ausente **lança** ao carregar (divergência intencional do C#; listas ausentes continuam `[]`); o provedor por arquivo recebe a URL no construtor; a escolha do provedor (e a variável `VITE_MEMORY_SNAPSHOT_URL`) fica para a etapa 4.
-- Testes portados: `MemoryReaderTests`, os 3 testes de conversores e `AddressesRepositoryDefinitionsTests` (+ ordem das quests). Mais specs dos providers com `invoke`/`fetch` simulados. Total: 85 testes.
-- Docs: `digivice-frontend.mdc` (estrutura de `src/memory/`, sufixos, terceiro contexto de converters), `digivice-frontend-tests.mdc` e skill `frontend-memory-tests` (mocks, checklist de paridade com status), `digivice-backend.mdc` (definitions compartilhadas).
+  - `definitions/`: cópia dos 30 JSONs de `Backend/Memory/Definitions/` (mesmos nomes e pastas; formatados pelo Prettier com 2 espaços). Fonte do TS.
+- Config: nenhuma dependência fora de `Frontend/` (sem alias extra, sem `server.fs.allow`). Build de produção embute os JSONs no bundle.
+- Decisões: todos os JSONs nesta etapa; definitions copiadas para o frontend (o backend será apagado no futuro), com teste de paridade enquanto as duas cópias existirem; valor inválido ou campo escalar ausente **lança** ao carregar (divergência intencional do C#; listas ausentes continuam `[]`); o provedor por arquivo recebe a URL no construtor; a escolha do provedor (e a variável `VITE_MEMORY_SNAPSHOT_URL`) fica para a etapa 4.
+- Testes portados: `MemoryReaderTests`, os 3 testes de conversores e `AddressesRepositoryDefinitionsTests` (+ ordem das quests). Mais specs dos providers com `invoke`/`fetch` simulados e o teste de paridade das definitions (mesmo conjunto de arquivos e mesmo conteúdo interpretado). Total: 116 testes.
+- Docs: `digivice-frontend.mdc` (estrutura de `src/memory/`, sufixos, terceiro contexto de converters), `digivice-frontend-tests.mdc` e skill `frontend-memory-tests` (mocks, checklist de paridade com status), `digivice-backend.mdc` (cópia das definitions no frontend), skills/agents de investigação apontando para a cópia do frontend.
 
 ## Decisões em aberto
 

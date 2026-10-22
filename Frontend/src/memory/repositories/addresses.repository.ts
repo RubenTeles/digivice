@@ -1,15 +1,15 @@
-import AuctionAddressesJson from "@definitions/AuctionAddresses.json";
-import DigimonBattleAddressesJson from "@definitions/Battles/DigimonBattleAddresses.json";
-import EnemyAddressesJson from "@definitions/Battles/EnemyAddresses.json";
-import CardBattleAddressesJson from "@definitions/CardBattleAddresses.json";
-import ImportantItemsAddressesJson from "@definitions/ImportantItemsAddresses.json";
-import NpcAddressesJson from "@definitions/NpcAddresses.json";
-import DigimonStatusAddressesJson from "@definitions/Parties/DigimonStatusAddresses.json";
-import DigimonsAddressesJson from "@definitions/Parties/DigimonsAddresses.json";
-import InBattleAddressesJson from "@definitions/Parties/InBattleAddresses.json";
-import PartyAddressesJson from "@definitions/PartyAddresses.json";
-import PlayerAddressesJson from "@definitions/PlayerAddresses.json";
-import MainQuestAddressesJson from "@definitions/Quests/MainQuestAddresses.json";
+import AuctionAddressesJson from "@/memory/definitions/AuctionAddresses.json";
+import DigimonBattleAddressesJson from "@/memory/definitions/Battles/DigimonBattleAddresses.json";
+import EnemyAddressesJson from "@/memory/definitions/Battles/EnemyAddresses.json";
+import CardBattleAddressesJson from "@/memory/definitions/CardBattleAddresses.json";
+import ImportantItemsAddressesJson from "@/memory/definitions/ImportantItemsAddresses.json";
+import NpcAddressesJson from "@/memory/definitions/NpcAddresses.json";
+import DigimonStatusAddressesJson from "@/memory/definitions/Parties/DigimonStatusAddresses.json";
+import DigimonsAddressesJson from "@/memory/definitions/Parties/DigimonsAddresses.json";
+import InBattleAddressesJson from "@/memory/definitions/Parties/InBattleAddresses.json";
+import PartyAddressesJson from "@/memory/definitions/PartyAddresses.json";
+import PlayerAddressesJson from "@/memory/definitions/PlayerAddresses.json";
+import MainQuestAddressesJson from "@/memory/definitions/Quests/MainQuestAddresses.json";
 import type { AuctionsAddresses } from "@/memory/addresses/auctions.addresses";
 import type { CardBattleAddresses } from "@/memory/addresses/card-battle.addresses";
 import type { DigimonBattleAddresses } from "@/memory/addresses/digimon-battle.addresses";
@@ -42,22 +42,25 @@ import { PartyAddressesConverter } from "@/memory/converters/party-addresses.con
 import { PlayerAddressesConverter } from "@/memory/converters/player-addresses.converter";
 
 const SideQuestFiles = import.meta.glob<QuestAddressesRaw>(
-  "@definitions/Quests/SideQuests/*.json",
+  "@/memory/definitions/Quests/SideQuests/*.json",
   {
     eager: true,
     import: "default",
   },
 );
 const LegendaryWeaponFiles = import.meta.glob<QuestAddressesRaw>(
-  "@definitions/Quests/LegendaryWeapons/*.json",
+  "@/memory/definitions/Quests/LegendaryWeapons/*.json",
   { eager: true, import: "default" },
 );
-const DriAgentFiles = import.meta.glob<QuestAddressesRaw>("@definitions/Quests/DriAgents/*.json", {
-  eager: true,
-  import: "default",
-});
+const DriAgentFiles = import.meta.glob<QuestAddressesRaw>(
+  "@/memory/definitions/Quests/DriAgents/*.json",
+  {
+    eager: true,
+    import: "default",
+  },
+);
 const DuelIslandFiles = import.meta.glob<QuestAddressesRaw>(
-  "@definitions/Quests/DuelIsland/*.json",
+  "@/memory/definitions/Quests/DuelIsland/*.json",
   {
     eager: true,
     import: "default",

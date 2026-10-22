@@ -76,7 +76,8 @@ const snapshot = new MemorySnapshot(SnapshotFixtureLoader.load("field-asuka-city
 
 - Tauri bridge: `vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }))` + `vi.mocked(invoke)`. Rust errors reject with `{ code, detail }`. Reference: `tests/memory/snapshot/tauri-snapshot.provider.spec.ts`.
 - `fetch`: `vi.stubGlobal("fetch", fetchMock)` with `new Response(buffer)`, and `vi.unstubAllGlobals()` in `afterEach`. Reference: `tests/memory/snapshot/file-snapshot.provider.spec.ts`.
-- Definitions: never mock. Specs that need addresses use `AddressesRepository` (real JSONs from `Backend/Memory/Definitions/` via `@definitions`); converter specs build `...Raw` objects inline.
+- Definitions: never mock. Specs that need addresses use `AddressesRepository` (real JSONs from `src/memory/definitions/`); converter specs build `...Raw` objects inline.
+- `tests/memory/definitions/definitions-parity.spec.ts` keeps the frontend copy equal to `Backend/Memory/Definitions/` (same files, same parsed content). Temporary: delete it together with the backend.
 
 ## Parity checklist with the C# `Tests/`
 

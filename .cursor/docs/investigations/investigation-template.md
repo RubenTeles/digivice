@@ -24,9 +24,11 @@ Suggested read: `(byte & 0x__) != 0`
 
 Path examples (quest-like trackers under `Quests/`):
 
-- `Backend/Memory/Definitions/Quests/LegendaryWeapons/{Name}Addresses.json`
-- `Backend/Memory/Definitions/Quests/DriAgents/{Name}Addresses.json`
-- `Backend/Memory/Definitions/Quests/SideQuests/{Name}Addresses.json`
+- `Frontend/src/memory/definitions/Quests/LegendaryWeapons/{Name}Addresses.json`
+- `Frontend/src/memory/definitions/Quests/DriAgents/{Name}Addresses.json`
+- `Frontend/src/memory/definitions/Quests/SideQuests/{Name}Addresses.json`
+
+While the C# backend exists, the same file goes to `Backend/Memory/Definitions/` too (kept equal by `definitions-parity.spec.ts`).
 
 ```json
 

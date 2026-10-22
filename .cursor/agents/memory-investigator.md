@@ -20,7 +20,7 @@ The parent passes the compare output (lines like `0xADDRESS: 0xBB -> 0xAA (+ fla
    - digimon battle → `patterns/patterns-battle.md` and `.cursor/skills/battle-memory-investigate/SKILL.md`
    - tamer / card battles → `patterns/patterns-card-battle.md`
    - map / seabed / Mobius / subzones → `patterns/patterns-map.md` (subzones: also `.cursor/skills/map-subzone-investigate/SKILL.md`)
-4. Cross-reference candidates against `Backend/Memory/Definitions/**/*.json` (Grep the address in several spellings: `0x0004B38C`, `0x4B38C`, `4B38C`).
+4. Cross-reference candidates against `Frontend/src/memory/definitions/**/*.json` (TS source; `Backend/Memory/Definitions/` is a parity copy kept while the C# backend exists) (Grep the address in several spellings: `0x0004B38C`, `0x4B38C`, `4B38C`).
 5. Open files under `.cursor/docs/investigations/` only when the domain has an ongoing investigation there.
 
 ## Output (return exactly these sections)
