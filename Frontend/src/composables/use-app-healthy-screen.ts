@@ -7,23 +7,6 @@ export function useAppHealthyScreen() {
   const store = useGameStore();
 
   return computed((): AppHealthyScreenViewModel | null => {
-    if (store.backendProcessFailed) {
-      return {
-        kind: "sidecar-crashed",
-        titleKey: "errors.sidecarCrashed.title",
-        hintKey: "errors.sidecarCrashed.hint",
-      };
-    }
-
-    if (!store.isConnectedWithBackend) {
-      return {
-        kind: "hub-unreachable",
-        titleKey: "errors.hubUnreachable.title",
-        hintKey: "errors.hubUnreachable.hint",
-        detail: store.lastHubConnectionError ?? undefined,
-      };
-    }
-
     if (store.healthStatus === "Loading") {
       return {
         kind: "loading",

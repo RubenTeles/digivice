@@ -9,43 +9,17 @@ import { PartyProvider } from "@/memory/providers/party.provider";
 import { PlayerProvider } from "@/memory/providers/player.provider";
 import type { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
 
-// Grows one entity per migration step until it becomes the full State.
-export type ComposedState = Pick<
-  State,
-  | "player"
-  | "importantItems"
-  | "party"
-  | "auctions"
-  | "cardBattle"
-  | "npcs"
-  | "digimonBattle"
-  | "journal"
->;
-
 export class StateComposer {
-  public static compose(snapshot: MemorySnapshot): ComposedState {
+  public static compose(snapshot: MemorySnapshot): State {
     return {
       player: PlayerProvider.get(snapshot),
       importantItems: ImportantItemsProvider.get(snapshot),
       party: PartyProvider.get(snapshot),
-      auctions: AuctionsProvider.get(snapshot),
-      cardBattle: CardBattleProvider.get(snapshot),
-      npcs: NpcsProvider.get(snapshot),
       digimonBattle: DigimonBattleProvider.get(snapshot),
+      cardBattle: CardBattleProvider.get(snapshot),
+      auctions: AuctionsProvider.get(snapshot),
+      npcs: NpcsProvider.get(snapshot),
       journal: JournalProvider.get(snapshot),
-    };
-  }
-
-  public static pick(state: State): ComposedState {
-    return {
-      player: state.player,
-      importantItems: state.importantItems,
-      party: state.party,
-      auctions: state.auctions,
-      cardBattle: state.cardBattle,
-      npcs: state.npcs,
-      digimonBattle: state.digimonBattle,
-      journal: state.journal,
     };
   }
 }

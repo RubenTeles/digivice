@@ -9,7 +9,7 @@ alwaysApply: false
 Regras especializadas por pasta:
 - `digivice-frontend-data.mdc` — presenters, services, repositories, viewmodels, extensions, assets.
 - `digivice-frontend-components.mdc` — componentes Vue, estilo DW3, tooltips, modais.
-- `digivice-frontend-sync.mdc` — events (DTO/converter), stores/syncers, models.
+- `digivice-frontend-sync.mdc` — loop TS → `StatePatcher` → store, selectors, models; caminho SignalR legado do modo `compare`.
 - `digivice-frontend-tests.mdc` — testes da camada de leitura de memória (`tests/`).
 
 ## Convenções básicas
@@ -17,16 +17,16 @@ Regras especializadas por pasta:
 1. Sempre `;` no fim das instruções.
 2. Prefira aspas duplas `"` em strings.
 3. Importações com `@/` (ex.: `@/models`, `@/presenters/map/map.presenter`) em vez de caminhos relativos longos; sem extensão `.ts` (`.vue` mantém a extensão).
-4. Arquivos kebab-case com sufixo de papel (`.converter.ts`, `.dto.ts`, `.viewmodel.ts`, `.presenter.ts`, `.service.ts`, `.repository.ts`, `.syncer.ts`, `.selector.ts`, `.extensions.ts`, `.reader.ts`, `.assembler.ts`, `.provider.ts`, `.addresses.ts`, `.snapshot.ts`, `.raw.ts`, `.error.ts`, `.resource.ts`, `.composer.ts`, `.loop.ts`, `.factory.ts`, `.initializer.ts`, `.comparator.ts`, `.tracker.ts`, `.spec.ts`); classes/tipos PascalCase.
+4. Arquivos kebab-case com sufixo de papel (`.converter.ts`, `.dto.ts`, `.viewmodel.ts`, `.presenter.ts`, `.service.ts`, `.repository.ts`, `.syncer.ts`, `.selector.ts`, `.extensions.ts`, `.reader.ts`, `.assembler.ts`, `.provider.ts`, `.addresses.ts`, `.snapshot.ts`, `.raw.ts`, `.error.ts`, `.resource.ts`, `.composer.ts`, `.loop.ts`, `.factory.ts`, `.initializer.ts`, `.comparator.ts`, `.tracker.ts`, `.patcher.ts`, `.spec.ts`); classes/tipos PascalCase.
 5. **Converters:** classe `{AlgumaCoisa}Converter`; arquivo `{alguma-coisa}.converter.ts`; API pública estática `convert` (helpers privados permitidos). Três contextos, pastas distintas:
    - `events/converters/` — DTO (SignalR) → Model (Pinia)
    - `presenters/converter/` — Raw → ViewModel (dados estáticos)
    - `memory/converters/` — JSON de definitions (`...Raw`, PascalCase) → tipos de endereço (camelCase, `number`)
-6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, definitions, snapshot) e, quando existir, o patch da store têm testes Vitest em `Frontend/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels, syncers) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
+6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, definitions, snapshot, patch) e as actions `applyState`/`applyError` da `useGameStore` têm testes Vitest em `Frontend/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels, syncers) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
 
 ## Camada de leitura de memória (`src/memory/`)
 
-Em construção pela migração (`AI/MIGRATION_PLAN.md`). Espelha `Backend/Memory/`:
+Fonte do estado da UI desde a etapa 6 da migração (`AI/MIGRATION_PLAN.md`). Espelha `Backend/Memory/`:
 
 | Pasta | Conteúdo |
 |---|---|
@@ -39,11 +39,12 @@ Em construção pela migração (`AI/MIGRATION_PLAN.md`). Espelha `Backend/Memor
 | `readers/` | `{Entity}Reader.read(snapshot, addresses)`: função pura sobre o `MemorySnapshot`, devolve o Resource. |
 | `assemblers/` | `{Entity}Assembler.assemble(resource)`: função pura, normaliza (sentinela → `null`, hex `X4`) e devolve o model de `@/models`. |
 | `providers/` | `{Entity}Provider.get(snapshot)`: busca endereços no `AddressesRepository` e chama reader + assembler (substitui Loader + Provider do C#). |
-| `state.composer.ts` | `StateComposer.compose(snapshot)` → `ComposedState` (só entidades migradas; cresce até virar `State`); `pick(state)` recorta o `State` do C# para comparação. |
-| `loop/` | `GameLoop` (`setTimeout` encadeado, sem sobrepor ticks; erros → `EmulatorConnectionError.code`, `memory_read_failed` ou `state_compose_failed`), `SnapshotProviderFactory`, `initializeMemoryLoop` (ligação com stores, chamado no `main.ts`). |
+| `state.composer.ts` | `StateComposer.compose(snapshot)` → `State` completo. |
+| `patch/` | `StatePatcher`: patch in-place do `State` da store (regras em `digivice-frontend-sync.mdc`). |
+| `loop/` | `GameLoop` (`setTimeout` encadeado, sem sobrepor ticks; erros → `EmulatorConnectionError.code`, `memory_read_failed` ou `state_compose_failed`), `SnapshotProviderFactory`, `initializeMemoryLoop` (liga loop, `useGameStore` e, no `compare`, SignalR + sombra do C#; chamado no `main.ts`). |
 | `comparison/` | `StateComparator` (deep-compare com caminho) e `DivergenceTracker` (reporta divergência após N leituras seguidas e a resolução). |
 
-- **Modo de memória (dev):** `VITE_MEMORY_MODE` (`csharp` padrão; `compare` liga o loop TS em modo sombra → `useMemoryShadowStore`, comparado a cada leitura com `useGameStore` e logado no console por `compareLogger`). `VITE_MEMORY_SNAPSHOT_URL` (ex.: `/tests/fixtures/snapshots/field-central-park.bin`) usa um `.bin` em vez do `read_ram`; sem ela, o loop só sobe dentro do Tauri. Configurar em `Frontend/.env.development.local` (não versionado). A UI continua lendo só `useGameStore`.
+- **Modo de memória:** `VITE_MEMORY_MODE` (`typescript` padrão: só o loop TS alimenta `useGameStore`; `compare` (dev): além disso conecta ao backend C# via SignalR → `useCSharpShadowStore`, comparada a cada leitura com `useGameStore` e logada no console por `compareLogger`). `VITE_MEMORY_SNAPSHOT_URL` (ex.: `/tests/fixtures/snapshots/field-central-park.bin`) usa um `.bin` em vez do `read_ram`; sem ela, o loop só sobe dentro do Tauri (no navegador puro a tela fica em `Loading`). Configurar em `Frontend/.env.development.local` (não versionado). A UI lê só `useGameStore`.
 - Enquanto o backend existir, `Backend/Memory/Definitions/` é uma cópia mantida para o C# e o `Tools/MemoryScanner`. Alterar um JSON exige alterar as duas cópias: `tests/memory/definitions/definitions-parity.spec.ts` falha se divergirem.
 
 ## Constants e types

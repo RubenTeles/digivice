@@ -4,14 +4,6 @@
       "title": "Carregando...",
       "hint": "Em instantes, o Digivice estará pronto para uso!"
     },
-    "sidecarCrashed": {
-      "title": "Opa! Parece que o Leitor de Memória não está em execução...",
-      "hint": "Seria muito gentil da sua parte se você mandasse um \"print\" dessa falha para o desenvolvedor :)"
-    },
-    "hubUnreachable": {
-      "title": "Conectando com o leitor de memória...",
-      "hint": "(Se o aplicativo fica preso nessa tela, tente clicar com o botão direito e escolha a opção \"Atualizar\".)"
-    },
     "emulator": {
       "title": "Opa! Aconteceu algum problema durante o processo de leitura de memória...",
       "hint": "Seria muito gentil da sua parte se você mandasse um \"print\" dessa falha para o desenvolvedor :)",

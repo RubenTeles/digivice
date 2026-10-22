@@ -5,13 +5,12 @@ import type {
   Npc,
   Quest,
   Requisite,
+  State,
   StoredDigievolution,
 } from "@/models";
 import type { QuestAddresses } from "@/memory/addresses/journals/quest.addresses";
 import type { RequisiteAddresses } from "@/memory/addresses/journals/quests/requisite.addresses";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";
-import type { ComposedState } from "@/memory/state.composer";
-
 interface QuestProgress {
   doneSteps?: number[];
   doneRequisites?: string[];
@@ -145,7 +144,7 @@ const LegendaryWeapons = AddressesRepository.getAllLegendaryWeapons();
 const DriAgents = AddressesRepository.getAllDriAgents();
 const DuelIsland = AddressesRepository.getAllDuelIsland();
 
-export const FieldCentralParkExpected: ComposedState = {
+export const FieldCentralParkExpected: State = {
   player: {
     bits: 42206,
     mapId: "021D",

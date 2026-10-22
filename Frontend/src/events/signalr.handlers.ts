@@ -1,12 +1,12 @@
 import { signalRService } from "./signalr.service";
-import { useGameStore } from "@/stores/use-game-store";
+import { useCSharpShadowStore } from "@/stores/use-csharp-shadow-store";
 import { signalRLogger } from "./logger";
 
 /**
- * Initializes the SignalR handlers to bridge incoming backend events with the Pinia store actions.
+ * Initializes the SignalR handlers to bridge incoming backend events with the C# shadow store actions.
  */
 export function initializeSignalRHandlers(): void {
-  const store = useGameStore();
+  const store = useCSharpShadowStore();
 
   signalRService.on("HubConnectionStatusChanged", (data) => {
     store.syncHubConnectionStatus(data);

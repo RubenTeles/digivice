@@ -18,7 +18,7 @@ Copiar o arquivo para esta pasta e registrar no catálogo abaixo.
 - Nome em kebab-case descrevendo o cenário: `field-asuka-city.bin`, `battle-single-enemy.bin`, `card-battle.bin`.
 - Manter poucas fixtures, cada uma com propósito claro (cerca de 2 MB cada no histórico do git).
 - Toda fixture **deve** estar no catálogo; fixture sem descrição não entra.
-- Valores esperados de uma fixture usados em mais de um spec ficam em `{nome}.expected.ts` nesta pasta (ex.: `field-central-park.expected.ts`, tipado como `ComposedState`; cresce junto com o composer).
+- Valores esperados de uma fixture usados em mais de um spec ficam em `{nome}.expected.ts` nesta pasta (ex.: `field-central-park.expected.ts`, tipado como `State`).
 - Preferir pausar o emulador antes de gerar, para o estado ficar estável.
 
 ## Catálogo

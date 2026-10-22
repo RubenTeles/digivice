@@ -1,5 +1,1 @@
-export type AppHealthyScreenKind =
-  | "loading"
-  | "sidecar-crashed"
-  | "hub-unreachable"
-  | "operational-error";
+export type AppHealthyScreenKind = "loading" | "operational-error";

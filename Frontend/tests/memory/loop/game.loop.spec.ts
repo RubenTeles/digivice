@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { EmulatorConnectionErrorCodes } from "@/events/emulator-connection-error-codes";
 import { GameLoop, type GameLoopOptions } from "@/memory/loop/game.loop";
-import type { ComposedState } from "@/memory/state.composer";
+import type { State } from "@/models";
 import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.error";
 import { MemoryReadError } from "@/memory/snapshot/memory-read.error";
 import { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
@@ -10,7 +10,7 @@ import { FakeSnapshotBuilder } from "../../helpers/fake-snapshot.builder";
 
 const IntervalMs = 500;
 
-const ComposedStateSample: ComposedState = FieldCentralParkExpected;
+const StateSample: State = FieldCentralParkExpected;
 
 function createSnapshot(): MemorySnapshot {
   return new MemorySnapshot(new FakeSnapshotBuilder().build());
@@ -18,7 +18,7 @@ function createSnapshot(): MemorySnapshot {
 
 function createOptions(overrides: Partial<GameLoopOptions> = {}) {
   const read = vi.fn<() => Promise<MemorySnapshot>>().mockResolvedValue(createSnapshot());
-  const compose = vi.fn<GameLoopOptions["compose"]>().mockReturnValue(ComposedStateSample);
+  const compose = vi.fn<GameLoopOptions["compose"]>().mockReturnValue(StateSample);
   const onSuccess = vi.fn<GameLoopOptions["onSuccess"]>();
   const onError = vi.fn<GameLoopOptions["onError"]>();
 
@@ -54,7 +54,7 @@ describe("GameLoop", () => {
       await vi.advanceTimersByTimeAsync(0);
 
       expect(compose).toHaveBeenCalledWith(snapshot);
-      expect(onSuccess).toHaveBeenCalledExactlyOnceWith(ComposedStateSample);
+      expect(onSuccess).toHaveBeenCalledExactlyOnceWith(StateSample);
       expect(onError).not.toHaveBeenCalled();
       gameLoop.stop();
     });
@@ -138,7 +138,7 @@ describe("GameLoop", () => {
         EmulatorConnectionErrorCodes.MappingNotFound,
         "not found",
       );
-      expect(onSuccess).toHaveBeenCalledExactlyOnceWith(ComposedStateSample);
+      expect(onSuccess).toHaveBeenCalledExactlyOnceWith(StateSample);
       gameLoop.stop();
     });
 

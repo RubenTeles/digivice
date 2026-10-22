@@ -1,5 +1,5 @@
 import { EmulatorConnectionErrorCodes } from "@/events/emulator-connection-error-codes";
-import type { ComposedState } from "@/memory/state.composer";
+import type { State } from "@/models";
 import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.error";
 import { MemoryReadError } from "@/memory/snapshot/memory-read.error";
 import type { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
@@ -7,9 +7,9 @@ import type { SnapshotProvider } from "@/memory/snapshot/snapshot.provider";
 
 export interface GameLoopOptions {
   snapshotProvider: SnapshotProvider;
-  compose: (snapshot: MemorySnapshot) => ComposedState;
+  compose: (snapshot: MemorySnapshot) => State;
   intervalMs: number;
-  onSuccess: (state: ComposedState) => void;
+  onSuccess: (state: State) => void;
   onError: (code: string, detail: string | null) => void;
 }
 
@@ -44,7 +44,7 @@ export class GameLoop {
     };
   }
 
-  private async readState(): Promise<ComposedState> {
+  private async readState(): Promise<State> {
     const snapshot = await this.options.snapshotProvider.read();
     return this.options.compose(snapshot);
   }

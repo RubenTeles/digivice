@@ -31,6 +31,7 @@ Mirror `src/` under `tests/`, one spec per production file:
 | Production | Test file |
 |---|---|
 | `src/memory/{folder}/{name}.ts` | `tests/memory/{folder}/{name}.spec.ts` |
+| `src/stores/use-game-store.ts` (`applyState`/`applyError` only) | `tests/stores/use-game-store.spec.ts` |
 | Test helper `tests/helpers/{name}.ts` | `tests/helpers/{name}.spec.ts` |
 
 Helpers and fixtures:
@@ -40,7 +41,7 @@ Helpers and fixtures:
 | `tests/helpers/fake-snapshot.builder.ts` | `FakeSnapshotBuilder`: synthetic snapshot |
 | `tests/helpers/snapshot-fixture.loader.ts` | `SnapshotFixtureLoader`: real `.bin` dumps |
 | `tests/fixtures/snapshots/` | `.bin` fixtures + catalog `README.md` |
-| `tests/fixtures/snapshots/{name}.expected.ts` | Expected `ComposedState` of a fixture, shared by provider, composer and loop specs |
+| `tests/fixtures/snapshots/{name}.expected.ts` | Expected `State` of a fixture, shared by provider, composer, patcher and loop specs |
 
 `PlayStationRamSize` (2 MiB) is production code: `@/memory/snapshot/snapshot.constant`.
 
@@ -110,6 +111,7 @@ The C# project is frozen as parity reference. When porting a backend piece to TS
 | `DigimonAssemblerTests`, `DigievolutionSlotAssemblerTests`, `StoredDigievolutionAssemblerTests`, `DigimonSlotAssemblerTests`, `PartyAssemblerTests` | `tests/memory/assemblers/{digimon,party}.assembler.spec.ts` | ported |
 | `PartyProviderTests` | `tests/memory/providers/party.provider.spec.ts` | ported |
 | Differ, DTO Converter, EventFactory, Hub, DI, `Optional`, `GameStateStore` | none (layers do not exist in the TS model) | n/a |
+| Syncer rules (no C# tests): filled → empty digievolution slot, stored digievolutions only grow, Digimon swap | `tests/memory/patch/state.patcher.spec.ts` | new |
 
 ## Test shapes per layer
 
@@ -120,7 +122,9 @@ Reference implementation: Player (migration step 4).
 | Reader | `tests/memory/readers/{x}.reader.spec.ts` | Synthetic addresses + `FakeSnapshotBuilder` (port of `{X}ReaderTests`); real addresses from `AddressesRepository` written at the definition offsets (port of `{X}LoaderTests`); signed `0xFFFF`; empty RAM; address outside the snapshot → `MemoryReadError`. Assert the whole resource with `toEqual`. |
 | Assembler | `tests/memory/assemblers/{x}.assembler.spec.ts` | Build the resource inline (`createResource(overrides)`); port every `{X}AssemblerTests` case and add sentinel boundaries (`-1`, `0`, `1`). No snapshot. |
 | Provider | `tests/memory/providers/{x}.provider.spec.ts` | Real fixture (`SnapshotFixtureLoader`) with values confirmed in game (catalog), plus one synthetic snapshot at the real addresses. |
-| Composer | `tests/memory/state.composer.spec.ts` | Real fixture → full `ComposedState`; `pick` keeps only migrated entities. |
+| Composer | `tests/memory/state.composer.spec.ts` | Real fixture → full `State`. |
+| Patcher | `tests/memory/patch/state.patcher.spec.ts` | Target and source from `structuredClone` of the fixture expected values, mutate the source; assert values and preserved references (`toBe`); `vi.spyOn(storeLogger, "warn")` for the ignored transitions. |
+| Store | `tests/stores/use-game-store.spec.ts` | `setActivePinia(createPinia())` in `beforeEach`; first tick, patch, error and recovery. |
 | Loop | `tests/memory/loop/game.loop.spec.ts` | Fake `SnapshotProvider` (`{ read: vi.fn() }`), `vi.useFakeTimers()` + `await vi.advanceTimersByTimeAsync(ms)`; always `stop()` at the end of the test. |
 | Comparison | `tests/memory/comparison/*.spec.ts` | Plain objects; assert the exact divergence list (`path`, `expected`, `actual`). |
 

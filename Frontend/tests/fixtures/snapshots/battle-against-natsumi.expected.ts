@@ -1,4 +1,4 @@
-import type { ComposedState } from "@/memory/state.composer";
+import type { State } from "@/models";
 import {
   CentralParkKotemon,
   digievolutionSlot,
@@ -6,10 +6,7 @@ import {
   stored,
 } from "./field-central-park.expected";
 
-export const BattleAgainstNatsumiExpected: Pick<
-  ComposedState,
-  "party" | "digimonBattle" | "journal"
-> = {
+export const BattleAgainstNatsumiExpected: Pick<State, "party" | "digimonBattle" | "journal"> = {
   party: {
     slots: [
       {

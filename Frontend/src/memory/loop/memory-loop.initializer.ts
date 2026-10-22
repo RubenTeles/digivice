@@ -1,16 +1,20 @@
 import { AppConfig } from "@/config";
 import { compareLogger, memoryLogger } from "@/events/logger";
+import { initializeSignalRHandlers } from "@/events/signalr.handlers";
+import { signalRService } from "@/events/signalr.service";
 import { DivergenceTracker } from "@/memory/comparison/divergence.tracker";
 import { StateComparator, type Divergence } from "@/memory/comparison/state.comparator";
 import { GameLoop } from "@/memory/loop/game.loop";
 import { SnapshotProviderFactory } from "@/memory/loop/snapshot-provider.factory";
 import { StateComposer } from "@/memory/state.composer";
+import { useCSharpShadowStore } from "@/stores/use-csharp-shadow-store";
 import { useGameStore } from "@/stores/use-game-store";
-import { useMemoryShadowStore } from "@/stores/use-memory-shadow-store";
 
-const MemoryModes = ["csharp", "compare"] as const;
+const MemoryModes = ["typescript", "compare"] as const;
 
 type MemoryMode = (typeof MemoryModes)[number];
+
+type GameStore = ReturnType<typeof useGameStore>;
 
 function isMemoryMode(value: string): value is MemoryMode {
   return (MemoryModes as readonly string[]).includes(value);
@@ -18,15 +22,15 @@ function isMemoryMode(value: string): value is MemoryMode {
 
 function resolveMemoryMode(value: string | undefined): MemoryMode {
   if (!value) {
-    return "csharp";
+    return "typescript";
   }
 
   if (isMemoryMode(value)) {
     return value;
   }
 
-  memoryLogger.warn(`Unknown VITE_MEMORY_MODE '${value}'. Falling back to 'csharp'.`);
-  return "csharp";
+  memoryLogger.warn(`Unknown VITE_MEMORY_MODE '${value}'. Falling back to 'typescript'.`);
+  return "typescript";
 }
 
 function formatValue(value: unknown): string {
@@ -37,35 +41,21 @@ function formatDivergence(divergence: Divergence): string {
   return `${divergence.path}: C#=${formatValue(divergence.expected)}, TS=${formatValue(divergence.actual)}`;
 }
 
-export function initializeMemoryLoop(): void {
-  if (resolveMemoryMode(AppConfig.memory.mode) !== "compare") {
-    return;
-  }
-
-  const snapshotProvider = SnapshotProviderFactory.create(
-    AppConfig.memory.snapshotUrl,
-    AppConfig.isTauri,
-  );
-  if (!snapshotProvider) {
-    memoryLogger.warn(
-      "Compare mode needs the Tauri window or VITE_MEMORY_SNAPSHOT_URL. Memory loop not started.",
-    );
-    return;
-  }
-
-  const gameStore = useGameStore();
-  const shadowStore = useMemoryShadowStore();
+function startCSharpComparison(gameStore: GameStore): () => void {
+  const csharpShadowStore = useCSharpShadowStore();
   const divergenceTracker = new DivergenceTracker(AppConfig.memory.divergenceThreshold);
 
-  function compareWithCSharp(): void {
-    const csharpState = gameStore.currentState ? StateComposer.pick(gameStore.currentState) : null;
+  initializeSignalRHandlers();
+  void signalRService.startConnection();
+
+  return () => {
     const divergences = [
       ...StateComparator.compare(
+        { status: csharpShadowStore.healthStatus, errorCode: csharpShadowStore.lastErrorCode },
         { status: gameStore.healthStatus, errorCode: gameStore.lastErrorCode },
-        { status: shadowStore.healthStatus, errorCode: shadowStore.lastErrorCode },
         "health",
       ),
-      ...StateComparator.compare(csharpState, shadowStore.state, "state"),
+      ...StateComparator.compare(csharpShadowStore.currentState, gameStore.currentState, "state"),
     ];
 
     const { reported, resolved } = divergenceTracker.update(divergences);
@@ -75,25 +65,42 @@ export function initializeMemoryLoop(): void {
     for (const path of resolved) {
       compareLogger.info(`${path}: resolved.`);
     }
+  };
+}
+
+export function initializeMemoryLoop(): void {
+  const memoryMode = resolveMemoryMode(AppConfig.memory.mode);
+  const snapshotProvider = SnapshotProviderFactory.create(
+    AppConfig.memory.snapshotUrl,
+    AppConfig.isTauri,
+  );
+  if (!snapshotProvider) {
+    memoryLogger.warn(
+      "The memory loop needs the Tauri window or VITE_MEMORY_SNAPSHOT_URL. Memory loop not started.",
+    );
+    return;
   }
+
+  const gameStore = useGameStore();
+  const compareWithCSharp = memoryMode === "compare" ? startCSharpComparison(gameStore) : null;
 
   function logHealthChange(previousStatus: string, previousErrorCode: string | null): void {
     if (
-      previousStatus === shadowStore.healthStatus &&
-      previousErrorCode === shadowStore.lastErrorCode
+      previousStatus === gameStore.healthStatus &&
+      previousErrorCode === gameStore.lastErrorCode
     ) {
       return;
     }
 
-    if (shadowStore.healthStatus === "Error") {
+    if (gameStore.healthStatus === "Error") {
       memoryLogger.info(
-        `Health: Error (${shadowStore.lastErrorCode})`,
-        shadowStore.lastErrorDetail ?? "",
+        `Health: Error (${gameStore.lastErrorCode})`,
+        gameStore.lastErrorDetail ?? "",
       );
       return;
     }
 
-    memoryLogger.info(`Health: ${shadowStore.healthStatus}`);
+    memoryLogger.info(`Health: ${gameStore.healthStatus}`);
   }
 
   const gameLoop = new GameLoop({
@@ -101,23 +108,23 @@ export function initializeMemoryLoop(): void {
     compose: (snapshot) => StateComposer.compose(snapshot),
     intervalMs: AppConfig.memory.pollingIntervalMs,
     onSuccess: (state) => {
-      const previousStatus = shadowStore.healthStatus;
-      const previousErrorCode = shadowStore.lastErrorCode;
-      shadowStore.setSuccess(state);
+      const previousStatus = gameStore.healthStatus;
+      const previousErrorCode = gameStore.lastErrorCode;
+      gameStore.applyState(state);
       logHealthChange(previousStatus, previousErrorCode);
-      compareWithCSharp();
+      compareWithCSharp?.();
     },
     onError: (code, detail) => {
-      const previousStatus = shadowStore.healthStatus;
-      const previousErrorCode = shadowStore.lastErrorCode;
-      shadowStore.setError(code, detail);
+      const previousStatus = gameStore.healthStatus;
+      const previousErrorCode = gameStore.lastErrorCode;
+      gameStore.applyError(code, detail);
       logHealthChange(previousStatus, previousErrorCode);
-      compareWithCSharp();
+      compareWithCSharp?.();
     },
   });
 
   memoryLogger.info(
-    `Compare mode: memory loop started (${AppConfig.memory.snapshotUrl || "read_ram"}).`,
+    `Memory loop started in ${memoryMode} mode (${AppConfig.memory.snapshotUrl || "read_ram"}).`,
   );
   gameLoop.start();
 

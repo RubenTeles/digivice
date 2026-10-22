@@ -15,7 +15,7 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | 5c | DigimonBattle | Concluída |
 | 5d | Journal | Concluída |
 | 5e | Party | Concluída |
-| 6 | Patch in-place e troca da fonte | Pendente |
+| 6 | Patch in-place e troca da fonte | Concluída |
 | 7 | Produção sem sidecar | Pendente |
 | 8 | Fechamento de docs | Pendente |
 
@@ -200,7 +200,7 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 ## Comparação C# × TS
 
 - Os dois lados produzem o mesmo tipo `State` (`@/models`): C# via `StateDTO` → converters existentes; TS via assemblers. Comparar = deep-compare dos dois `State`, reportando o caminho divergente (ex.: `party.slots[0].digimon.hp.current: C#=120, TS=118`).
-- **Modo de execução** (dev, via variável de ambiente): `csharp | typescript | compare`. No `compare`, um lado alimenta a store e o outro vai para um estado sombra.
+- **Modo de execução** (via `VITE_MEMORY_MODE`): até a etapa 5, `csharp` (padrão) | `compare` com o TS na sombra; a partir da etapa 6, `typescript` (padrão) | `compare` com o C# na sombra.
 - **Timing:** os dois leem em momentos diferentes; campos voláteis divergem por um instante. Mitigações:
   - DuckStation **pausado**: RAM parada, tudo tem que bater 100%.
   - Com o jogo rodando: só reportar divergências que persistam por N ticks seguidos.
@@ -341,7 +341,21 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - Testes: porte de `InBattleReaderTests`, `DigimonReaderTests`, `DigievolutionSlotReaderTests`, `StoredDigievolutionReaderTests`, `DigimonSlotReaderTests`, `PartyReaderTests`, `DigimonLoaderTests`, `PartyLoaderTests`, assemblers (`Digimon`, `DigievolutionSlot`, `StoredDigievolution`, `DigimonSlot`, `Party`) e `PartyProviderTests`, mais bordas (id desconhecido, Kotemon id `0`, lista de guardadas com lixo após entrada vazia, DVEXP `Int32` mínimo, slot 3 de batalha, endereço fora do snapshot, não compartilhamento de objetos) e as duas fixtures. Total: 345 testes.
 - **Validação manual (aprovada):** modo `compare` no Tauri com o DuckStation; party conferida no jogo, sem divergências inesperadas.
 
+### Etapa 6 — Patch in-place e troca da fonte (concluída)
+
+- `Frontend/src/memory/patch/state.patcher.ts`: `StatePatcher` genérico (decisão em aberto fechada: patch genérico, não por entidade).
+  - Primitivo só é atribuído se mudou; objeto ↔ `null` atribui o valor inteiro; objeto ↔ objeto desce campo a campo.
+  - Listas casadas por chave pelo nome da propriedade (`ListKeys`): `slots`/`digievolutions` → `index`, `storedDigievolutions` → `digievolutionId`, quests/`requisites`/`battles` → `id`, `steps` → `number`. Item novo → `push`; ausente → removido.
+  - Regras dos syncers do C#: slot de digievolução preenchido → vazio ignorado (`storeLogger.warn` uma vez por transição, não a cada tick); `storedDigievolutions` só cresce; `digimonId` diferente no slot substitui o Digimon inteiro.
+- `useGameStore` passa a ser só do TS: `currentState`, saúde e `applyState` (primeiro tick ou recuperação atribui o `State` completo e recria o patcher; depois, patch) / `applyError` (limpa o estado).
+- `useCSharpShadowStore`: o pipeline SignalR antigo (converters, syncers, `setInitialState`, `sync*`, saúde e status do hub), alimentado só no `compare`. `useMemoryShadowStore` removida.
+- `initializeMemoryLoop`: modos `typescript` (padrão) e `compare`; o loop sempre sobe; no `compare` também inicia o SignalR e compara `useGameStore` (TS, já patcheado) com a sombra do C#. `main.ts` só chama o initializer. Sem provedor (navegador sem `VITE_MEMORY_SNAPSHOT_URL`): warn e tela em `Loading`.
+- `StateComposer.compose` devolve `State`; `ComposedState` e `pick` removidos.
+- Tela de saúde: só `loading` e `operational-error`. Removidos `sidecar-crashed`, `hub-unreachable`, `tauri-backend-process.listener.ts` e as chaves i18n `sidecarCrashed`/`hubUnreachable`. O sidecar ainda é empacotado e iniciado pelo Tauri até a Etapa 7, mas ninguém o consome fora do `compare`.
+- Testes: `state.patcher.spec.ts` (referências preservadas, primitivo igual sem escrita, inimigo aparecendo/saindo/ficando, listas fora de ordem, itens novos e removidos, as três regras, aviso único e reaviso após preencher ou trocar o Digimon, Central Park → party da batalha) e `tests/stores/use-game-store.spec.ts` (primeiro tick, patch, erro, recuperação). Total: 367 testes.
+- Docs: `digivice-business.mdc` (arquitetura), `digivice-frontend-sync.mdc` (reescrita), `digivice-frontend.mdc`, `digivice-frontend-tests.mdc`, skill `frontend-memory-tests`. As skills `address-field-frontend` e `memory-entity-frontend` ainda descrevem o caminho SignalR; reescrita na Etapa 8 (nada novo é adicionado durante a migração).
+- **Validação manual (aprovada):** Tauri com o DuckStation; UI alimentada só pelo loop TS, dados conferidos no jogo, sem problemas.
+
 ## Decisões em aberto
 
-- Patch genérico por chaves de lista vs. patch específico por entidade.
 - Confirmar suporte de configuração de background throttling do Tauri no WebView2.
