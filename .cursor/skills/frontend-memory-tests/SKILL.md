@@ -100,9 +100,14 @@ The C# project is frozen as parity reference. When porting a backend piece to TS
 | `NpcsReaderTests` + `NpcsLoaderTests`, `NpcsAssemblerTests`, `NpcsProviderTests` | `tests/memory/{readers,assemblers,providers}/npcs.*.spec.ts` | ported |
 | `EnemyReaderTests` | `tests/memory/readers/enemy.reader.spec.ts` | ported |
 | `DigimonBattleReaderTests` + `DigimonBattleLoaderTests`, `DigimonBattleAssemblerTests`, `DigimonBattleProviderTests` | `tests/memory/{readers,assemblers,providers}/digimon-battle.*.spec.ts` | ported |
-| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` (Journal, Party) | reader spec with `FakeSnapshotBuilder` | pending (steps 5d–5e) |
-| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` (same) | reader spec using the real definitions JSON | pending (steps 5d–5e) |
-| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` (same) | assembler spec (pure functions) | pending (steps 5d–5e) |
+| `RequisiteReaderTests`, `StepReaderTests`, `QuestReaderTests`, `QuestLoaderTests` | `tests/memory/readers/quest.reader.spec.ts` (single `QuestReader`) | ported |
+| `JournalLoaderTests` | `tests/memory/readers/journal.reader.spec.ts` | ported |
+| `RequisiteAssemblerTests`, `StepAssemblerTests`, `QuestAssemblerTests` | `tests/memory/assemblers/quest.assembler.spec.ts` | ported |
+| `MainQuestAssemblerTests`, `DuelIslandAssemblerTests`, `JournalAssemblerTests` | `tests/memory/assemblers/{main-quest,duel-island,journal}.assembler.spec.ts` | ported (plus "does not mutate the resource") |
+| `JournalProviderTests` | `tests/memory/providers/journal.provider.spec.ts` | ported |
+| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` (Party) | reader spec with `FakeSnapshotBuilder` | pending (step 5e) |
+| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` (same) | reader spec using the real definitions JSON | pending (step 5e) |
+| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` (same) | assembler spec (pure functions) | pending (step 5e) |
 | Differ, DTO Converter, EventFactory, Hub, DI, `Optional`, `GameStateStore` | none (layers do not exist in the TS model) | n/a |
 
 ## Test shapes per layer

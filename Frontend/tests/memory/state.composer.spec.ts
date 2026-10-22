@@ -22,6 +22,7 @@ describe("StateComposer", () => {
       const state = StateComposer.compose(snapshot);
 
       expect(state.digimonBattle).toEqual(BattleAgainstNatsumiExpected.digimonBattle);
+      expect(state.journal).toEqual(BattleAgainstNatsumiExpected.journal);
     });
   });
 

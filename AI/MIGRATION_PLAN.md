@@ -13,7 +13,7 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | 5a | ImportantItems, Auctions, CardBattle | Concluída |
 | 5b | Npcs | Concluída |
 | 5c | DigimonBattle | Concluída |
-| 5d | Journal | Pendente |
+| 5d | Journal | Concluída |
 | 5e | Party | Pendente |
 | 6 | Patch in-place e troca da fonte | Pendente |
 | 7 | Produção sem sidecar | Pendente |
@@ -316,6 +316,16 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - Força, defesa e velocidade do inimigo são deltas de buff/debuff (`+0x10..+0x14` do slot), não atributos absolutos; na fixture de batalha leem `0` porque nenhum Digimon da Natsumi aplica buffs.
 - Testes: porte de `EnemyReaderTests` (10 casos), `DigimonBattleReaderTests`, `DigimonBattleLoaderTests`, `DigimonBattleAssemblerTests` e `DigimonBattleProviderTests`, mais bordas (`groupId` global, `Int16` com sinal, ids `0`/`-1`/`-0x8000`, endereço fora do snapshot) e as duas fixtures. Total: 237 testes.
 - **Validação manual (aprovada):** modo `compare` no Tauri com o DuckStation em batalha contra NPC; atualizações do inimigo corretas, sem divergências.
+
+### Etapa 5d — Journal (concluída)
+
+- `Frontend/src/memory/`: resources (`journals/quests/requisite`, `journals/quests/step`, `journals/quest`, `journal`), `addresses/journal.addresses.ts` (montado pelo provider com os getters do repositório), `readers/quest.reader.ts`, `readers/journal.reader.ts`, assemblers (`quest`, `main-quest`, `duel-island`, `journal`) e `providers/journal.provider.ts`; `journal` no `ComposedState`, `compose` e `pick`.
+- Decisão: um único `QuestReader` lê requisitos e steps, com uma só função de valor (o C# duplica a lógica em `StepReader` e `RequisiteReader`). Paridade: sem máscara = byte inteiro; uma máscara = `byte & máscara`; várias = `0` se faltar algum bit, senão `byte & máscaras[0]`.
+- Assemblers não mutam: o cascade da main quest (todo step antes do último feito vira feito) e as regras da Duel Island (requisito pendente zera os steps; troféu feito marca os anteriores) geram objetos novos.
+- Fixtures: as duas têm o mesmo journal. Main quest 1–61 (na RAM os steps 6 e 21 estão desligados; o cascade os completa). Expected montado com helpers (`quest`, `questIn`, `stepsUntil`) sobre as definições, com só os steps e requisitos feitos listados.
+- DRI agents Kotemon, Patamon e Renamon têm só o step 3 feito na RAM: é o estado normal dos Digimons da party inicial (qualquer DRI agent fica assim quando o Digimon é escolhido no início do jogo). Sem cascade, como no C#.
+- Testes: porte de `RequisiteReaderTests`, `StepReaderTests`, `QuestReaderTests`, `QuestLoaderTests`, `JournalLoaderTests`, assemblers (`Requisite`, `Step`, `Quest`, `MainQuest`, `DuelIsland`, `Journal`) e `JournalProviderTests`, mais bordas (bits fora das máscaras, requisito de step fora do snapshot, cascade com buracos, Duel Island sem steps, não mutação do resource, RAM vazia). Total: 289 testes.
+- **Validação manual (aprovada):** modo `compare` no Tauri com o DuckStation avançando a side quest do DRI agent Veemon; steps marcando normalmente, sem divergências nem logs inesperados.
 
 ## Decisões em aberto
 

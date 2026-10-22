@@ -1,6 +1,7 @@
 import type { ComposedState } from "@/memory/state.composer";
+import { FieldCentralParkExpected } from "./field-central-park.expected";
 
-export const BattleAgainstNatsumiExpected: Pick<ComposedState, "digimonBattle"> = {
+export const BattleAgainstNatsumiExpected: Pick<ComposedState, "digimonBattle" | "journal"> = {
   digimonBattle: {
     field: 0,
     enemy: {
@@ -13,4 +14,5 @@ export const BattleAgainstNatsumiExpected: Pick<ComposedState, "digimonBattle"> 
       hp: { current: 192, max: 192 },
     },
   },
+  journal: FieldCentralParkExpected.journal,
 };
