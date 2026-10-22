@@ -98,9 +98,11 @@ The C# project is frozen as parity reference. When porting a backend piece to TS
 | `ImportantItems`, `Auctions`, `CardBattle` `ProviderTests` | `tests/memory/providers/{important-items,auctions,card-battle}.provider.spec.ts` | ported |
 | `GameLoopService`, `HealthEventFactory` (no C# tests) | `tests/memory/loop/game.loop.spec.ts` | new |
 | `NpcsReaderTests` + `NpcsLoaderTests`, `NpcsAssemblerTests`, `NpcsProviderTests` | `tests/memory/{readers,assemblers,providers}/npcs.*.spec.ts` | ported |
-| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` (DigimonBattle, Journal, Party) | reader spec with `FakeSnapshotBuilder` | pending (steps 5c–5e) |
-| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` (same) | reader spec using the real definitions JSON | pending (steps 5c–5e) |
-| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` (same) | assembler spec (pure functions) | pending (steps 5c–5e) |
+| `EnemyReaderTests` | `tests/memory/readers/enemy.reader.spec.ts` | ported |
+| `DigimonBattleReaderTests` + `DigimonBattleLoaderTests`, `DigimonBattleAssemblerTests`, `DigimonBattleProviderTests` | `tests/memory/{readers,assemblers,providers}/digimon-battle.*.spec.ts` | ported |
+| `Tests/Unit/Memory/Readers/{X}ReaderTests.cs` (Journal, Party) | reader spec with `FakeSnapshotBuilder` | pending (steps 5d–5e) |
+| `Tests/Integration/Application/Loaders/{X}LoaderTests.cs` (same) | reader spec using the real definitions JSON | pending (steps 5d–5e) |
+| `Tests/Unit/Domain/Assemblers/**/{X}AssemblerTests.cs` (same) | assembler spec (pure functions) | pending (steps 5d–5e) |
 | Differ, DTO Converter, EventFactory, Hub, DI, `Optional`, `GameStateStore` | none (layers do not exist in the TS model) | n/a |
 
 ## Test shapes per layer

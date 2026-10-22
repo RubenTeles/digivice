@@ -28,6 +28,7 @@ export const FieldCentralParkExpected: ComposedState = {
     hazardFang: false,
   },
   cardBattle: { id: null },
+  digimonBattle: { field: 0, enemy: null },
   npcs: {
     genji: npc(["first", true], ["second", false]),
     natsumi: npc(["first", false]),

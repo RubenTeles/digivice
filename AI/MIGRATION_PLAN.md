@@ -12,7 +12,7 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | 4 | Fatia vertical: Player | Concluída |
 | 5a | ImportantItems, Auctions, CardBattle | Concluída |
 | 5b | Npcs | Concluída |
-| 5c | DigimonBattle | Pendente |
+| 5c | DigimonBattle | Concluída |
 | 5d | Journal | Pendente |
 | 5e | Party | Pendente |
 | 6 | Patch in-place e troca da fonte | Pendente |
@@ -306,6 +306,16 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - Valores esperados da fixture do Central Park centralizados em `tests/fixtures/snapshots/field-central-park.expected.ts` (`ComposedState`), usados pelos specs do composer, do loop e dos providers.
 - Testes: porte de `NpcsReaderTests`, `NpcsLoaderTests`, `NpcsAssemblerTests` e `NpcsProviderTests`, mais ordem `first`/`second`, NPC sem batalhas e endereço fora do snapshot. Total: 210 testes.
 - **Validação manual (aprovada):** modo `compare` no Tauri com o DuckStation, sem divergências; NPCs vencidos conferidos no jogo.
+
+### Etapa 5c — DigimonBattle (concluída)
+
+- `Frontend/src/memory/`: `resources/parties/digimons/vital.resource.ts`, `resources/battles/enemy.resource.ts`, `resources/digimon-battle.resource.ts`, `readers/enemy.reader.ts`, `readers/digimon-battle.reader.ts`, `assemblers/digimon-battle.assembler.ts`, `providers/digimon-battle.provider.ts`; `digimonBattle` no `ComposedState`, `compose` e `pick`.
+- `EnemyReader` replica a heurística do C# para o slot ativo: índice ativo válido com id `!= 0`; senão, primeiro slot com id `!= 0` e HP atual `> 0`; senão, último slot com id `!= 0`; senão, slot `0`. `groupId` é global (fora do slot).
+- Assembler: `enemy.id <= 0` → `enemy = null`; `field = 0` é o campo neutro.
+- Fixture nova `battle-against-natsumi.bin` (catalogada, com `battle-against-natsumi.expected.ts`): slot ativo 1, Vegiemon (id 25) HP 192/192, `groupId` 201, conferido com o relato do jogo. Central Park: `digimonBattle = { field: 0, enemy: null }`.
+- Força, defesa e velocidade do inimigo são deltas de buff/debuff (`+0x10..+0x14` do slot), não atributos absolutos; na fixture de batalha leem `0` porque nenhum Digimon da Natsumi aplica buffs.
+- Testes: porte de `EnemyReaderTests` (10 casos), `DigimonBattleReaderTests`, `DigimonBattleLoaderTests`, `DigimonBattleAssemblerTests` e `DigimonBattleProviderTests`, mais bordas (`groupId` global, `Int16` com sinal, ids `0`/`-1`/`-0x8000`, endereço fora do snapshot) e as duas fixtures. Total: 237 testes.
+- **Validação manual (aprovada):** modo `compare` no Tauri com o DuckStation em batalha contra NPC; atualizações do inimigo corretas, sem divergências.
 
 ## Decisões em aberto
 

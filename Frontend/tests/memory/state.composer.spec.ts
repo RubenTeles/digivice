@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { State } from "@/models";
 import { StateComposer } from "@/memory/state.composer";
 import { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
+import { BattleAgainstNatsumiExpected } from "../fixtures/snapshots/battle-against-natsumi.expected";
 import { FieldCentralParkExpected } from "../fixtures/snapshots/field-central-park.expected";
 import { SnapshotFixtureLoader } from "../helpers/snapshot-fixture.loader";
 
@@ -13,6 +14,14 @@ describe("StateComposer", () => {
       const state = StateComposer.compose(snapshot);
 
       expect(state).toEqual(FieldCentralParkExpected);
+    });
+
+    it("should compose the enemy in battle when the snapshot is the battle against Natsumi fixture", () => {
+      const snapshot = new MemorySnapshot(SnapshotFixtureLoader.load("battle-against-natsumi"));
+
+      const state = StateComposer.compose(snapshot);
+
+      expect(state.digimonBattle).toEqual(BattleAgainstNatsumiExpected.digimonBattle);
     });
   });
 
