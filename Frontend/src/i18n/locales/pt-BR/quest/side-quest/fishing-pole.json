@@ -1,9 +1,9 @@
 {
   "fishingPole": {
     "title": "A Vara de Pesca",
-    "description": "Obtenha a Vara de Pesca para começar a pescar itens e Digimon.",
+    "description": "Obtenha a Vara de Pesca para desafiar Cardmons e outros Digimons aquáticos!",
     "requisites": {
-      "FolderBag": "Possuir a Mochila de Cartas"
+      "folderBag": "Possuir a Mochila de Cartas"
     },
     "steps": {
       "1": {

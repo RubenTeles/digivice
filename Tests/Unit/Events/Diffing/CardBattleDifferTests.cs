@@ -2,7 +2,6 @@ namespace Tests.Events.Diffing;
 
 using Backend.Domain.Models;
 using Backend.Events.Diffing;
-using Xunit;
 
 public class CardBattleDifferTests
 {
@@ -38,5 +37,17 @@ public class CardBattleDifferTests
 
         Assert.True(result.Id.HasValue);
         Assert.Equal(11, result.Id.Value);
+    }
+
+    [Fact]
+    public void Diff_ShouldReturnExplicitNullId_WhenIdBecomesNull()
+    {
+        var previousCardBattle = new CardBattle { Id = 11 };
+        var newCardBattle = new CardBattle { Id = null };
+
+        var result = CardBattleDiffer.Diff(previousCardBattle, newCardBattle);
+
+        Assert.True(result.Id.HasValue);
+        Assert.Null(result.Id.Value);
     }
 }

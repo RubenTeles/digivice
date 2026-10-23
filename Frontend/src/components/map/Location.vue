@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { LocationService } from "@/services/location.service";
+import { MapService } from "@/services/map.service";
 
 const props = withDefaults(
   defineProps<{
-    locationId: string | null;
+    locationId: string;
     titleOverride?: string | null;
     isSafeZone?: boolean;
   }>(),
@@ -26,15 +26,11 @@ const locationName = computed(() => {
     return props.titleOverride;
   }
 
-  return props.locationId ? t(`location.${props.locationId}`) : t("map.unknownZone");
+  return t(`map.${props.locationId}`);
 });
 
 const isClickable = computed(() => {
-  if (props.locationId === null) {
-    return false;
-  }
-
-  return LocationService.getWorldLocation(props.locationId) !== undefined;
+  return MapService.getWorldLocation(props.locationId) !== undefined;
 });
 
 const titleClass = computed(() => {

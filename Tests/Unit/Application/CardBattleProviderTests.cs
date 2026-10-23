@@ -5,7 +5,6 @@ using Backend.Application.Providers;
 using Backend.Domain.Models;
 using Backend.Memory.Resources;
 using Moq;
-using Xunit;
 
 public class CardBattleProviderTests
 {
@@ -31,11 +30,11 @@ public class CardBattleProviderTests
     }
 
     [Fact]
-    public void Get_ShouldHandleNullId()
+    public void Get_ShouldReturnNullId_WhenResourceIdIsZero()
     {
         var cardBattleResource = new CardBattleResource
         {
-            Id = null,
+            Id = 0,
         };
 
         var cardBattleLoaderMock = new Mock<ICardBattleLoader>();
@@ -46,7 +45,7 @@ public class CardBattleProviderTests
         var result = provider.Get();
 
         Assert.NotNull(result);
-        Assert.Equal(0, result.Id);
+        Assert.Null(result.Id);
         cardBattleLoaderMock.Verify(loader => loader.Load(), Times.Once);
     }
 }

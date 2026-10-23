@@ -1,7 +1,6 @@
 using Backend.Memory.Addresses;
-using Backend.Memory.Readers.Helpers;
-using Backend.Memory.Resources;
 using Backend.Memory.Readers.Interfaces;
+using Backend.Memory.Resources;
 
 namespace Backend.Memory.Readers
 {
@@ -34,6 +33,12 @@ namespace Backend.Memory.Readers
                 FakeByakkoLeader = ReadNpc(addresses.FakeByakkoLeader),
                 ByakkoLeader = ReadNpc(addresses.ByakkoLeader),
                 AoaAttacker = ReadNpc(addresses.AoaAttacker),
+                OptionalTrooper1AdminCenterB1F = ReadNpc(addresses.OptionalTrooper1AdminCenterB1F),
+                OptionalTrooper2AdminCenterB1F = ReadNpc(addresses.OptionalTrooper2AdminCenterB1F),
+                OptionalTrooperAdminFloor1 = ReadNpc(addresses.OptionalTrooperAdminFloor1),
+                OptionalTrooper1AdminFloor2 = ReadNpc(addresses.OptionalTrooper1AdminFloor2),
+                OptionalSoldier1AdminFloor2 = ReadNpc(addresses.OptionalSoldier1AdminFloor2),
+                OptionalTrooper2AdminFloor2 = ReadNpc(addresses.OptionalTrooper2AdminFloor2),
             };
         }
 
@@ -50,7 +55,7 @@ namespace Backend.Memory.Readers
             return [.. battles.Select(battle => new NpcBattleResource
             {
                 Id = battle.Key,
-                Value = FlagByteHelper.Read(memoryReader, battle.Value.Address, battle.Value.BitMask),
+                Value = memoryReader.ReadByte(battle.Value.Address, battle.Value.BitMask),
             })];
         }
     }

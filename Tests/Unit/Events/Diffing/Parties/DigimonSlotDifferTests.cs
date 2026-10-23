@@ -79,6 +79,23 @@ public class DigimonSlotDifferTests
     }
 
     [Fact]
+    public void Diff_ShouldReturnFullDTO_WhenKotemonJoinsEmptySlot()
+    {
+        var previous = new DigimonSlot { Index = 2, DigimonId = null, Digimon = null };
+        var newObj = new DigimonSlot { Index = 2, DigimonId = 0, Digimon = CreateBaseDigimon() };
+
+        var result = DigimonSlotDiffer.Diff(previous, newObj);
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Index);
+        Assert.True(result.DigimonId.HasValue);
+        Assert.Equal(0, result.DigimonId.Value);
+        Assert.True(result.Digimon.HasValue);
+        Assert.NotNull(result.Digimon.Value);
+        Assert.Equal(10, result.Digimon.Value.Level.Value);
+    }
+
+    [Fact]
     public void Diff_ShouldReturnFullDTO_WhenDigimonIdChangedToAnotherActiveId()
     {
         var previous = new DigimonSlot { Index = 1, DigimonId = 3, Digimon = CreateBaseDigimon() };
@@ -107,8 +124,8 @@ public class DigimonSlotDifferTests
             HP = new Vital { Current = 100, Max = 100 },
             MP = new Vital { Current = 50, Max = 50 },
             Attributes = new Attributes { Strength = 5, Defense = 5, Spirit = 5, Wisdom = 5, Speed = 5, Charisma = 5 },
-            Resistances = new Resistances { Fire = 1, Water = 1, Ice = 1, Wind = 1, Thunder = 1, Machine = 1, Dark = 1 },
-            Equipments = new Equipments { Head = 0, Body = 0, Right = 0, Left = 0, Accessory1 = 0, Accessory2 = 0 },
+            Elements = new Elements { Fire = 1, Water = 1, Ice = 1, Wind = 1, Thunder = 1, Machine = 1, Dark = 1 },
+            Equipments = new Equipments(),
             Digievolutions = []
         };
     }

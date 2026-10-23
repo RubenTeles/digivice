@@ -1,13 +1,11 @@
 namespace Tests.Memory.Readers;
 
-using System;
 using Backend.Memory.Addresses.Parties;
 using Backend.Memory.Addresses.Parties.Digimons;
 using Backend.Memory.Readers;
 using Backend.Memory.Resources.Parties;
 using Backend.Memory.Resources.Parties.Digimons;
 using Moq;
-using Xunit;
 using Backend.Memory.Readers.Interfaces;
 
 public class DigimonReaderTests
@@ -35,18 +33,16 @@ public class DigimonReaderTests
         memoryReaderMock.Setup(m => m.ReadBytes(0x800100, 1500)).Returns(new byte[1000]);
 
         var slotReaderMock = new Mock<IDigievolutionSlotReader>();
-        var evolutionReaderMock = new Mock<IDigievolutionReader>();
         var storedDigievolutionReaderMock = new Mock<IStoredDigievolutionReader>();
 
         var reader = new DigimonReader(
             memoryReaderMock.Object,
             slotReaderMock.Object,
-            evolutionReaderMock.Object,
             storedDigievolutionReaderMock.Object,
             CreateInBattleReaderMock().Object
         );
 
-        var result = reader.Read(address, statusAddresses, new InBattleAddresses(), 0);
+        var result = reader.Read(address, statusAddresses, new InBattleAddresses(), 1);
 
         Assert.Null(result);
     }
@@ -65,7 +61,7 @@ public class DigimonReaderTests
             HP = new VitalAddresses { Current = 18, Max = 20 },
             MP = new VitalAddresses { Current = 22, Max = 24 },
             Attributes = new AttributesAddresses { Strength = 26, Defense = 28, Spirit = 30, Wisdom = 32, Speed = 34, Charisma = 36 },
-            Resistances = new ResistancesAddresses { Fire = 38, Water = 40, Ice = 42, Wind = 44, Thunder = 46, Machine = 48, Dark = 50 },
+            Elements = new ElementsAddresses { Fire = 38, Water = 40, Ice = 42, Wind = 44, Thunder = 46, Machine = 48, Dark = 50 },
             Equipments = new EquipmentsAddresses { Head = 52, Body = 54, Right = 56, Left = 58, Accessory1 = 60, Accessory2 = 62 },
             Digievolutions = new DigievolutionsAddresses
             {
@@ -93,7 +89,7 @@ public class DigimonReaderTests
         WriteInt16(block, 34, 110);   // Speed
         WriteInt16(block, 36, 40);    // Charisma
 
-        // Resistances
+        // Elements
         WriteInt16(block, 38, 10);    // Fire
         WriteInt16(block, 40, 20);    // Water
         WriteInt16(block, 42, 30);    // Ice
@@ -116,7 +112,6 @@ public class DigimonReaderTests
         memoryReaderMock.Setup(m => m.ReadInt16(BlastAddress)).Returns((short)750);
 
         var slotReaderMock = new Mock<IDigievolutionSlotReader>();
-        var evolutionReaderMock = new Mock<IDigievolutionReader>();
         var storedDigievolutionReaderMock = new Mock<IStoredDigievolutionReader>();
         storedDigievolutionReaderMock
             .Setup(s => s.Read(It.IsAny<MemoryBlockReader>(), statusAddresses.Digievolutions))
@@ -125,13 +120,12 @@ public class DigimonReaderTests
         var reader = new DigimonReader(
             memoryReaderMock.Object,
             slotReaderMock.Object,
-            evolutionReaderMock.Object,
             storedDigievolutionReaderMock.Object,
             CreateInBattleReaderMock().Object
         );
 
         // Act
-        var result = reader.Read(address, statusAddresses, new InBattleAddresses(), 0);
+        var result = reader.Read(address, statusAddresses, new InBattleAddresses(), 1);
 
         // Assert
         Assert.NotNull(result);
@@ -155,14 +149,14 @@ public class DigimonReaderTests
         Assert.Equal(110, result.Attributes.Speed);
         Assert.Equal(40, result.Attributes.Charisma);
 
-        // Resistances
-        Assert.Equal(10, result.Resistances.Fire);
-        Assert.Equal(20, result.Resistances.Water);
-        Assert.Equal(30, result.Resistances.Ice);
-        Assert.Equal(40, result.Resistances.Wind);
-        Assert.Equal(50, result.Resistances.Thunder);
-        Assert.Equal(60, result.Resistances.Machine);
-        Assert.Equal(70, result.Resistances.Dark);
+        // Elements
+        Assert.Equal(10, result.Elements.Fire);
+        Assert.Equal(20, result.Elements.Water);
+        Assert.Equal(30, result.Elements.Ice);
+        Assert.Equal(40, result.Elements.Wind);
+        Assert.Equal(50, result.Elements.Thunder);
+        Assert.Equal(60, result.Elements.Machine);
+        Assert.Equal(70, result.Elements.Dark);
 
         // Equipments
         Assert.Equal(101, result.Equipments.Head);
@@ -185,7 +179,7 @@ public class DigimonReaderTests
             HP = new VitalAddresses(),
             MP = new VitalAddresses(),
             Attributes = new AttributesAddresses(),
-            Resistances = new ResistancesAddresses(),
+            Elements = new ElementsAddresses(),
             Equipments = new EquipmentsAddresses(),
             Digievolutions = new DigievolutionsAddresses
             {
@@ -201,7 +195,6 @@ public class DigimonReaderTests
         memoryReaderMock.Setup(m => m.ReadInt16(BlastAddress)).Returns((short)0);
 
         var slotReaderMock = new Mock<IDigievolutionSlotReader>();
-        var evolutionReaderMock = new Mock<IDigievolutionReader>();
         var storedDigievolutionReaderMock = new Mock<IStoredDigievolutionReader>();
         storedDigievolutionReaderMock
             .Setup(s => s.Read(It.IsAny<MemoryBlockReader>(), statusAddresses.Digievolutions))
@@ -210,13 +203,12 @@ public class DigimonReaderTests
         var reader = new DigimonReader(
             memoryReaderMock.Object,
             slotReaderMock.Object,
-            evolutionReaderMock.Object,
             storedDigievolutionReaderMock.Object,
             CreateInBattleReaderMock().Object
         );
 
         // Act
-        var result = reader.Read(address, statusAddresses, new InBattleAddresses(), 0);
+        var result = reader.Read(address, statusAddresses, new InBattleAddresses(), 1);
 
         // Assert
         Assert.NotNull(result);
@@ -224,7 +216,7 @@ public class DigimonReaderTests
     }
 
     [Fact]
-    public void Read_ShouldMapEvolutionSlotsAndResources_WhenSlotsArePresent()
+    public void Read_ShouldMapEvolutionSlotsAndStoredDigievolutions_WhenSlotsArePresent()
     {
         // Arrange
         var address = new DigimonAddress { MemoryBlockAddress = 0x800100, BlastAddress = BlastAddress };
@@ -238,7 +230,7 @@ public class DigimonReaderTests
             HP = new VitalAddresses(),
             MP = new VitalAddresses(),
             Attributes = new AttributesAddresses(),
-            Resistances = new ResistancesAddresses(),
+            Elements = new ElementsAddresses(),
             Equipments = new EquipmentsAddresses(),
             Digievolutions = new DigievolutionsAddresses
             {
@@ -260,17 +252,10 @@ public class DigimonReaderTests
         slotReaderMock.Setup(s => s.Read(It.IsAny<MemoryBlockReader>(), slotAddress1)).Returns(slotResource1);
         slotReaderMock.Setup(s => s.Read(It.IsAny<MemoryBlockReader>(), slotAddress2)).Returns(slotResource2);
 
-        var evolutionResource1 = new DigievolutionResource { Level = 10, Dvxp = 500 };
-        var evolutionResource2 = new DigievolutionResource { Level = 25, Dvxp = 1200 };
-
-        var evolutionReaderMock = new Mock<IDigievolutionReader>();
-        evolutionReaderMock.Setup(e => e.Read(It.IsAny<MemoryBlockReader>(), 12, statusAddresses.Digievolutions)).Returns(evolutionResource1);
-        evolutionReaderMock.Setup(e => e.Read(It.IsAny<MemoryBlockReader>(), 15, statusAddresses.Digievolutions)).Returns(evolutionResource2);
-
         var storedDigievolutions = new List<StoredDigievolutionResource>
         {
-            new() { DigievolutionId = 12, Level = 10 },
-            new() { DigievolutionId = 15, Level = 25 },
+            new() { DigievolutionId = 12, Level = 10, Dvexp = 500 },
+            new() { DigievolutionId = 15, Level = 25, Dvexp = 1200 },
             new() { DigievolutionId = 99, Level = 5 }
         };
 
@@ -282,24 +267,58 @@ public class DigimonReaderTests
         var reader = new DigimonReader(
             memoryReaderMock.Object,
             slotReaderMock.Object,
-            evolutionReaderMock.Object,
             storedDigievolutionReaderMock.Object,
             CreateInBattleReaderMock().Object
         );
 
         // Act
-        var result = reader.Read(address, statusAddresses, new InBattleAddresses(), 0);
+        var result = reader.Read(address, statusAddresses, new InBattleAddresses(), 1);
 
         // Assert
         Assert.NotNull(result);
         Assert.Equal(2, result.Digievolutions.Count);
         Assert.Equal(slotResource1, result.Digievolutions[0]);
-        Assert.Equal(evolutionResource1, result.Digievolutions[0].DigievolutionResource);
         Assert.Equal(slotResource2, result.Digievolutions[1]);
-        Assert.Equal(evolutionResource2, result.Digievolutions[1].DigievolutionResource);
         Assert.Equal(3, result.StoredDigievolutions.Count);
+        Assert.Equal(1200, result.StoredDigievolutions[1].Dvexp);
         Assert.Equal(99, result.StoredDigievolutions[2].DigievolutionId);
         Assert.Equal(5, result.StoredDigievolutions[2].Level);
+    }
+
+    [Fact]
+    public void Read_ShouldPassPartySlotIndexToInBattleReader()
+    {
+        var address = new DigimonAddress { MemoryBlockAddress = 0x800100, BlastAddress = BlastAddress };
+        var statusAddresses = new DigimonStatusAddresses
+        {
+            Digievolutions = new DigievolutionsAddresses { ActiveDigievolution = 200, Slots = [] }
+        };
+        var inBattleAddresses = new InBattleAddresses();
+        var inBattleResource = new InBattleResource();
+
+        var memoryReaderMock = new Mock<IMemoryReader>();
+        memoryReaderMock.Setup(m => m.ReadBytes(0x800100, 1500)).Returns(new byte[1500]);
+
+        var storedDigievolutionReaderMock = new Mock<IStoredDigievolutionReader>();
+        storedDigievolutionReaderMock
+            .Setup(s => s.Read(It.IsAny<MemoryBlockReader>(), statusAddresses.Digievolutions))
+            .Returns([]);
+
+        var inBattleReaderMock = new Mock<IInBattleReader>();
+        inBattleReaderMock.Setup(r => r.Read(inBattleAddresses, 2)).Returns(inBattleResource);
+
+        var reader = new DigimonReader(
+            memoryReaderMock.Object,
+            new Mock<IDigievolutionSlotReader>().Object,
+            storedDigievolutionReaderMock.Object,
+            inBattleReaderMock.Object
+        );
+
+        var result = reader.Read(address, statusAddresses, inBattleAddresses, 2);
+
+        Assert.NotNull(result);
+        Assert.Same(inBattleResource, result.InBattle);
+        inBattleReaderMock.Verify(r => r.Read(inBattleAddresses, 2), Times.Once);
     }
 
     private static Mock<IInBattleReader> CreateInBattleReaderMock()

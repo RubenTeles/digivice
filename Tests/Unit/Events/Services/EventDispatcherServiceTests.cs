@@ -1,10 +1,5 @@
-namespace Tests.Events.Services;
+﻿namespace Tests.Events.Services;
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 using Moq;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -18,7 +13,7 @@ using Backend.Domain.Models;
 public class EventDispatcherServiceTests
 {
     [Fact]
-    public void DispatchInitialStateToClient_ShouldIncludeLastError_WhenEmulatorIsOffline()
+    public void DispatchInitialStateToClient_ShouldIncludeLastError_WhenUnhealthy()
     {
         var clientProxyMock = new Mock<ISingleClientProxy>();
         clientProxyMock.Setup(c => c.SendCoreAsync(
@@ -36,8 +31,8 @@ public class EventDispatcherServiceTests
         var loggerMock = new Mock<ILogger<EventDispatcherService>>();
         var gameStateStore = new GameStateStore
         {
-            IsConnectedWithEmulator = false,
-            LastEmulatorConnectionErrorCode = "mapping_not_found"
+            Status = HealthStatus.Error,
+            LastErrorCode = "mapping_not_found"
         };
 
         var service = new EventDispatcherService(
@@ -49,23 +44,23 @@ public class EventDispatcherServiceTests
 
         clientProxyMock.Verify(
             c => c.SendCoreAsync(
-                "EmulatorConnectionStatusChanged",
+                "HealthChanged",
                 It.Is<object?[]>(args =>
                     args.Length == 1
-                    && GetConnectionDto(args[0]!).IsConnected == false
-                    && GetConnectionDto(args[0]!).ErrorCode == "mapping_not_found"),
+                    && GetHealthDto(args[0]!).Status == HealthStatus.Error
+                    && GetHealthDto(args[0]!).ErrorCode == "mapping_not_found"),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }
 
-    private static ConnectionDTO GetConnectionDto(object eventObject)
+    private static HealthDTO GetHealthDto(object eventObject)
     {
         var ev = (Event)eventObject;
-        return (ConnectionDTO)ev.Payload;
+        return (HealthDTO)ev.Payload;
     }
 
     [Fact]
-    public void DispatchInitialStateToClient_ShouldSendEmulatorStatusOnly_WhenCurrentStateIsNull()
+    public void DispatchInitialStateToClient_ShouldSendHealthOnly_WhenCurrentStateIsNull()
     {
         var clientProxyMock = new Mock<ISingleClientProxy>();
         clientProxyMock.Setup(c => c.SendCoreAsync(
@@ -84,7 +79,7 @@ public class EventDispatcherServiceTests
 
         var gameStateStoreMock = new Mock<IGameStateStore>();
         gameStateStoreMock.Setup(g => g.CurrentState).Returns((State?)null);
-        gameStateStoreMock.Setup(g => g.IsConnectedWithEmulator).Returns(false);
+        gameStateStoreMock.Setup(g => g.Status).Returns(HealthStatus.Loading);
 
         var service = new EventDispatcherService(
             hubContextMock.Object,
@@ -104,8 +99,8 @@ public class EventDispatcherServiceTests
         );
         clientProxyMock.Verify(
             c => c.SendCoreAsync(
-                "EmulatorConnectionStatusChanged",
-                It.Is<object?[]>(args => args.Length == 1 && ((Event)args[0]!).Type.Equals(EventType.EmulatorConnectionStatusChanged)),
+                "HealthChanged",
+                It.Is<object?[]>(args => args.Length == 1 && ((Event)args[0]!).Type.Equals(EventType.HealthChanged)),
                 It.IsAny<CancellationToken>()
             ),
             Times.Once
@@ -132,7 +127,7 @@ public class EventDispatcherServiceTests
 
         var loggerMock = new Mock<ILogger<EventDispatcherService>>();
 
-        var state = new State(); // Novo estado limpo padrão
+        var state = new State();
         var gameStateStoreMock = new Mock<IGameStateStore>();
         gameStateStoreMock.Setup(g => g.CurrentState).Returns(state);
 
@@ -185,8 +180,8 @@ public class EventDispatcherServiceTests
 
         var events = new List<Event>
         {
-            new(EventType.PlayerChanged, new ConnectionDTO(true)),
-            new(EventType.PartyChanged, new ConnectionDTO(true))
+            new(EventType.PlayerChanged, new HealthDTO(HealthStatus.Healthy)),
+            new(EventType.PartyChanged, new HealthDTO(HealthStatus.Healthy))
         };
 
         // Act
@@ -219,7 +214,6 @@ public class EventDispatcherServiceTests
         var clientProxyMock = new Mock<ISingleClientProxy>();
         var networkException = new Exception("SignalR connection closed catastrophically");
 
-        // Retorna uma task falhada para simular exceção assíncrona
         clientProxyMock.Setup(c => c.SendCoreAsync(
             It.IsAny<string>(),
             It.IsAny<object?[]>(),
@@ -241,13 +235,16 @@ public class EventDispatcherServiceTests
             gameStateStoreMock.Object
         );
 
-        var singleEvent = new Event(EventType.PlayerChanged, new ConnectionDTO(true));
+        var singleEvent = new Event(EventType.PlayerChanged, new HealthDTO(HealthStatus.Healthy));
 
         // Act
         service.DispatchEvents(new[] { singleEvent });
 
-        // Damos um tempo curto de thread para permitir que o ContinueWith assíncrono execute
-        await Task.Delay(100);
+        var deadline = DateTime.UtcNow + TimeSpan.FromSeconds(5);
+        while (DateTime.UtcNow < deadline && loggerMock.Invocations.Count == 0)
+        {
+            await Task.Delay(5);
+        }
 
         // Assert
         loggerMock.Verify(
@@ -283,7 +280,7 @@ public class EventDispatcherServiceTests
         );
 
         // Act
-        service.DispatchEvents([]); // Envia uma coleção de eventos vazia
+        service.DispatchEvents([]);
 
         // Assert
         clientProxyMock.Verify(
@@ -291,49 +288,7 @@ public class EventDispatcherServiceTests
             Times.Never
         );
     }
-
-    [Fact]
-    public void DispatchInitialStateToClient_ShouldSendStateDTOWithNulls_WhenCurrentStateHasNullEntities()
-    {
-        // Arrange
-        var clientProxyMock = new Mock<ISingleClientProxy>();
-        clientProxyMock.Setup(c => c.SendCoreAsync(
-            It.IsAny<string>(),
-            It.IsAny<object?[]>(),
-            It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
-
-        var hubClientsMock = new Mock<IHubClients>();
-        hubClientsMock.Setup(c => c.Client("client1")).Returns(clientProxyMock.Object);
-        hubClientsMock.Setup(c => c.All).Returns(clientProxyMock.Object);
-
-        var hubContextMock = new Mock<IHubContext<GameHub>>();
-        hubContextMock.Setup(h => h.Clients).Returns(hubClientsMock.Object);
-
-        var loggerMock = new Mock<ILogger<EventDispatcherService>>();
-
-        var state = new State { Player = null!, Party = null!, DigimonBattle = null!, Journal = null! }; // Entidades internas nulas
-        var gameStateStoreMock = new Mock<IGameStateStore>();
-        gameStateStoreMock.Setup(g => g.CurrentState).Returns(state);
-
-        var service = new EventDispatcherService(
-            hubContextMock.Object,
-            loggerMock.Object,
-            gameStateStoreMock.Object
-        );
-
-        // Act
-        service.DispatchInitialStateToClient("client1");
-
-        // Assert
-        hubClientsMock.Verify(c => c.Client("client1"), Times.Once);
-        clientProxyMock.Verify(
-            c => c.SendCoreAsync(
-                "InitialState",
-                It.Is<object?[]>(args => args.Length == 1 && ((Event)args[0]!).Type.Equals(EventType.InitialState)),
-                It.IsAny<CancellationToken>()
-            ),
-            Times.Once
-        );
-    }
 }
+
+
+

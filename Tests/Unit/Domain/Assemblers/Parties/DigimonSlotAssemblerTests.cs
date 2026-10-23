@@ -20,7 +20,7 @@ public class DigimonSlotAssemblerTests
                 HP = new VitalResource(),
                 MP = new VitalResource(),
                 Attributes = new AttributesResource(),
-                Resistances = new ResistancesResource(),
+                Elements = new ElementsResource(),
                 Equipments = new EquipmentsResource(),
                 Digievolutions = []
             }
@@ -36,12 +36,31 @@ public class DigimonSlotAssemblerTests
     }
 
     [Fact]
-    public void Assemble_ShouldReturnNullDigimon_WhenDigimonResourceIsNull()
+    public void Assemble_ShouldKeepKotemonAsOccupiedSlot_WhenDigimonIdIsZero()
+    {
+        var resource = new DigimonSlotResource
+        {
+            Index = 1,
+            DigimonId = 0,
+            DigimonResource = new DigimonResource { Level = 3 }
+        };
+
+        var result = DigimonSlotAssembler.Assemble(resource);
+
+        Assert.Equal(0, result.DigimonId);
+        Assert.NotNull(result.Digimon);
+        Assert.Equal(3, result.Digimon.Level);
+    }
+
+    [Theory]
+    [InlineData(0xFF)]
+    [InlineData(42)]
+    public void Assemble_ShouldReturnEmptySlot_WhenDigimonResourceIsNull(int rawDigimonId)
     {
         var resource = new DigimonSlotResource
         {
             Index = 2,
-            DigimonId = null,
+            DigimonId = rawDigimonId,
             DigimonResource = null
         };
 

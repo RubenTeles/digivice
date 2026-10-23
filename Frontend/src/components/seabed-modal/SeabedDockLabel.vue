@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import type {
-  DockLabelPosition,
-  SeabedDirectionDockViewModel,
-} from "@/viewmodels/seabed-modal/seabed-route-dock.viewmodel";
+import type { LabelPlacement } from "@/types/label-placement.type";
+import type { SeabedDirectionDockViewModel } from "@/viewmodels/seabed-modal/seabed-route-dock.viewmodel";
 
 defineProps<{
   dock: SeabedDirectionDockViewModel;
 }>();
 
-function getLabelPlacementClasses(labelPlacement: DockLabelPosition): string {
+function getLabelPlacementClasses(labelPlacement: LabelPlacement): string {
   if (labelPlacement === "below") {
     return "top-full mt-1 left-1/2 -translate-x-1/2";
   }
@@ -35,7 +33,7 @@ function getLabelPlacementClasses(labelPlacement: DockLabelPosition): string {
       class="absolute w-max whitespace-nowrap text-cyan-100 drop-shadow bg-cyan-950/95 rounded border border-cyan-700/80 text-center shadow-[0_0_10px_rgba(0,0,0,0.5)] leading-tight text-[10px] px-2 py-0.5"
       :class="getLabelPlacementClasses(dock.labelPlacement)"
     >
-      {{ $t(`location.${dock.location}`) }}
+      {{ $t(`map.${dock.location}`) }}
     </div>
   </div>
 </template>

@@ -1,24 +1,19 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import type { Constant } from "@/constants/constant";
-import { IconConstant } from "@/constants/icon.constant";
-import type { SeabedConstant } from "@/constants/seabed.constant";
+import { SeabedDirectionIcon } from "@/constants/icon.constant";
+import type { SeabedDirection } from "@/types/seabed-direction.type";
 import { SeabedPresenter } from "@/presenters/map/seabed.presenter";
 
 const props = defineProps<{
-  seabedRoute: number;
-  mapVariant: number;
-  locationId: string | null;
+  seabedRoute: number | null;
+  mapVariant: number | null;
+  locationId: string;
 }>();
 
 const { t } = useI18n();
 
 const routeLocation = computed(() => {
-  if (props.locationId === null) {
-    return null;
-  }
-
   return SeabedPresenter.getRouteLocation(props.seabedRoute, props.locationId, props.mapVariant);
 });
 
@@ -38,12 +33,12 @@ const hasEmerge = computed(() => emerge.value.length > 0);
 const hasLeft = computed(() => leftLocations.value.length > 0);
 const hasRight = computed(() => rightLocations.value.length > 0);
 
-function getEmergeEmoji(on: SeabedConstant): string {
-  return IconConstant[on];
+function getEmergeEmoji(on: SeabedDirection): string {
+  return SeabedDirectionIcon[on];
 }
 
 function getLocationName(locationId: string): string {
-  return t(`location.${locationId}`);
+  return t(`map.${locationId}`);
 }
 </script>
 

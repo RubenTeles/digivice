@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { Digimon } from "@/models/party/digimon/digimon.ts";
-import { Constant } from "@/constants/constant.ts";
+import type { Digimon } from "@/models";
+import type { DigimonStat } from "@/types/digimon-stat.type";
 import Stat from "./Stat.vue";
 import DefaultTooltip from "@/components/tooltip/DefaultTooltip.vue";
 import Tooltip from "@/components/tooltip/Tooltip.vue";
 import StatsTooltip from "./StatsTooltip.vue";
 import { useTooltipPosition } from "@/composables/use-tooltip-position";
-import { StatsPresenter } from "@/presenters/party/digimon/stats.presenter.ts";
-import { useGameStore } from "@/stores/use-game-store";
+import { StatsPresenter } from "@/presenters/party/digimon/stats.presenter";
+import { useGameState } from "@/composables/use-game-state";
 
 const props = defineProps<{
   digimon: Digimon;
 }>();
 
-const store = useGameStore();
+const gameState = useGameState();
 const { t } = useI18n();
 const tooltipPlacement = "below" as const;
 const tooltipPosition = useTooltipPosition();
@@ -29,7 +29,7 @@ const titleTooltipContent = ref("");
 const mathTooltipContent = ref({ title: "", base: 0, equip: 0, total: 0, battleDelta: 0 });
 
 const location = computed(() => {
-  return store.currentState?.player?.location ?? null;
+  return gameState.value.player.mapId;
 });
 
 const statsViewModel = computed(() => {
@@ -46,7 +46,7 @@ const showIconTooltip = (event: MouseEvent, title: string, text: string) => {
   showAt(event, { placement: tooltipPlacement });
 };
 
-const showStatIconTooltip = (event: MouseEvent, title: string, propertyKey: Constant) => {
+const showStatIconTooltip = (event: MouseEvent, title: string, propertyKey: DigimonStat) => {
   showIconTooltip(event, title, t(`stat.${propertyKey}-explanation`));
 };
 
@@ -106,7 +106,7 @@ const moveTooltip = (event: MouseEvent) => {
 
         <div class="flex flex-col gap-1 min-w-0">
           <Stat
-            v-for="(statViewModel, key) in statsViewModel.resistances"
+            v-for="(statViewModel, key) in statsViewModel.elements"
             :key="key"
             :stat-view-model="statViewModel"
             :stat="key"

@@ -1,43 +1,52 @@
 import * as signalR from "@microsoft/signalr";
 import { invoke } from "@tauri-apps/api/core";
 import type { EventsMap } from "./events.map";
+import type { EventDTO } from "./dto/event.dto";
 import { signalRLogger } from "./logger";
-import { APP_CONFIG } from "../config";
+import { AppConfig } from "@/config";
 import { formatHubConnectionError } from "./hub-connection-error";
 
-const CONNECTION_MAX_ATTEMPTS = 20;
-const CONNECTION_RETRY_DELAY_MS = 250;
+const ConnectionMaxAttempts = 20;
+const ConnectionRetryDelayMs = 250;
+
+type HandlersMap = { [K in keyof EventsMap]?: ((data: EventsMap[K]) => void)[] };
 
 class SignalRService {
   private connection: signalR.HubConnection | null = null;
-  // Stores handlers in a typed manner
-  private handlers: Map<keyof EventsMap, ((data: any) => void)[]> = new Map();
+  private handlers: HandlersMap = {};
 
   /**
    * Subscribe to a SignalR event with strong typing.
+   * Can be called before or after startConnection.
    */
   public on<K extends keyof EventsMap>(eventName: K, handler: (data: EventsMap[K]) => void) {
-    if (!this.handlers.has(eventName)) {
-      this.handlers.set(eventName, []);
+    const eventHandlers: ((data: EventsMap[K]) => void)[] = this.handlers[eventName] ?? [];
+    const isFirstHandler = eventHandlers.length === 0;
+
+    eventHandlers.push(handler);
+    // TS cannot correlate the generic K on indexed writes to a mapped type.
+    this.handlers[eventName] = eventHandlers as HandlersMap[K];
+
+    if (isFirstHandler) {
+      this.bindBackendEvent(eventName);
     }
-    this.handlers.get(eventName)?.push(handler);
   }
 
   private async getHubUrl(): Promise<string> {
     // In development (Vite), we use the relative proxy.
-    if (APP_CONFIG.IS_DEV) {
-      return APP_CONFIG.BACKEND.HUB_PATH;
+    if (AppConfig.isDev) {
+      return AppConfig.backend.hubPath;
     }
 
     // In production (Tauri), we are trying to obtain the dynamic port from the backend.
     try {
       const port = await invoke<number>("get_backend_port");
-      return `http://localhost:${port}${APP_CONFIG.BACKEND.HUB_PATH}`;
+      return `http://localhost:${port}${AppConfig.backend.hubPath}`;
     } catch (err) {
       signalRLogger.warn(
-        `Failed to get backend port via Tauri. Using fallback: ${APP_CONFIG.BACKEND.DEFAULT_PORT}`,
+        `Failed to get backend port via Tauri. Using fallback: ${AppConfig.backend.defaultPort}`,
       );
-      return APP_CONFIG.BACKEND.FALLBACK_URL;
+      return AppConfig.backend.fallbackUrl;
     }
   }
 
@@ -55,11 +64,10 @@ class SignalRService {
 
   public async startConnection() {
     const hubUrl = await this.getHubUrl();
+    const connection = this.createConnection(hubUrl);
     let lastError: unknown = null;
 
-    for (let attempt = 1; attempt <= CONNECTION_MAX_ATTEMPTS; attempt++) {
-      const connection = this.createConnection(hubUrl);
-
+    for (let attempt = 1; attempt <= ConnectionMaxAttempts; attempt++) {
       try {
         await connection.start();
         signalRLogger.info(`Connected to GameHub at: ${hubUrl}`);
@@ -68,12 +76,12 @@ class SignalRService {
       } catch (err) {
         lastError = err;
         signalRLogger.warn(
-          `Connection attempt ${attempt}/${CONNECTION_MAX_ATTEMPTS} failed at ${hubUrl}`,
+          `Connection attempt ${attempt}/${ConnectionMaxAttempts} failed at ${hubUrl}`,
           err,
         );
 
-        if (attempt < CONNECTION_MAX_ATTEMPTS) {
-          await new Promise((resolve) => setTimeout(resolve, CONNECTION_RETRY_DELAY_MS));
+        if (attempt < ConnectionMaxAttempts) {
+          await new Promise((resolve) => setTimeout(resolve, ConnectionRetryDelayMs));
         }
       }
     }
@@ -86,7 +94,9 @@ class SignalRService {
   }
 
   private registerInternalStatusEvents() {
-    if (!this.connection) return;
+    if (!this.connection) {
+      return;
+    }
 
     this.connection.onreconnecting(() => {
       signalRLogger.warn("Reconnecting...");
@@ -112,33 +122,27 @@ class SignalRService {
   }
 
   private registerBackendEvents() {
-    if (!this.connection) return;
-
-    // Filter out internal client-only events from remote hub registrations
-    const backendEventNames = Array.from(this.handlers.keys()).filter(
-      (name) => name !== "HubConnectionStatusChanged",
-    );
-
-    for (const eventName of backendEventNames) {
-      this.connection.on(eventName, (eventWrapper: any) => {
-        signalRLogger.debug(`Hub Event [${eventName}]`, eventWrapper);
-
-        // If we receive the wrapped structure from the backend, extract only the 'payload' property
-        const payload =
-          eventWrapper && typeof eventWrapper === "object" && "payload" in eventWrapper
-            ? eventWrapper.payload
-            : eventWrapper;
-
-        this.emit(eventName, payload);
-      });
+    const eventNames = Object.keys(this.handlers) as (keyof EventsMap)[];
+    for (const eventName of eventNames) {
+      this.bindBackendEvent(eventName);
     }
   }
 
-  private emit<K extends keyof EventsMap>(eventName: K, data: EventsMap[K]) {
-    const eventHandlers = this.handlers.get(eventName);
-    if (eventHandlers) {
-      eventHandlers.forEach((handler) => handler(data));
+  private bindBackendEvent<K extends keyof EventsMap>(eventName: K): void {
+    // HubConnectionStatusChanged is emitted locally, never by the hub.
+    if (!this.connection || eventName === "HubConnectionStatusChanged") {
+      return;
     }
+
+    this.connection.on(eventName, (eventDto: EventDTO<EventsMap[K]>) => {
+      signalRLogger.debug(`Hub Event [${eventName}]`, eventDto);
+      this.emit(eventName, eventDto.payload);
+    });
+  }
+
+  private emit<K extends keyof EventsMap>(eventName: K, data: EventsMap[K]) {
+    const eventHandlers: ((data: EventsMap[K]) => void)[] | undefined = this.handlers[eventName];
+    eventHandlers?.forEach((handler) => handler(data));
   }
 }
 

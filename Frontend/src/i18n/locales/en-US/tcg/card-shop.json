@@ -1,0 +1,13 @@
+{
+  "cardShop": {
+    "asYellowCruiser": {
+      "name": "AS Yellow Cruiser"
+    },
+    "seiryuCardShop": {
+      "name": "Seiryu Card Shop"
+    },
+    "suzakuCardShop": {
+      "name": "Suzaku Card Shop"
+    }
+  }
+}

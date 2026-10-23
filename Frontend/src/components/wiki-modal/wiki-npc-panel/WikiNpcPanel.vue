@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { NpcBattleKindConstant } from "@/constants/npc-battle-kind.constant";
+import type { NpcBattleKind } from "@/types/npc-battle-kind.type";
 import { WikiNpcPanelPresenter } from "@/presenters/map/wiki-modal/wiki-npc-panel.presenter";
 import WikiNpcCardBattlePanel from "@/components/wiki-modal/wiki-npc-panel/WikiNpcCardBattlePanel.vue";
 import WikiNpcDigimonBattlePanel from "@/components/wiki-modal/wiki-npc-panel/WikiNpcDigimonBattlePanel.vue";
 import { QuestRepository } from "@/repositories/quest.repository";
 import { QuestService } from "@/services/quest.service";
-import { useGameStore } from "@/stores/use-game-store";
+import { useGameState } from "@/composables/use-game-state";
 import { useI18n } from "vue-i18n";
 import type { WikiNpcBattleOptionViewModel } from "@/viewmodels/wiki-modal/wiki-npc-battle-option.viewmodel";
 import type { DropType } from "@/repositories/tables/raws/drop/drop-type";
@@ -26,24 +26,20 @@ const emit = defineEmits<{
   (e: "hide-stat-tooltip"): void;
 }>();
 
-const store = useGameStore();
+const gameState = useGameState();
 const { t } = useI18n();
 
 const journalNpc = computed(() => {
-  const npcs = store.currentState?.npcs;
-  if (npcs === null || npcs === undefined) {
-    return null;
-  }
-
+  const npcs = gameState.value.npcs;
   return npcs[props.npcId as keyof typeof npcs] ?? null;
 });
 
 const partyCharisma = computed(() => {
-  return WikiNpcPanelPresenter.getPartyCharisma(store.currentState?.party ?? { slots: [] });
+  return WikiNpcPanelPresenter.getPartyCharisma(gameState.value.party);
 });
 
 const importantItems = computed(() => {
-  return store.currentState?.importantItems ?? null;
+  return gameState.value.importantItems;
 });
 
 const panelViewModel = computed(() => {
@@ -93,8 +89,8 @@ const selectedOption = computed(() => {
   );
 });
 
-const battleKindLabelKey = (kind: NpcBattleKindConstant): string => {
-  if (kind === NpcBattleKindConstant.card) {
+const battleKindLabelKey = (kind: NpcBattleKind): string => {
+  if (kind === "card") {
     return "npc.battle.card";
   }
 
@@ -151,7 +147,7 @@ const showFolderBagRequirementHint = computed(() => {
     return false;
   }
 
-  const folderBagQuest = store.currentState?.journal?.sideQuests.find((quest) => {
+  const folderBagQuest = gameState.value.journal.sideQuests.find((quest) => {
     return quest.id === "folderBag";
   });
   const folderBagRaw = QuestRepository.getSideQuestsRaw().find((questRaw) => {
@@ -213,7 +209,7 @@ const openLocation = () => {
         class="w-full text-center px-2.5 py-2 rounded text-[10px] 2xl:text-[12px] font-bold tracking-wide transition-colors cursor-pointer focus:outline-none hover:bg-blue-900/60 text-blue-300 border border-blue-700/60 bg-blue-950/40"
         @click="openLocation"
       >
-        {{ $t(`location.${panelViewModel.locationId}`) }}
+        {{ $t(`map.${panelViewModel.locationId}`) }}
       </button>
 
       <div class="flex flex-col gap-2 pt-2 border-t border-[#0055ff]/30">
@@ -253,14 +249,14 @@ const openLocation = () => {
 
     <div class="flex-1 min-w-0 min-h-0 flex flex-col overflow-hidden">
       <WikiNpcCardBattlePanel
-        v-if="selectedOption?.kind === NpcBattleKindConstant.card"
+        v-if="selectedOption?.kind === 'card'"
         :npc-id="npcId"
         :battle-id="selectedOption.battleId"
         @open-card="emit('open-card', $event)"
         @open-drops="emit('open-drops', $event)"
       />
       <WikiNpcDigimonBattlePanel
-        v-else-if="selectedOption?.kind === NpcBattleKindConstant.digimon"
+        v-else-if="selectedOption?.kind === 'digimon'"
         :npc-id="npcId"
         :battle-id="selectedOption.battleId"
         @open-drops="emit('open-drops', $event)"

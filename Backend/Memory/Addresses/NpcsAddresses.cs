@@ -25,5 +25,11 @@ namespace Backend.Memory.Addresses
         public NpcAddresses FakeByakkoLeader { get; set; } = new();
         public NpcAddresses ByakkoLeader { get; set; } = new();
         public NpcAddresses AoaAttacker { get; set; } = new();
+        public NpcAddresses OptionalTrooper1AdminCenterB1F { get; set; } = new();
+        public NpcAddresses OptionalTrooper2AdminCenterB1F { get; set; } = new();
+        public NpcAddresses OptionalTrooperAdminFloor1 { get; set; } = new();
+        public NpcAddresses OptionalTrooper1AdminFloor2 { get; set; } = new();
+        public NpcAddresses OptionalSoldier1AdminFloor2 { get; set; } = new();
+        public NpcAddresses OptionalTrooper2AdminFloor2 { get; set; } = new();
     }
 }

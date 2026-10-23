@@ -1,6 +1,5 @@
 namespace Tests.Memory.Readers;
 
-using Xunit;
 using Moq;
 using Backend.Memory.Readers;
 using Backend.Memory.Addresses;
@@ -19,7 +18,6 @@ public class PartyReaderTests
 
         var addresses = new PartyAddresses
         {
-            BytesPerSlot = 128,
             EmptySlotId = 255,
             Slots = [slot1, slot2]
         };
@@ -28,8 +26,8 @@ public class PartyReaderTests
         var expectedResource2 = new DigimonSlotResource { Index = 1, DigimonId = 2 };
 
         var slotReaderMock = new Mock<IDigimonSlotReader>();
-        slotReaderMock.Setup(s => s.Read(slot1, 128)).Returns(expectedResource1);
-        slotReaderMock.Setup(s => s.Read(slot2, 128)).Returns(expectedResource2);
+        slotReaderMock.Setup(s => s.Read(slot1)).Returns(expectedResource1);
+        slotReaderMock.Setup(s => s.Read(slot2)).Returns(expectedResource2);
 
         var reader = new PartyReader(slotReaderMock.Object);
 

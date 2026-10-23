@@ -3,7 +3,6 @@ namespace Tests.Memory.Readers;
 using Backend.Memory.Addresses;
 using Backend.Memory.Readers;
 using Moq;
-using Xunit;
 using Backend.Memory.Readers.Interfaces;
 
 public class NpcsReaderTests
@@ -23,7 +22,7 @@ public class NpcsReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B39A, 1)).Returns([(byte)0x7B]);
+        SetupMaskedByte(memoryReaderMock, 0x0004B39A, 0x7B);
 
         var reader = new NpcsReader(memoryReaderMock.Object);
 
@@ -32,7 +31,7 @@ public class NpcsReaderTests
         var battle = Assert.Single(result.Catherine.Battles);
         Assert.Equal("first", battle.Id);
         Assert.Equal(0x08, battle.Value);
-        memoryReaderMock.Verify(memoryReader => memoryReader.ReadBytes(0x0004B39A, 1), Times.Once);
+        memoryReaderMock.Verify(memoryReader => memoryReader.ReadByte(0x0004B39A, 0x08), Times.Once);
     }
 
     [Fact]
@@ -50,7 +49,7 @@ public class NpcsReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B39A, 1)).Returns([(byte)0x0B]);
+        SetupMaskedByte(memoryReaderMock, 0x0004B39A, 0x0B);
 
         var reader = new NpcsReader(memoryReaderMock.Object);
 
@@ -75,7 +74,7 @@ public class NpcsReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B39B, 1)).Returns([(byte)0x03]);
+        SetupMaskedByte(memoryReaderMock, 0x0004B39B, 0x03);
 
         var reader = new NpcsReader(memoryReaderMock.Object);
 
@@ -83,7 +82,7 @@ public class NpcsReaderTests
 
         var battle = Assert.Single(result.Chris.Battles);
         Assert.Equal(0x02, battle.Value);
-        memoryReaderMock.Verify(memoryReader => memoryReader.ReadBytes(0x0004B39B, 1), Times.Once);
+        memoryReaderMock.Verify(memoryReader => memoryReader.ReadByte(0x0004B39B, 0x02), Times.Once);
     }
 
     [Fact]
@@ -101,7 +100,7 @@ public class NpcsReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B39C, 1)).Returns([(byte)0x01]);
+        SetupMaskedByte(memoryReaderMock, 0x0004B39C, 0x01);
 
         var reader = new NpcsReader(memoryReaderMock.Object);
 
@@ -109,7 +108,7 @@ public class NpcsReaderTests
 
         var battle = Assert.Single(result.Nakano.Battles);
         Assert.Equal(0x01, battle.Value);
-        memoryReaderMock.Verify(memoryReader => memoryReader.ReadBytes(0x0004B39C, 1), Times.Once);
+        memoryReaderMock.Verify(memoryReader => memoryReader.ReadByte(0x0004B39C, 0x01), Times.Once);
     }
 
     [Fact]
@@ -127,7 +126,7 @@ public class NpcsReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DB9, 1)).Returns([(byte)0x01]);
+        SetupMaskedByte(memoryReaderMock, 0x00048DB9, 0x01);
 
         var reader = new NpcsReader(memoryReaderMock.Object);
 
@@ -135,7 +134,7 @@ public class NpcsReaderTests
 
         var battle = Assert.Single(result.SeiryuLeader.Battles);
         Assert.Equal(0x01, battle.Value);
-        memoryReaderMock.Verify(memoryReader => memoryReader.ReadBytes(0x00048DB9, 1), Times.Once);
+        memoryReaderMock.Verify(memoryReader => memoryReader.ReadByte(0x00048DB9, 0x01), Times.Once);
     }
 
     [Fact]
@@ -154,8 +153,8 @@ public class NpcsReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B3DF, 1)).Returns([(byte)0xA0]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B39A, 1)).Returns([(byte)0x03]);
+        SetupMaskedByte(memoryReaderMock, 0x0004B3DF, 0xA0);
+        SetupMaskedByte(memoryReaderMock, 0x0004B39A, 0x03);
 
         var reader = new NpcsReader(memoryReaderMock.Object);
 
@@ -164,5 +163,12 @@ public class NpcsReaderTests
         Assert.Equal(2, result.Genji.Battles.Count);
         Assert.Equal(0x20, result.Genji.Battles.Single(battle => battle.Id == "first").Value);
         Assert.Equal(0x01, result.Genji.Battles.Single(battle => battle.Id == "second").Value);
+    }
+
+    private static void SetupMaskedByte(Mock<IMemoryReader> memoryReaderMock, long address, byte rawValue)
+    {
+        memoryReaderMock
+            .Setup(memoryReader => memoryReader.ReadByte(address, It.IsAny<long>()))
+            .Returns((long _, long bitMask) => (byte)(rawValue & bitMask));
     }
 }

@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import Location from "../Location.vue";
+import Location from "@/components/map/Location.vue";
 import Enemies from "@/components/map/Enemies.vue";
 import Seabed from "./Seabed.vue";
-import { useGameStore } from "@/stores/use-game-store";
-import { SeabedMapPresenter } from "@/presenters/map/seabed-map.presenter.ts";
+import { useGameState } from "@/composables/use-game-state";
+import { SeabedMapPresenter } from "@/presenters/map/seabed-map.presenter";
 
 const emit = defineEmits<{
   (e: "open-enemy-modal", enemyId: string): void;
   (e: "open-location-wiki", locationId: string): void;
 }>();
 
-const store = useGameStore();
+const gameState = useGameState();
 
 const locationId = computed(() => {
-  return store.currentState?.player?.location ?? null;
+  return gameState.value.player.mapId;
 });
 
 const seabedRoute = computed(() => {
-  return store.currentState?.player?.seabedRoute ?? 0;
+  return gameState.value.player.seabedRoute;
 });
 
 const mapVariant = computed(() => {
-  return store.currentState?.player?.mapVariant ?? 0;
+  return gameState.value.player.mapVariant;
 });
 
 const enemyIds = computed(() => {

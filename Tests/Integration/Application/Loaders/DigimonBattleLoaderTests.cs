@@ -3,13 +3,11 @@ namespace Tests.Integration.Application.Loaders;
 using Backend.Application.Loaders;
 using Backend.Memory.Readers;
 using Moq;
-using Xunit;
 using Backend.Memory.Readers.Interfaces;
 
 public class DigimonBattleLoaderTests : LoaderIntegrationTestBase
 {
     private const long EnemySlotBase = 0x000A44D0;
-    private const long ActiveUnitIdAddress = 0x000A4558;
     private const long ActiveEnemySlotIndexAddress = 0x000A446C;
     private const int SlotStride = 0x20;
 
@@ -29,8 +27,8 @@ public class DigimonBattleLoaderTests : LoaderIntegrationTestBase
             currentHp: 600,
             condition: 0x01,
             speed: 84);
-        memoryReaderMock.Setup(m => m.ReadInt16(ActiveUnitIdAddress)).Returns((short)122);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x000A4530, 1)).Returns([0x02]);
+        memoryReaderMock.Setup(m => m.ReadInt16(ActiveEnemySlotIndexAddress)).Returns((short)0);
+        memoryReaderMock.Setup(m => m.ReadByte(0x000A4530)).Returns((byte)0x02);
 
         var digimonBattleReader = new DigimonBattleReader(
             memoryReaderMock.Object,
@@ -47,31 +45,16 @@ public class DigimonBattleLoaderTests : LoaderIntegrationTestBase
     }
 
     [Fact]
-    public void Load_ShouldReadActiveEnemyFromSecondSlot_WhenFirstSlotIsKnockedOut()
+    public void Load_ShouldReturnEnemyWithIdZero_WhenOutOfBattle()
     {
         var addressesRepository = CreateAddressesRepository();
         var memoryReaderMock = new Mock<IMemoryReader>();
 
-        SetupEnemySlot(
-            memoryReaderMock,
-            slotIndex: 0,
-            id: 100,
-            maxHp: 500,
-            currentHp: 0,
-            condition: 0,
-            speed: 0);
-        SetupEnemySlot(
-            memoryReaderMock,
-            slotIndex: 1,
-            id: 200,
-            maxHp: 800,
-            currentHp: 400,
-            condition: 0x02,
-            speed: 90);
+        SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 0);
+        SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 1);
         SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 2);
-        memoryReaderMock.Setup(m => m.ReadInt16(ActiveUnitIdAddress)).Returns((short)386);
         memoryReaderMock.Setup(m => m.ReadInt16(ActiveEnemySlotIndexAddress)).Returns((short)-1);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x000A4530, 1)).Returns([0x02]);
+        memoryReaderMock.Setup(m => m.ReadByte(0x000A4530)).Returns((byte)0x00);
 
         var digimonBattleReader = new DigimonBattleReader(
             memoryReaderMock.Object,
@@ -79,11 +62,8 @@ public class DigimonBattleLoaderTests : LoaderIntegrationTestBase
         var loader = new DigimonBattleLoader(addressesRepository, digimonBattleReader);
         var resource = loader.Load();
 
-        Assert.Equal(200, resource.Enemy.Id);
-        Assert.Equal(400, resource.Enemy.HP.Current);
-        Assert.Equal(800, resource.Enemy.HP.Max);
-        Assert.Equal(0x02, resource.Enemy.Condition);
-        Assert.Equal(90, resource.Enemy.Speed);
+        Assert.Equal(0, resource.Field);
+        Assert.Equal(0, resource.Enemy.Id);
     }
 
     private static long GetSlotBase(int slotIndex)
@@ -120,6 +100,6 @@ public class DigimonBattleLoaderTests : LoaderIntegrationTestBase
         memoryReaderMock.Setup(m => m.ReadInt16(slotBase + 0x10)).Returns((short)0);
         memoryReaderMock.Setup(m => m.ReadInt16(slotBase + 0x12)).Returns((short)0);
         memoryReaderMock.Setup(m => m.ReadInt16(slotBase + 0x14)).Returns(speed);
-        memoryReaderMock.Setup(m => m.ReadBytes(slotBase + 0x1C, 1)).Returns([condition]);
+        memoryReaderMock.Setup(m => m.ReadByte(slotBase + 0x1C)).Returns(condition);
     }
 }

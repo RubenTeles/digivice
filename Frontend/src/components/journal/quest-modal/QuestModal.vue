@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import Modal from "@/components/modal/Modal.vue";
+import Chapter from "./Chapter.vue";
 import StepPanel from "./StepPanel.vue";
 import Steps from "./Steps.vue";
 import Requisites from "./Requisites.vue";
 import type { StepViewModel } from "@/viewmodels/quest/step.viewmodel";
-import { QuestModalPresenter } from "@/presenters/journal/quest-modal.presenter.ts";
-import { useGameStore } from "@/stores/use-game-store";
+import { QuestModalPresenter } from "@/presenters/journal/quest-modal.presenter";
+import { useGameState } from "@/composables/use-game-state";
 
 const props = defineProps<{
   questId: string | null;
@@ -17,20 +18,18 @@ const emit = defineEmits<{
   (e: "close"): void;
 }>();
 
-const store = useGameStore();
+const gameState = useGameState();
 
 const questViewModel = computed(() => {
   if (props.questId === null) {
     return null;
   }
 
-  const journal = store.currentState?.journal;
-  if (journal === null || journal === undefined) {
-    return null;
-  }
-
-  const party = store.currentState?.party ?? { slots: [] };
-  return QuestModalPresenter.getQuestViewModel(journal, props.questId, party);
+  return QuestModalPresenter.getQuestViewModel(
+    gameState.value.journal,
+    props.questId,
+    gameState.value.party,
+  );
 });
 
 const isModalOpen = computed(() => {
@@ -69,17 +68,53 @@ const currentStepNumber = computed(() => {
   return questViewModel.value?.currentStep?.number ?? null;
 });
 
+const currentChapterNumber = computed(() => {
+  return questViewModel.value?.currentChapter?.number ?? null;
+});
+
+const expandedChapterNumbers = ref<number[]>([]);
+
+const isChapterExpanded = (chapterNumber: number) => {
+  return expandedChapterNumbers.value.includes(chapterNumber);
+};
+
+const toggleChapter = (chapterNumber: number) => {
+  if (isChapterExpanded(chapterNumber)) {
+    expandedChapterNumbers.value = expandedChapterNumbers.value.filter((number) => {
+      return number !== chapterNumber;
+    });
+    return;
+  }
+
+  expandedChapterNumbers.value = [...expandedChapterNumbers.value, chapterNumber];
+};
+
 watch(
   () => [props.isOpen, props.questId] as const,
   ([isOpen, questId]) => {
     if (!isOpen || questId === null) {
       selectedStepNumber.value = null;
+      expandedChapterNumbers.value = [];
       return;
     }
 
     selectedStepNumber.value = currentStepNumber.value;
+    expandedChapterNumbers.value =
+      currentChapterNumber.value === null ? [] : [currentChapterNumber.value];
   },
 );
+
+watch(currentChapterNumber, (nextCurrentChapterNumber) => {
+  if (!props.isOpen || nextCurrentChapterNumber === null) {
+    return;
+  }
+
+  if (isChapterExpanded(nextCurrentChapterNumber)) {
+    return;
+  }
+
+  expandedChapterNumbers.value = [...expandedChapterNumbers.value, nextCurrentChapterNumber];
+});
 
 watch(currentStepNumber, (nextCurrentStepNumber, previousCurrentStepNumber) => {
   if (!props.isOpen) {
@@ -133,7 +168,27 @@ watch(currentStepNumber, (nextCurrentStepNumber, previousCurrentStepNumber) => {
           title-key="journal.prerequisites"
         />
 
+        <div v-if="questViewModel!.chapters.length > 0" class="flex flex-col gap-2">
+          <h3
+            class="text-xs text-blue-500 font-bold uppercase tracking-wider mb-1 text-center"
+          >
+            {{ $t("journal.missionSteps") }}
+          </h3>
+
+          <Chapter
+            v-for="chapter in questViewModel!.chapters"
+            :key="chapter.number"
+            :chapter="chapter"
+            :quest-id="questViewModel!.id"
+            :selected-step-number="selectedStep?.number ?? null"
+            :is-expanded="isChapterExpanded(chapter.number)"
+            @toggle="toggleChapter"
+            @select="selectStep"
+          />
+        </div>
+
         <Steps
+          v-else
           :steps="questViewModel!.steps"
           :quest-id="questViewModel!.id"
           :selected-step-number="selectedStep?.number ?? null"

@@ -8,7 +8,6 @@ namespace Backend.Memory.Readers
     public class DigimonReader(
         IMemoryReader memoryReader,
         IDigievolutionSlotReader digievolutionSlotReader,
-        IDigievolutionReader digievolutionReader,
         IStoredDigievolutionReader storedDigievolutionReader,
         IInBattleReader digimonInBattleReader) : IDigimonReader
     {
@@ -18,7 +17,7 @@ namespace Backend.Memory.Readers
             DigimonAddress digimonAddress,
             DigimonStatusAddresses digimonStatusAddresses,
             InBattleAddresses inBattleAddresses,
-            int zeroBasedPartySlotIndex)
+            int partySlotIndex)
         {
             var memoryBlock = memoryReader.ReadBytes(digimonAddress.MemoryBlockAddress, DigimonMemoryBlockSize);
             if (memoryBlock.Length < DigimonMemoryBlockSize)
@@ -30,19 +29,6 @@ namespace Backend.Memory.Readers
             var digievolutionsSlots = digimonStatusAddresses.Digievolutions.Slots
                 .Select(slot => digievolutionSlotReader.Read(memoryBlockReader, slot))
                 .ToList();
-
-            foreach (var digievolutionSlot in digievolutionsSlots)
-            {
-                if (digievolutionSlot.DigievolutionId is not null)
-                {
-                    digievolutionSlot.DigievolutionResource = digievolutionReader
-                        .Read(memoryBlockReader, digievolutionSlot.DigievolutionId.Value, digimonStatusAddresses.Digievolutions);
-                }
-                else
-                {
-                    digievolutionSlot.DigievolutionResource = null;
-                }
-            }
 
             var activeDigievolutionId = memoryReader.ReadInt16(digimonAddress.MemoryBlockAddress + digimonStatusAddresses.Digievolutions.ActiveDigievolution);
 
@@ -63,7 +49,7 @@ namespace Backend.Memory.Readers
                     Current = memoryBlockReader.ReadInt16(digimonStatusAddresses.MP.Current),
                     Max = memoryBlockReader.ReadInt16(digimonStatusAddresses.MP.Max)
                 },
-                InBattle = digimonInBattleReader.Read(inBattleAddresses, zeroBasedPartySlotIndex),
+                InBattle = digimonInBattleReader.Read(inBattleAddresses, partySlotIndex),
                 Attributes = new AttributesResource
                 {
                     Strength = memoryBlockReader.ReadInt16(digimonStatusAddresses.Attributes.Strength),
@@ -73,15 +59,15 @@ namespace Backend.Memory.Readers
                     Speed = memoryBlockReader.ReadInt16(digimonStatusAddresses.Attributes.Speed),
                     Charisma = memoryBlockReader.ReadInt16(digimonStatusAddresses.Attributes.Charisma)
                 },
-                Resistances = new ResistancesResource
+                Elements = new ElementsResource
                 {
-                    Fire = memoryBlockReader.ReadInt16(digimonStatusAddresses.Resistances.Fire),
-                    Water = memoryBlockReader.ReadInt16(digimonStatusAddresses.Resistances.Water),
-                    Ice = memoryBlockReader.ReadInt16(digimonStatusAddresses.Resistances.Ice),
-                    Wind = memoryBlockReader.ReadInt16(digimonStatusAddresses.Resistances.Wind),
-                    Thunder = memoryBlockReader.ReadInt16(digimonStatusAddresses.Resistances.Thunder),
-                    Machine = memoryBlockReader.ReadInt16(digimonStatusAddresses.Resistances.Machine),
-                    Dark = memoryBlockReader.ReadInt16(digimonStatusAddresses.Resistances.Dark)
+                    Fire = memoryBlockReader.ReadInt16(digimonStatusAddresses.Elements.Fire),
+                    Water = memoryBlockReader.ReadInt16(digimonStatusAddresses.Elements.Water),
+                    Ice = memoryBlockReader.ReadInt16(digimonStatusAddresses.Elements.Ice),
+                    Wind = memoryBlockReader.ReadInt16(digimonStatusAddresses.Elements.Wind),
+                    Thunder = memoryBlockReader.ReadInt16(digimonStatusAddresses.Elements.Thunder),
+                    Machine = memoryBlockReader.ReadInt16(digimonStatusAddresses.Elements.Machine),
+                    Dark = memoryBlockReader.ReadInt16(digimonStatusAddresses.Elements.Dark)
                 },
                 Equipments = new EquipmentsResource
                 {

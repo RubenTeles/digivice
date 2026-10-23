@@ -25,5 +25,11 @@ namespace Backend.Memory.Resources
         public NpcResource FakeByakkoLeader { get; set; } = new();
         public NpcResource ByakkoLeader { get; set; } = new();
         public NpcResource AoaAttacker { get; set; } = new();
+        public NpcResource OptionalTrooper1AdminCenterB1F { get; set; } = new();
+        public NpcResource OptionalTrooper2AdminCenterB1F { get; set; } = new();
+        public NpcResource OptionalTrooperAdminFloor1 { get; set; } = new();
+        public NpcResource OptionalTrooper1AdminFloor2 { get; set; } = new();
+        public NpcResource OptionalSoldier1AdminFloor2 { get; set; } = new();
+        public NpcResource OptionalTrooper2AdminFloor2 { get; set; } = new();
     }
 }

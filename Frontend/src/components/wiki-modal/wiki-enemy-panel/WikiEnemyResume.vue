@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import WikiEnemyLocations from "@/components/wiki-modal/wiki-enemy-panel/WikiEnemyLocations.vue";
+import WikiPartyDvexp from "@/components/wiki-modal/wiki-party-dvexp/WikiPartyDvexp.vue";
 import { WikiEnemyResumePresenter } from "@/presenters/map/wiki-modal/wiki-enemy-resume.presenter";
-import { useGameStore } from "@/stores/use-game-store";
+import { useGameState } from "@/composables/use-game-state";
 import type { EnemyViewModel } from "@/viewmodels/enemy/enemy.viewmodel";
 
 const props = withDefaults(
@@ -21,10 +22,10 @@ const emit = defineEmits<{
   (e: "open-locations", locationId: string): void;
 }>();
 
-const store = useGameStore();
+const gameState = useGameState();
 
 const mainQuest = computed(() => {
-  return store.currentState?.journal?.mainQuest ?? null;
+  return gameState.value.journal.mainQuest;
 });
 
 const locations = computed(() => {
@@ -44,6 +45,18 @@ const showBaseExp = computed(() => {
 
 const showBaseBits = computed(() => {
   return props.showRewards && props.enemy.bits !== undefined;
+});
+
+const showDvexp = computed(() => {
+  return props.showRewards && props.enemy.dvexp !== undefined;
+});
+
+const partyDvexps = computed(() => {
+  if (props.enemy.dvexp === undefined) {
+    return [];
+  }
+
+  return WikiEnemyResumePresenter.getPartyDvexp(gameState.value.party, props.enemy.dvexp);
 });
 
 const handleOpenLocation = (locationId: string): void => {
@@ -94,6 +107,14 @@ const handleOpenLocation = (locationId: string): void => {
         >{{ $t("enemy.bits") }}:</span
       >
       <span class="font-bold text-gray-300">{{ enemy.bits }}</span>
+    </div>
+
+    <div v-if="showDvexp" class="flex items-center justify-between text-xs shrink-0">
+      <span class="font-bold text-blue-500 tracking-wider uppercase">
+        {{ $t("enemy.baseDvexp") }}:
+      </span>
+
+      <WikiPartyDvexp :party-dvexps="partyDvexps" />
     </div>
 
     <div

@@ -75,4 +75,22 @@ public record class NpcsDTO : IDTO
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public Optional<NpcDTO> AoaAttacker { get; init; } = Optional<NpcDTO>.Empty;
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public Optional<NpcDTO> OptionalTrooper1AdminCenterB1F { get; init; } = Optional<NpcDTO>.Empty;
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public Optional<NpcDTO> OptionalTrooper2AdminCenterB1F { get; init; } = Optional<NpcDTO>.Empty;
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public Optional<NpcDTO> OptionalTrooperAdminFloor1 { get; init; } = Optional<NpcDTO>.Empty;
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public Optional<NpcDTO> OptionalTrooper1AdminFloor2 { get; init; } = Optional<NpcDTO>.Empty;
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public Optional<NpcDTO> OptionalSoldier1AdminFloor2 { get; init; } = Optional<NpcDTO>.Empty;
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public Optional<NpcDTO> OptionalTrooper2AdminFloor2 { get; init; } = Optional<NpcDTO>.Empty;
 }

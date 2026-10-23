@@ -28,41 +28,24 @@ public class PlayerAssemblerTests
     }
 
     [Fact]
-    public void Assemble_ShouldFallBackToSafeDefaults_WhenFieldsAreNull()
+    public void Assemble_ShouldNormalizeSeabedRouteAndMapVariantToNull_WhenFieldsAreZero()
     {
         var resource = new PlayerResource
         {
-            Bits = null,
-            MapId = null,
-            PreviousMapId = null,
-            SeabedRoute = null,
-            MapVariant = null
+            Bits = 0,
+            MapId = 0,
+            PreviousMapId = 0,
+            SeabedRoute = 0,
+            MapVariant = 0
         };
 
         var result = PlayerAssembler.Assemble(resource);
 
         Assert.NotNull(result);
         Assert.Equal(0, result.Bits);
-        Assert.Equal(string.Empty, result.MapId);
-        Assert.Equal(string.Empty, result.PreviousMapId);
-        Assert.Equal((byte)0, result.SeabedRoute);
-        Assert.Equal((byte)0, result.MapVariant);
-    }
-
-    [Fact]
-    public void Assemble_ShouldPassThroughMapVariant_WhenByteIsZero()
-    {
-        var resource = new PlayerResource
-        {
-            Bits = 0,
-            MapId = 0,
-            SeabedRoute = 0x07,
-            MapVariant = 0x00
-        };
-
-        var result = PlayerAssembler.Assemble(resource);
-
-        Assert.Equal((byte)0x07, result.SeabedRoute);
-        Assert.Equal((byte)0x00, result.MapVariant);
+        Assert.Equal("0000", result.MapId);
+        Assert.Equal("0000", result.PreviousMapId);
+        Assert.Null(result.SeabedRoute);
+        Assert.Null(result.MapVariant);
     }
 }

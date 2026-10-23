@@ -2,7 +2,6 @@ namespace Tests.Domain.Assemblers;
 
 using Backend.Domain.Assemblers;
 using Backend.Memory.Resources;
-using Xunit;
 
 public class AuctionsAssemblerTests
 {
@@ -14,8 +13,9 @@ public class AuctionsAssemblerTests
             DivineBarrier = 0x01,
             HazardShield = 0x00,
             SniperShield = 0x04,
-            DramonShield = null,
+            DramonShield = 0x00,
             YinYangWand = 0x10,
+            HazardFang = 0x20,
         };
 
         var result = AuctionsAssembler.Assemble(resource);
@@ -25,5 +25,6 @@ public class AuctionsAssemblerTests
         Assert.True(result.SniperShield);
         Assert.False(result.DramonShield);
         Assert.True(result.YinYangWand);
+        Assert.True(result.HazardFang);
     }
 }

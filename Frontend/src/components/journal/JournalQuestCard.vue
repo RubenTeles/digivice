@@ -15,7 +15,7 @@ const emit = defineEmits<{
   click: [questId: string];
 }>();
 
-const QUEST_CARD_VARIANT_CLASSES: Record<QuestCardVariant, string> = {
+const QuestCardVariantClasses: Record<QuestCardVariant, string> = {
   locked: "border-gray-700/40 bg-[#0a0a1a] opacity-50 hover:opacity-70",
   unavailable: "border-gray-700/40 bg-[#0a0a1a] opacity-50 hover:opacity-70",
   done: "border-green-800/50 bg-green-900/20 hover:bg-green-900/40",
@@ -42,7 +42,7 @@ const cardClass = computed(() => {
     return "border-gray-600 bg-gray-800/50 hover:bg-gray-700/60";
   }
 
-  return QUEST_CARD_VARIANT_CLASSES[props.quest.cardVariant];
+  return QuestCardVariantClasses[props.quest.cardVariant];
 });
 
 const titleClass = computed(() => {
@@ -114,7 +114,20 @@ const onClick = () => {
 
     <div class="flex items-center justify-between mb-1 relative z-10">
       <span class="font-bold truncate transition-colors" :class="[titleSizeClass, titleClass]">
-        {{ $t(`${quest.id}.title`) }}
+        <template v-if="isMainDisplayMode">
+          <template v-if="quest.isDone">
+            {{ $t(`${quest.id}.title`) }}
+          </template>
+          <template v-else-if="quest.currentChapter">
+            {{ $t("journal.chapter", { number: quest.currentChapter.number }) }}
+          </template>
+        </template>
+        <template v-else>
+          {{ $t(`${quest.id}.title`) }}
+          <template v-if="quest.currentChapter && !quest.isDone">
+            - {{ $t("journal.chapter", { number: quest.currentChapter.number }) }}
+          </template>
+        </template>
       </span>
 
       <span v-if="quest.isDone" :class="doneIconClass">✔</span>

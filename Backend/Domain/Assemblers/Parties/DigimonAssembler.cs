@@ -7,13 +7,11 @@ namespace Backend.Domain.Assemblers.Parties
 {
     public static class DigimonAssembler
     {
-        private const int NoActiveDigievolution = 0xFFFF;
-
         public static Digimon Assemble(DigimonResource resource)
         {
-            var activeDigievolutionId = resource.ActiveDigievolutionId <= 0 || resource.ActiveDigievolutionId == NoActiveDigievolution
-                ? 0
-                : resource.ActiveDigievolutionId;
+            var activeDigievolutionId = resource.ActiveDigievolutionId <= 0
+                ? null
+                : (int?)resource.ActiveDigievolutionId;
 
             return new Digimon
             {
@@ -57,26 +55,27 @@ namespace Backend.Domain.Assemblers.Parties
                     Speed = resource.Attributes.Speed,
                     Charisma = resource.Attributes.Charisma
                 },
-                Resistances = new Resistances
+                Elements = new Elements
                 {
-                    Fire = resource.Resistances.Fire,
-                    Water = resource.Resistances.Water,
-                    Ice = resource.Resistances.Ice,
-                    Wind = resource.Resistances.Wind,
-                    Thunder = resource.Resistances.Thunder,
-                    Machine = resource.Resistances.Machine,
-                    Dark = resource.Resistances.Dark
+                    Fire = resource.Elements.Fire,
+                    Water = resource.Elements.Water,
+                    Ice = resource.Elements.Ice,
+                    Wind = resource.Elements.Wind,
+                    Thunder = resource.Elements.Thunder,
+                    Machine = resource.Elements.Machine,
+                    Dark = resource.Elements.Dark
                 },
                 Equipments = new Equipments
                 {
-                    Head = resource.Equipments.Head,
-                    Body = resource.Equipments.Body,
-                    Right = resource.Equipments.Right,
-                    Left = resource.Equipments.Left,
-                    Accessory1 = resource.Equipments.Accessory1,
-                    Accessory2 = resource.Equipments.Accessory2
+                    Head = resource.Equipments.Head <= 0 ? null : resource.Equipments.Head,
+                    Body = resource.Equipments.Body <= 0 ? null : resource.Equipments.Body,
+                    Right = resource.Equipments.Right <= 0 ? null : resource.Equipments.Right,
+                    Left = resource.Equipments.Left <= 0 ? null : resource.Equipments.Left,
+                    Accessory1 = resource.Equipments.Accessory1 <= 0 ? null : resource.Equipments.Accessory1,
+                    Accessory2 = resource.Equipments.Accessory2 <= 0 ? null : resource.Equipments.Accessory2
                 },
-                Digievolutions = [.. resource.Digievolutions.Select(DigievolutionSlotAssembler.Assemble)],
+                Digievolutions = [.. resource.Digievolutions.Select(slot =>
+                    DigievolutionSlotAssembler.Assemble(slot, resource.StoredDigievolutions))],
                 StoredDigievolutions = [.. resource.StoredDigievolutions.Select(StoredDigievolutionAssembler.Assemble)],
                 ActiveDigievolutionId = activeDigievolutionId
             };

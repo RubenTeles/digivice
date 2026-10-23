@@ -4,13 +4,11 @@ using Backend.Memory.Addresses;
 using Backend.Memory.Addresses.Parties.Digimons;
 using Backend.Memory.Readers;
 using Moq;
-using Xunit;
 using Backend.Memory.Readers.Interfaces;
 
 public class EnemyReaderTests
 {
     private const long EnemySlotBase = 0x000A44D0;
-    private const long ActiveUnitIdAddress = 0x000A4558;
     private const long ActiveEnemySlotIndexAddress = 0x000A446C;
     private const long GroupIdAddress = 0x00042B2C;
     private const int SlotStride = 0x20;
@@ -30,7 +28,7 @@ public class EnemyReaderTests
             currentHp: 600,
             condition: 0x01,
             speed: 84);
-        memoryReaderMock.Setup(m => m.ReadInt16(ActiveUnitIdAddress)).Returns((short)122);
+        memoryReaderMock.Setup(m => m.ReadInt16(ActiveEnemySlotIndexAddress)).Returns((short)0);
         memoryReaderMock.Setup(m => m.ReadInt16(GroupIdAddress)).Returns((short)201);
 
         var reader = new EnemyReader(memoryReaderMock.Object);
@@ -45,7 +43,7 @@ public class EnemyReaderTests
     }
 
     [Fact]
-    public void Read_ShouldReadSecondSlot_WhenFirstSlotIsKnockedOut()
+    public void Read_ShouldReadSecondSlot_WhenFirstSlotIsKo()
     {
         var addresses = CreateAddresses();
         var memoryReaderMock = CreateMemoryReaderMock();
@@ -66,7 +64,6 @@ public class EnemyReaderTests
             condition: 0,
             speed: 90);
         SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 2);
-        memoryReaderMock.Setup(m => m.ReadInt16(ActiveUnitIdAddress)).Returns((short)386);
 
         var reader = new EnemyReader(memoryReaderMock.Object);
         var result = reader.Read(addresses);
@@ -78,7 +75,7 @@ public class EnemyReaderTests
     }
 
     [Fact]
-    public void Read_ShouldPreferActiveUnitIdMatch_WhenMultipleLiveEnemySlotsExist()
+    public void Read_ShouldPreferActiveEnemySlotIndex_WhenMultipleLiveEnemySlotsExist()
     {
         var addresses = CreateAddresses();
         var memoryReaderMock = CreateMemoryReaderMock();
@@ -99,7 +96,7 @@ public class EnemyReaderTests
             condition: 0,
             speed: 90);
         SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 2);
-        memoryReaderMock.Setup(m => m.ReadInt16(ActiveUnitIdAddress)).Returns((short)200);
+        memoryReaderMock.Setup(m => m.ReadInt16(ActiveEnemySlotIndexAddress)).Returns((short)1);
 
         var reader = new EnemyReader(memoryReaderMock.Object);
         var result = reader.Read(addresses);
@@ -109,7 +106,7 @@ public class EnemyReaderTests
     }
 
     [Fact]
-    public void Read_ShouldReadLastOccupiedSlot_WhenAllEnemySlotsAreKnockedOut()
+    public void Read_ShouldReadLastOccupiedSlot_WhenAllEnemySlotsAreKo()
     {
         var addresses = CreateAddresses();
         var memoryReaderMock = CreateMemoryReaderMock();
@@ -130,7 +127,6 @@ public class EnemyReaderTests
             condition: 0,
             speed: 90);
         SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 2);
-        memoryReaderMock.Setup(m => m.ReadInt16(ActiveUnitIdAddress)).Returns((short)386);
 
         var reader = new EnemyReader(memoryReaderMock.Object);
         var result = reader.Read(addresses);
@@ -140,7 +136,7 @@ public class EnemyReaderTests
     }
 
     [Fact]
-    public void Read_ShouldStayOnKnockedOutEnemy_WhenActiveUnitIdStillPointsToThem()
+    public void Read_ShouldStayOnKoEnemy_WhenActiveEnemySlotIndexStillPointsToThem()
     {
         var addresses = CreateAddresses();
         var memoryReaderMock = CreateMemoryReaderMock();
@@ -161,7 +157,7 @@ public class EnemyReaderTests
             condition: 0,
             speed: 90);
         SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 2);
-        memoryReaderMock.Setup(m => m.ReadInt16(ActiveUnitIdAddress)).Returns((short)100);
+        memoryReaderMock.Setup(m => m.ReadInt16(ActiveEnemySlotIndexAddress)).Returns((short)0);
 
         var reader = new EnemyReader(memoryReaderMock.Object);
         var result = reader.Read(addresses);
@@ -171,7 +167,69 @@ public class EnemyReaderTests
     }
 
     [Fact]
-    public void Read_ShouldReadThirdSlot_WhenAllThreeEnemiesAreKnockedOut()
+    public void Read_ShouldReadFirstLiveSlot_WhenActiveEnemySlotIndexPointsToEmptySlot()
+    {
+        var addresses = CreateAddresses();
+        var memoryReaderMock = CreateMemoryReaderMock();
+        SetupEnemySlot(
+            memoryReaderMock,
+            slotIndex: 0,
+            id: 100,
+            maxHp: 500,
+            currentHp: 0,
+            condition: 0,
+            speed: 0);
+        SetupEnemySlot(
+            memoryReaderMock,
+            slotIndex: 1,
+            id: 200,
+            maxHp: 800,
+            currentHp: 400,
+            condition: 0,
+            speed: 90);
+        SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 2);
+        memoryReaderMock.Setup(m => m.ReadInt16(ActiveEnemySlotIndexAddress)).Returns((short)2);
+
+        var reader = new EnemyReader(memoryReaderMock.Object);
+        var result = reader.Read(addresses);
+
+        Assert.Equal(200, result.Id);
+        Assert.Equal(400, result.HP.Current);
+    }
+
+    [Fact]
+    public void Read_ShouldReadFirstLiveSlot_WhenActiveEnemySlotIndexIsOutOfRange()
+    {
+        var addresses = CreateAddresses();
+        var memoryReaderMock = CreateMemoryReaderMock();
+        SetupEnemySlot(
+            memoryReaderMock,
+            slotIndex: 0,
+            id: 100,
+            maxHp: 500,
+            currentHp: 0,
+            condition: 0,
+            speed: 0);
+        SetupEnemySlot(
+            memoryReaderMock,
+            slotIndex: 1,
+            id: 200,
+            maxHp: 800,
+            currentHp: 400,
+            condition: 0,
+            speed: 90);
+        SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 2);
+        memoryReaderMock.Setup(m => m.ReadInt16(ActiveEnemySlotIndexAddress)).Returns((short)3);
+
+        var reader = new EnemyReader(memoryReaderMock.Object);
+        var result = reader.Read(addresses);
+
+        Assert.Equal(200, result.Id);
+        Assert.Equal(400, result.HP.Current);
+    }
+
+    [Fact]
+    public void Read_ShouldReadThirdSlot_WhenAllThreeEnemiesAreKo()
     {
         var addresses = CreateAddresses();
         var memoryReaderMock = CreateMemoryReaderMock();
@@ -199,7 +257,6 @@ public class EnemyReaderTests
             currentHp: 0,
             condition: 0,
             speed: 80);
-        memoryReaderMock.Setup(m => m.ReadInt16(ActiveUnitIdAddress)).Returns((short)386);
 
         var reader = new EnemyReader(memoryReaderMock.Object);
         var result = reader.Read(addresses);
@@ -237,7 +294,6 @@ public class EnemyReaderTests
             currentHp: 552,
             condition: 0,
             speed: 0);
-        memoryReaderMock.Setup(m => m.ReadInt16(ActiveUnitIdAddress)).Returns((short)386);
         memoryReaderMock.Setup(m => m.ReadInt16(ActiveEnemySlotIndexAddress)).Returns((short)2);
 
         var reader = new EnemyReader(memoryReaderMock.Object);
@@ -246,6 +302,23 @@ public class EnemyReaderTests
         Assert.Equal(110, result.Id);
         Assert.Equal(552, result.HP.Current);
         Assert.Equal(552, result.HP.Max);
+    }
+
+    [Fact]
+    public void Read_ShouldReturnEnemyWithIdZero_WhenAllEnemySlotsAreEmpty()
+    {
+        var addresses = CreateAddresses();
+        var memoryReaderMock = CreateMemoryReaderMock();
+        SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 0);
+        SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 1);
+        SetupEmptyEnemySlot(memoryReaderMock, slotIndex: 2);
+
+        var reader = new EnemyReader(memoryReaderMock.Object);
+        var result = reader.Read(addresses);
+
+        Assert.Equal(0, result.Id);
+        Assert.Equal(0, result.HP.Current);
+        Assert.Equal(0, result.HP.Max);
     }
 
     private static Mock<IMemoryReader> CreateMemoryReaderMock()
@@ -263,7 +336,6 @@ public class EnemyReaderTests
             EnemySlotBase = EnemySlotBase,
             SlotStride = SlotStride,
             SlotCount = 3,
-            ActiveUnitId = ActiveUnitIdAddress,
             ActiveEnemySlotIndex = ActiveEnemySlotIndexAddress,
             GroupId = GroupIdAddress,
             Id = 0x00,
@@ -313,6 +385,6 @@ public class EnemyReaderTests
         memoryReaderMock.Setup(m => m.ReadInt16(slotBase + 0x10)).Returns((short)0);
         memoryReaderMock.Setup(m => m.ReadInt16(slotBase + 0x12)).Returns((short)0);
         memoryReaderMock.Setup(m => m.ReadInt16(slotBase + 0x14)).Returns(speed);
-        memoryReaderMock.Setup(m => m.ReadBytes(slotBase + 0x1C, 1)).Returns([condition]);
+        memoryReaderMock.Setup(m => m.ReadByte(slotBase + 0x1C)).Returns(condition);
     }
 }

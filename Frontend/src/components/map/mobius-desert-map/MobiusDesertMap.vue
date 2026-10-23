@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import Location from "../Location.vue";
-import Enemies from "../Enemies.vue";
+import Location from "@/components/map/Location.vue";
+import Enemies from "@/components/map/Enemies.vue";
 import DesertExitWest from "./DesertExitWest.vue";
 import DesertExitNorth from "./DesertExitNorth.vue";
 import DesertExitEast from "./DesertExitEast.vue";
 import DesertExitSouth from "./DesertExitSouth.vue";
-import { useGameStore } from "@/stores/use-game-store";
-import { MobiusDesertMapPresenter } from "@/presenters/map/mobius-desert-map.presenter.ts";
+import { useGameState } from "@/composables/use-game-state";
+import { MobiusDesertMapPresenter } from "@/presenters/map/mobius-desert-map.presenter";
 import { DesertNeighborHelper } from "@/presenters/helper/desert-neighbor.helper";
 
 const emit = defineEmits<{
@@ -16,25 +16,19 @@ const emit = defineEmits<{
   (e: "open-location-wiki", locationId: string): void;
 }>();
 
-const store = useGameStore();
+const gameState = useGameState();
 const { t } = useI18n();
 
 const locationId = computed(() => {
-  return store.currentState?.player?.location ?? null;
+  return gameState.value.player.mapId;
 });
 
 const mapVariant = computed(() => {
-  return store.currentState?.player?.mapVariant ?? 0;
+  return gameState.value.player.mapVariant;
 });
 
 const enemyIds = computed(() => {
-  if (locationId.value === null) {
-    return [];
-  }
-
-  const mainQuest = store.currentState?.journal?.mainQuest ?? null;
-
-  return MobiusDesertMapPresenter.getEnemyIds(locationId.value, mainQuest);
+  return MobiusDesertMapPresenter.getEnemyIds(locationId.value, gameState.value.journal.mainQuest);
 });
 
 const isSafeZone = computed(() => {
@@ -42,19 +36,15 @@ const isSafeZone = computed(() => {
 });
 
 const mobiusDesertArea = computed(() => {
-  if (locationId.value === null) {
-    return null;
-  }
-
   return MobiusDesertMapPresenter.getMobiusDesertArea(locationId.value, mapVariant.value);
 });
 
 const locationTitleOverride = computed(() => {
-  if (mobiusDesertArea.value === null || locationId.value === null) {
+  if (mobiusDesertArea.value === null) {
     return null;
   }
 
-  return `${t(`location.${locationId.value}`)} (${mobiusDesertArea.value.label})`;
+  return `${t(`map.${locationId.value}`)} (${mobiusDesertArea.value.label})`;
 });
 
 function resolveNeighborDisplayName(neighbor: string): string {

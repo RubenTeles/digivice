@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import DigievolutionDvxp from "@/components/party/digimon/digievolutions/DigievolutionDvxp.vue";
+import DigievolutionDvexp from "@/components/party/digimon/digievolutions/DigievolutionDvexp.vue";
 import { DigievolutionPresenter } from "@/presenters/digievolution/digievolution.presenter";
 import type { DigievolutionResumedViewModel } from "@/viewmodels/digievolution/digievolution-resumed.viewmodel";
 
 const props = defineProps<{
   digievolutionId: number | null;
   digievolutionLevel: number | null;
-  digievolutionDvxp: number | null;
+  digievolutionDvexp: number | null;
   activeDigievolutionId: number | null;
 }>();
 
@@ -73,9 +73,6 @@ function openTechniques(): void {
         >
           {{ digievolutionName }}
         </div>
-
-        <div class="w-0.5 shrink-0 self-stretch bg-[#0077ff] -skew-x-30"></div>
-
         <div
           class="w-11.25 shrink-0 flex items-center justify-center pl-2 font-bold text-xs 2xl:text-sm mr-2"
         >
@@ -86,9 +83,11 @@ function openTechniques(): void {
       </div>
 
       <div class="w-full shrink-0 px-4 pt-0.5">
-        <DigievolutionDvxp
+        <DigievolutionDvexp
           :is-active-digievolution="isActiveDigievolution"
-          :dvxp="digievolutionDvxp ?? 0"
+          :digievolution-id="digievolutionId!"
+          :level="digievolutionLevel!"
+          :dvexp="digievolutionDvexp!"
         />
       </div>
     </div>

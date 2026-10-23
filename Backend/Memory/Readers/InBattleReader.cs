@@ -7,15 +7,13 @@ namespace Backend.Memory.Readers
 {
     public class InBattleReader(IMemoryReader memoryReader) : IInBattleReader
     {
-        public InBattleResource Read(InBattleAddresses addresses, int zeroBasedPartySlotIndex)
+        public InBattleResource Read(InBattleAddresses addresses, int partySlotIndex)
         {
-            var slotBase = addresses.AllySlotBase + (zeroBasedPartySlotIndex * addresses.SlotStride);
+            var slotBase = addresses.AllySlotBase + ((partySlotIndex - 1) * addresses.SlotStride);
 
             return new InBattleResource
             {
-                Condition = memoryReader.ReadBytes(slotBase + addresses.Condition, 1) is { Length: > 0 } conditionBytes
-                    ? conditionBytes[0]
-                    : 0,
+                Condition = memoryReader.ReadByte(slotBase + addresses.Condition),
                 Strength = memoryReader.ReadInt16(slotBase + addresses.Strength),
                 Defense = memoryReader.ReadInt16(slotBase + addresses.Defense),
                 Speed = memoryReader.ReadInt16(slotBase + addresses.Speed),

@@ -33,6 +33,12 @@ public static class NpcsConverter
             FakeByakkoLeader = ToNpcDTO(npcs.FakeByakkoLeader),
             ByakkoLeader = ToNpcDTO(npcs.ByakkoLeader),
             AoaAttacker = ToNpcDTO(npcs.AoaAttacker),
+            OptionalTrooper1AdminCenterB1F = ToNpcDTO(npcs.OptionalTrooper1AdminCenterB1F),
+            OptionalTrooper2AdminCenterB1F = ToNpcDTO(npcs.OptionalTrooper2AdminCenterB1F),
+            OptionalTrooperAdminFloor1 = ToNpcDTO(npcs.OptionalTrooperAdminFloor1),
+            OptionalTrooper1AdminFloor2 = ToNpcDTO(npcs.OptionalTrooper1AdminFloor2),
+            OptionalSoldier1AdminFloor2 = ToNpcDTO(npcs.OptionalSoldier1AdminFloor2),
+            OptionalTrooper2AdminFloor2 = ToNpcDTO(npcs.OptionalTrooper2AdminFloor2),
         };
     }
 
@@ -49,7 +55,7 @@ public static class NpcsConverter
         return new NpcBattleDTO
         {
             Id = battle.Id,
-            Value = battle.Value,
+            Won = battle.Won,
         };
     }
 }

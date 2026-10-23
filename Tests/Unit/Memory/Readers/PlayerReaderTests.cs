@@ -1,6 +1,5 @@
 namespace Tests.Memory.Readers;
 
-using Xunit;
 using Moq;
 using Backend.Memory.Readers;
 using Backend.Memory.Addresses;
@@ -25,8 +24,8 @@ public class PlayerReaderTests
         memoryReaderMock.Setup(m => m.ReadInt32(0x1000)).Returns(15000);
         memoryReaderMock.Setup(m => m.ReadInt16(0x3000)).Returns((short)4);
         memoryReaderMock.Setup(m => m.ReadInt16(0x3500)).Returns((short)0x023E);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x4000, 1)).Returns([(byte)0x08]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x5000, 1)).Returns([(byte)0x01]);
+        memoryReaderMock.Setup(m => m.ReadByte(0x4000)).Returns((byte)0x08);
+        memoryReaderMock.Setup(m => m.ReadByte(0x5000)).Returns((byte)0x01);
 
         var reader = new PlayerReader(memoryReaderMock.Object);
 

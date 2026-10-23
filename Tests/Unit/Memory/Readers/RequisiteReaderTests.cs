@@ -1,6 +1,5 @@
 namespace Tests.Memory.Readers;
 
-using Xunit;
 using Moq;
 using Backend.Memory.Readers;
 using Backend.Memory.Addresses.Journals.Quests;
@@ -18,7 +17,7 @@ public class RequisiteReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(m => m.ReadBytes(0x7500, 1)).Returns([(byte)7]);
+        memoryReaderMock.Setup(m => m.ReadByte(0x7500)).Returns((byte)7);
 
         var reader = new RequisiteReader(memoryReaderMock.Object);
 
@@ -34,13 +33,13 @@ public class RequisiteReaderTests
     {
         var addresses = new RequisiteAddresses
         {
-            Id = "FolderBag",
+            Id = "folderBag",
             Address = 0x48F42,
             BitMasks = []
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(m => m.ReadBytes(0x48F42, 1)).Returns([(byte)1]);
+        memoryReaderMock.Setup(m => m.ReadByte(0x48F42)).Returns((byte)1);
 
         var reader = new RequisiteReader(memoryReaderMock.Object);
 
@@ -60,7 +59,7 @@ public class RequisiteReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(m => m.ReadBytes(0x4B3E5, 1)).Returns([(byte)0x51]);
+        memoryReaderMock.Setup(m => m.ReadByte(0x4B3E5, 0x40)).Returns((byte)0x40);
 
         var reader = new RequisiteReader(memoryReaderMock.Object);
 
@@ -80,7 +79,7 @@ public class RequisiteReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(m => m.ReadBytes(0x4B370, 1)).Returns([(byte)0x01]);
+        memoryReaderMock.Setup(m => m.ReadByte(0x4B370)).Returns((byte)0x01);
 
         var reader = new RequisiteReader(memoryReaderMock.Object);
 
@@ -100,7 +99,7 @@ public class RequisiteReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(m => m.ReadBytes(0x4B370, 1)).Returns([(byte)0x09]);
+        memoryReaderMock.Setup(m => m.ReadByte(0x4B370)).Returns((byte)0x09);
 
         var reader = new RequisiteReader(memoryReaderMock.Object);
 

@@ -1,8 +1,8 @@
 namespace Tests.Unit.Events.States;
 
-using Xunit;
 using Backend.Events.States;
 using Backend.Domain.Models;
+using Backend.Events.Models;
 
 public class GameStateStoreTests
 {
@@ -19,16 +19,24 @@ public class GameStateStoreTests
     }
 
     [Fact]
-    public void ClearState_ShouldResetCurrentStateAndSetEmulatorConnectedToFalse()
+    public void ClearState_ShouldResetCurrentState_WithoutChangingStatus()
     {
         GameStateStore gameStateStore = new GameStateStore();
         State dummyState = new State();
         gameStateStore.UpdateState(dummyState);
-        gameStateStore.IsConnectedWithEmulator = true;
+        gameStateStore.Status = HealthStatus.Healthy;
 
         gameStateStore.ClearState();
 
         Assert.Null(gameStateStore.CurrentState);
-        Assert.False(gameStateStore.IsConnectedWithEmulator);
+        Assert.Equal(HealthStatus.Healthy, gameStateStore.Status);
+    }
+
+    [Fact]
+    public void DefaultStatus_ShouldBeLoading()
+    {
+        GameStateStore gameStateStore = new GameStateStore();
+
+        Assert.Equal(HealthStatus.Loading, gameStateStore.Status);
     }
 }

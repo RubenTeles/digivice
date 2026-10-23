@@ -91,6 +91,12 @@ namespace Backend.Diagnostics
         {
             var enemy = digimonBattle.Enemy;
             sb.AppendLine();
+            if (enemy == null)
+            {
+                sb.AppendLine($"{Cyan}BATTLE ENEMY:{Reset} -");
+                return;
+            }
+
             sb.AppendLine(
                 $"{Cyan}BATTLE ENEMY:{Reset} GroupId:{enemy.GroupId} | Id:{enemy.Id} | Condition:{enemy.Condition} | " +
                 $"HP:{enemy.HP.Current.ToString(StatFormat)}/{enemy.HP.Max.ToString(StatFormat)} | " +
@@ -99,7 +105,7 @@ namespace Backend.Diagnostics
 
         private void RenderCardBattle(StringBuilder sb, CardBattle cardBattle)
         {
-            sb.AppendLine($"{Cyan}CARD BATTLE:{Reset} Id:{cardBattle.Id}");
+            sb.AppendLine($"{Cyan}CARD BATTLE:{Reset} Id:{cardBattle.Id?.ToString() ?? "-"}");
         }
 
         private void RenderDigimon(StringBuilder sb, DigimonSlot slot)
@@ -126,9 +132,9 @@ namespace Backend.Diagnostics
             var attributes = digimon.Attributes;
             sb.AppendLine($"{Gray}   Stats:   {Reset}Atk:{attributes.Strength.ToString(StatFormat)} Def:{attributes.Defense.ToString(StatFormat)} Spt:{attributes.Spirit.ToString(StatFormat)} Wis:{attributes.Wisdom.ToString(StatFormat)} Spd:{attributes.Speed.ToString(StatFormat)} Cha:{attributes.Charisma.ToString(StatFormat)}");
 
-            // Resistances
-            var resistances = digimon.Resistances;
-            sb.AppendLine($"{Gray}   Resist:  {Reset}Fir:{resistances.Fire.ToString(StatFormat)} Wat:{resistances.Water.ToString(StatFormat)} Ice:{resistances.Ice.ToString(StatFormat)} Wnd:{resistances.Wind.ToString(StatFormat)} Tdr:{resistances.Thunder.ToString(StatFormat)} Mtl:{resistances.Machine.ToString(StatFormat)} Drk:{resistances.Dark.ToString(StatFormat)}");
+            // Elements
+            var elements = digimon.Elements;
+            sb.AppendLine($"{Gray}   Elem:    {Reset}Fir:{elements.Fire.ToString(StatFormat)} Wat:{elements.Water.ToString(StatFormat)} Ice:{elements.Ice.ToString(StatFormat)} Wnd:{elements.Wind.ToString(StatFormat)} Tdr:{elements.Thunder.ToString(StatFormat)} Mtl:{elements.Machine.ToString(StatFormat)} Drk:{elements.Dark.ToString(StatFormat)}");
 
             // Equipments
             var equipments = digimon.Equipments;
@@ -140,7 +146,7 @@ namespace Backend.Diagnostics
             {
                 var evolution = digimon.Digievolutions.FirstOrDefault(e => e.Index == (i + 1));
                 string evolutionStr = evolution != null && evolution.DigievolutionId != null && evolution.Digievolution != null
-                    ? $"{Yellow}[{evolution.DigievolutionId}Lv{evolution.Digievolution.Level}]{Reset}"
+                    ? $"{Yellow}[{evolution.DigievolutionId}Lv{evolution.Digievolution.Level} DVEXP:{evolution.Digievolution.Dvexp}]{Reset}"
                     : $"{Gray}[Empty]{Reset}";
                 sb.Append($"S{i + 1}:{evolutionStr} ");
             }

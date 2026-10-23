@@ -8,12 +8,10 @@ import Icon from "@/components/party/digimon/profile/Icon.vue";
 import TrainingPoints from "@/components/party/digimon/profile/TrainingPoints.vue";
 import DigievolutionsButton from "@/components/party/digimon/profile/DigievolutionsButton.vue";
 import Tooltip from "@/components/tooltip/Tooltip.vue";
-import { DigimonDebuffConstant } from "@/constants/digimon-debuff.constant";
-import { DigimonStatusConstant } from "@/constants/digimon-status.constant";
-import type { Digimon } from "@/models/party/digimon/digimon.ts";
+import type { Digimon } from "@/models";
 import { ProfilePresenter } from "@/presenters/party/digimon/profile.presenter";
 import { useTooltipPosition } from "@/composables/use-tooltip-position";
-import { useGameStore } from "@/stores/use-game-store";
+import { useGameState } from "@/composables/use-game-state";
 import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
@@ -25,7 +23,7 @@ const emit = defineEmits<{
   openDigievolutions: [];
 }>();
 
-const store = useGameStore();
+const gameState = useGameState();
 const { t } = useI18n();
 const { show, x, y, showAt, move, hide } = useTooltipPosition(350);
 const tooltipTitle = ref("");
@@ -52,7 +50,7 @@ const digimonName = computed(() => {
 });
 
 const location = computed(() => {
-  return store.currentState?.player?.location ?? null;
+  return gameState.value.player.mapId;
 });
 
 const isInBattle = computed(() => {
@@ -78,17 +76,13 @@ const digimonStatus = computed(() => {
 const digimonStatusTooltip = computed(() => {
   const status = digimonStatus.value;
 
-  if (status === DigimonStatusConstant.knockedOut) {
-    return t("digimon.status.knockedOut");
-  }
-  if (status === DigimonStatusConstant.injured) {
-    return t("digimon.status.injured");
-  }
-  if (status === DigimonStatusConstant.healthy) {
-    return t("digimon.status.healthy");
+  if (status !== "debuffed") {
+    return t(`digimon.status.${status}`);
   }
 
-  return t(`digimon.debuff.${DigimonDebuffConstant[condition.value]}.affected`);
+  return ProfilePresenter.getActiveDebuffs(condition.value)
+    .map((debuff) => t(`digimon.debuff.${debuff}.affected`))
+    .join(", ");
 });
 </script>
 

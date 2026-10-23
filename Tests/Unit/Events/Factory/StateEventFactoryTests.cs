@@ -1,6 +1,7 @@
 namespace Tests.Events.Factory;
 
 using Backend.Domain.Models;
+using Backend.Domain.Models.Battles;
 using Backend.Domain.Models.Journals;
 using Backend.Domain.Models.Journals.Quests;
 using Backend.Domain.Models.Parties;
@@ -90,7 +91,7 @@ public class StateEventFactoryTests
     {
         var previousState = CreateBaseState();
         var newState = CreateBaseState();
-        newState.DigimonBattle.Enemy.Speed = 84;
+        newState.DigimonBattle.Enemy!.Speed = 84;
 
         var result = StateEventFactory.Create(previousState, newState).ToList();
 
@@ -118,7 +119,7 @@ public class StateEventFactoryTests
     {
         var previousState = CreateBaseState();
         var newState = CreateBaseState();
-        newState.Journal.MainQuest.Steps[0].Value = 1;
+        newState.Journal.MainQuest.Steps[0].IsDone = true;
 
         var result = StateEventFactory.Create(previousState, newState).ToList();
 
@@ -132,7 +133,7 @@ public class StateEventFactoryTests
     {
         var previousState = CreateBaseState();
         var newState = CreateBaseState();
-        newState.Npcs.Genji.Battles = [new NpcBattle { Id = "first", Value = 0x20 }];
+        newState.Npcs.Genji.Battles = [new NpcBattle { Id = "first", Won = true }];
 
         var result = StateEventFactory.Create(previousState, newState).ToList();
 
@@ -163,11 +164,11 @@ public class StateEventFactoryTests
         newState.Player.Bits = 999;
         newState.ImportantItems.AsukaTrophy = true;
         newState.Party.Slots[0].Digimon!.Level = 22;
-        newState.DigimonBattle.Enemy.Speed = 84;
+        newState.DigimonBattle.Enemy!.Speed = 84;
         newState.CardBattle.Id = 11;
         newState.Auctions.DivineBarrier = true;
-        newState.Npcs.Genji.Battles = [new NpcBattle { Id = "first", Value = 0x20 }];
-        newState.Journal.MainQuest.Steps[0].Value = 1;
+        newState.Npcs.Genji.Battles = [new NpcBattle { Id = "first", Won = true }];
+        newState.Journal.MainQuest.Steps[0].IsDone = true;
 
         var result = StateEventFactory.Create(previousState, newState).ToList();
 
@@ -206,10 +207,21 @@ public class StateEventFactoryTests
                         Index = 1,
                         DigimonId = 1,
                         Digimon = CreateBaseDigimon()
-                    }
+                    },
+                    new DigimonSlot { Index = 2, DigimonId = null, Digimon = null },
+                    new DigimonSlot { Index = 3, DigimonId = null, Digimon = null }
                 ]
             },
-            DigimonBattle = new DigimonBattle(),
+            DigimonBattle = new DigimonBattle
+            {
+                Enemy = new Enemy
+                {
+                    Id = 122,
+                    GroupId = 201,
+                    Speed = 70,
+                    HP = new Vital { Current = 600, Max = 672 }
+                }
+            },
             CardBattle = new CardBattle(),
             Auctions = new Auctions(),
             Npcs = new Npcs(),
@@ -218,7 +230,7 @@ public class StateEventFactoryTests
                 MainQuest = new Quest
                 {
                     Id = "MainQuest",
-                    Steps = [new Step { Number = 1, Value = 0 }],
+                    Steps = [new Step { Number = 1, IsDone = false }],
                     Requisites = []
                 },
                 SideQuests = [],
@@ -236,8 +248,8 @@ public class StateEventFactoryTests
             HP = new Vital { Current = 100, Max = 100 },
             MP = new Vital { Current = 50, Max = 50 },
             Attributes = new Attributes { Strength = 5, Defense = 5, Spirit = 5, Wisdom = 5, Speed = 5, Charisma = 5 },
-            Resistances = new Resistances { Fire = 1, Water = 1, Ice = 1, Wind = 1, Thunder = 1, Machine = 1, Dark = 1 },
-            Equipments = new Equipments { Head = 0, Body = 0, Right = 0, Left = 0, Accessory1 = 0, Accessory2 = 0 },
+            Elements = new Elements { Fire = 1, Water = 1, Ice = 1, Wind = 1, Thunder = 1, Machine = 1, Dark = 1 },
+            Equipments = new Equipments(),
             Digievolutions = []
         };
     }

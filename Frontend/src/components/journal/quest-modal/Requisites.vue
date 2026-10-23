@@ -23,7 +23,7 @@ withDefaults(
   >
     <h3
       v-if="variant === 'quest' && titleKey"
-      class="text-xs text-blue-500 font-bold uppercase tracking-wider mb-1 border-b border-amber-900/40 pb-1"
+      class="text-xs text-blue-500 font-bold uppercase tracking-wider mb-1 text-center"
     >
       {{ $t(titleKey) }}
     </h3>
@@ -62,7 +62,7 @@ withDefaults(
 
       <p
         v-if="variant === 'quest'"
-        class="flex-1 text-sm leading-snug transition-colors"
+        class="flex-1 text-xs transition-colors"
         :class="
           requisiteViewModel.isDone
             ? 'text-gray-400 line-through decoration-green-900'

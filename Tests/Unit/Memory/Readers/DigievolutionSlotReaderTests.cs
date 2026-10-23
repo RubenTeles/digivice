@@ -1,7 +1,5 @@
 namespace Tests.Memory.Readers;
 
-using System;
-using Xunit;
 using Backend.Memory.Readers;
 using Backend.Memory.Addresses.Parties;
 
@@ -34,7 +32,7 @@ public class DigievolutionSlotReaderTests
     }
 
     [Fact]
-    public void Read_ShouldReturnNullDigievolutionId_WhenMemoryValueIsZero()
+    public void Read_ShouldReturnZeroDigievolutionId_WhenMemoryValueIsZero()
     {
         var slotAddresses = new SlotAddresses
         {
@@ -53,6 +51,6 @@ public class DigievolutionSlotReaderTests
 
         Assert.NotNull(result);
         Assert.Equal(2, result.Index);
-        Assert.Null(result.DigievolutionId);
+        Assert.Equal(0, result.DigievolutionId);
     }
 }

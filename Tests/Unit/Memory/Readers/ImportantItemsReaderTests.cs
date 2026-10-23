@@ -1,6 +1,5 @@
 namespace Tests.Memory.Readers;
 
-using Xunit;
 using Moq;
 using Backend.Memory.Readers;
 using Backend.Memory.Addresses;
@@ -20,10 +19,10 @@ public class ImportantItemsReaderTests
         };
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(m => m.ReadBytes(0x00048DB4, 1)).Returns([(byte)0x01]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x00048DB5, 1)).Returns([(byte)0x00]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x00048DC2, 1)).Returns([(byte)0x02]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x00048DC4, 1)).Returns([(byte)0x01]);
+        memoryReaderMock.Setup(m => m.ReadByte(0x00048DB4)).Returns((byte)0x01);
+        memoryReaderMock.Setup(m => m.ReadByte(0x00048DB5)).Returns((byte)0x00);
+        memoryReaderMock.Setup(m => m.ReadByte(0x00048DC2)).Returns((byte)0x02);
+        memoryReaderMock.Setup(m => m.ReadByte(0x00048DC4)).Returns((byte)0x01);
 
         var reader = new ImportantItemsReader(memoryReaderMock.Object);
 

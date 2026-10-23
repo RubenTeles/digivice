@@ -1,6 +1,5 @@
 {
   "auction": {
-    "title": "Leilões",
     "cardIdleTitle": "Nenhum Leilão agora",
     "cardIdleSubtitle": "Quem sabe mais tarde...",
     "cardActiveTitle": "Leilão disponível!",
@@ -10,10 +9,11 @@
     "currentIdleSubtitle": "Continue avançando na missão principal",
     "currentActiveTitle": "Leilão acontecendo agora!",
     "currentActiveAcquirePrefix": "Adquira",
-    "purchasePriceLabel": "Preço:",
+    "bidLabel": "Lance:",
     "resalePriceLabel": "Revenda:",
     "bitsLabel": "bits",
     "closesWhenLabel": "TERMINA QUANDO:",
+    "notEnoughBitsWarning": "Se você for até a Torre de Carga sem ter os Bits necessários para dar o lance no Leilão, ele não começará. Atualmente você tem {bits} Bits.",
     "historySubtitle": "Histórico",
     "historyTiming": {
       "alreadyEnded": "Esse Leilão já terminou",
@@ -32,7 +32,8 @@
       "hazardShield": "recuperar a máscara do Sepkimon (passo 23), ou participar do leilão",
       "sniperShield": "falar com a Kail no Caminho Subterrâneo (passo 34), ou participar do leilão",
       "dramonShield": "retornar ao Pântano Bios com o Chip TNT (passo 42), ou participar do leilão",
-      "yinYangWand": "desafiar o verdadeiro Líder Byakko (passo 48), ou participar do leilão"
+      "yinYangWand": "desafiar o verdadeiro Líder Byakko (passo 48), ou participar do leilão",
+      "hazardFang": "tocar no quadro com a letra \"O\" na Sala Mestre (passo 86), ou participar do leilão"
     }
   }
 }

@@ -37,14 +37,14 @@ public class EventDispatcherService(
             SafeDispatch(initialEvent, target);
         }
 
-        var isConnected = gameStateStore.IsConnectedWithEmulator ?? false;
+        var status = gameStateStore.Status;
         SafeDispatch(
             new Event(
-                EventType.EmulatorConnectionStatusChanged,
-                new ConnectionDTO(
-                    isConnected,
-                    isConnected ? null : gameStateStore.LastEmulatorConnectionErrorCode,
-                    isConnected ? null : gameStateStore.LastEmulatorConnectionErrorDetail)),
+                EventType.HealthChanged,
+                new HealthDTO(
+                    status,
+                    status == HealthStatus.Error ? gameStateStore.LastErrorCode : null,
+                    status == HealthStatus.Error ? gameStateStore.LastErrorDetail : null)),
             target);
     }
 

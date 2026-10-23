@@ -11,10 +11,10 @@ import WikiCardShopPanel from "@/components/wiki-modal/wiki-card-shop-panel/Wiki
 import SearchBar from "@/components/search/SearchBar.vue";
 import { useI18n } from "vue-i18n";
 import { useTooltipPosition } from "@/composables/use-tooltip-position";
-import { ImageCatalog } from "@/catalogs/image.catalog.ts";
+import { ImageCatalog } from "@/catalogs/image.catalog";
 import { WikiModalPresenter } from "@/presenters/map/wiki-modal.presenter";
 import type { DropType } from "@/repositories/tables/raws/drop/drop-type";
-import type { DropSourceKind } from "@/viewmodels/drop/drop-source.viewmodel";
+import type { DropSourceKind } from "@/types/drop-source-kind.type";
 import type { SearchItemKind } from "@/viewmodels/search/search-item.viewmodel";
 
 const props = defineProps<{
@@ -84,13 +84,13 @@ const allSearchItems = computed(() => {
       return t(labelKey);
     },
     (cardId) => {
-      return t(`cards.${cardId}.name`);
+      return t(`card.${cardId}.name`);
     },
     (locationId) => {
-      return t(`location.${locationId}`);
+      return t(`map.${locationId}`);
     },
     (cardShopId) => {
-      return t(`cardShops.${cardShopId}.name`);
+      return t(`cardShop.${cardShopId}.name`);
     },
     (tamerId) => {
       return t(`tamers.${tamerId}.name`);

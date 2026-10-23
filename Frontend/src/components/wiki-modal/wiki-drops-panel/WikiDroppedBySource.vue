@@ -22,11 +22,11 @@ const displayName = computed(() => {
 });
 
 const locationLabel = (locationId: string): string => {
-  return t("enemy.locationOnly", { location: t(`location.${locationId}`) });
+  return t("enemy.locationOnly", { location: t(`map.${locationId}`) });
 };
 
-const tamerLabel = (tamerId: string): string => {
-  return t("enemy.tamerOnly", { name: t(`tamers.${tamerId}.name`) });
+const ownerLabel = (ownerNameKey: string): string => {
+  return t("enemy.tamerOnly", { name: t(ownerNameKey) });
 };
 
 const observationLabel = computed(() => {
@@ -38,8 +38,8 @@ const observationLabel = computed(() => {
     return locationLabel(props.source.locationId);
   }
 
-  if (props.source.tamerId !== undefined) {
-    return tamerLabel(props.source.tamerId);
+  if (props.source.ownerNameKey !== undefined) {
+    return ownerLabel(props.source.ownerNameKey);
   }
 
   return "";

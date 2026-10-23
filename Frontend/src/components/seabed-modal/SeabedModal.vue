@@ -4,9 +4,9 @@ import { useI18n } from "vue-i18n";
 import Modal from "@/components/modal/Modal.vue";
 import MapFrame from "@/components/map-frame/MapFrame.vue";
 import SeabedDocks from "@/components/seabed-modal/SeabedDocks.vue";
-import { MAP_FRAME_WIDTH_PX } from "@/constants/map-display.constant";
+import { MapFrameWidthPx } from "@/constants/map-display.constant";
 import { SeabedModalPresenter } from "@/presenters/seabed-modal/seabed-modal.presenter";
-import { useGameStore } from "@/stores/use-game-store";
+import { useGameState } from "@/composables/use-game-state";
 import type { MapFrameSlideViewModel } from "@/viewmodels/map-frame/map-frame-slide.viewmodel";
 
 const props = defineProps<{
@@ -17,7 +17,7 @@ const emit = defineEmits<{
   (e: "close"): void;
 }>();
 
-const store = useGameStore();
+const gameState = useGameState();
 const { t } = useI18n();
 
 const isModalOpen = computed(() => {
@@ -27,7 +27,7 @@ const isModalOpen = computed(() => {
 const selectedLocationId = ref<string | null>(null);
 
 function syncSelectedLocationIdFromPlayer(): void {
-  const playerLocationId = store.currentState?.player?.location ?? null;
+  const playerLocationId = gameState.value.player.mapId;
   selectedLocationId.value = SeabedModalPresenter.getInitialSelectedLocationId(playerLocationId);
 }
 
@@ -61,7 +61,7 @@ const dockSlides = computed((): MapFrameSlideViewModel[] => {
       pins: [
         {
           coordinates: viewModel.coordinates,
-          label: t("map.dock"),
+          label: t("seabed.dock"),
         },
       ],
     },
@@ -83,7 +83,7 @@ const closeModal = () => {
   >
     <template #header>
       <h2 class="text-white font-bold tracking-widest drop-shadow whitespace-nowrap shrink-0">
-        {{ $t("map.seabed") }}
+        {{ $t("seabed.title") }}
       </h2>
     </template>
 
@@ -94,13 +94,13 @@ const closeModal = () => {
         <div
           v-else
           class="flex flex-col items-center justify-center gap-3 px-8"
-          :style="{ width: `${MAP_FRAME_WIDTH_PX}px` }"
+          :style="{ width: `${MapFrameWidthPx}px` }"
         >
           <span class="text-cyan-500/50 text-sm tracking-widest text-center animate-pulse">
-            {{ $t("map.noDock") }}
+            {{ $t("seabed.noDock") }}
           </span>
           <span class="text-cyan-500/50 text-sm tracking-widest text-center animate-pulse">
-            {{ $t("map.noDockHint") }}
+            {{ $t("seabed.noDockHint") }}
           </span>
         </div>
       </div>

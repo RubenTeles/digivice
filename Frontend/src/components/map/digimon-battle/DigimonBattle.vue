@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import DigimonBattleEnemyAffinities from "@/components/map/digimon-battle/DigimonBattleEnemyAffinities.vue";
 import DigimonBattleEnemyImage from "@/components/map/digimon-battle/DigimonBattleEnemyImage.vue";
 import DigimonBattleEnemyLevel from "@/components/map/digimon-battle/DigimonBattleEnemyLevel.vue";
 import DigimonBattleEnemySpecie from "@/components/map/digimon-battle/DigimonBattleEnemySpecie.vue";
@@ -17,10 +18,8 @@ import {
   type TooltipHorizontalAlign,
   type TooltipPlacement,
 } from "@/composables/use-tooltip-position";
-import { DigimonDebuffConstant } from "@/constants/digimon-debuff.constant";
-import { DigimonStatusConstant } from "@/constants/digimon-status.constant";
 import { DigimonBattlePresenter } from "@/presenters/map/digimon-battle.presenter";
-import { useGameStore } from "@/stores/use-game-store";
+import { useGameState } from "@/composables/use-game-state";
 import type { EnemyConditionViewModel } from "@/viewmodels/enemy/enemy-condition.viewmodel";
 import type { EnemyStatViewModel } from "@/viewmodels/enemy/enemy-stat.viewmodel";
 
@@ -30,7 +29,7 @@ const emit = defineEmits<{
   (e: "open-enemy-modal", enemyId: string): void;
 }>();
 
-const store = useGameStore();
+const gameState = useGameState();
 const { t } = useI18n();
 
 const activeVariant = ref<TooltipVariant>("none");
@@ -41,11 +40,11 @@ const tooltipPlacement = ref<TooltipPlacement>("below");
 const tooltipAlign = ref<TooltipHorizontalAlign>("right");
 
 const battleFieldId = computed(() => {
-  return store.currentState?.digimonBattle?.field ?? 0;
+  return gameState.value.digimonBattle.field;
 });
 
 const enemy = computed(() => {
-  return store.currentState?.digimonBattle?.enemy ?? null;
+  return gameState.value.digimonBattle.enemy;
 });
 
 const digimonBattleViewModel = computed(() => {
@@ -62,17 +61,13 @@ const digimonStatusTooltip = computed(() => {
     digimonBattleViewModel.value.hp,
   );
 
-  if (status === DigimonStatusConstant.knockedOut) {
-    return t("digimon.status.knockedOut");
-  }
-  if (status === DigimonStatusConstant.injured) {
-    return t("digimon.status.injured");
-  }
-  if (status === DigimonStatusConstant.healthy) {
-    return t("digimon.status.healthy");
+  if (status !== "debuffed") {
+    return t(`digimon.status.${status}`);
   }
 
-  return t(`digimon.debuff.${DigimonDebuffConstant[enemyCondition.value]}.affected`);
+  return DigimonBattlePresenter.getActiveDebuffs(enemyCondition.value)
+    .map((debuff) => t(`digimon.debuff.${debuff}.affected`))
+    .join(", ");
 });
 
 const canOpenWiki = computed(() => {
@@ -197,6 +192,11 @@ function onHideTooltip(): void {
         :image-url="digimonBattleViewModel.enemyImageUrl"
         :clickable="canOpenWiki"
         @click="openEnemyWiki"
+      />
+
+      <DigimonBattleEnemyAffinities
+        :effective-icons="digimonBattleViewModel.affinities.effectiveIcons"
+        :not-effective-icons="digimonBattleViewModel.affinities.notEffectiveIcons"
       />
 
       <DigimonBattleJunior />

@@ -2,9 +2,8 @@ namespace Tests.Integration.Application.Loaders;
 
 using Backend.Application.Loaders;
 using Backend.Memory.Readers;
-using Moq;
-using Xunit;
 using Backend.Memory.Readers.Interfaces;
+using Moq;
 
 public class NpcsLoaderTests : LoaderIntegrationTestBase
 {
@@ -13,17 +12,22 @@ public class NpcsLoaderTests : LoaderIntegrationTestBase
     {
         var addressesRepository = CreateAddressesRepository();
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(It.IsAny<long>(), 1)).Returns([0]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B3DF, 1)).Returns([(byte)0x20]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B39A, 1)).Returns([(byte)0xFF]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B39B, 1)).Returns([(byte)0xFF]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B39C, 1)).Returns([(byte)0x01]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DB9, 1)).Returns([(byte)0x01]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DBA, 1)).Returns([(byte)0x01]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DBB, 1)).Returns([(byte)0x01]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B3E0, 1)).Returns([(byte)0x40]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B3E1, 1)).Returns([(byte)0x40]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B3E5, 1)).Returns([(byte)0x08]);
+        SetupReadByteBitMaskBridge(memoryReaderMock);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(It.IsAny<long>())).Returns((byte)0);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3DF)).Returns((byte)0x20);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B39A)).Returns((byte)0xFF);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B39B)).Returns((byte)0xFF);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B39C)).Returns((byte)0x01);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048DB9)).Returns((byte)0x01);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048DBA)).Returns((byte)0x01);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048DBB)).Returns((byte)0x01);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3E0)).Returns((byte)0x40);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3E1)).Returns((byte)0x40);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3E5)).Returns((byte)0x08);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B392)).Returns((byte)0xFF);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B393)).Returns((byte)0xFF);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B394)).Returns((byte)0xFF);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B395)).Returns((byte)0xFF);
 
         var npcsReader = new NpcsReader(memoryReaderMock.Object);
         var npcsLoader = new NpcsLoader(addressesRepository, npcsReader);
@@ -52,5 +56,11 @@ public class NpcsLoaderTests : LoaderIntegrationTestBase
         Assert.Equal(0x40, Assert.Single(resource.FakeByakkoLeader.Battles).Value);
         Assert.Equal(0x01, Assert.Single(resource.ByakkoLeader.Battles).Value);
         Assert.Equal(0x08, Assert.Single(resource.AoaAttacker.Battles).Value);
+        Assert.Equal(0x01, Assert.Single(resource.OptionalTrooper1AdminCenterB1F.Battles).Value);
+        Assert.Equal(0x40, Assert.Single(resource.OptionalTrooper2AdminCenterB1F.Battles).Value);
+        Assert.Equal(0x40, Assert.Single(resource.OptionalTrooperAdminFloor1.Battles).Value);
+        Assert.Equal(0x10, Assert.Single(resource.OptionalTrooper1AdminFloor2.Battles).Value);
+        Assert.Equal(0x01, Assert.Single(resource.OptionalSoldier1AdminFloor2.Battles).Value);
+        Assert.Equal(0x20, Assert.Single(resource.OptionalTrooper2AdminFloor2.Battles).Value);
     }
 }

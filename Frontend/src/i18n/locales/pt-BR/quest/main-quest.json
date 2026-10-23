@@ -2,6 +2,20 @@
   "mainQuest": {
     "title": "Missão Principal",
     "description": "Torne-se o maior domador(a) do Mundo Digital!",
+    "chapters": {
+      "1": {
+        "name": "O Setor Leste!"
+      },
+      "2": {
+        "name": "O Setor Sul!"
+      },
+      "3": {
+        "name": "O Setor Oeste!"
+      },
+      "4": {
+        "name": "A batalha contra a A.o.A!"
+      }
+    },
     "steps": {
       "1": {
         "description": "Procure pelo Líder Seiryu na Cidade Seiryu",
@@ -249,6 +263,114 @@
       "61": {
         "description": "Siga para os Esgotos atrás de Numemon",
         "locationTarget": "Numemon"
+      },
+      "62": {
+        "description": "Procure uma forma de entrar na Cidade Asuka",
+        "locationTarget": "Datamon"
+      },
+      "63": {
+        "description": "Retorne para a Sala Secreta e pergunte a seus amigos sobre o Passe Pessoal",
+        "locationTarget": "Kail"
+      },
+      "64": {
+        "description": "Procure por Keith e Nicky no Setor Sul",
+        "locationTarget": "Keith & Nicky"
+      },
+      "65": {
+        "description": "Com a ajuda de todos, procure pelo Passe Pessoal dentro da Sala Secreta",
+        "locationTarget": "Lisa"
+      },
+      "66": {
+        "description": "Use o Passe Pessoal e peça para o Datamon abrir o portão",
+        "locationTarget": "Datamon"
+      },
+      "67": {
+        "description": "Derrote o Patrulheiro que te impede de entrar no Centro Admin Subsolo: Andar 1",
+        "locationTarget": "Patrulheiro"
+      },
+      "68": {
+        "description": "Derrote o Patrulheiro que te impede de continuar pelo Centro Admin Subsolo: Andar 1",
+        "locationTarget": "Patrulheiro"
+      },
+      "69": {
+        "description": "Derrote o Patrulheiro que te impede de sair do Centro Admin Subsolo: Andar 1",
+        "locationTarget": "Patrulheiro"
+      },
+      "70": {
+        "description": "Derrote o Patrulheiro na entrada das Escadas do Subsolo",
+        "locationTarget": "Patrulheiro"
+      },
+      "71": {
+        "description": "Derrote o Patrulheiro ao fim das Escadas do Subsolo",
+        "locationTarget": "Patrulheiro"
+      },
+      "72": {
+        "description": "Derrote o Patrulheiro para sair das Escadas do Subsolo",
+        "locationTarget": "Patrulheiro"
+      },
+      "73": {
+        "description": "Derrote o Patrulheiro na entrada do Centro Administrativo: Andar 1",
+        "locationTarget": "Patrulheiro"
+      },
+      "74": {
+        "description": "Derrote o Patrulheiro antes de subir as escadas do Centro Administrativo: Andar 1",
+        "locationTarget": "Patrulheiro"
+      },
+      "75": {
+        "description": "Derrote o Patrulheiro para andar pelo Centro Administrativo: Andar 2",
+        "locationTarget": "Patrulheiro"
+      },
+      "76": {
+        "description": "Derrote o Patrulheiro após subir as escadas do Centro Administrativo: Andar 2",
+        "locationTarget": "Patrulheiro"
+      },
+      "77": {
+        "description": "Derrote o Soldado no corredor de acesso a Sala Mestre",
+        "locationTarget": "Soldado"
+      },
+      "78": {
+        "description": "Derrote o General que te impede de entrar na Sala Mestre",
+        "locationTarget": "General"
+      },
+      "79": {
+        "description": "\"GUBI!?\" Defenda-se do Digimon estranho que saiu da sala",
+        "locationTarget": "Vemmon"
+      },
+      "80": {
+        "description": "Dentro da Sala Mestre, toque no quadro que representa a letra \"M\"",
+        "locationTarget": "Letra \"M\""
+      },
+      "81": {
+        "description": "Dentro da Sala Mestre, toque no quadro que representa a letra \"O\"",
+        "locationTarget": "Letra \"O\""
+      },
+      "82": {
+        "description": "Dentro da Sala Mestre, toque no quadro que representa a letra \"N\"",
+        "locationTarget": "Letra \"N\""
+      },
+      "83": {
+        "description": "Dentro da Sala Mestre, toque no quadro que representa a letra \"S\"",
+        "locationTarget": "Letra \"S\""
+      },
+      "84": {
+        "description": "Dentro da Sala Mestre, toque no quadro que representa a letra \"T\"",
+        "locationTarget": "Letra \"T\""
+      },
+      "85": {
+        "description": "Dentro da Sala Mestre, toque no quadro que representa a letra \"R\"",
+        "locationTarget": "Letra \"R\""
+      },
+      "86": {
+        "description": "Dentro da Sala Mestre, toque no quadro que representa a letra \"O\"",
+        "locationTarget": "Letra \"O\""
+      },
+      "87": {
+        "description": "Derrote os Guardas na entrada Quartel General",
+        "locationTarget": "Guardas"
+      },
+      "88": {
+        "description": "Confronte a Game Master dentro do Quartel General",
+        "locationTarget": "Game Master"
       }
     }
   }

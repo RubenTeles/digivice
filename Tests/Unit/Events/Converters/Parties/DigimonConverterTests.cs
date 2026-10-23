@@ -28,7 +28,7 @@ public class DigimonConverterTests
                 MP = new Vital { Current = 20, Max = 44 }
             },
             Attributes = new Attributes { Strength = 1, Defense = 2, Spirit = 3, Wisdom = 4, Speed = 5, Charisma = 6 },
-            Resistances = new Resistances { Fire = 7, Water = 8, Ice = 9, Wind = 10, Thunder = 11, Machine = 12, Dark = 13 },
+            Elements = new Elements { Fire = 7, Water = 8, Ice = 9, Wind = 10, Thunder = 11, Machine = 12, Dark = 13 },
             Equipments = new Equipments { Head = 14, Body = 15, Right = 16, Left = 17, Accessory1 = 18, Accessory2 = 19 },
             Digievolutions =
             [
@@ -36,7 +36,7 @@ public class DigimonConverterTests
                 {
                     Index = 1,
                     DigievolutionId = 5,
-                    Digievolution = new Digievolution { Level = 9, Dvxp = 200 }
+                    Digievolution = new Digievolution { Level = 9, Dvexp = 200 }
                 }
             ],
             StoredDigievolutions =
@@ -67,13 +67,13 @@ public class DigimonConverterTests
         Assert.Equal(44, dto.InBattle.Value.MP.Value.Max.Value);
         Assert.Equal(1, dto.Attributes.Value!.Strength.Value);
         Assert.Equal(4, dto.Attributes.Value.Wisdom.Value);
-        Assert.Equal(13, dto.Resistances.Value!.Dark.Value);
+        Assert.Equal(13, dto.Elements.Value!.Dark.Value);
         Assert.Equal(16, dto.Equipments.Value!.Right.Value);
         var evolutionSlot = Assert.Single(dto.Digievolutions.Value!);
         Assert.Equal(1, evolutionSlot.Index);
         Assert.Equal(5, evolutionSlot.DigievolutionId.Value);
         Assert.Equal(9, evolutionSlot.Digievolution.Value!.Level.Value);
-        Assert.Equal(200, evolutionSlot.Digievolution.Value!.Dvxp.Value);
+        Assert.Equal(200, evolutionSlot.Digievolution.Value!.Dvexp.Value);
 
         Assert.Equal(2, dto.StoredDigievolutions.Value!.Count);
         Assert.Equal(99, dto.StoredDigievolutions.Value[1].DigievolutionId.Value);

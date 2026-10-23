@@ -1,11 +1,6 @@
 {
   "enemy": {
     "wiki": "Wiki",
-    "modalTitle": {
-      "profile": "Wiki - Perfil",
-      "locations": "Wiki - Localizações",
-      "drops": "Wiki - Drops"
-    },
     "searchPlaceholder": "Digite o nome de um inimigo, drop, carta, localização ou NPC...",
     "searchNoResults": "Nenhum resultado encontrado",
     "searchKind": {
@@ -26,10 +21,8 @@
     "specie": "Espécie",
     "drop": "Drop",
     "drops": "Drops",
-    "dropRate": "Taxa de drop",
     "locationOnly": "Apenas {location}",
     "tamerOnly": "Digimon de {name}",
-    "dropDetails": "Detalhes do drop",
     "resaleValueLabel": "Valor de revenda",
     "soldInStore": "Vendido por NPC",
     "soldInStoreYes": "Sim",
@@ -38,9 +31,6 @@
     "boosterCardsLabel": "Cartas que podem ser obtidas nesse pacote",
     "storeCardsLabel": "Cartas que podem ser compradas nessa loja",
     "locatedIn": "Localizado em",
-    "locatedInNone": "Nenhuma localização conhecida",
-    "priceLabel": "Preço",
-    "obtainedFrom": "Obtido em",
     "obtainedFromNone": "Nenhum booster conhecido",
     "dropSourcesNone": "Nenhuma fonte conhecida",
     "purchasableAt": "Comprável em",
@@ -48,13 +38,11 @@
     "baseExp": "EXP",
     "baseDvexp": "DVEXP",
     "bits": "BITS",
-    "combatActions": "Ações",
     "regularAttack": "Ataque",
     "technique": "Técnica",
     "attributes": "Atributos",
     "elements": "Elementos",
     "status": "Resistências",
-    "foundIn": "Encontrado em",
     "whereToFind": "Onde encontrar",
     "searchContext": {
       "wild": "(Digimon selvagem Lv {level})",
@@ -63,14 +51,12 @@
       "npc": "(Digimon de {name} Lv {level})"
     },
     "unavailableAtMoment": "Inacessível ou não pode ser desafiado nesse momento da história",
-    "locations": "Localizações",
     "locationSource": {
       "walking": "Andando",
       "boss": "Boss",
       "fishing": "Pesca",
       "kickingTree": "Árvore"
     },
-    "locationStep": "A partir do step {step} da main quest",
     "noEnemiesOnMap": "Zona segura",
     "techniques": "Técnicas"
   }

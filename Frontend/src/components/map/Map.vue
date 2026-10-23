@@ -6,14 +6,13 @@ import SeabedMap from "./seabed-map/SeabedMap.vue";
 import MobiusDesertMap from "./mobius-desert-map/MobiusDesertMap.vue";
 import WikiModal from "@/components/wiki-modal/WikiModal.vue";
 import { computed, ref } from "vue";
-import { LocationRegionConstant } from "@/constants/location-region.constant";
-import { useGameStore } from "@/stores/use-game-store";
-import { MapPresenter } from "@/presenters/map/map.presenter.ts";
+import { useGameState } from "@/composables/use-game-state";
+import { MapPresenter } from "@/presenters/map/map.presenter";
 
-const store = useGameStore();
+const gameState = useGameState();
 
 const locationId = computed(() => {
-  return store.currentState?.player?.location ?? null;
+  return gameState.value.player.mapId;
 });
 
 const mapViewModel = computed(() => {
@@ -94,12 +93,12 @@ const closeWikiModal = () => {
       @open-npc-modal="openWikiModalForNpc"
     />
     <SeabedMap
-      v-else-if="mapViewModel.locationRegion === LocationRegionConstant.seabed"
+      v-else-if="mapViewModel.locationRegion === 'seabed'"
       @open-enemy-modal="openWikiModal"
       @open-location-wiki="openWikiModalForLocation"
     />
     <MobiusDesertMap
-      v-else-if="mapViewModel.locationRegion === LocationRegionConstant.mobiusDesert"
+      v-else-if="mapViewModel.locationRegion === 'mobiusDesert'"
       @open-enemy-modal="openWikiModal"
       @open-location-wiki="openWikiModalForLocation"
     />

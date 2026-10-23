@@ -3,7 +3,6 @@ namespace Tests.Integration.Application.Loaders;
 using Backend.Application.Loaders;
 using Backend.Memory.Readers;
 using Moq;
-using Xunit;
 using Backend.Memory.Readers.Interfaces;
 
 public class QuestLoaderTests : LoaderIntegrationTestBase
@@ -14,9 +13,10 @@ public class QuestLoaderTests : LoaderIntegrationTestBase
         var addressesRepository = CreateAddressesRepository();
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(m => m.ReadBytes(It.IsAny<long>(), 1)).Returns([0]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x0004B3B6, 1)).Returns([(byte)0x80]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x0004B3B7, 1)).Returns([(byte)0x01]);
+        SetupReadByteBitMaskBridge(memoryReaderMock);
+        memoryReaderMock.Setup(m => m.ReadByte(It.IsAny<long>())).Returns((byte)0);
+        memoryReaderMock.Setup(m => m.ReadByte(0x0004B3B6)).Returns((byte)0x80);
+        memoryReaderMock.Setup(m => m.ReadByte(0x0004B3B7)).Returns((byte)0x01);
 
         var requisiteReader = new RequisiteReader(memoryReaderMock.Object);
         var stepReader = new StepReader(memoryReaderMock.Object, requisiteReader);
@@ -28,11 +28,12 @@ public class QuestLoaderTests : LoaderIntegrationTestBase
         Assert.NotNull(mainQuest);
         Assert.Equal("mainQuest", mainQuest.Id);
         Assert.Empty(mainQuest.Requisites);
-        Assert.Equal(61, mainQuest.Steps.Count);
+        Assert.Equal(88, mainQuest.Steps.Count);
         Assert.Equal(1, mainQuest.Steps[0].Number);
         Assert.Equal(0x80, mainQuest.Steps[0].Value);
         Assert.Equal(2, mainQuest.Steps[1].Number);
         Assert.Equal(0x01, mainQuest.Steps[1].Value);
+        Assert.Equal(88, mainQuest.Steps[^1].Number);
     }
 
     [Fact]
@@ -41,13 +42,14 @@ public class QuestLoaderTests : LoaderIntegrationTestBase
         var addressesRepository = CreateAddressesRepository();
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(m => m.ReadBytes(It.IsAny<long>(), 1)).Returns([0]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x00048F42, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x04B3B0, 1)).Returns([(byte)0xA4]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x048E57, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x048E09, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x00048DB7, 1)).Returns([(byte)0]);
-        memoryReaderMock.Setup(m => m.ReadBytes(0x048DB5, 1)).Returns([(byte)1]);
+        SetupReadByteBitMaskBridge(memoryReaderMock);
+        memoryReaderMock.Setup(m => m.ReadByte(It.IsAny<long>())).Returns((byte)0);
+        memoryReaderMock.Setup(m => m.ReadByte(0x00048F42)).Returns((byte)1);
+        memoryReaderMock.Setup(m => m.ReadByte(0x04B3B0)).Returns((byte)0xA4);
+        memoryReaderMock.Setup(m => m.ReadByte(0x048E57)).Returns((byte)1);
+        memoryReaderMock.Setup(m => m.ReadByte(0x048E09)).Returns((byte)1);
+        memoryReaderMock.Setup(m => m.ReadByte(0x00048DB7)).Returns((byte)0);
+        memoryReaderMock.Setup(m => m.ReadByte(0x048DB5)).Returns((byte)1);
 
         var requisiteReader = new RequisiteReader(memoryReaderMock.Object);
         var stepReader = new StepReader(memoryReaderMock.Object, requisiteReader);
@@ -66,7 +68,7 @@ public class QuestLoaderTests : LoaderIntegrationTestBase
 
         var treeBoots = Assert.Single(sideQuests, quest => quest.Id == "treeBoots");
         Assert.Single(treeBoots.Requisites);
-        Assert.Equal("FolderBag", treeBoots.Requisites[0].Id);
+        Assert.Equal("folderBag", treeBoots.Requisites[0].Id);
         Assert.Equal(1, treeBoots.Requisites[0].Value);
         Assert.Equal(7, treeBoots.Steps.Count);
         Assert.Equal(0x04, treeBoots.Steps[0].Value);
@@ -92,8 +94,9 @@ public class QuestLoaderTests : LoaderIntegrationTestBase
         var addressesRepository = CreateAddressesRepository();
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(It.IsAny<long>(), 1)).Returns([0]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B38E, 1)).Returns([(byte)0x1F]);
+        SetupReadByteBitMaskBridge(memoryReaderMock);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(It.IsAny<long>())).Returns((byte)0);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B38E)).Returns((byte)0x1F);
 
         var requisiteReader = new RequisiteReader(memoryReaderMock.Object);
         var stepReader = new StepReader(memoryReaderMock.Object, requisiteReader);
@@ -150,26 +153,27 @@ public class QuestLoaderTests : LoaderIntegrationTestBase
         var addressesRepository = CreateAddressesRepository();
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(It.IsAny<long>(), 1)).Returns([0]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B38C, 1)).Returns([(byte)0xFF]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B3B7, 1)).Returns([(byte)0xFC]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B3B8, 1)).Returns([(byte)0x03]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DD2, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004A7E0, 1)).Returns([(byte)0x08]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DB6, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004A028, 1)).Returns([(byte)0x06]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DD3, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004A404, 1)).Returns([(byte)0x07]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048F3B, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00049870, 1)).Returns([(byte)0x04]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048F18, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00049C4C, 1)).Returns([(byte)0x05]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DC3, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00049494, 1)).Returns([(byte)0x03]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DD6, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004ABBC, 1)).Returns([(byte)0x09]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DD7, 1)).Returns([(byte)1]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004AF98, 1)).Returns([(byte)0x0A]);
+        SetupReadByteBitMaskBridge(memoryReaderMock);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(It.IsAny<long>())).Returns((byte)0);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B38C)).Returns((byte)0xFF);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3B7)).Returns((byte)0xFC);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3B8)).Returns((byte)0x03);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048DD2)).Returns((byte)1);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004A7E0)).Returns((byte)0x08);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048DB6)).Returns((byte)1);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004A028)).Returns((byte)0x06);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048DD3)).Returns((byte)1);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004A404)).Returns((byte)0x07);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048F3B)).Returns((byte)1);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00049870)).Returns((byte)0x04);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048F18)).Returns((byte)1);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00049C4C)).Returns((byte)0x05);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048DC3)).Returns((byte)1);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00049494)).Returns((byte)0x03);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048DD6)).Returns((byte)1);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004ABBC)).Returns((byte)0x09);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048DD7)).Returns((byte)1);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004AF98)).Returns((byte)0x0A);
 
         var requisiteReader = new RequisiteReader(memoryReaderMock.Object);
         var stepReader = new StepReader(memoryReaderMock.Object, requisiteReader);
@@ -182,7 +186,9 @@ public class QuestLoaderTests : LoaderIntegrationTestBase
         Assert.Equal(8, driAgents.Count);
 
         var guilmon = Assert.Single(driAgents, quest => quest.Id == "driAgentGuilmon");
-        Assert.Empty(guilmon.Requisites);
+        Assert.Single(guilmon.Requisites);
+        Assert.Equal("seiryuLeader", guilmon.Requisites[0].Id);
+        Assert.Equal(0, guilmon.Requisites[0].Value);
         Assert.Equal(3, guilmon.Steps.Count);
         Assert.Equal(0x02, guilmon.Steps[0].Value);
         Assert.Equal(0x08, guilmon.Steps[1].Value);
@@ -192,7 +198,9 @@ public class QuestLoaderTests : LoaderIntegrationTestBase
         Assert.Equal(1, guilmon.Steps[2].Requisites[0].Value);
 
         var agumon = Assert.Single(driAgents, quest => quest.Id == "driAgentAgumon");
-        Assert.Empty(agumon.Requisites);
+        Assert.Single(agumon.Requisites);
+        Assert.Equal("seiryuLeader", agumon.Requisites[0].Id);
+        Assert.Equal(0, agumon.Requisites[0].Value);
         Assert.Equal(3, agumon.Steps.Count);
         Assert.Equal(0x01, agumon.Steps[0].Value);
         Assert.Equal(0x04, agumon.Steps[1].Value);
@@ -280,11 +288,11 @@ public class QuestLoaderTests : LoaderIntegrationTestBase
         var addressesRepository = CreateAddressesRepository();
 
         var memoryReaderMock = new Mock<IMemoryReader>();
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(It.IsAny<long>(), 1)).Returns([0]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B3B2, 1)).Returns([(byte)0xCF]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x0004B3B3, 1)).Returns([(byte)0x0F]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DC2, 1)).Returns([(byte)0x01]);
-        memoryReaderMock.Setup(memoryReader => memoryReader.ReadBytes(0x00048DC4, 1)).Returns([(byte)0x01]);
+        SetupReadByteBitMaskBridge(memoryReaderMock);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(It.IsAny<long>())).Returns((byte)0);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3B2)).Returns((byte)0xCF);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x0004B3B3)).Returns((byte)0x0F);
+        memoryReaderMock.Setup(memoryReader => memoryReader.ReadByte(0x00048DC2)).Returns((byte)0x01);
 
         var requisiteReader = new RequisiteReader(memoryReaderMock.Object);
         var stepReader = new StepReader(memoryReaderMock.Object, requisiteReader);
@@ -306,16 +314,16 @@ public class QuestLoaderTests : LoaderIntegrationTestBase
         Assert.Equal(0x08, asukaTrophy.Steps[4].Value);
         Assert.Equal(1, asukaTrophy.Steps[5].Value);
 
-        var sunTrophy = Assert.Single(duelIsland, quest => quest.Id == "sunTrophy");
-        Assert.Single(sunTrophy.Requisites);
-        Assert.Equal("asukaTrophy", sunTrophy.Requisites[0].Id);
-        Assert.Equal(1, sunTrophy.Requisites[0].Value);
-        Assert.Equal(6, sunTrophy.Steps.Count);
-        Assert.Equal(0x80, sunTrophy.Steps[0].Value);
-        Assert.Equal(0x01, sunTrophy.Steps[1].Value);
-        Assert.Equal(0x02, sunTrophy.Steps[2].Value);
-        Assert.Equal(0x04, sunTrophy.Steps[3].Value);
-        Assert.Equal(0x08, sunTrophy.Steps[4].Value);
-        Assert.Equal(1, sunTrophy.Steps[5].Value);
+        var asukaRematch = Assert.Single(duelIsland, quest => quest.Id == "asukaRematch");
+        Assert.Single(asukaRematch.Requisites);
+        Assert.Equal("asukaTrophy", asukaRematch.Requisites[0].Id);
+        Assert.Equal(1, asukaRematch.Requisites[0].Value);
+        Assert.Equal(6, asukaRematch.Steps.Count);
+        Assert.Equal(0x80, asukaRematch.Steps[0].Value);
+        Assert.Equal(0x01, asukaRematch.Steps[1].Value);
+        Assert.Equal(0x02, asukaRematch.Steps[2].Value);
+        Assert.Equal(0x04, asukaRematch.Steps[3].Value);
+        Assert.Equal(0x08, asukaRematch.Steps[4].Value);
+        Assert.Equal(0x08, asukaRematch.Steps[5].Value);
     }
 }
