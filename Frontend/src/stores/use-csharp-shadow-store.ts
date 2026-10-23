@@ -11,7 +11,7 @@ import type { CardBattleDTO } from "@/events/dto/card-battle.dto";
 import type { AuctionsDTO } from "@/events/dto/auctions.dto";
 import type { NpcsDTO } from "@/events/dto/npcs.dto";
 import type { JournalDTO } from "@/events/dto/journal.dto";
-import { storeLogger } from "@/events/logger";
+import { storeLogger } from "@/logger/logger";
 import { PlayerConverter } from "@/events/converters/player.converter";
 import { ImportantItemsConverter } from "@/events/converters/important-items.converter";
 import { PartyConverter } from "@/events/converters/party.converter";

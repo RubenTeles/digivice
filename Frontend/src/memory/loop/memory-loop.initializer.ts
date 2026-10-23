@@ -1,5 +1,5 @@
 import { AppConfig } from "@/config";
-import { compareLogger, memoryLogger } from "@/events/logger";
+import { compareLogger, memoryLogger } from "@/logger/logger";
 import { initializeSignalRHandlers } from "@/events/signalr.handlers";
 import { signalRService } from "@/events/signalr.service";
 import { DivergenceTracker } from "@/memory/comparison/divergence.tracker";

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Digimon, State } from "@/models";
-import { storeLogger } from "@/events/logger";
+import { storeLogger } from "@/logger/logger";
 import { StatePatcher } from "@/memory/patch/state.patcher";
 import { BattleAgainstNatsumiExpected } from "../../fixtures/snapshots/battle-against-natsumi.expected";
 import { FieldCentralParkExpected } from "../../fixtures/snapshots/field-central-park.expected";

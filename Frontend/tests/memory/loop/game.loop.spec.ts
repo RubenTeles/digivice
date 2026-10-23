@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { EmulatorConnectionErrorCodes } from "@/events/emulator-connection-error-codes";
+import { EmulatorConnectionErrorCodes } from "@/constants/emulator-connection-error-code.constant";
 import { GameLoop, type GameLoopOptions } from "@/memory/loop/game.loop";
 import type { State } from "@/models";
 import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.error";

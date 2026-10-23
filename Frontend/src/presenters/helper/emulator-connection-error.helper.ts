@@ -1,4 +1,4 @@
-import { isKnownEmulatorConnectionErrorCode } from "@/events/emulator-connection-error-codes";
+import { isKnownEmulatorConnectionErrorCode } from "@/constants/emulator-connection-error-code.constant";
 
 export class EmulatorConnectionErrorHelper {
   static resolveErrorKeys(errorCode: string | null): { titleKey: string; hintKey: string } {

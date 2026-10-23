@@ -1,6 +1,5 @@
-import { signalRService } from "./signalr.service";
+import { signalRLogger, signalRService } from "./signalr.service";
 import { useCSharpShadowStore } from "@/stores/use-csharp-shadow-store";
-import { signalRLogger } from "./logger";
 
 /**
  * Initializes the SignalR handlers to bridge incoming backend events with the C# shadow store actions.

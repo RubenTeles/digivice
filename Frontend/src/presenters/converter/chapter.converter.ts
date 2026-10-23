@@ -1,4 +1,4 @@
-import { createLogger } from "@/events/logger";
+import { createLogger } from "@/logger/logger";
 import type { ChapterRaw } from "@/repositories/tables/raws/quest/chapter.raw";
 import type { ChapterViewModel } from "@/viewmodels/quest/chapter.viewmodel";
 import type { StepViewModel } from "@/viewmodels/quest/step.viewmodel";

@@ -1,9 +1,11 @@
 import * as signalR from "@microsoft/signalr";
 import type { EventsMap } from "./events.map";
 import type { EventDTO } from "./dto/event.dto";
-import { signalRLogger } from "./logger";
+import { createLogger } from "@/logger/logger";
 import { AppConfig } from "@/config";
 import { formatHubConnectionError } from "./hub-connection-error";
+
+export const signalRLogger = createLogger("SignalR", "#3498db"); // Blue
 
 const ConnectionMaxAttempts = 20;
 const ConnectionRetryDelayMs = 250;

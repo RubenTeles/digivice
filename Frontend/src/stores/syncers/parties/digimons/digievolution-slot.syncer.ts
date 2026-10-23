@@ -4,7 +4,7 @@ import type { DigievolutionDTO } from "@/events/dto/parties/digimons/digievoluti
 import type { DigievolutionSlotDTO } from "@/events/dto/parties/digimons/digievolution-slot.dto";
 import { DigievolutionSyncer } from "./digievolution.syncer";
 import { DigievolutionConverter } from "@/events/converters/parties/digimons/digievolution.converter";
-import { storeLogger } from "@/events/logger";
+import { storeLogger } from "@/logger/logger";
 
 export class DigievolutionSlotSyncer {
   public static sync(

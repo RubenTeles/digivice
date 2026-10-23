@@ -33,26 +33,26 @@ class Logger {
     ];
   }
 
-  public debug(message: string, ...args: any[]) {
+  public debug(message: string, ...args: unknown[]) {
     if (this.shouldLog("debug")) {
       // Use console.log instead of console.debug to avoid browser default filters
       console.log(...this.formatMessage("debug", message), ...args);
     }
   }
 
-  public info(message: string, ...args: any[]) {
+  public info(message: string, ...args: unknown[]) {
     if (this.shouldLog("info")) {
       console.log(...this.formatMessage("info", message), ...args);
     }
   }
 
-  public warn(message: string, ...args: any[]) {
+  public warn(message: string, ...args: unknown[]) {
     if (this.shouldLog("warn")) {
       console.warn(...this.formatMessage("warn", message), ...args);
     }
   }
 
-  public error(message: string, ...args: any[]) {
+  public error(message: string, ...args: unknown[]) {
     if (this.shouldLog("error")) {
       console.error(...this.formatMessage("error", message), ...args);
     }
@@ -63,7 +63,6 @@ class Logger {
 export const createLogger = (context: string, color?: string) => new Logger(context, color);
 
 // Default loggers
-export const signalRLogger = createLogger("SignalR", "#3498db"); // Blue
 export const storeLogger = createLogger("Store", "#42b883"); // Green
 export const memoryLogger = createLogger("Memory", "#e67e22"); // Orange
 export const compareLogger = createLogger("Compare", "#9b59b6"); // Purple

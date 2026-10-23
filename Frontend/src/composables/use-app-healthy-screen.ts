@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import { useGameStore } from "@/stores/use-game-store";
 import type { AppHealthyScreenViewModel } from "@/viewmodels/app-healthy/app-healthy-screen.viewmodel";
-import { EmulatorConnectionErrorHelper } from "@/events/helpers/emulator-connection-error.helper";
+import { EmulatorConnectionErrorHelper } from "@/presenters/helper/emulator-connection-error.helper";
 
 export function useAppHealthyScreen() {
   const store = useGameStore();

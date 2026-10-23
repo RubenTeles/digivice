@@ -162,7 +162,7 @@ Mantido apenas para o modo `compare` (dev), por decisão 9:
 Removido do caminho de produção:
 
 - `tauri-backend-process.listener`, `setBackendProcessFailed`, `syncHubConnectionStatus` e estados correspondentes, chaves i18n `sidecarCrashed`/`hubUnreachable`.
-- `events/logger.ts` e os códigos de erro do emulador são reaproveitados (podem mudar de pasta).
+- Reaproveitados pelo caminho de produção e movidos para fora de `events/` depois da etapa 8: logger em `logger/logger.ts` (o `signalRLogger` ficou em `events/signalr.service.ts`), códigos de erro em `constants/emulator-connection-error-code.constant.ts` e `EmulatorConnectionErrorHelper` em `presenters/helper/`.
 
 ### 6. Repositório e build
 
@@ -198,7 +198,7 @@ Feito ao longo das etapas e fechado na etapa 8 (ver o registro da etapa 8):
 O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento:
 
 - **Atualizar `Tools/MemoryScanner/Program.cs` (`FindMainQuestDefinitionsPath`)** para procurar `Frontend/src/memory/definitions/Quests/MainQuestAddresses.json`, para a ferramenta continuar funcionando. Única exceção prevista à regra "Tools sem alteração", feita junto com a remoção.
-- Remover o modo `compare` (SignalR, `useCSharpShadowStore`, `events/`, `stores/syncers/`, comparador, proxy `/gamehub`, `@microsoft/signalr`) e a regra `digivice-backend.mdc`.
+- Remover o modo `compare` (SignalR, `useCSharpShadowStore`, `events/`, `stores/syncers/`, comparador, proxy `/gamehub`, `@microsoft/signalr`) e a regra `digivice-backend.mdc`. A pasta `events/` só contém o legado do `compare` e pode ser apagada inteira; no `memory-loop.initializer.ts` saem os imports do SignalR e o ramo `compare`.
 - Revisar as referências restantes a `Backend/` e `Tests/` em regras, skills e agents.
 
 ## Comparação C# × TS
