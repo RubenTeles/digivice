@@ -1,7 +1,21 @@
 import { computed } from "vue";
 import { useGameStore } from "@/stores/use-game-store";
 import type { AppHealthyScreenViewModel } from "@/viewmodels/app-healthy/app-healthy-screen.viewmodel";
-import { EmulatorConnectionErrorHelper } from "@/presenters/helper/emulator-connection-error.helper";
+import { isKnownEmulatorConnectionErrorCode } from "@/constants/emulator-connection-error-code.constant";
+
+function resolveEmulatorErrorKeys(errorCode: string | null): { titleKey: string; hintKey: string } {
+  if (errorCode !== null && isKnownEmulatorConnectionErrorCode(errorCode)) {
+    return {
+      titleKey: `errors.emulator.codes.${errorCode}.title`,
+      hintKey: `errors.emulator.codes.${errorCode}.hint`,
+    };
+  }
+
+  return {
+    titleKey: "errors.emulator.title",
+    hintKey: "errors.emulator.hint",
+  };
+}
 
 export function useAppHealthyScreen() {
   const store = useGameStore();
@@ -16,9 +30,7 @@ export function useAppHealthyScreen() {
     }
 
     if (store.healthStatus === "Error") {
-      const { titleKey, hintKey } = EmulatorConnectionErrorHelper.resolveErrorKeys(
-        store.lastErrorCode,
-      );
+      const { titleKey, hintKey } = resolveEmulatorErrorKeys(store.lastErrorCode);
 
       return {
         kind: "operational-error",

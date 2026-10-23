@@ -162,7 +162,7 @@ Mantido apenas para o modo `compare` (dev), por decisão 9:
 Removido do caminho de produção:
 
 - `tauri-backend-process.listener`, `setBackendProcessFailed`, `syncHubConnectionStatus` e estados correspondentes, chaves i18n `sidecarCrashed`/`hubUnreachable`.
-- Reaproveitados pelo caminho de produção e movidos para fora de `events/` depois da etapa 8: logger em `logger/logger.ts` (o `signalRLogger` ficou em `events/signalr.service.ts`), códigos de erro em `constants/emulator-connection-error-code.constant.ts` e `EmulatorConnectionErrorHelper` em `presenters/helper/`.
+- Reaproveitados pelo caminho de produção e movidos para fora de `events/` depois da etapa 8: logger em `logger/logger.ts` (o `signalRLogger` ficou em `events/signalr.service.ts`), códigos de erro em `constants/emulator-connection-error-code.constant.ts` e a resolução das chaves de erro passou a ser uma função privada em `composables/use-app-healthy-screen.ts`.
 
 ### 6. Repositório e build
 
