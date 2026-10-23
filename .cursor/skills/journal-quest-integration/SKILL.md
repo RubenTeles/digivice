@@ -1,0 +1,205 @@
+---
+name: journal-quest-integration
+description: >-
+  Integrates journal quests end to end in Digivice — quest definitions JSON in
+  the TypeScript memory layer, static quest JSON, repository, i18n, presenters
+  and Journal UI. Use when the user asks to add a quest to an existing journal
+  category (side quest, legendary weapon, DRI agent, Duel Island), to connect
+  confirmed quest addresses after memory-compare, or to create a brand-new
+  journal category.
+---
+
+# Journal Quest Integration
+
+Wires a quest from its RAM definitions (`Frontend/src/memory/definitions/Quests/`)
+to the Journal UI. Product rules of each category: `.cursor/rules/digivice-business.mdc`
+(Journal).
+
+**Prerequisite:** quest addresses confirmed (skill `memory-compare`).
+
+## When NOT to use
+
+| Case | Use instead |
+|------|-------------|
+| Field on Player / Party / Digimon / battle / auctions / NPCs | `memory-field-integration` |
+| New non-journal entity on `State` | `memory-entity-integration` |
+
+## Reuse rule (critical)
+
+Quest entities are shared across all categories. **Do not** create per-quest
+types, readers, assemblers, presenters or card components.
+
+| Layer | Reuse as-is |
+|-------|-------------|
+| Addresses | `QuestAddresses`, `StepAddresses`, `RequisiteAddresses` + `QuestAddressesConverter` |
+| Read | `QuestReader`, `QuestResource` |
+| Assemble | `QuestAssembler` (pass-through), `MainQuestAssembler`, `DuelIslandAssembler` |
+| Models | `Quest`, `Step`, `Requisite` |
+| Presenter converter | `QuestConverter` (`presenters/converter/quest.converter.ts`) |
+| UI | `JournalQuestCard`, `JournalQuestsSection`, `QuestModal` tree |
+
+## Pick the workflow
+
+```
+Quest id in a category already on Journal?  → Workflow A (below)
+New property on Journal?
+  → At least one quest id ready?
+      NO  → Stop; ask for the first quest (no empty sections)
+      YES → Workflow B: workflow-new-category.md
+  → Accent color given by the user?
+      NO  → Ask (Tailwind palette name, not already used)
+Product asked for a progression fix-up?  → Normalization (below)
+Same byte as an existing tracker?  → Likely another bit; still a separate quest id
+```
+
+## Category map (all wired)
+
+| Category | Definitions (`memory/definitions/Quests/`) | `Journal` property | Assembler | Repository getter | Static JSON (`database/quest/`) | Static getter | Accent |
+|----------|--------------------------------------------|--------------------|-----------|-------------------|---------------------------------|---------------|--------|
+| Main quest | `MainQuestAddresses.json` | `mainQuest` (single) | `MainQuestAssembler` (cascade) | `getMainQuest()` | `main-quest.json` | `getMainQuestRaw()` | yellow (hardcoded) |
+| Side quests | `SideQuests/` | `sideQuests` | `QuestAssembler` | `getAllSideQuests()` | `side-quest/` | `getSideQuestsRaw()` | `emerald` |
+| Legendary weapons | `LegendaryWeapons/` | `legendaryWeapons` | `QuestAssembler` | `getAllLegendaryWeapons()` | `legendary-weapons/` | `getLegendaryWeaponsRaw()` | `teal` |
+| DRI agents | `DriAgents/` | `driAgents` | `QuestAssembler` | `getAllDriAgents()` | `dri-agents/` | `getDriAgentsRaw()` | `cyan` |
+| Duel Island | `DuelIsland/` | `duelIsland` | `DuelIslandAssembler` (normalization) | `getAllDuelIsland()` | `duel-island/` | `getDuelIslandRaw()` | `sky` |
+
+Repository getters live in `memory/repositories/addresses.repository.ts`; static
+getters in `repositories/quest.repository.ts`. Current quests: [status.md](status.md).
+File map: [pipeline.md](pipeline.md).
+
+**Aside order (fixed):** Main quest → Auction card → Side → Legendary → DRI → Duel Island.
+
+Sections use `JournalQuestsSection` (closed by default), `display-mode="side"`
+cards and `calculateNewStatus: true` (locked/done/new variants).
+
+## Definitions schema
+
+```json
+{
+    "Id": "questId",
+    "Requisites": [
+        { "Id": "otherQuestOrItemId", "Address": "0x00048DC2" }
+    ],
+    "Steps": [
+        {
+            "Number": 1,
+            "Address": "0x0004B38C",
+            "BitMasks": ["0x04"],
+            "Requisites": [
+                { "Id": "itemId", "Address": "0x00048DD7", "BitMasks": ["0x01"] }
+            ]
+        }
+    ]
+}
+```
+
+- `Requisites` exist at **two levels**: quest root (gate for the whole quest, e.g. `AsukaRematchAddresses.json` → `asukaTrophy`; `DriAgentPatamonAddresses.json` → `submarimon`) and per step (e.g. DRI step 3 → `{rookie}DDNA`). Both are optional.
+- `BitMasks` (array) on steps **and** requisites. Empty = raw byte (`!= 0`). Multiple = **all** must be set. Singular `BitMask` → normalize to `"BitMasks": ["0x04"]`.
+- Single mask on one line (`"BitMasks": ["0x04"]`); multiline only for many entries.
+- **Ids in camelCase** (`muramasa`, `driAgentGuilmon`, `guilmonDDNA`). The same id is used by the definitions, the static quest JSON and i18n.
+- Step `Number` sequential and unique within the quest; equal to the step `number` in the static JSON.
+- `Frontend/src/memory/definitions/` is the **official** copy. Never edit `Backend/Memory/Definitions/` (frozen C#). Exception: `Tools/MemoryScanner` reads `Backend/Memory/Definitions/Quests/MainQuestAddresses.json`; touch it only if the user asks to update the tool.
+
+## Section invariant
+
+A section **only exists when it has at least one quest**. No empty-state UI.
+
+## Accent color rule
+
+- Must be a standard Tailwind palette name.
+- Must differ from every accent in use: yellow, `emerald`, `teal`, `cyan`, `sky`.
+- Add to `journal-section-palette.ts` by copying the `teal` entry (only the color name changes) and extend `JournalSectionAccentColor`.
+
+## Naming and i18n
+
+- Static files kebab-case (`dri-agent-patamon.json`); definitions PascalCase (`DriAgentPatamonAddresses.json`).
+- `i18n/locales/{en-US,pt-BR}/quest/{category}/{id-kebab}.json`, registered in each locale `index.ts`. Section titles in `journal.json`.
+- Quest texts use i18n; **Digimon/digievolution names stay literal** (proper names).
+
+---
+
+## Workflow A — Quest in an existing category
+
+Paths under `Frontend/src/` unless stated otherwise.
+
+### 1. Definitions
+
+- [ ] `memory/definitions/Quests/{Category}/{Name}Addresses.json` — mirror a quest of the same folder; normalize the schema
+- [ ] **SKIP** repository, reader, assembler, provider, model, patcher — `import.meta.glob` picks up every `*.json` of the folder (ordered by file name) and `StatePatcher` already keys the category list by `id`
+
+### 2. Memory tests
+
+Conventions: skill `frontend-memory-tests`.
+
+- [ ] `tests/memory/repositories/addresses.repository.spec.ts` — bump the category count in "should load every quest folder"; update "should order the quests of each folder by file name"
+- [ ] `tests/fixtures/snapshots/field-central-park.expected.ts` — `questIn({Category}, "{id}", { doneSteps, doneRequisites })` in file-name order, with the progress present in the `.bin` (confirm with the user against the game). `battle-against-natsumi.expected.ts` reuses this journal; a new fixture with a different journal needs its own entries
+- [ ] `npx vitest run`
+
+### 3. Static quest data
+
+- [ ] `database/quest/{category}/{id-kebab}.json` — mirror a quest in the same folder
+- [ ] `repositories/tables/quest/{category}/{id-kebab}.table.ts` → `export type {Name}Table = QuestRaw`
+- [ ] `i18n/locales/en-US/quest/{category}/{id-kebab}.json`
+- [ ] `i18n/locales/pt-BR/quest/{category}/{id-kebab}.json`
+- [ ] Import + spread in `i18n/locales/{en-US,pt-BR}/index.ts`
+
+### 4. Repository
+
+- [ ] `repositories/quest.repository.ts` — import JSON + table type; append to the category getter in the **desired UI position** (default: end)
+
+**SKIP:** `Journal.vue`, palette, `journal.viewmodel.ts`, `journal.presenter.ts`,
+`quest-modal.presenter.ts` — all iterate the full repository array per category.
+
+### 5. Quest JSON details
+
+- `requisites` at quest root and/or per step, ids matching the definitions (e.g. `asukaRematch` → `asukaTrophy`; DRI step 3 → `{rookie}DDNA`).
+- Locations: `location` = innermost target map id; `coordinates` = pin on that map.
+- Omit `innerLocation` to inherit the path from `map.json`; `"innerLocation": []` skips the canonical path; custom routes (desert cells, unique doors) keep hop `innerLocation` without the target pin.
+- Coordinates may be provisional `x`/`y` `50` until the user supplies markers — note it in [status.md](status.md).
+- i18n: `title`, `description`, `steps.{n}` texts, one `locationTarget` per step (marker label), `requisites.{id}` labels.
+
+Example (DRI agent, all 8 already done): title `"{Rookie} - DRI {Npc} ({levelRange})"`; steps look for agent → defeat boss for DDNA → deliver DNA.
+
+### 6. Manual verification
+
+- [ ] Card appears on the first tick (section collapsed by default)
+- [ ] Memory change in the emulator updates the card on the next tick
+- [ ] Modal opens for the new id
+
+### 7. Retrofeed
+
+- [ ] Append the quest under its category in [status.md](status.md)
+- [ ] Mark the addresses as integrated in `.cursor/skills/memory-compare/memory-regions.md` / `patterns/*.md` when they came from an investigation
+
+---
+
+## Normalization (conditional)
+
+Default is **pass-through** (`QuestAssembler`). Only add a normalization when
+the product explicitly asks:
+
+- Main quest cascade lives in `MainQuestAssembler` (later step done → earlier steps done). **Main quest only.**
+- Duel Island normalization lives in `DuelIslandAssembler` (requisite not met → all steps false; trophy done → earlier steps true). **Duel Island only.**
+- New normalization → new `memory/assemblers/{category-kebab}.assembler.ts` wrapping `QuestAssembler.assemble`, used in `JournalAssembler`, plus its spec. Never reuse another category's normalization silently.
+
+## Compare mode
+
+The C# backend is frozen. In `VITE_MEMORY_MODE=compare` quests added after the
+freeze show up as divergences with `C#=undefined`; that is expected.
+
+## Debugging
+
+| Symptom | Likely cause |
+|---------|--------------|
+| Card missing | Definitions JSON outside the category folder, or quest not in the static getter; ids differ in casing |
+| Card shows, modal empty | `QuestModalPresenter` id mismatch |
+| Wrong step state | Step `Number` in definitions differs from `number` in the static JSON; wrong `BitMasks` |
+| Quest order wrong in tests | Definitions are ordered by file name, not by id |
+| Missing translations | Locale `index.ts` import omitted |
+
+## Additional resources
+
+- New category: [workflow-new-category.md](workflow-new-category.md)
+- Pipeline and file map: [pipeline.md](pipeline.md)
+- Status: [status.md](status.md)
+- Investigation: `.cursor/skills/memory-compare/`
+- Rules: `.cursor/rules/digivice-business.mdc` (Journal), `.cursor/rules/digivice-frontend.mdc`

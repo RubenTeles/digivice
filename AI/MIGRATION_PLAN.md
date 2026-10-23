@@ -16,8 +16,10 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | 5d | Journal | Concluída |
 | 5e | Party | Concluída |
 | 6 | Patch in-place e troca da fonte | Concluída |
-| 7 | Produção sem sidecar | Implementada; aguardando validação manual |
-| 8 | Fechamento de docs | Pendente |
+| 7 | Produção sem sidecar | Concluída |
+| 8 | Fechamento de docs | Concluída |
+
+**Migração concluída.** O Digivice é uma única aplicação Tauri: o Rust só lê a RAM (`read_ram`) e toda a lógica fica na camada de memória TS (`Frontend/src/memory/`). O C# está congelado no repositório, só como referência.
 
 ## Contexto e motivação
 
@@ -37,9 +39,9 @@ O motivo **não** é abandonar o C#; é eliminar a separação em duas aplicaç�
 3. **Diff:** a reatividade do Vue substitui o diff. O loop faz patch in-place na store (primitivo igual não dispara reatividade).
 4. **Testes:** a nova camada de leitura (readers, assemblers, definitions, patch da store) **terá testes** (Vitest). O restante do frontend continua sem testes.
 5. **Tools:** tudo em `Tools/` deve continuar funcionando **sem alterações**.
-6. **Definitions:** a cópia em `Frontend/src/memory/definitions/` é a fonte do TS (parser equivalente ao `HexOrIntStringToIntConverter`). A cópia em `Backend/Memory/Definitions/` continua existindo só para o C# e o `MemoryScanner` até o backend ser apagado. As duas são mantidas iguais por um teste de paridade (`tests/memory/definitions/definitions-parity.spec.ts`). Ver "Pendências para a remoção do backend".
-7. **C# permanece no repositório** como referência de paridade. Não é deletado.
-8. **Projeto pausado:** nada novo é adicionado (nem no C#, nem no TS) até a migração estar completa, aprovada e funcional.
+6. **Definitions:** a cópia em `Frontend/src/memory/definitions/` é a **oficial** (parser equivalente ao `HexOrIntStringToIntConverter`). A cópia em `Backend/Memory/Definitions/` fica congelada com o C# (não é mais sincronizada) e continua no lugar porque o `MemoryScanner` lê o `MainQuestAddresses.json` dela. O teste de paridade entre as duas existiu da etapa 3 à 7 e foi apagado na etapa 8. Ver "Pendências para a remoção do backend".
+7. **C# congelado no repositório** (`Backend/`, `Tests/`, `Digivice.slnx`): fica só como referência, para conferir algum comportamento antigo, e como lado sombra do modo `compare`. Não é deletado nem atualizado.
+8. **Projeto pausado durante a migração** (encerrado na etapa 8): nada novo foi adicionado até a migração estar completa, aprovada e funcional. A partir daqui funcionalidade nova volta a ser implementada, só no TS.
 9. **Comparação permanente em dev:** após a troca da fonte, o caminho SignalR no frontend fica como modo `compare` só para desenvolvimento, por tempo indeterminado. O C# nunca volta para a build de produção.
 10. **Docs progressivos:** cada etapa atualiza as regras, skills e docs que ela muda. Etapa só é concluída com docs atualizados.
 11. **Etapas revisáveis:** migração em partes, cada uma revisada antes da próxima.
@@ -185,17 +187,19 @@ Removido do caminho de produção:
 
 ### 9. Docs, regras, skills e agents (progressivo)
 
-- **Reescrever/fundir:** `digivice-backend.mdc` e `digivice-tests.mdc` (marcar como legado/paridade), `digivice-frontend-sync.mdc`, `digivice-frontend.mdc` (exceção de testes), `digivice-business.mdc` (diagrama de arquitetura, menções a GameLoopService/eventos/Differs).
-- **Skills:** `address-field-backend` + `address-field-frontend`, `memory-entity-backend` + `memory-entity-frontend`, `quest-pattern-backend`, `backend-tests` → novas skills para a camada TS.
-- **Ajustar:** agent `memory-investigator`, skills `memory-compare` e `battle-memory-investigate`, agent `docs-auditor`, índices em `AI/*.md`.
+Feito ao longo das etapas e fechado na etapa 8 (ver o registro da etapa 8):
+
+- **Regras:** `digivice-backend.mdc` marcada como congelada; `digivice-tests.mdc` apagada; `digivice-frontend-sync.mdc`, `digivice-frontend.mdc`, `digivice-frontend-tests.mdc` e `digivice-business.mdc` descrevem o loop TS.
+- **Skills:** `address-field-backend` + `address-field-frontend` → `memory-field-integration`; `memory-entity-backend` + `memory-entity-frontend` → `memory-entity-integration`; `quest-pattern-backend` + `quest-pattern-frontend` → `journal-quest-integration`; `backend-tests` apagada.
+- **Ajustados:** agents `memory-investigator` e `docs-auditor`, skills `memory-compare`, `battle-memory-investigate`, `map-subzone-investigate` e `frontend-memory-tests`, docs de investigação e índices em `AI/*.md`.
 
 ### 10. Pendências para a remoção do backend
 
 O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento:
 
 - **Atualizar `Tools/MemoryScanner/Program.cs` (`FindMainQuestDefinitionsPath`)** para procurar `Frontend/src/memory/definitions/Quests/MainQuestAddresses.json`, para a ferramenta continuar funcionando. Única exceção prevista à regra "Tools sem alteração", feita junto com a remoção.
-- Apagar `Frontend/tests/memory/definitions/definitions-parity.spec.ts` (não haverá mais cópia do backend para comparar).
-- Revisar referências a `Backend/Memory/Definitions/` em regras, skills e agents (as skills legadas do backend saem junto).
+- Remover o modo `compare` (SignalR, `useCSharpShadowStore`, `events/`, `stores/syncers/`, comparador, proxy `/gamehub`, `@microsoft/signalr`) e a regra `digivice-backend.mdc`.
+- Revisar as referências restantes a `Backend/` e `Tests/` em regras, skills e agents.
 
 ## Comparação C# × TS
 
@@ -356,7 +360,7 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - Docs: `digivice-business.mdc` (arquitetura), `digivice-frontend-sync.mdc` (reescrita), `digivice-frontend.mdc`, `digivice-frontend-tests.mdc`, skill `frontend-memory-tests`. As skills `address-field-frontend` e `memory-entity-frontend` ainda descrevem o caminho SignalR; reescrita na Etapa 8 (nada novo é adicionado durante a migração).
 - **Validação manual (aprovada):** Tauri com o DuckStation; UI alimentada só pelo loop TS, dados conferidos no jogo, sem problemas.
 
-### Etapa 7 — Produção sem sidecar (implementada; aguardando validação manual)
+### Etapa 7 — Produção sem sidecar (concluída)
 
 - `Tauri/src/lib.rs`: só plugin shell (`open` dos links externos), `MemoryState` e `read_ram`. Removidos spawn do sidecar, porta livre, `get_backend_port`, evento `backend-crashed` e o kill do processo ao fechar a janela.
 - `Tauri/tauri.conf.json`: sem `externalBin`, `resources` (appsettings, `Memory/`) e `beforeBundleCommand`. Capabilities: só `core:default` e `shell:allow-open`. `Tauri/.gitignore` sem `/binaries/`; a pasta local `Tauri/binaries/` (backend publicado) pode ser apagada à mão.
@@ -364,6 +368,18 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 - Frontend: `signalr.service.ts` conecta sempre pelo proxy `/gamehub` do Vite (sem `get_backend_port` nem fallback de porta); `AppConfig.backend` só com `hubPath`; `VITE_MEMORY_MODE=compare` fora de dev gera warn e cai para `typescript`.
 - C# continua no repositório (`Backend/`, `Tests/`, `Digivice.slnx`) e `Tools/` intocado; o backend só roda à mão (`dotnet run`) para o `compare` em dev.
 - Verificação: `cargo build` sem warnings; type-check, 367 testes, build e eslint dos arquivos alterados ok.
+- **Validação manual (aprovada):** app sem o processo do backend, lendo o jogo normalmente.
+
+### Etapa 8 — Fechamento de docs (concluída)
+
+- Decisões: o C# fica congelado (não apagado) para consulta; definitions do frontend passam a ser as oficiais e o teste de paridade sai; skills que perderam sentido são apagadas e as demais atualizadas; o modo `compare` só ganha documentação (campos novos aparecem como divergência `C#=undefined`, esperado).
+- Código: `Frontend/tests/memory/definitions/definitions-parity.spec.ts` apagado. Total: 336 testes.
+- Skills novas, só para a camada TS:
+  - `memory-field-integration` — campo novo em entidade existente (mapa de entidades, tipos de leitura, checklist até testes e fixtures).
+  - `memory-entity-integration` — entidade nova no `State` (molde `CardBattle`).
+  - `journal-quest-integration` — quest em categoria existente ou categoria nova, das definitions à UI do Journal (`workflow-new-category.md`, `pipeline.md`, `status.md` unindo os status do backend e do frontend).
+- Apagadas: skills `address-field-backend`, `address-field-frontend`, `memory-entity-backend`, `memory-entity-frontend`, `quest-pattern-backend`, `quest-pattern-frontend`, `backend-tests` e a regra `digivice-tests.mdc`.
+- Atualizadas: regras `digivice-backend.mdc` (aviso de congelamento), `digivice-business.mdc`, `digivice-frontend.mdc`, `digivice-frontend-sync.mdc` e `digivice-frontend-tests.mdc`; skills `frontend-memory-tests`, `memory-compare` (+ `patterns-map.md`), `battle-memory-investigate` e `map-subzone-investigate`; agents `memory-investigator` e `docs-auditor` (C# fora do escopo da auditoria); docs de investigação; `AI/CODE_RULES.md` e `AI/BUSINESS_RULES.md`.
 
 ## Decisões em aberto
 

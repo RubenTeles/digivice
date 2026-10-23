@@ -17,15 +17,15 @@ You audit whether the Digivice guidance files still match the codebase. You neve
 
 ## Checks
 
-1. **Paths** — every repository path cited in backticks or links (`Backend/...`, `Frontend/src/...`, `Frontend/tests/...`, `Tests/...`, relative `.md` links) exists. Use Glob; resolve relative links from the citing file's folder.
-2. **Symbols** — every C# / TS type, class, method or component named as a reference (`CardBattleLoader`, `GetAllDuelIsland`, `Equipments.vue`, `QuestModalPresenter`) exists. Use Grep on `Backend/`, `Frontend/src/`, `Frontend/tests/`, `Tests/`.
+1. **Paths** — every repository path cited in backticks or links (`Frontend/src/...`, `Frontend/tests/...`, `Tauri/...`, `Tools/...`, `Backend/...`, `Tests/...`, relative `.md` links) exists. Use Glob; resolve relative links from the citing file's folder.
+2. **Symbols** — every TS / Rust / C# type, class, method or component named as a reference (`CardBattleProvider`, `getAllDuelIsland`, `Equipments.vue`, `QuestModalPresenter`) exists. Use Grep on `Frontend/src/`, `Frontend/tests/`, `Tauri/src/` and, for C# names, `Backend/` and `Tests/`.
 3. **Coverage** — entities and categories present in code but missing from guidance:
-   - `State` properties in `Backend/Domain/Models/State.cs` vs `digivice-business.mdc` and the `address-field-backend` / `address-field-frontend` entity maps
-   - `EventType` values in `Backend/Events/Models/EventType.cs` vs `digivice-business.mdc`
-   - Quest folders under `Frontend/src/memory/definitions/Quests/` (and its backend copy `Backend/Memory/Definitions/Quests/`) vs `quest-pattern-backend` category map and `backend-status.md`
-   - Quest ids in `Frontend/src/repositories/quest.repository.ts` vs `frontend-status.md`
-   - Accents in `Frontend/src/components/journal/journal-section-palette.ts` vs `quest-pattern-frontend`
-   - `*Addresses.json` files vs `memory-regions.md` "integrated" markers
+   - `State` properties in `Frontend/src/models/state.ts` vs `digivice-business.mdc` and the entity map in `memory-field-integration`
+   - Quest folders under `Frontend/src/memory/definitions/Quests/` vs the `journal-quest-integration` category map and its `status.md`
+   - Quest ids in `Frontend/src/repositories/quest.repository.ts` vs `journal-quest-integration/status.md`
+   - Accents in `Frontend/src/components/journal/journal-section-palette.ts` vs `journal-quest-integration`
+   - `Frontend/src/memory/definitions/**/*Addresses.json` files vs `memory-regions.md` "integrated" markers
+   - The C# backend (`Backend/`, `Tests/`) is frozen and kept only for reference: do not report it as missing from guidance nor require guidance to match it, except `digivice-backend.mdc`, which describes it
 4. **Consistency** — contradictions between files (same fact stated differently), skills referencing skills/agents that do not exist, frontmatter `description` promising workflows the body does not have.
 5. **Size** — flag skill files above ~400 lines as candidates for splitting.
 

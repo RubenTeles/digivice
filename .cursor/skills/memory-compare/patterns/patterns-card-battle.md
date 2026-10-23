@@ -118,7 +118,7 @@ first stays isolated at `0x4B3DF` / `0x20` (`BattledTamer#0`). Snaps:
 follow `groupId − 200`; treat as special rematch bit until script index
 confirmed.
 
-**Backend integrated (2026-08-31):** all confirmed tamers wired in
+**Integrated (2026-08-31):** all confirmed tamers wired in
 [`NpcAddresses.json`](../../../../Frontend/src/memory/definitions/NpcAddresses.json) —
 `genji` (first+second), `natsumi`, `catherine`, `lucia`, `robert`,
 `akiba`, `chris`, `tomomi`, `mitch`, `bob`, `andy`, `george`, `meiLin`,
@@ -151,7 +151,7 @@ Rewards match existing groups (Bits delta 580 / 590 / 890).
 
 Not yet validated against a lose / reload.
 
-**Backend integrated (2026-10-13):** all six wired in
+**Integrated (2026-10-13):** all six wired in
 [`NpcAddresses.json`](../../../../Frontend/src/memory/definitions/NpcAddresses.json)
 (battle id `first`) and through the Npcs pipeline / frontend sync.
 
@@ -209,7 +209,7 @@ On transition **`0x0600 → 0x0700`** (card battle screen), **`0x4B404`** (Int32
 **card battle config id** (which fight/deck setup), **not** a unique NPC id.
 **`0`** outside card battle (`0x0600` digimon battle).
 
-Backend: `CardBattle.Id` via [`CardBattleAddresses.json`](../../../../Frontend/src/memory/definitions/CardBattleAddresses.json) `Id`.
+Integrated: `cardBattle.id` via [`CardBattleAddresses.json`](../../../../Frontend/src/memory/definitions/CardBattleAddresses.json) `Id`.
 Frontend static: `cardBattles.first` / `cardBattles.second` → `id` in
 `tamer.json` / `duel-island.json` (lookup NPC by scanning those ids).
 

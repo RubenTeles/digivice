@@ -58,7 +58,7 @@ Nomes de Digimons/Digievoluções são nomes próprios: literais, nunca via i18n
 
 ## Helpers legados
 
-`presenters/helper/` contém legado (`party-level`, `location-label`, `location-encounter`, `desert-neighbor`, `digievolution-techniques`, `main-quest-range`, `quest-progress`, `npc-battle-opponent`, `npc-battle-from-enemy`, `search-item-sort`). Permanece até migração gradual para services — **não** criar helpers novos em `presenters/helper/` nem `src/helpers/`.
+`presenters/helper/` contém legado (`party-level`, `location-label`, `location-encounter`, `desert-neighbor`, `digievolution-techniques`, `quest-progress`, `npc-battle-opponent`, `npc-battle-from-enemy`, `search-item-sort`). Permanece até migração gradual para services — **não** criar helpers novos em `presenters/helper/` nem `src/helpers/`.
 
 ## Extensions (`src/extensions/`)
 

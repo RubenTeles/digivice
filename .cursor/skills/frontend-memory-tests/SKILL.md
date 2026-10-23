@@ -4,10 +4,10 @@ description: >-
   Concrete conventions for writing Digivice frontend tests (Vitest) for the
   memory reading layer (src/memory/) — where each test goes, naming,
   FakeSnapshotBuilder for synthetic RAM, SnapshotFixtureLoader for real 2 MiB
-  .bin dumps from Tools/MemoryScanner, and the parity checklist against the
-  legacy C# Tests/. Use when creating or updating tests under Frontend/tests/,
-  after porting a backend reader/assembler to TS, or when the user asks for
-  test coverage of the memory layer.
+  .bin dumps from Tools/MemoryScanner, and where each frozen C# test was
+  ported. Use when creating or updating tests under Frontend/tests/, after
+  adding a field, entity or quest to the memory layer, or when the user asks
+  for test coverage of the memory layer.
 ---
 
 # Frontend Memory Tests
@@ -78,12 +78,11 @@ const snapshot = new MemorySnapshot(SnapshotFixtureLoader.load("field-central-pa
 
 - Tauri bridge: `vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }))` + `vi.mocked(invoke)`. Rust errors reject with `{ code, detail }`. Reference: `tests/memory/snapshot/tauri-snapshot.provider.spec.ts`.
 - `fetch`: `vi.stubGlobal("fetch", fetchMock)` with `new Response(buffer)`, and `vi.unstubAllGlobals()` in `afterEach`. Reference: `tests/memory/snapshot/file-snapshot.provider.spec.ts`.
-- Definitions: never mock. Specs that need addresses use `AddressesRepository` (real JSONs from `src/memory/definitions/`); converter specs build `...Raw` objects inline.
-- `tests/memory/definitions/definitions-parity.spec.ts` keeps the frontend copy equal to `Backend/Memory/Definitions/` (same files, same parsed content). Temporary: delete it together with the backend.
+- Definitions: never mock. Specs that need addresses use `AddressesRepository` (real JSONs from `src/memory/definitions/`, the official copy); converter specs build `...Raw` objects inline.
 
-## Parity checklist with the C# `Tests/`
+## Ported C# tests (record)
 
-The C# project is frozen as parity reference. When porting a backend piece to TS, port its tests too:
+The port is finished; the C# project is frozen and kept only to check old behavior. Where each C# test went:
 
 | C# test | TS equivalent | Status |
 |---|---|---|

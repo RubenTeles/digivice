@@ -15,8 +15,8 @@ Full method and evidence: [seabed-routing-investigation.md](../../../docs/invest
 
 ### Rolling PreviousMapId — `0x4B400` (confirmed, in PlayerAddresses)
 
-Wired as `PreviousMapId` on the Player pipeline (`PlayerChanged`) — same type
-as `MapId` (`ReadInt16` → domain/DTO string `X4`). Frontend: `previousMapId`.
+Wired as `player.previousMapId` in the TS memory layer — same type as `mapId`
+(`readInt16` → string `X4` in `PlayerAssembler`).
 
 On every map transition, `0x4B400` receives the map the player **just left**:
 
@@ -32,7 +32,7 @@ mirrors current `MapId` (`0x4B3F8`).
 
 ### SeabedRoute — `0x48D78` (confirmed, in PlayerAddresses)
 
-Wired as `SeabedRoute` on the Player backend pipeline (`PlayerChanged`).
+Wired as `player.seabedRoute` in the TS memory layer (`PlayerReader` / `PlayerAssembler`).
 
 - Set once on dive (`0x00` → route value).
 - **Unchanged** while walking between seabed maps on the same session.
@@ -50,7 +50,7 @@ Table incomplete — more dive points not yet mapped.
 
 ### IsSubmerged / MapVariant — `0x48D7A` (confirmed, in PlayerAddresses)
 
-Wired as `MapVariant` on the Player backend pipeline (`PlayerChanged`).
+Wired as `player.mapVariant` in the TS memory layer (`PlayerReader` / `PlayerAssembler`).
 
 **Seabed:** `0x01` for the entire underwater session; `0x00` on surface.
 Indicates submerged state, not which route. (Investigation notes formerly

@@ -28,7 +28,7 @@ alwaysApply: false
   2. `storedDigievolutions` só cresce: entrada ausente na RAM permanece.
   3. Slot da party com `digimonId` diferente: substitui o `digimon` inteiro.
 - **Nulabilidade do estado:** `currentState` é o único ponto anulável (antes do primeiro tick e após erro). As 8 entidades de `State` e `journal.mainQuest` nunca são `null`.
-- Campo novo em model existente não exige mudança no patcher; lista nova exige a chave em `ListKeys`.
+- Campo novo em model existente não exige mudança no patcher; lista nova exige a chave em `ListKeys`. Passo a passo: skills `memory-field-integration`, `memory-entity-integration` e `journal-quest-integration`.
 - **Selectors:**
   - Usam **apenas** dados do model (nada de repositórios, dados estáticos, i18n ou imagens — isso é presenter/service).
   - Nunca mutam o model nem gravam o valor derivado nele.
@@ -40,6 +40,6 @@ alwaysApply: false
 
 `SignalRService` → `signalr.handlers.ts` → `useCSharpShadowStore` (`setInitialState` / `sync{Entity}`) → `events/converters/` (bootstrap completo) ou `stores/syncers/` (patch incremental). Nenhum componente lê a sombra; o `initializeMemoryLoop` compara `useGameStore` (TS) com ela e loga divergências por `compareLogger`.
 
-- Mantido sem evolução: DTOs (`events/dto/`), `EventsMap`, converters e syncers só existem para paridade com o C#. Não estender para funcionalidade nova.
+- Congelado junto com o C#: DTOs (`events/dto/`), `EventsMap`, converters e syncers só existem para comparar com o backend congelado. Não estender para funcionalidade nova; o que existir só no TS aparece como divergência `C#=undefined` (esperado).
 - **Regra de ouro do syncer:** propriedade `undefined` no DTO → **não mutar**. `null` explícito é valor válido, exceto no `DigievolutionSlotSyncer` (preenchido → vazio ignorado, como no patcher).
 - Converters recebem `DeepRequired<DTO>` (`events/dto/deep-required.ts`) e não inventam fallback (`?? 0`, `=== true`).

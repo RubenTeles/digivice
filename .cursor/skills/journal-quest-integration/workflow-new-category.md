@@ -1,0 +1,86 @@
+# Workflow B — New journal category
+
+Rare. Use only when `Journal` gains a new property. Template: `duelIsland`
+(latest category added). Every step mirrors the existing `duelIsland` branch.
+Paths under `Frontend/src/` unless stated otherwise.
+
+## 0. Preconditions
+
+- [ ] **At least one quest id** ready (section invariant — no empty sections)
+- [ ] Property name agreed: `{category}` (camelCase, `Journal` property) and `{Category}` (PascalCase, definitions folder)
+- [ ] Accent color confirmed (see the accent color rule in [SKILL.md](SKILL.md))
+- [ ] Normalization: pass-through unless the product asked otherwise
+
+## 1. Definitions + repository
+
+- [ ] Folder `memory/definitions/Quests/{Category}/` with at least one `{Name}Addresses.json`
+- [ ] `memory/repositories/addresses.repository.ts`:
+  - `const {Category}Files = import.meta.glob<QuestAddressesRaw>("@/memory/definitions/Quests/{Category}/*.json", { eager: true, import: "default" })`
+  - `private static {category}Addresses: QuestAddresses[] | null = null`
+  - `getAll{Category}()` through `this.loadQuestFolder("{Category}", {Category}Files)`
+
+## 2. Memory pipeline
+
+| File | Change |
+|------|--------|
+| `memory/addresses/journal.addresses.ts` | `{category}: QuestAddresses[]` |
+| `memory/providers/journal.provider.ts` | `{category}: AddressesRepository.getAll{Category}()` in `getAddresses` |
+| `memory/resources/journal.resource.ts` | `{category}: QuestResource[]` |
+| `memory/readers/journal.reader.ts` | `{category}: JournalReader.readQuests(snapshot, addresses.{category})` |
+| `models/journal/journal.ts` | `{category}: Quest[]` |
+| `memory/assemblers/journal.assembler.ts` | `resource.{category}.map((quest) => QuestAssembler.assemble(quest))` (or the category assembler) |
+| `memory/patch/state.patcher.ts` | `{category}: "id"` in `ListKeys` |
+
+`StateComposer`, `GameLoop`, `useGameStore`: **SKIP**.
+
+## 3. Memory tests
+
+Conventions: skill `frontend-memory-tests`.
+
+- [ ] `tests/memory/repositories/addresses.repository.spec.ts` — new folder in "should load every quest folder" and in the file-name ordering test
+- [ ] `tests/memory/readers/journal.reader.spec.ts`, `tests/memory/assemblers/journal.assembler.spec.ts` — the new collection
+- [ ] `tests/fixtures/snapshots/field-central-park.expected.ts` — `const {Category} = AddressesRepository.getAll{Category}()` and `{category}: [questIn(...)]` in the journal
+- [ ] `tests/memory/patch/state.patcher.spec.ts` — only if the list needs a case beyond the existing `id` lists
+- [ ] Category assembler spec when there is a normalization
+- [ ] `npx vitest run`
+
+## 4. Static quest data (per quest)
+
+- [ ] `database/quest/{category-kebab}/{id-kebab}.json`
+- [ ] `repositories/tables/quest/{category-kebab}/{id-kebab}.table.ts` → `export type XxxTable = QuestRaw`
+- [ ] `i18n/locales/{en-US,pt-BR}/quest/{category-kebab}/{id-kebab}.json`
+- [ ] Register imports in both `i18n/locales/{en-US,pt-BR}/index.ts`
+
+## 5. Repository
+
+`repositories/quest.repository.ts`: import JSON + table types; add
+`get{Category}Raw(): QuestRaw[]`. Array order = **UI display order**.
+
+## 6. ViewModel + presenters
+
+| File | Change |
+|------|--------|
+| `viewmodels/quest/journal.viewmodel.ts` | new collection field |
+| `presenters/journal/journal.presenter.ts` | map `get{Category}Raw()` → `QuestModalPresenter.getQuestViewModel` + filter nulls |
+| `presenters/journal/quest-modal.presenter.ts` | new `find(raw => raw.id === questId)` branch with `calculateNewStatus: true` |
+
+`presenters/converter/quest.converter.ts`: **SKIP**.
+
+## 7. UI
+
+- [ ] `components/journal/Journal.vue` — `JournalQuestsSection` in the fixed order, `accent-color="{color}"`, `v-for` over `journalViewModel.{category}`, `display-mode="side"` on each `JournalQuestCard`; `defaultExpanded` omitted (closed)
+- [ ] `components/journal/journal-section-palette.ts` — extend `JournalSectionAccentColor` and copy the `teal` entry changing only the color name
+- [ ] `i18n/locales/{en-US,pt-BR}/journal.json` — section title key `journal.{category}`
+
+## 8. Manual verification
+
+- [ ] First tick shows the cards in the new section when expanded
+- [ ] Step/requisite change in the emulator updates card + modal on the next tick
+- [ ] Modal opens for quests in the new section
+- [ ] Accent distinct from all other sections
+
+## 9. Docs
+
+- [ ] [status.md](status.md): category, assembler, accent, quest ids
+- [ ] Category map in [SKILL.md](SKILL.md) and [pipeline.md](pipeline.md)
+- [ ] Journal categories in `.cursor/rules/digivice-business.mdc`

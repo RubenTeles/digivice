@@ -143,14 +143,14 @@ progress flags. Important items (DRI DNA) may persist after quest hand-in.
 | Range | Purpose | Notes |
 |-------|---------|-------|
 | ~0x000494xxx | Digimon stat blocks (persistent / post-battle) | HP Current syncs **after** combat only — see DigimonStatusAddresses.json |
-| `0x00042B74` + `2 × rookieId` | Blast gauge (Int16, 0–1000, per Digimon) | Confirmed — see [patterns-battle.md](patterns/patterns-battle.md); updates in combat |
-| `0x00042B28` – `0x00042B3E` | Enemy battle strip (near Blast) | `0x42B28` counter; **`0x42B2C` GroupId** (Int16, wired in `EnemyAddresses.json` → `Enemy.GroupId`); `0x42B34+` token/level/max HP+MP — does **not** track current HP damage. Tamer fight: stays on the **first** enemy (Crabmon 197, lv17, HP 528) after it is KO'd and replaced |
-| `0x00042B6C` | Enemy **drop item Val** (Int16, live) | **Confirmed** — see [patterns-battle.md](patterns/patterns-battle.md) “Enemy drops (variable)”. Same Digimon can show different Vals by map or roll; static single `dropId` is incomplete. |
+| `0x00042B74` + `2 × rookieId` | Blast gauge (Int16, 0–1000, per Digimon) | Confirmed — see [patterns-battle.md](patterns/patterns-battle.md) (Blast); updates in combat |
+| `0x00042B28` – `0x00042B3E` | Enemy battle strip (near Blast) | `0x42B28` counter; **`0x42B2C` GroupId** (Int16, wired in `EnemyAddresses.json` → `enemy.groupId`); `0x42B34+` token/level/max HP+MP — does **not** track current HP damage. Tamer fight: stays on the **first** enemy (Crabmon 197, lv17, HP 528) after it is KO'd and replaced |
+| `0x00042B6C` | Enemy **drop item Val** (Int16, live) | **Confirmed** — see [patterns-battle-slots.md](patterns/patterns-battle-slots.md) “Enemy drops (variable)”. Same Digimon can show different Vals by map or roll; static single `dropId` is incomplete. |
 | `0x000A4470` + `n × 0x20` | Battle HP/MP slot table | **Confirmed** live HP/MP + Condition @ +0x1C; attr buff deltas STR/DEF/SPD @ +0x10/+0x12/+0x14 — allies in `Parties/InBattleAddresses.json`; enemy slots start `0xA44D0` (also `0xA44F0`, `0xA4510` for NPC multi-enemy parties — each has own memoryId+HP) in `EnemyAddresses.json` |
 | `0x000A4468` | Active ally slot index | 0/1/2 — switches with front Digimon (`in-combat-kotemon/patamon/renamon`) |
 | `0x000A446C` | Active enemy slot index | 0/1/2 — Gordon tamer snaps; wired in `EnemyAddresses.json` as `ActiveEnemySlotIndex` (primary active-enemy source) |
 | `0x000A4558` | Camera focus unit id | Target during attack animation, ally at action choice / after switches, stale during switch animations. **Not integrated** (removed from `EnemyAddresses.json` 2026-09-27) |
-| `0x000A4580` / `0x000A45C0` | Combatant attr/resist blocks (stride `0x40`) | **Confirmed** layout: Level, STR/DEF/SPI/WIS/SPD, 7 elemental resists, status-resist tail, **species @ +0x24**. Ally↔enemy **swap** which base holds whom — identify by matching enemy.json / slot id `0xA44D0`. No Charisma. Not per party slot (engaged pair only). Field skills do **not** rewrite these resists. Species code table: [patterns-battle.md](patterns/patterns-battle.md) |
+| `0x000A4580` / `0x000A45C0` | Combatant attr/resist blocks (stride `0x40`) | **Confirmed** layout: Level, STR/DEF/SPI/WIS/SPD, 7 elemental resists, status-resist tail, **species @ +0x24**. Ally↔enemy **swap** which base holds whom — identify by matching enemy.json / slot id `0xA44D0`. No Charisma. Not per party slot (engaged pair only). Field skills do **not** rewrite these resists. Species code table: [patterns-battle-combatants.md](patterns/patterns-battle-combatants.md) |
 | `0x000A4530` | Active battle **field** id (byte) | **Confirmed** + **integrated** in `Battles/DigimonBattleAddresses.json` as `Field` on `DigimonBattle` — `0` neutral; `2` Fire … `8` Dark. Item fields write the matching id; **all Campo skills write `6` (Thunder)** regardless of claimed element (game bug) |
 | `0x000A4532` | Field **potency** | **Confirmed**: strengthen multiplier = `1 + value / 128`. `0` none; `64` item (+50%); `127` Campo skill (~+99%). Not integrated |
 | `0x000A4414`…`0xA442A` | Field support cluster | Lights when field active; **not** per-element SSOT — prefer `0xA4530` |
@@ -172,7 +172,7 @@ Offsets in `DigimonStatusAddresses.json` → `Digievolutions` (`UnlockedDigievol
 |--------------|------|-------|
 | `+0x00` | Int16 | Digievolution **Id** |
 | `+0x02` | Int16 | **Level** |
-| `+0x04` | Int32 | **DVEXP** — cumulative, never resets; 10 DVEXP = 1 level for any digievolution |
+| `+0x04` | Int32 | **DVEXP** — cumulative, never resets; cost per level depends on the digievolution tier: 10 DVEXP per level up to the tier cutoff level, 50 after it (cutoffs and totals in `digivice-business.mdc`) |
 | `+0x08`…`+0x13` | 12 bytes | Unmapped (stable in Kotemon lv 14→15 test) |
 
 - Empty entries: zeroed or garbage pattern like `7F 96 98 00` — no valid Id/Level/DVEXP.

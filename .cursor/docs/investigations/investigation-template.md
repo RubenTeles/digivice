@@ -28,7 +28,7 @@ Path examples (quest-like trackers under `Quests/`):
 - `Frontend/src/memory/definitions/Quests/DriAgents/{Name}Addresses.json`
 - `Frontend/src/memory/definitions/Quests/SideQuests/{Name}Addresses.json`
 
-While the C# backend exists, the same file goes to `Backend/Memory/Definitions/` too (kept equal by `definitions-parity.spec.ts`).
+Only the frontend copy is edited; `Backend/Memory/Definitions/` belongs to the frozen C# backend.
 
 ```json
 

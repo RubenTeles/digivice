@@ -257,11 +257,11 @@ Not used as a quest step (the rematch below does not award it).
 (`0x48F1C`–`0x48F1E` qty `0→1` per win). `0x48DC2` stays `1` throughout;
 KingDivermon (final) address still needs `before/after-final` snap.
 
-**Backend integrated (2026-08-30):** `Quests/DuelIsland/AsukaTrophyAddresses.json`
+**Integrated (2026-08-30):** `Quests/DuelIsland/AsukaTrophyAddresses.json`
 — `Id` `asukaTrophy`, 6 steps (round flags + trophy), normalize in
 `DuelIslandAssembler`.
 
-**Backend integrated (2026-08-31, renamed 2026-09-30):**
+**Integrated (2026-08-31, renamed 2026-09-30):**
 `Quests/DuelIsland/AsukaRematchAddresses.json` — `Id` `asukaRematch`, requisite
 `asukaTrophy` @ `0x48DC2`, same round flags; step 6 (KingDivermon) is
 **provisional** = step 5 bit (`0x4B3B3` / `0x08`) until the final snap.

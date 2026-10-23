@@ -11,9 +11,9 @@ Componentes consomem o estado do jogo via `useGameState()` e **apenas o presente
 ## Estado garantido
 
 - `useGameState()` (`composables/use-game-state.ts`) devolve o `State` não anulável: `gameState.value.player.mapId`, sem `?.` nem fallback (`?? null`, `?? 0`, `?? []`, `{ slots: [] }`).
-- `useGameStore` direto só para status de conexão/health (ex.: `isConnected` no `Footer.vue`).
+- `useGameStore` direto só para status de health, nos composables (ex.: `useAppHealthyScreen`); componentes não a importam.
 - Preferências persistidas do usuário via `usePreferencesStore` (ex.: família fixada em `digievolutions-modal/tree/Tree.vue`).
-- `App.vue` só renderiza o `main` com estado: `useAppHealthyScreen` retorna `loading` quando `currentState === null`. Perda de estado desmonta a árvore; novo `InitialState` remonta do zero.
+- `App.vue` só renderiza o `main` com estado: `useAppHealthyScreen` retorna `loading` quando `currentState === null`. Perda de estado (erro de leitura) desmonta a árvore; o primeiro tick após a recuperação remonta do zero.
 - `useGameState` lança erro explícito se usado fora dessa árvore.
 
 ## Coerência visual e estilos

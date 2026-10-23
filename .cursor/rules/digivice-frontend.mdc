@@ -19,14 +19,14 @@ Regras especializadas por pasta:
 3. Importações com `@/` (ex.: `@/models`, `@/presenters/map/map.presenter`) em vez de caminhos relativos longos; sem extensão `.ts` (`.vue` mantém a extensão).
 4. Arquivos kebab-case com sufixo de papel (`.converter.ts`, `.dto.ts`, `.viewmodel.ts`, `.presenter.ts`, `.service.ts`, `.repository.ts`, `.syncer.ts`, `.selector.ts`, `.extensions.ts`, `.reader.ts`, `.assembler.ts`, `.provider.ts`, `.addresses.ts`, `.snapshot.ts`, `.raw.ts`, `.error.ts`, `.resource.ts`, `.composer.ts`, `.loop.ts`, `.factory.ts`, `.initializer.ts`, `.comparator.ts`, `.tracker.ts`, `.patcher.ts`, `.spec.ts`); classes/tipos PascalCase.
 5. **Converters:** classe `{AlgumaCoisa}Converter`; arquivo `{alguma-coisa}.converter.ts`; API pública estática `convert` (helpers privados permitidos). Três contextos, pastas distintas:
-   - `events/converters/` — DTO (SignalR) → Model (Pinia)
+   - `events/converters/` — DTO (SignalR) → Model; só o caminho legado do modo `compare`
    - `presenters/converter/` — Raw → ViewModel (dados estáticos)
    - `memory/converters/` — JSON de definitions (`...Raw`, PascalCase) → tipos de endereço (camelCase, `number`)
-6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, definitions, snapshot, patch) e as actions `applyState`/`applyError` da `useGameStore` têm testes Vitest em `Frontend/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels, syncers) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
+6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, providers, repositories, converters, snapshot, loop, patch) e as actions `applyState`/`applyError` da `useGameStore` têm testes Vitest em `Frontend/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels, syncers) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
 
 ## Camada de leitura de memória (`src/memory/`)
 
-Fonte do estado da UI desde a etapa 6 da migração (`AI/MIGRATION_PLAN.md`). Espelha `Backend/Memory/`:
+Única fonte do estado da UI (migração concluída, `AI/MIGRATION_PLAN.md`). Toda leitura nova de memória entra aqui (skills `memory-field-integration`, `memory-entity-integration`, `journal-quest-integration`). Nasceu como porte do `Backend/Memory/` (congelado):
 
 | Pasta | Conteúdo |
 |---|---|
@@ -34,7 +34,7 @@ Fonte do estado da UI desde a etapa 6 da migração (`AI/MIGRATION_PLAN.md`). Es
 | `addresses/` | Tipos de endereço (`{nome}.addresses.ts`): tipo final + `...Raw` no mesmo arquivo. |
 | `converters/` | `AddressValueConverter` (hex `0x`, decimal, negativo; inválido **lança**) + um converter por arquivo de definitions. |
 | `repositories/` | `AddressesRepository` (estático, cache lazy). Importa `@/memory/definitions/...`; pastas de quests via `import.meta.glob`, ordenadas pelo nome do arquivo (igual ao C#). |
-| `definitions/` | JSONs de endereços (`*Addresses.json`), mesmos nomes e pastas de `Backend/Memory/Definitions/`. Fonte do TS. |
+| `definitions/` | JSONs de endereços (`*Addresses.json`). **Cópia oficial**; `Backend/Memory/Definitions/` é do C# congelado e não é mais sincronizada. |
 | `resources/` | `{Entity}Resource`: valores crus lidos da RAM (só `number`), como os Resources do C#. |
 | `readers/` | `{Entity}Reader.read(snapshot, addresses)`: função pura sobre o `MemorySnapshot`, devolve o Resource. |
 | `assemblers/` | `{Entity}Assembler.assemble(resource)`: função pura, normaliza (sentinela → `null`, hex `X4`) e devolve o model de `@/models`. |
@@ -45,7 +45,7 @@ Fonte do estado da UI desde a etapa 6 da migração (`AI/MIGRATION_PLAN.md`). Es
 | `comparison/` | `StateComparator` (deep-compare com caminho) e `DivergenceTracker` (reporta divergência após N leituras seguidas e a resolução). |
 
 - **Modo de memória:** `VITE_MEMORY_MODE` (`typescript` padrão: só o loop TS alimenta `useGameStore`; `compare` (só em dev; em build de produção cai para `typescript`): além disso conecta ao backend C# via SignalR pelo proxy `/gamehub` do Vite (`localhost:5000`, backend subido à mão com `dotnet run`) → `useCSharpShadowStore`, comparada a cada leitura com `useGameStore` e logada no console por `compareLogger`). `VITE_MEMORY_SNAPSHOT_URL` (ex.: `/tests/fixtures/snapshots/field-central-park.bin`) usa um `.bin` em vez do `read_ram`; sem ela, o loop só sobe dentro do Tauri (no navegador puro a tela fica em `Loading`). Configurar em `Frontend/.env.development.local` (não versionado). A UI lê só `useGameStore`.
-- Enquanto o backend existir, `Backend/Memory/Definitions/` é uma cópia mantida para o C# e o `Tools/MemoryScanner`. Alterar um JSON exige alterar as duas cópias: `tests/memory/definitions/definitions-parity.spec.ts` falha se divergirem.
+- No modo `compare`, campos, entidades e quests adicionados depois do congelamento do C# aparecem como divergência `C#=undefined`; é esperado e não exige mudança no comparador.
 
 ## Constants e types
 
@@ -55,7 +55,7 @@ Fonte do estado da UI desde a etapa 6 da migração (`AI/MIGRATION_PLAN.md`). Es
    - `types/{nome}.type.ts` — unions usadas em mais de um arquivo (mesmo conjunto no Raw e no ViewModel conta como compartilhado).
    - Union usada em um único arquivo fica nesse arquivo.
 3. **Nomes:** PascalCase para consts, types e membros `static readonly` (sem SCREAMING_CASE). Não colidir com globais do DOM (`Element`, `Event`, `Node`). Conceitos de Digimon com prefixo `Digimon` (`DigimonAttribute`, `DigimonElement`, `DigimonCondition`, `DigimonSpecies`, `DigimonStatus`).
-4. **Valores literais:** iguais à fonte de verdade (JSON de `database/`, contrato do backend ou chave i18n — ex.: `"DigimonLevel"`, `"Healthy"`). Valor gerado no frontend → camelCase igual à chave i18n. Não inventar valor para contornar colisão (separe o mapa por categoria).
+4. **Valores literais:** iguais à fonte de verdade (JSON de `database/`, valor do model/`State` ou chave i18n — ex.: `"DigimonLevel"`, `"Healthy"`). Valor gerado no frontend → camelCase igual à chave i18n. Não inventar valor para contornar colisão (separe o mapa por categoria).
 5. **Const e type com o mesmo nome:** const em expressões, type em anotações; `import type` quando só o tipo é usado.
 
 ```ts

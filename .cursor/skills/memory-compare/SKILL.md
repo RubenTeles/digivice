@@ -37,7 +37,7 @@ Optional: gameplay context; snapshots under `Tools/MemoryScanner/Snapshots/`.
 | [memory-regions.md](memory-regions.md) | Always (RAM map, noise, domain → region) |
 | [patterns/patterns-general.md](patterns/patterns-general.md) | Always (noise signatures, possession vs progress, validation) |
 | [patterns/patterns-quests.md](patterns/patterns-quests.md) | Main/side quests, legendary weapons, DRI agents, Duel Island |
-| [patterns/patterns-battle.md](patterns/patterns-battle.md) | Digimon battle, blast, enemy, field, status |
+| [patterns/patterns-battle.md](patterns/patterns-battle.md) | Digimon battle index (address map) + blast; links to `patterns-battle-slots.md` (slots, enemy, status, drops), `patterns-battle-combatants.md` (attr/resist pair, species) and `patterns-battle-field.md` (field, curse) |
 | [patterns/patterns-card-battle.md](patterns/patterns-card-battle.md) | Tamer battles, card battles, NPC win flags |
 | [patterns/patterns-map.md](patterns/patterns-map.md) | MapId, seabed, Mobius Desert, subzones |
 
@@ -51,7 +51,7 @@ Natsumi card rematch + map scripts, DRI agent hunt, and the
 1. **Identify domain** — quest step, item obtained, level-up, map transition, battle, auction, NPC/card battle, etc.
 2. **Parse diffs** — per address: `addedBits = after & ~before`, `removedBits = before & ~after`.
 3. **Filter noise** — deprioritize addresses listed as noise in `memory-regions.md` / `patterns-general.md` unless the investigation targets that domain.
-4. **Cross-reference** — scan `Frontend/src/memory/definitions/**/*.json` (TS source; `Backend/Memory/Definitions/` is a parity copy kept while the C# backend exists). Map `address → known purpose`; check offsets relative to known anchors (party slots, digimon blocks, player fields, battle slots).
+4. **Cross-reference** — scan `Frontend/src/memory/definitions/**/*.json` (official copy; `Backend/Memory/Definitions/` belongs to the frozen C# backend and may be outdated). Map `address → known purpose`; check offsets relative to known anchors (party slots, digimon blocks, player fields, battle slots).
 5. **Rank candidates**:
    - Single-bit add (`+ flag` power of two) for progress/possession flags
    - Same byte or block as related mapped data
@@ -60,7 +60,7 @@ Natsumi card rematch + map scripts, DRI agent hunt, and the
    - For acquisitions: `+ flag` without conflicting `- flag`
 6. **Respond** with the output template. **Always suggest JSON** when the target maps to a Definitions file.
 7. **Retrofeed** in the same turn (see below).
-8. **Integration** — do not edit Definitions JSON or backend code unless the user explicitly asks beyond investigation.
+8. **Integration** — do not edit Definitions JSON or memory layer code unless the user explicitly asks beyond investigation.
 
 ## Bitmask rules
 
@@ -142,6 +142,6 @@ Doc: `Tools/MemoryScanner/README.md`. Value sizes: 1=byte, 2=Int16, 4=Int32.
 
 | Target | Skill |
 |--------|-------|
-| `Quests/**` tracker | `quest-pattern-backend` → `quest-pattern-frontend` |
-| Field on an existing entity | `address-field-backend` → `address-field-frontend` |
-| New entity on `State` | `memory-entity-backend` → `memory-entity-frontend` |
+| `Quests/**` tracker | `journal-quest-integration` |
+| Field on an existing entity | `memory-field-integration` |
+| New entity on `State` | `memory-entity-integration` |
