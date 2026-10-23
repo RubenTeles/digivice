@@ -53,7 +53,7 @@ O motivo **não** é abandonar o C#; é eliminar a separação em duas aplicaç�
 
 - Fluxo diário: `npm run tauri:dev` (script já existe). Sobe o Vite com HMR e abre a janela do Tauri apontando para ele (`devUrl`).
 - Só a casca Rust é compilada (debug, incremental, em cache). Frontend é servido ao vivo, sem build e sem empacotamento.
-- DevTools: botão direito → Inspect / `Ctrl+Shift+I` na janela do Tauri. Vue DevTools via `vite-plugin-vue-devtools` (hoje comentado no `vite.config.ts`).
+- DevTools: botão direito → Inspect / `Ctrl+Shift+I` na janela do Tauri. O `vite-plugin-vue-devtools` foi removido do projeto (não era usado).
 - `npm run dev` no navegador puro só funciona com o provedor de snapshot por arquivo (`.bin`).
 - Modo `compare`: subir também o backend C# (`dotnet run`), como hoje. O proxy `/gamehub` do Vite funciona dentro da janela do Tauri.
 
@@ -168,7 +168,7 @@ Removido do caminho de produção:
 
 - **Mantidos:** `Backend/`, `Tests/` (xUnit), `Digivice.slnx` e `Tools/` inteiro.
 - **Produção (etapa 7):** remover do `tauri.conf.json` `externalBin`, `resources` (appsettings, `Memory/`) e `beforeBundleCommand`; o script `Tauri/scripts/copy-sidecar-runtime.ps1` deixa de ser usado.
-- `DebugConsoleRenderer` (`Features:Debugging`): substituto natural é o inspetor de Pinia do `vite-plugin-vue-devtools` ou um painel de debug.
+- `DebugConsoleRenderer` (`Features:Debugging`): sem substituto; o estado é inspecionado pelo DevTools da janela do Tauri e pelos logs `[Memory]`/`[Compare]`.
 
 ### 7. Testes (nova camada TS)
 
