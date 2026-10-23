@@ -137,7 +137,7 @@ Pontos que motivam ou afetam a migração:
   - `config_missing` provavelmente some (nome do processo vira constante).
 - **Cuidado — invariantes:** healthy implica estado presente; erro limpa `currentState` (UI desmonta); recuperação gera estado completo novo.
 - **Cuidado — HMR:** cancelar o timer em `import.meta.hot.dispose`, senão cada hot reload cria mais um loop.
-- **Cuidado — throttling:** com a janela minimizada, o WebView2 pode reduzir timers. Hoje não quebra nada (sem histórico entre leituras), mas precisa ser confirmado. Alternativa: o Rust conduz o loop e empurra o snapshot por evento.
+- **Throttling (resolvido, não relevante):** com a janela sobreposta (inclusive totalmente coberta pelo DuckStation), o loop mantém os ~500 ms (teste manual com `visibilitychange` e intervalo dos timers). Minimizado, o WebView2 pode reduzir os timers; aceito, porque o próximo tick ao restaurar a janela traz o estado atual. Se um dia algo precisar observar todos os ticks com a janela minimizada, a alternativa é o Rust conduzir o loop e empurrar o snapshot por evento.
 
 ### 4. Store (`useGameStore`)
 
@@ -383,4 +383,4 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 
 ## Decisões em aberto
 
-- Confirmar suporte de configuração de background throttling do Tauri no WebView2.
+Nenhuma. O background throttling do WebView2 foi descartado como problema (ver "Game loop e health").
