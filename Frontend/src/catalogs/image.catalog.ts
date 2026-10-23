@@ -67,62 +67,74 @@ const StoreAssetConfig = {
 
 const mapModules = import.meta.glob<string>("@/assets/maps/*.webp", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const digimonIconModules = import.meta.glob<string>("@/assets/digimons/*.png", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const enemyIconModules = import.meta.glob<string>("@/assets/enemies/*.png", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const digievolutionIconModules = import.meta.glob<string>("@/assets/digievolutions/*.png", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const flagModules = import.meta.glob<string>("@/assets/flags/*.png", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const cardModules = import.meta.glob<string>("@/assets/cards/*.png", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const battleModules = import.meta.glob<string>("@/assets/battle/*.{jpg,png}", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const npcModules = import.meta.glob<string>("@/assets/npcs/*.png", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const tamerModules = import.meta.glob<string>("@/assets/tamers/*.png", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const duelIslandModules = import.meta.glob<string>("@/assets/duel-island/*.png", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const bossModules = import.meta.glob<string>("@/assets/bosses/*.png", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const storeModules = import.meta.glob<string>("@/assets/stores/*.png", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 function lookupInGlob(modules: Record<string, string>, pathSuffix: string): string | null {
