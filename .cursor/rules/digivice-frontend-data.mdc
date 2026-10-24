@@ -1,6 +1,6 @@
 ---
 description: Frontend Digivice — dados estáticos (Repository, Service, Presenter, Converter, ViewModel), i18n, extensions, assets
-globs: App/src/{game-data,ui/presenters,ui/viewmodels,core/extensions,content/database}/**
+globs: App/src/{game-data,ui/presenters,ui/viewmodels,ui/i18n,core/extensions,content/database}/**
 alwaysApply: false
 ---
 

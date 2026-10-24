@@ -8,7 +8,7 @@ import "@fontsource/exo-2/latin-400.css";
 import "@fontsource/exo-2/latin-700.css";
 import "./style.css";
 
-import i18n from "@/core/i18n";
+import i18n from "@/ui/i18n";
 import { initializeMemoryLoop } from "@/memory/loop/memory-loop.initializer";
 
 const app = createApp(App);

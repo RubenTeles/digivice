@@ -1,7 +1,7 @@
 import { watch } from "vue";
 import { createI18n } from "vue-i18n";
-import enUS from "@/content/locales/en-US";
-import ptBR from "@/content/locales/pt-BR";
+import enUS from "./en-US";
+import ptBR from "./pt-BR";
 
 // Saved choice first, then the system language.
 const savedLocale = localStorage.getItem("user-locale");

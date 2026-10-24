@@ -48,8 +48,8 @@ Conventions: skill `frontend-memory-tests`.
 
 - [ ] `content/database/quest/{category-kebab}/{id-kebab}.json`
 - [ ] `game-data/repositories/tables/quest/{category-kebab}/{id-kebab}.table.ts` → `export type XxxTable = QuestRaw`
-- [ ] `content/locales/{en-US,pt-BR}/quest/{category-kebab}/{id-kebab}.json`
-- [ ] Register imports in both `content/locales/{en-US,pt-BR}/index.ts`
+- [ ] `ui/i18n/{en-US,pt-BR}/quest/{category-kebab}/{id-kebab}.json`
+- [ ] Register imports in both `ui/i18n/{en-US,pt-BR}/index.ts`
 
 ## 5. Repository
 
@@ -70,7 +70,7 @@ Conventions: skill `frontend-memory-tests`.
 
 - [ ] `ui/components/journal/Journal.vue` — `JournalQuestsSection` in the fixed order, `accent-color="{color}"`, `v-for` over `journalViewModel.{category}`, `display-mode="side"` on each `JournalQuestCard`; `defaultExpanded` omitted (closed)
 - [ ] `ui/components/journal/journal-section-palette.ts` — extend `JournalSectionAccentColor` and copy the `teal` entry changing only the color name
-- [ ] `content/locales/{en-US,pt-BR}/journal.json` — section title key `journal.{category}`
+- [ ] `ui/i18n/{en-US,pt-BR}/journal.json` — section title key `journal.{category}`
 
 ## 8. Manual verification
 
