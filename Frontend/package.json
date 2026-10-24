@@ -1,6 +1,6 @@
 {
-  "name": "frontend",
-  "version": "0.0.0",
+  "name": "digivice",
+  "version": "4.5.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -19,6 +19,8 @@
     "tauri:build": "powershell -ExecutionPolicy Bypass -File ../Tauri/run-tauri.ps1 build"
   },
   "dependencies": {
+    "@fontsource/exo-2": "^5.3.0",
+    "@fontsource/press-start-2p": "^5.3.0",
     "pinia": "^4.1.0",
     "pixelarticons": "^2.0.2",
     "vue": "^3.5.28",

@@ -1,6 +1,6 @@
 # **Digivice** - *Your Digimon World 2003 second screen*
 
-![GitHub downloads](https://img.shields.io/github/downloads/jeanheck/digivice-backend/total)
+![GitHub downloads](https://img.shields.io/github/downloads/jeanheck/digivice/total)
 
 Digimon World 2003 hides a lot behind menus and guesswork. Digivice is a second screen for that world: while you play on Duckstation, it shows the live state of your party, the map, your digievolutions, and how far you are in the story — the way a Nintendo 3DS companion screen might have felt, if the PS1 era had one.
 
@@ -42,6 +42,10 @@ Main quest update up to the point where the player obtains the Digi-Egg of Knowl
 **This only supports Digimon World 2003. It will not work on Digimon World 3.**<br>
 Game data here comes from public sources on the web (see Reference Data Credits below). You're free to reuse any of it in your own projects.<br>
 I don't own any rights to the game or to Digimon. Even the name "Digivice" comes from that universe. **All copyrights belong to their respective owners.** This is a study project — learning combined with a game that marked my childhood.
+
+## License
+
+The source code of Digivice is licensed under the [MIT License](LICENSE). Digimon, Digimon World 2003 and all related names, images and game data are trademarks and copyrights of their respective owners (Bandai, Toei Animation). They are not covered by this license, and their use here does not imply any ownership or affiliation.
 
 ## Requirements
 

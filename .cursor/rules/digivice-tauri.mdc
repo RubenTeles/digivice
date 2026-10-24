@@ -11,7 +11,8 @@ O antigo backend C# (sidecar com SignalR) foi removido; o código pode ser consu
 ## Responsabilidade
 
 - O Rust é uma **ponte mínima**: acha o DuckStation, abre a memória compartilhada `duckstation_{pid}` e entrega **bytes brutos**. Nenhuma lógica de domínio (endereços, sentinelas, assemblers) vive aqui; isso é da camada TS `Frontend/src/memory/`.
-- `lib.rs` registra só o plugin shell (usado pelo `open` de `external-link.service.ts`, capability `shell:allow-open`), o `MemoryState` e o comando `read_ram`. Sem sidecar nem outro processo auxiliar.
+- App só Windows e desktop: sem `lib.rs` nem estrutura de mobile. `main.rs` registra o plugin shell (usado pelo `open` de `external-link.service.ts`, capability `shell:allow-open`), o plugin `window-state` (lembra tamanho e posição da janela; só Rust, sem capability), o `MemoryState` e o comando `read_ram`. Sem sidecar nem outro processo auxiliar.
+- Build de release: `build.ps1` na raiz (`npm install`, testes, `npm run tauri:build`). `bundle.active: false`: gera só `Tauri/target/release/digivice.exe`, sem instaladores. Versão única no `Frontend/package.json` (lida pelo `tauri.conf.json`; manter o `Cargo.toml` igual).
 
 ## Desenvolvimento local
 

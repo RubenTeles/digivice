@@ -1,7 +1,7 @@
 {
   "$schema": "../Frontend/node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "digivice",
-  "version": "0.1.0",
+  "productName": "Digivice",
+  "version": "../Frontend/package.json",
   "identifier": "com.digivice.app",
   "build": {
     "frontendDist": "../Frontend/dist",
@@ -22,7 +22,7 @@
         "width": 800,
         "height": 600,
         "resizable": true,
-        "fullscreen": false
+        "maximized": true
       }
     ],
     "security": {
@@ -30,13 +30,11 @@
     }
   },
   "bundle": {
-    "active": true,
-    "targets": "all",
+    "active": false,
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
       "icons/128x128@2x.png",
-      "icons/icon.icns",
       "icons/icon.ico"
     ]
   }

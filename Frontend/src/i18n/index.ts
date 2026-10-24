@@ -1,14 +1,15 @@
+import { watch } from "vue";
 import { createI18n } from "vue-i18n";
 import enUS from "./locales/en-US";
 import ptBR from "./locales/pt-BR";
 
-// Tenta detectar o idioma do navegador ou usa o que estiver no localStorage
+// Saved choice first, then the system language.
 const savedLocale = localStorage.getItem("user-locale");
 const browserLocale = navigator.language;
 const defaultLocale = savedLocale || (browserLocale.startsWith("pt") ? "pt-BR" : "en-US");
 
 const i18n = createI18n({
-  legacy: false, // Usar Composition API
+  legacy: false,
   locale: defaultLocale,
   fallbackLocale: "en-US",
   messages: {
@@ -16,5 +17,13 @@ const i18n = createI18n({
     "pt-BR": ptBR,
   },
 });
+
+watch(
+  i18n.global.locale,
+  (locale) => {
+    document.documentElement.lang = locale;
+  },
+  { immediate: true },
+);
 
 export default i18n;
