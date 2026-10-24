@@ -57,9 +57,10 @@ Paths are under `Frontend/src/memory/` unless stated otherwise.
 | Auctions | `AuctionAddresses.json` | `addresses/auctions.addresses.ts` + converter | `resources/auctions.resource.ts` | `readers/auctions.reader.ts` | `assemblers/auctions.assembler.ts` | `auctions.ts` |
 | Npcs | `NpcAddresses.json` | `addresses/npcs.addresses.ts` + converter | `resources/npcs.resource.ts` | `readers/npcs.reader.ts` | `assemblers/npcs.assembler.ts` | `npcs.ts`, `npc.ts`, `npc-battle.ts` |
 
-Party addresses are grouped in `addresses/party-memory.addresses.ts` by
-`providers/party.provider.ts`. Confirm exact names by searching an existing
-field of the entity before editing.
+`providers/party.provider.ts` passes `PartyAddresses`, `DigimonsAddresses`,
+`DigimonStatusAddresses` and `InBattleAddresses` individually to
+`PartyReader.read`, each from its own `AddressesRepository` getter. Confirm
+exact names by searching an existing field of the entity before editing.
 
 ## Type reference (live examples)
 

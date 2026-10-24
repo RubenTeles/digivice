@@ -10,9 +10,7 @@ export class DuelIslandAssembler {
     };
   }
 
-  public static assemble(resource: QuestResource): Quest {
-    const quest = QuestAssembler.assemble(resource);
-
+  private static normalize(quest: Quest): Quest {
     if (!quest.requisites.every((requisite) => requisite.isDone)) {
       return DuelIslandAssembler.withAllSteps(quest, false);
     }
@@ -23,5 +21,10 @@ export class DuelIslandAssembler {
     }
 
     return DuelIslandAssembler.withAllSteps(quest, true);
+  }
+
+  public static assemble(resource: QuestResource): Quest {
+    const quest = QuestAssembler.assemble(resource);
+    return DuelIslandAssembler.normalize(quest);
   }
 }

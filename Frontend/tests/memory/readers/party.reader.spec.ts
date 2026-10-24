@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { PartyMemoryAddresses } from "@/memory/addresses/party-memory.addresses";
+import type { PartyAddresses } from "@/memory/addresses/party.addresses";
 import { PartyReader } from "@/memory/readers/party.reader";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";
 import type { PartyResource } from "@/memory/resources/party.resource";
@@ -11,13 +11,6 @@ import { FakeSnapshotBuilder } from "../../helpers/fake-snapshot.builder";
 const EmptySlotId = 0xff;
 const SlotAddresses = [0x00048da4, 0x00048da8, 0x00048dac];
 const KumamonBlock = 0x00049878;
-
-const RealAddresses: PartyMemoryAddresses = {
-  party: AddressesRepository.getPartyAddresses(),
-  digimons: AddressesRepository.getDigimonsAddresses(),
-  digimonStatus: AddressesRepository.getDigimonStatusAddresses(),
-  inBattle: AddressesRepository.getInBattleAddresses(),
-};
 
 function withSlots(builder: FakeSnapshotBuilder, ...digimonIds: number[]): FakeSnapshotBuilder {
   digimonIds.forEach((digimonId, index) => {
@@ -32,27 +25,30 @@ function withSlots(builder: FakeSnapshotBuilder, ...digimonIds: number[]): FakeS
 
 function readParty(
   builder: FakeSnapshotBuilder,
-  addresses: PartyMemoryAddresses = RealAddresses,
+  partyAddresses: PartyAddresses = AddressesRepository.getPartyAddresses(),
 ): PartyResource {
-  return PartyReader.read(new MemorySnapshot(builder.build()), addresses);
+  return PartyReader.read(
+    new MemorySnapshot(builder.build()),
+    partyAddresses,
+    AddressesRepository.getDigimonsAddresses(),
+    AddressesRepository.getDigimonStatusAddresses(),
+    AddressesRepository.getInBattleAddresses(),
+  );
 }
 
 describe("PartyReader", () => {
   describe("read", () => {
     it("should keep the slot index and the raw digimon id when the addresses are synthetic", () => {
-      const addresses: PartyMemoryAddresses = {
-        ...RealAddresses,
-        party: {
-          emptySlotId: EmptySlotId,
-          slots: [
-            { index: 2, address: 0x5000 },
-            { index: 3, address: 0x6000 },
-          ],
-        },
+      const partyAddresses: PartyAddresses = {
+        emptySlotId: EmptySlotId,
+        slots: [
+          { index: 2, address: 0x5000 },
+          { index: 3, address: 0x6000 },
+        ],
       };
       const builder = new FakeSnapshotBuilder().writeByte(0x5000, 14).writeByte(0x6000, 0xff);
 
-      const resource = readParty(builder, addresses);
+      const resource = readParty(builder, partyAddresses);
 
       expect(resource.slots).toEqual([
         { index: 2, digimonId: 14, digimon: null },
@@ -197,12 +193,12 @@ describe("PartyReader", () => {
     });
 
     it("should throw MemoryReadError when a slot address is outside the snapshot", () => {
-      const addresses: PartyMemoryAddresses = {
-        ...RealAddresses,
-        party: { emptySlotId: EmptySlotId, slots: [{ index: 1, address: PlayStationRamSize }] },
+      const partyAddresses: PartyAddresses = {
+        emptySlotId: EmptySlotId,
+        slots: [{ index: 1, address: PlayStationRamSize }],
       };
 
-      expect(() => readParty(new FakeSnapshotBuilder(), addresses)).toThrow(MemoryReadError);
+      expect(() => readParty(new FakeSnapshotBuilder(), partyAddresses)).toThrow(MemoryReadError);
     });
   });
 });

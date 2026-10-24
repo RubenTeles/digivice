@@ -333,7 +333,7 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
 
 ### Etapa 5e — Party (concluída)
 
-- `Frontend/src/memory/`: resources (`parties/digimons/{attributes,elements,equipments,digievolution-slot,stored-digievolution,in-battle}`, `parties/digimon`, `parties/digimon-slot`, `party`), `addresses/party-memory.addresses.ts` (party, digimons, status e inBattle, montado pelo provider com os getters do repositório), `readers/{in-battle,digimon,party}.reader.ts`, `assemblers/{digimon,party}.assembler.ts` e `providers/party.provider.ts`; `party` no `ComposedState`, `compose` e `pick` (as 8 entidades do `State` agora vêm do TS).
+- `Frontend/src/memory/`: resources (`parties/digimons/{attributes,elements,equipments,digievolution-slot,stored-digievolution,in-battle}`, `parties/digimon`, `parties/digimon-slot`, `party`), `addresses/party-memory.addresses.ts` (party, digimons, status e inBattle, montado pelo provider com os getters do repositório; removido depois, os quatro endereços passaram a ser passados individualmente ao `PartyReader`), `readers/{in-battle,digimon,party}.reader.ts`, `assemblers/{digimon,party}.assembler.ts` e `providers/party.provider.ts`; `party` no `ComposedState`, `compose` e `pick` (as 8 entidades do `State` agora vêm do TS).
 - Decisões:
   - Sem `MemoryBlockReader`: o Digimon é lido de forma absoluta em `memoryBlockAddress + offset` (offsets reais abaixo de 1500; `activeDigievolution` em `-4`). Endereço fora do snapshot lança erro em vez de devolver `null`.
   - `PartyReader` concentra a lógica dos loaders: id `0xFF` ou ausente dos endereços → `digimon null` (Kotemon é o id `0`); o resource guarda o id cru e o assembler transforma o slot sem Digimon em `digimonId null`.
