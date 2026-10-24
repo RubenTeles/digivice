@@ -1,4 +1,4 @@
-import BoosterJson from "@/data/tcg/booster.json";
+import BoosterJson from "@/data/game/tcg/booster.json";
 import type { BoosterTable } from "@/game-data/repositories/tables/tcg/booster.table";
 
 export class BoosterRepository {

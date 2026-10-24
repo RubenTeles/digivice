@@ -1,4 +1,4 @@
-import FolderJson from "@/data/tcg/folder.json";
+import FolderJson from "@/data/game/tcg/folder.json";
 import type { FolderTable } from "@/game-data/repositories/tables/tcg/folder.table";
 import type { FolderRaw } from "@/game-data/repositories/tables/raws/tcg/folder.raw";
 

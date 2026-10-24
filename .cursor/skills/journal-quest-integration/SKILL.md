@@ -11,7 +11,7 @@ description: >-
 
 # Journal Quest Integration
 
-Wires a quest from its RAM definitions (`App/src/memory/definitions/quests/`)
+Wires a quest from its RAM definitions (`App/src/data/memory-addresses/quests/`)
 to the Journal UI. Product rules of each category: `.cursor/rules/digivice-business.mdc`
 (Journal).
 
@@ -54,7 +54,7 @@ Same byte as an existing tracker?  → Likely another bit; still a separate ques
 
 ## Category map (all wired)
 
-| Category | Definitions (`memory/definitions/quests/`) | `Journal` property | Assembler | Repository getter | Static JSON (`data/quest/`) | Static getter | Accent |
+| Category | Definitions (`data/memory-addresses/quests/`) | `Journal` property | Assembler | Repository getter | Static JSON (`data/game/quest/`) | Static getter | Accent |
 |----------|--------------------------------------------|--------------------|-----------|-------------------|---------------------------------|---------------|--------|
 | Main quest | `main-quest-addresses.json` | `mainQuest` (single) | `MainQuestAssembler` (cascade) | `getMainQuest()` | `main-quest.json` | `getMainQuestRaw()` | yellow (hardcoded) |
 | Side quests | `side-quests/` | `sideQuests` | `QuestAssembler` | `getAllSideQuests()` | `side-quest/` | `getSideQuestsRaw()` | `emerald` |
@@ -97,7 +97,7 @@ cards and `calculateNewStatus: true` (locked/done/new variants).
 - Single mask on one line (`"BitMasks": ["0x04"]`); multiline only for many entries.
 - **Ids in camelCase** (`muramasa`, `driAgentGuilmon`, `guilmonDDNA`). The same id is used by the definitions, the static quest JSON and i18n.
 - Step `Number` sequential and unique within the quest; equal to the step `number` in the static JSON.
-- `App/src/memory/definitions/` is the single source of the addresses. `Tools/MemoryScanner` (`analyze-pair`) reads `quests/main-quest-addresses.json` from there by a fixed path: do not move or rename it.
+- `App/src/data/memory-addresses/` is the single source of the addresses. `Tools/MemoryScanner` (`analyze-pair`) reads `quests/main-quest-addresses.json` from there by a fixed path: do not move or rename it.
 
 ## Section invariant
 
@@ -123,7 +123,7 @@ Paths under `App/src/` unless stated otherwise.
 
 ### 1. Definitions
 
-- [ ] `memory/definitions/quests/{category-kebab}/{name-kebab}-addresses.json` — mirror a quest of the same folder; normalize the schema
+- [ ] `data/memory-addresses/quests/{category-kebab}/{name-kebab}-addresses.json` — mirror a quest of the same folder; normalize the schema
 - [ ] **SKIP** repository, reader, assembler, provider, model, patcher — `import.meta.glob` picks up every `*.json` of the folder (ordered by file name) and `StatePatcher` already keys the category list by `id`
 
 ### 2. Memory tests
@@ -136,7 +136,7 @@ Conventions: skill `frontend-memory-tests`.
 
 ### 3. Static quest data
 
-- [ ] `data/quest/{category}/{id-kebab}.json` — mirror a quest in the same folder
+- [ ] `data/game/quest/{category}/{id-kebab}.json` — mirror a quest in the same folder
 - [ ] `game-data/repositories/tables/quest/{category}/{id-kebab}.table.ts` → `export type {Name}Table = QuestRaw`
 - [ ] `ui/i18n/en-US/quest/{category}/{id-kebab}.json`
 - [ ] `ui/i18n/pt-BR/quest/{category}/{id-kebab}.json`

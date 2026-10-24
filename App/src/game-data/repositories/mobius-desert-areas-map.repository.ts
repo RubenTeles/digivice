@@ -1,4 +1,4 @@
-import DesertAreasMapJson from "@/data/mobius-desert/mobius-desert-areas-map.json";
+import DesertAreasMapJson from "@/data/game/mobius-desert/mobius-desert-areas-map.json";
 import type { MobiusDesertAreaMapCellRaw } from "./tables/raws/mobius-desert/mobius-desert-area-map-cell.raw";
 import type { MobiusDesertAreasMapTable } from "./tables/desert/mobius-desert-areas-map.table";
 

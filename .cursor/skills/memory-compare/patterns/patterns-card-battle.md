@@ -119,7 +119,7 @@ follow `groupId − 200`; treat as special rematch bit until script index
 confirmed.
 
 **Integrated (2026-08-31):** all confirmed tamers wired in
-[`npc-addresses.json`](../../../../App/src/memory/definitions/npc-addresses.json) —
+[`npc-addresses.json`](../../../../App/src/data/memory-addresses/npc-addresses.json) —
 `genji` (first+second), `natsumi`, `catherine`, `lucia`, `robert`,
 `akiba`, `chris`, `tomomi`, `mitch`, `bob`, `andy`, `george`, `meiLin`,
 `jessica`, `gordon`, `alice`, `nakano`.
@@ -152,7 +152,7 @@ Rewards match existing groups (Bits delta 580 / 590 / 890).
 Not yet validated against a lose / reload.
 
 **Integrated (2026-10-13):** all six wired in
-[`npc-addresses.json`](../../../../App/src/memory/definitions/npc-addresses.json)
+[`npc-addresses.json`](../../../../App/src/data/memory-addresses/npc-addresses.json)
 (battle id `first`) and through the Npcs pipeline / frontend sync.
 
 **Natsumi card:** no duel flag in those snaps — only booster `0x48F19`.
@@ -209,7 +209,7 @@ On transition **`0x0600 → 0x0700`** (card battle screen), **`0x4B404`** (Int32
 **card battle config id** (which fight/deck setup), **not** a unique NPC id.
 **`0`** outside card battle (`0x0600` digimon battle).
 
-Integrated: `cardBattle.id` via [`card-battle-addresses.json`](../../../../App/src/memory/definitions/card-battle-addresses.json) `Id`.
+Integrated: `cardBattle.id` via [`card-battle-addresses.json`](../../../../App/src/data/memory-addresses/card-battle-addresses.json) `Id`.
 Frontend static: `cardBattles.first` / `cardBattles.second` → `id` in
 `tamer.json` / `duel-island.json` (lookup NPC by scanning those ids).
 

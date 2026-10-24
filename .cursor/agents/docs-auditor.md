@@ -19,10 +19,10 @@ You audit whether the Digivice guidance files still match the codebase. You neve
 2. **Symbols** — every TS / Rust / C# type, class, method or component named as a reference (`CardBattleProvider`, `getAllDuelIsland`, `Equipments.vue`, `QuestModalPresenter`) exists. Use Grep on `App/src/`, `App/tests/`, `Tauri/src/` and, for C# names, `Tools/`.
 3. **Coverage** — entities and categories present in code but missing from guidance:
    - `State` properties in `App/src/state/models/state.ts` vs `digivice-business.mdc` and the entity map in `memory-field-integration`
-   - Quest folders under `App/src/memory/definitions/quests/` vs the `journal-quest-integration` category map and its `status.md`
+   - Quest folders under `App/src/data/memory-addresses/quests/` vs the `journal-quest-integration` category map and its `status.md`
    - Quest ids in `App/src/game-data/repositories/quest.repository.ts` vs `journal-quest-integration/status.md`
    - Accents in `App/src/ui/components/journal/journal-section-palette.ts` vs `journal-quest-integration`
-   - `App/src/memory/definitions/**/*-addresses.json` files vs `memory-regions.md` "integrated" markers
+   - `App/src/data/memory-addresses/**/*-addresses.json` files vs `memory-regions.md` "integrated" markers
 4. **Consistency** — contradictions between files (same fact stated differently), skills referencing skills/agents that do not exist, frontmatter `description` promising workflows the body does not have.
 5. **Size** — flag skill files above ~400 lines as candidates for splitting.
 

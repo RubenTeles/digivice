@@ -1,4 +1,4 @@
-import MapJson from "@/data/map.json";
+import MapJson from "@/data/game/map.json";
 import type { MapTable } from "./tables/map/map.table";
 import type { MapRaw } from "./tables/raws/map/map.raw";
 

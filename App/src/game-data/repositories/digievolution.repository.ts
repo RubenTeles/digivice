@@ -1,6 +1,6 @@
-import DigievolutionJson from "@/data/digievolution/digievolution.json";
-import DigievolutionTreeJson from "@/data/digievolution/digievolution-tree.json";
-import TechniqueJson from "@/data/digievolution/technique.json";
+import DigievolutionJson from "@/data/game/digievolution/digievolution.json";
+import DigievolutionTreeJson from "@/data/game/digievolution/digievolution-tree.json";
+import TechniqueJson from "@/data/game/digievolution/technique.json";
 import type { DigievolutionTable } from "@/game-data/repositories/tables/digievolution/digievolution.table";
 import type { DigievolutionTreeTable } from "@/game-data/repositories/tables/digievolution/digievolution-tree.table";
 import type { TechniqueTable } from "@/game-data/repositories/tables/digievolution/technique.table";

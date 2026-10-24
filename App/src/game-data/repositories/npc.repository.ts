@@ -1,4 +1,4 @@
-import NpcJson from "@/data/npc/npc.json";
+import NpcJson from "@/data/game/npc/npc.json";
 import type { NpcTable } from "@/game-data/repositories/tables/npc/npc.table";
 import type { NpcRaw } from "@/game-data/repositories/tables/raws/npc/npc.raw";
 

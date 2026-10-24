@@ -13,9 +13,9 @@ Paths under `App/src/` unless stated otherwise.
 
 ## 1. Definitions + repository
 
-- [ ] Folder `memory/definitions/quests/{category-kebab}/` with at least one `{name-kebab}-addresses.json`
+- [ ] Folder `data/memory-addresses/quests/{category-kebab}/` with at least one `{name-kebab}-addresses.json`
 - [ ] `memory/repositories/addresses.repository.ts`:
-  - `const {Category}Files = import.meta.glob<QuestAddressesRaw>("@/memory/definitions/quests/{category-kebab}/*.json", { eager: true, import: "default" })`
+  - `const {Category}Files = import.meta.glob<QuestAddressesRaw>("@/data/memory-addresses/quests/{category-kebab}/*.json", { eager: true, import: "default" })`
   - `private static {category}Addresses: QuestAddresses[] | null = null`
   - `getAll{Category}()` through `this.loadQuestFolder("{category-kebab}", {Category}Files)`
 
@@ -46,7 +46,7 @@ Conventions: skill `frontend-memory-tests`.
 
 ## 4. Static quest data (per quest)
 
-- [ ] `data/quest/{category-kebab}/{id-kebab}.json`
+- [ ] `data/game/quest/{category-kebab}/{id-kebab}.json`
 - [ ] `game-data/repositories/tables/quest/{category-kebab}/{id-kebab}.table.ts` → `export type XxxTable = QuestRaw`
 - [ ] `ui/i18n/{en-US,pt-BR}/quest/{category-kebab}/{id-kebab}.json`
 - [ ] Register imports in both `ui/i18n/{en-US,pt-BR}/index.ts`

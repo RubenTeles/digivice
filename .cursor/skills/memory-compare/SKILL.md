@@ -51,7 +51,7 @@ Natsumi card rematch + map scripts, DRI agent hunt, and the
 1. **Identify domain** — quest step, item obtained, level-up, map transition, battle, auction, NPC/card battle, etc.
 2. **Parse diffs** — per address: `addedBits = after & ~before`, `removedBits = before & ~after`.
 3. **Filter noise** — deprioritize addresses listed as noise in `memory-regions.md` / `patterns-general.md` unless the investigation targets that domain.
-4. **Cross-reference** — scan `App/src/memory/definitions/**/*.json`. Map `address → known purpose`; check offsets relative to known anchors (party slots, digimon blocks, player fields, battle slots).
+4. **Cross-reference** — scan `App/src/data/memory-addresses/**/*.json`. Map `address → known purpose`; check offsets relative to known anchors (party slots, digimon blocks, player fields, battle slots).
 5. **Rank candidates**:
    - Single-bit add (`+ flag` power of two) for progress/possession flags
    - Same byte or block as related mapped data

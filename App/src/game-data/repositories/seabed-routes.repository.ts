@@ -1,4 +1,4 @@
-import SeabedRoutesJson from "@/data/seabed/seabed-route.json";
+import SeabedRoutesJson from "@/data/game/seabed/seabed-route.json";
 import type { SeabedRouteLocationRaw } from "./tables/raws/seabed/seabed-route-location.raw";
 import type { SeabedRouteTable } from "./tables/seabed/seabed-route.table";
 

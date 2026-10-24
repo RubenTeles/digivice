@@ -20,7 +20,7 @@ The parent passes the compare output (lines like `0xADDRESS: 0xBB -> 0xAA (+ fla
    - digimon battle → `.cursor/skills/battle-memory-investigate/SKILL.md`, the index `patterns/patterns-battle.md` and only the `patterns-battle-{slots,combatants,field}.md` file of the subject
    - tamer / card battles → `patterns/patterns-card-battle.md`
    - map / seabed / Mobius / subzones → `patterns/patterns-map.md` (subzones: also `.cursor/skills/map-subzone-investigate/SKILL.md`)
-4. Cross-reference candidates against `App/src/memory/definitions/**/*.json` (Grep the address in several spellings: `0x0004B38C`, `0x4B38C`, `4B38C`).
+4. Cross-reference candidates against `App/src/data/memory-addresses/**/*.json` (Grep the address in several spellings: `0x0004B38C`, `0x4B38C`, `4B38C`).
 5. Open files under `.cursor/docs/investigations/` only when the domain has an ongoing investigation there.
 
 ## Output (return exactly these sections)
@@ -30,7 +30,7 @@ The parent passes the compare output (lines like `0xADDRESS: 0xBB -> 0xAA (+ fla
 - **Other candidates** — ranked, with reasons
 - **Discarded** — address + reason (noise ranges, text buffers, encounter cache, counters)
 - **Validation (manual)** — concrete in-game steps or extra snapshots to confirm
-- **Suggested JSON** — target path under `App/src/memory/definitions/` and snippet in the project schema (camelCase ids, `BitMasks` arrays)
+- **Suggested JSON** — target path under `App/src/data/memory-addresses/` and snippet in the project schema (camelCase ids, `BitMasks` arrays)
 - **Proposed retrofeed** — exact lines to append to `memory-regions.md` and to which `patterns/*.md` file; only confirmed or clearly marked `(suspected)` items
 - **Next skill** — `journal-quest-integration`, `memory-field-integration` or `memory-entity-integration`
 

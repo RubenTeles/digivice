@@ -81,6 +81,6 @@ Unchanged known slots are expected when that agent is already complete on the sa
 }
 ```
 
-Path: `App/src/memory/definitions/quests/dri-agents/{name-kebab}-addresses.json`.
+Path: `App/src/data/memory-addresses/quests/dri-agents/{name-kebab}-addresses.json`.
 
 After confirmation, integrate via skill `journal-quest-integration`.

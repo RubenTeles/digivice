@@ -24,9 +24,9 @@ Suggested read: `(byte & 0x__) != 0`
 
 Path examples (quest-like trackers under `quests/`):
 
-- `App/src/memory/definitions/quests/legendary-weapons/{name-kebab}-addresses.json`
-- `App/src/memory/definitions/quests/dri-agents/{name-kebab}-addresses.json`
-- `App/src/memory/definitions/quests/side-quests/{name-kebab}-addresses.json`
+- `App/src/data/memory-addresses/quests/legendary-weapons/{name-kebab}-addresses.json`
+- `App/src/data/memory-addresses/quests/dri-agents/{name-kebab}-addresses.json`
+- `App/src/data/memory-addresses/quests/side-quests/{name-kebab}-addresses.json`
 ```json
 
 ```

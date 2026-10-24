@@ -171,7 +171,7 @@ class Program
 
     static string? FindMainQuestDefinitionsPath()
     {
-        string relative = Path.Combine("App", "src", "memory", "definitions", "quests", "main-quest-addresses.json");
+        string relative = Path.Combine("App", "src", "data", "memory-addresses", "quests", "main-quest-addresses.json");
         var roots = new[]
         {
             Directory.GetCurrentDirectory(),

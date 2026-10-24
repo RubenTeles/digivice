@@ -1,4 +1,4 @@
-import DesertAreasJson from "@/data/mobius-desert/mobius-desert-areas.json";
+import DesertAreasJson from "@/data/game/mobius-desert/mobius-desert-areas.json";
 import type { MobiusDesertAreasRaw } from "./tables/raws/mobius-desert/mobius-desert-areas.raw";
 import type { MobiusDesertAreasTable } from "./tables/desert/mobius-desert-areas.table";
 

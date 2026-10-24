@@ -1,4 +1,4 @@
-import DuelIslandJson from "@/data/npc/duel-island.json";
+import DuelIslandJson from "@/data/game/npc/duel-island.json";
 import type { DuelIslandTable } from "@/game-data/repositories/tables/duel-island/duel-island.table";
 import type { DuelIslandRaw } from "@/game-data/repositories/tables/raws/duel-island/duel-island.raw";
 

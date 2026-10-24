@@ -35,7 +35,7 @@ new reader/resource/assembler for one value on an entity that already has one.
 ## Pipeline
 
 ```
-definitions/*.json → *AddressesRaw → *AddressesConverter → *Addresses
+data/memory-addresses/*.json → *AddressesRaw → *AddressesConverter → *Addresses
   → AddressesRepository → *Provider → *Reader(snapshot) → *Resource
   → *Assembler → model → StateComposer → useGameStore.applyState (StatePatcher)
 ```
@@ -96,7 +96,7 @@ Enemy) stay relative hex strings, mirroring an adjacent field
 (`"HP": { "Current": "0x20", "Max": "0x22" }`). `AddressValueConverter`
 rejects invalid values when the repository loads the file.
 
-`App/src/memory/definitions/` is the single source of the addresses
+`App/src/data/memory-addresses/` is the single source of the addresses
 (`Tools/MemoryScanner` also reads `quests/main-quest-addresses.json` from there).
 
 ---
@@ -111,7 +111,7 @@ rejects invalid values when the repository loads the file.
 
 ### 1. Definitions + addresses
 
-- [ ] Key in the matching `definitions/*.json`
+- [ ] Key in the matching `data/memory-addresses/*.json`
 - [ ] Property on `*AddressesRaw` (PascalCase) and `*Addresses` (camelCase, `number`)
 - [ ] Map in `*AddressesConverter.convert` with `AddressValueConverter.convert`
 - [ ] **SKIP** `AddressesRepository` — every entity file is already loaded
@@ -155,7 +155,7 @@ in `state/stores/selectors/`, composition with static data in presenters.
 
 ## Reference walkthrough — Player `seabedRoute`
 
-1. `definitions/player-addresses.json` → `"SeabedRoute"`
+1. `data/memory-addresses/player-addresses.json` → `"SeabedRoute"`
 2. `addresses/player.addresses.ts` (`SeabedRoute` / `seabedRoute`) + `converters/player-addresses.converter.ts`
 3. `resources/player.resource.ts` + `readers/player.reader.ts` (`readByte`)
 4. `src/state/models/player.ts` + `assemblers/player.assembler.ts` (`0` → `null`)

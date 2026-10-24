@@ -71,7 +71,7 @@ Example: side quests in `quests/side-quests/*.json`.
 
 ## DRI agents
 
-Three steps per agent. Definitions: `App/src/memory/definitions/quests/dri-agents/`.
+Three steps per agent. Definitions: `App/src/data/memory-addresses/quests/dri-agents/`.
 
 ### DRI step 1 — shared byte (confirmed)
 
