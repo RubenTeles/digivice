@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { WikiDropConsumableItemPresenter } from "@/ui/presenters/map/wiki-modal/wiki-drop-consumable-item.presenter";
+import { WikiDropConsumableItemPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-drop-consumable-item.presenter";
 
 const props = defineProps<{
   consumableItemId: number;

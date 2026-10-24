@@ -5,9 +5,9 @@ import Modal from "@/ui/components/modal/Modal.vue";
 import MapFrame from "@/ui/components/map-frame/MapFrame.vue";
 import SeabedDocks from "@/ui/components/seabed-modal/SeabedDocks.vue";
 import { MapFrameWidthPx } from "@/shared/constants/map-display.constant";
-import { SeabedModalPresenter } from "@/ui/presenters/seabed-modal/seabed-modal.presenter";
+import { SeabedModalPresenter } from "@/presentation/presenters/seabed-modal/seabed-modal.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
-import type { MapFrameSlideViewModel } from "@/ui/viewmodels/map-frame/map-frame-slide.viewmodel";
+import type { MapFrameSlideViewModel } from "@/presentation/viewmodels/map-frame/map-frame-slide.viewmodel";
 
 const props = defineProps<{
   isOpen: boolean;

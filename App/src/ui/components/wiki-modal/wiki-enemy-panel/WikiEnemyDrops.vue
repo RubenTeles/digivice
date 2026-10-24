@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { WikiEnemyDropsPresenter } from "@/ui/presenters/map/wiki-modal/wiki-enemy-drops.presenter";
-import type { DropType } from "@/game-data/repositories/tables/raws/drop/drop-type";
-import type { EnemyDropViewModel } from "@/ui/viewmodels/enemy/enemy-drop.viewmodel";
-import type { WikiEnemyDropViewModel } from "@/ui/viewmodels/wiki-modal/wiki-enemy-drop.viewmodel";
+import { WikiEnemyDropsPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-enemy-drops.presenter";
+import type { DropType } from "@/presentation/repositories/tables/raws/drop/drop-type";
+import type { EnemyDropViewModel } from "@/presentation/viewmodels/enemy/enemy-drop.viewmodel";
+import type { WikiEnemyDropViewModel } from "@/presentation/viewmodels/wiki-modal/wiki-enemy-drop.viewmodel";
 
 const props = defineProps<{
   drops?: EnemyDropViewModel[];

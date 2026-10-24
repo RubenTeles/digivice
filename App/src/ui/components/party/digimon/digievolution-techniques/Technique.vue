@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import Tooltip from "@/ui/components/tooltip/Tooltip.vue";
 import { useI18n } from "vue-i18n";
 import { useTooltipPosition } from "@/ui/composables/use-tooltip-position";
-import type { TechniqueViewModel } from "@/ui/viewmodels/digievolution/technique.viewmodel";
+import type { TechniqueViewModel } from "@/presentation/viewmodels/digievolution/technique.viewmodel";
 import { TechniqueTypeIcon } from "@/shared/constants/icon.constant";
 
 const props = defineProps<{

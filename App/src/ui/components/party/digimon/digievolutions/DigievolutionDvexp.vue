@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { DvexpBarSegments } from "@/shared/constants/digievolution.constant";
-import { DigievolutionDvexpPresenter } from "@/ui/presenters/digievolution/digievolution-dvexp.presenter";
+import { DigievolutionDvexpPresenter } from "@/presentation/presenters/digievolution/digievolution-dvexp.presenter";
 
 const props = defineProps<{
   isActiveDigievolution: boolean;

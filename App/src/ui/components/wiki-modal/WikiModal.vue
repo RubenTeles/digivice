@@ -12,10 +12,10 @@ import SearchBar from "@/ui/components/search/SearchBar.vue";
 import { useI18n } from "vue-i18n";
 import { useTooltipPosition } from "@/ui/composables/use-tooltip-position";
 import { ImageCatalog } from "@/ui/catalogs/image.catalog";
-import { WikiModalPresenter } from "@/ui/presenters/map/wiki-modal.presenter";
-import type { DropType } from "@/game-data/repositories/tables/raws/drop/drop-type";
+import { WikiModalPresenter } from "@/presentation/presenters/map/wiki-modal.presenter";
+import type { DropType } from "@/presentation/repositories/tables/raws/drop/drop-type";
 import type { DropSourceKind } from "@/shared/types/drop-source-kind.type";
-import type { SearchItemKind } from "@/ui/viewmodels/search/search-item.viewmodel";
+import type { SearchItemKind } from "@/presentation/viewmodels/search/search-item.viewmodel";
 
 const props = defineProps<{
   isOpen: boolean;

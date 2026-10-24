@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import type { AuctionViewModel } from "@/ui/viewmodels/auction/auction.viewmodel";
+import type { AuctionViewModel } from "@/presentation/viewmodels/auction/auction.viewmodel";
 
 defineProps<{
   auction: AuctionViewModel;

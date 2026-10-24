@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import CurrentAuctionAvailable from "@/ui/components/journal/auction-modal/current-auction/CurrentAuctionAvailable.vue";
 import CurrentAuctionUnavailable from "@/ui/components/journal/auction-modal/current-auction/CurrentAuctionUnavailable.vue";
-import { CurrentAuctionPresenter } from "@/ui/presenters/auction/current-auction.presenter";
+import { CurrentAuctionPresenter } from "@/presentation/presenters/auction/current-auction.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
 
 const gameState = useGameState();

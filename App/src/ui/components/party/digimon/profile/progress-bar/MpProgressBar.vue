@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import ProgressBar from "@/ui/components/party/digimon/profile/progress-bar/ProgressBar.vue";
-import { MpProgressBarPresenter } from "@/ui/presenters/party/digimon/profile/progress-bar/mp-progress-bar.presenter";
+import { MpProgressBarPresenter } from "@/presentation/presenters/party/digimon/profile/progress-bar/mp-progress-bar.presenter";
 import type { Vital } from "@/state/models";
 
 const props = defineProps<{

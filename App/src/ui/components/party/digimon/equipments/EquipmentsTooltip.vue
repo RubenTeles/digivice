@@ -3,7 +3,7 @@ import { computed } from "vue";
 import Tooltip from "@/ui/components/tooltip/Tooltip.vue";
 import type { TooltipPlacement } from "@/ui/composables/use-tooltip-position";
 import { useI18n } from "vue-i18n";
-import type { EquipmentViewModel } from "@/ui/viewmodels/digimon/equipment.viewmodel";
+import type { EquipmentViewModel } from "@/presentation/viewmodels/digimon/equipment.viewmodel";
 
 const props = withDefaults(
   defineProps<{

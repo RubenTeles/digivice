@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import type { EnemyConditionViewModel } from "@/ui/viewmodels/enemy/enemy-condition.viewmodel";
+import type { EnemyConditionViewModel } from "@/presentation/viewmodels/enemy/enemy-condition.viewmodel";
 
 const props = defineProps<{
   condition: EnemyConditionViewModel;

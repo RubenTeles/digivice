@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import WikiLocationMapMarker from "@/ui/components/wiki-modal/wiki-locations-panel/WikiLocationMapMarker.vue";
 import { useMapFrame } from "@/ui/composables/use-map-frame";
-import type { WikiLocationMapMarkerViewModel } from "@/ui/viewmodels/wiki-modal/wiki-location-map-marker.viewmodel";
+import type { WikiLocationMapMarkerViewModel } from "@/presentation/viewmodels/wiki-modal/wiki-location-map-marker.viewmodel";
 
 const props = defineProps<{
   imageUrl: string | null;

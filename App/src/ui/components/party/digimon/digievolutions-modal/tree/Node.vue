@@ -3,9 +3,9 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import type { Digimon } from "@/state/models";
-import { NodePresenter } from "@/ui/presenters/tree/node.presenter";
-import type { NodeViewModel } from "@/ui/viewmodels/digievolution/node.viewmodel";
-import type { RequirementViewModel } from "@/ui/viewmodels/digimon/requirement.viewmodel";
+import { NodePresenter } from "@/presentation/presenters/tree/node.presenter";
+import type { NodeViewModel } from "@/presentation/viewmodels/digievolution/node.viewmodel";
+import type { RequirementViewModel } from "@/presentation/viewmodels/digimon/requirement.viewmodel";
 
 const props = defineProps<{
   node: NodeViewModel;

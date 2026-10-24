@@ -8,7 +8,7 @@ import DefaultTooltip from "@/ui/components/tooltip/DefaultTooltip.vue";
 import Tooltip from "@/ui/components/tooltip/Tooltip.vue";
 import StatsTooltip from "./StatsTooltip.vue";
 import { useTooltipPosition } from "@/ui/composables/use-tooltip-position";
-import { StatsPresenter } from "@/ui/presenters/party/digimon/stats.presenter";
+import { StatsPresenter } from "@/presentation/presenters/party/digimon/stats.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
 
 const props = defineProps<{

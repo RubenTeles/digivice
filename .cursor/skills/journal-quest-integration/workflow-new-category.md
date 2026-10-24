@@ -47,24 +47,24 @@ Conventions: skill `frontend-memory-tests`.
 ## 4. Static quest data (per quest)
 
 - [ ] `data/game/quest/{category-kebab}/{id-kebab}.json`
-- [ ] `game-data/repositories/tables/quest/{category-kebab}/{id-kebab}.table.ts` → `export type XxxTable = QuestRaw`
+- [ ] `presentation/repositories/tables/quest/{category-kebab}/{id-kebab}.table.ts` → `export type XxxTable = QuestRaw`
 - [ ] `ui/i18n/{en-US,pt-BR}/quest/{category-kebab}/{id-kebab}.json`
 - [ ] Register imports in both `ui/i18n/{en-US,pt-BR}/index.ts`
 
 ## 5. Repository
 
-`game-data/repositories/quest.repository.ts`: import JSON + table types; add
+`presentation/repositories/quest.repository.ts`: import JSON + table types; add
 `get{Category}Raw(): QuestRaw[]`. Array order = **UI display order**.
 
 ## 6. ViewModel + presenters
 
 | File | Change |
 |------|--------|
-| `ui/viewmodels/quest/journal.viewmodel.ts` | new collection field |
-| `ui/presenters/journal/journal.presenter.ts` | map `get{Category}Raw()` → `QuestModalPresenter.getQuestViewModel` + filter nulls |
-| `ui/presenters/journal/quest-modal.presenter.ts` | new `find(raw => raw.id === questId)` branch with `calculateNewStatus: true` |
+| `presentation/viewmodels/quest/journal.viewmodel.ts` | new collection field |
+| `presentation/presenters/journal/journal.presenter.ts` | map `get{Category}Raw()` → `QuestModalPresenter.getQuestViewModel` + filter nulls |
+| `presentation/presenters/journal/quest-modal.presenter.ts` | new `find(raw => raw.id === questId)` branch with `calculateNewStatus: true` |
 
-`ui/presenters/converter/quest.converter.ts`: **SKIP**.
+`presentation/presenters/converter/quest.converter.ts`: **SKIP**.
 
 ## 7. UI
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import WikiPartyDvexp from "@/ui/components/wiki-modal/wiki-party-dvexp/WikiPartyDvexp.vue";
-import type { PartyDvexpViewModel } from "@/ui/viewmodels/dvexp/party-dvexp.viewmodel";
+import type { PartyDvexpViewModel } from "@/presentation/viewmodels/dvexp/party-dvexp.viewmodel";
 
 const props = defineProps<{
   exp: number;

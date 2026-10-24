@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import WikiCardShopInventoryCard from "@/ui/components/wiki-modal/wiki-card-shop-panel/WikiCardShopInventoryCard.vue";
-import type { WikiCardShopInventoryCardViewModel } from "@/ui/viewmodels/wiki-modal/wiki-card-shop-inventory-card.viewmodel";
+import type { WikiCardShopInventoryCardViewModel } from "@/presentation/viewmodels/wiki-modal/wiki-card-shop-inventory-card.viewmodel";
 
 defineProps<{
   cards: WikiCardShopInventoryCardViewModel[];

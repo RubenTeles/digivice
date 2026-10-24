@@ -2,8 +2,8 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useGameState } from "@/ui/composables/use-game-state";
-import { CurrentAuctionPresenter } from "@/ui/presenters/auction/current-auction.presenter";
-import type { AuctionViewModel } from "@/ui/viewmodels/auction/auction.viewmodel";
+import { CurrentAuctionPresenter } from "@/presentation/presenters/auction/current-auction.presenter";
+import type { AuctionViewModel } from "@/presentation/viewmodels/auction/auction.viewmodel";
 
 const props = defineProps<{
   auction: AuctionViewModel;

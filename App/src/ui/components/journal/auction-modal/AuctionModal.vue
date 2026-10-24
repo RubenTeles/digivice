@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import Modal from "@/ui/components/modal/Modal.vue";
 import type { Auctions, Quest } from "@/state/models";
-import { AuctionModalPresenter } from "@/ui/presenters/auction/auction-modal.presenter";
+import { AuctionModalPresenter } from "@/presentation/presenters/auction/auction-modal.presenter";
 import Auction from "./auction/Auction.vue";
 import CurrentAuction from "./current-auction/CurrentAuction.vue";
 

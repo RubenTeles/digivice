@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import type { NpcBattleKind } from "@/shared/types/npc-battle-kind.type";
-import { WikiNpcPanelPresenter } from "@/ui/presenters/map/wiki-modal/wiki-npc-panel.presenter";
+import { WikiNpcPanelPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-npc-panel.presenter";
 import WikiNpcCardBattlePanel from "@/ui/components/wiki-modal/wiki-npc-panel/WikiNpcCardBattlePanel.vue";
 import WikiNpcDigimonBattlePanel from "@/ui/components/wiki-modal/wiki-npc-panel/WikiNpcDigimonBattlePanel.vue";
-import { QuestRepository } from "@/game-data/repositories/quest.repository";
-import { QuestService } from "@/game-data/services/quest.service";
+import { QuestRepository } from "@/presentation/repositories/quest.repository";
+import { QuestService } from "@/presentation/services/quest.service";
 import { useGameState } from "@/ui/composables/use-game-state";
 import { useI18n } from "vue-i18n";
-import type { WikiNpcBattleOptionViewModel } from "@/ui/viewmodels/wiki-modal/wiki-npc-battle-option.viewmodel";
-import type { DropType } from "@/game-data/repositories/tables/raws/drop/drop-type";
+import type { WikiNpcBattleOptionViewModel } from "@/presentation/viewmodels/wiki-modal/wiki-npc-battle-option.viewmodel";
+import type { DropType } from "@/presentation/repositories/tables/raws/drop/drop-type";
 
 const props = defineProps<{
   npcId: string;

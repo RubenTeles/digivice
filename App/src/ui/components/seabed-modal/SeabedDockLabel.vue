@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { LabelPlacement } from "@/shared/types/label-placement.type";
-import type { SeabedDirectionDockViewModel } from "@/ui/viewmodels/seabed-modal/seabed-route-dock.viewmodel";
+import type { SeabedDirectionDockViewModel } from "@/presentation/viewmodels/seabed-modal/seabed-route-dock.viewmodel";
 
 defineProps<{
   dock: SeabedDirectionDockViewModel;

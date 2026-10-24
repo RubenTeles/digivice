@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import WikiCardShopInventory from "@/ui/components/wiki-modal/wiki-card-shop-panel/WikiCardShopInventory.vue";
 import WikiCardShopLocatedIn from "@/ui/components/wiki-modal/wiki-card-shop-panel/WikiCardShopLocatedIn.vue";
-import { WikiCardShopPanelPresenter } from "@/ui/presenters/map/wiki-modal/wiki-card-shop-panel.presenter";
+import { WikiCardShopPanelPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-card-shop-panel.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
 
 const props = defineProps<{

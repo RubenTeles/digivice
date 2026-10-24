@@ -3,9 +3,9 @@ import { computed } from "vue";
 import WikiCardBoosters from "@/ui/components/wiki-modal/wiki-card-panel/WikiCardBoosters.vue";
 import WikiCardDetails from "@/ui/components/wiki-modal/wiki-card-panel/WikiCardDetails.vue";
 import WikiCardShops from "@/ui/components/wiki-modal/wiki-card-panel/WikiCardShops.vue";
-import { WikiCardPanelPresenter } from "@/ui/presenters/map/wiki-modal/wiki-card-panel.presenter";
+import { WikiCardPanelPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-card-panel.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
-import type { DropType } from "@/game-data/repositories/tables/raws/drop/drop-type";
+import type { DropType } from "@/presentation/repositories/tables/raws/drop/drop-type";
 
 const props = defineProps<{
   cardId: string;

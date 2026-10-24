@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { WikiEnemyConditionsPresenter } from "@/ui/presenters/map/wiki-modal/wiki-enemy-conditions.presenter";
-import type { EnemyViewModel } from "@/ui/viewmodels/enemy/enemy.viewmodel";
-import type { EnemyConditionViewModel } from "@/ui/viewmodels/enemy/enemy-condition.viewmodel";
+import { WikiEnemyConditionsPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-enemy-conditions.presenter";
+import type { EnemyViewModel } from "@/presentation/viewmodels/enemy/enemy.viewmodel";
+import type { EnemyConditionViewModel } from "@/presentation/viewmodels/enemy/enemy-condition.viewmodel";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();

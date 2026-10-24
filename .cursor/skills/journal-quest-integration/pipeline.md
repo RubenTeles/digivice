@@ -13,7 +13,7 @@ data/memory-addresses/quests/**/*.json
 useGameState().journal
   → JournalPresenter
   → QuestRepository (static JSON Raw)
-  → QuestModalPresenter + ui/presenters/converter/QuestConverter
+  → QuestModalPresenter + presentation/presenters/converter/QuestConverter
   → JournalViewModel
   → Journal.vue → JournalQuestsSection + JournalQuestCard
   → QuestModal (on card click)
@@ -36,12 +36,12 @@ Paths under `App/src/`.
 | Patcher list keys | `memory/patch/state.patcher.ts` (`ListKeys`) |
 | Models | `state/models/journal/` |
 | Static JSON | `data/game/quest/` |
-| Static repository | `game-data/repositories/quest.repository.ts` |
-| Table types | `game-data/repositories/tables/quest/` |
-| Raw types | `game-data/repositories/tables/raws/quest/` |
-| Presenters | `ui/presenters/journal/` |
-| Presenter converters | `ui/presenters/converter/` |
-| ViewModels | `ui/viewmodels/quest/` |
+| Static repository | `presentation/repositories/quest.repository.ts` |
+| Table types | `presentation/repositories/tables/quest/` |
+| Raw types | `presentation/repositories/tables/raws/quest/` |
+| Presenters | `presentation/presenters/journal/` |
+| Presenter converters | `presentation/presenters/converter/` |
+| ViewModels | `presentation/viewmodels/quest/` |
 | Journal UI | `ui/components/journal/` |
 | Section palette | `ui/components/journal/journal-section-palette.ts` |
 | i18n journal | `ui/i18n/{en-US,pt-BR}/journal.json` |
@@ -52,7 +52,7 @@ Paths under `App/src/`.
 | Context | Folder | Direction |
 |---------|--------|-----------|
 | Definitions | `memory/converters/` | definitions `Raw` (camelCase JSON, hex strings) → `*Addresses` |
-| Static/UI | `ui/presenters/converter/` | static `Raw` + `Model` → `ViewModel` |
+| Static/UI | `presentation/presenters/converter/` | static `Raw` + `Model` → `ViewModel` |
 
 ## Side quests reference (copy pattern)
 

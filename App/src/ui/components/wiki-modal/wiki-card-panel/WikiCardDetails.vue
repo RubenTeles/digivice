@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { ImageCatalog } from "@/ui/catalogs/image.catalog";
-import type { CardViewModel } from "@/ui/viewmodels/card/card.viewmodel";
+import type { CardViewModel } from "@/presentation/viewmodels/card/card.viewmodel";
 
 const props = defineProps<{
   card: CardViewModel;

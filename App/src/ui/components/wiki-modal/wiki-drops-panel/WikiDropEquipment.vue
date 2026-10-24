@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { WikiDropEquipmentPresenter } from "@/ui/presenters/map/wiki-modal/wiki-drop-equipment.presenter";
+import { WikiDropEquipmentPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-drop-equipment.presenter";
 
 const props = defineProps<{
   equipmentId: number;

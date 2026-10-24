@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import type { EnemyStatViewModel } from "@/ui/viewmodels/enemy/enemy-stat.viewmodel";
+import type { EnemyStatViewModel } from "@/presentation/viewmodels/enemy/enemy-stat.viewmodel";
 
 const BattleDeltaStatKeys = new Set(["strength", "defense", "speed"]);
 

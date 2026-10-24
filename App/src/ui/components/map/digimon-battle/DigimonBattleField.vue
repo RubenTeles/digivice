@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { FieldPresenter } from "@/ui/presenters/map/field.presenter";
+import { FieldPresenter } from "@/presentation/presenters/map/field.presenter";
 
 const props = defineProps<{
   battleFieldId: number;

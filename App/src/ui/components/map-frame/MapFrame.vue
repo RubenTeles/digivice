@@ -2,8 +2,8 @@
 import { computed, ref, watch } from "vue";
 import { MapFrameMaxHeightPx, MapFrameWidthPx } from "@/shared/constants/map-display.constant";
 import { useMapFrame } from "@/ui/composables/use-map-frame";
-import type { MapFrameSlideViewModel } from "@/ui/viewmodels/map-frame/map-frame-slide.viewmodel";
-import type { MapFramePinViewModel } from "@/ui/viewmodels/map-frame/map-frame-pin.viewmodel";
+import type { MapFrameSlideViewModel } from "@/presentation/viewmodels/map-frame/map-frame-slide.viewmodel";
+import type { MapFramePinViewModel } from "@/presentation/viewmodels/map-frame/map-frame-pin.viewmodel";
 
 const MapFrameDefaultPinWrapperSizePx = 48;
 const MapFrameDefaultPinDotSizePx = 16;

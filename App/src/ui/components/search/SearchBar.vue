@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { SearchItemSortHelper } from "@/ui/presenters/helper/search-item-sort.helper";
+import { SearchItemSortHelper } from "@/presentation/presenters/helper/search-item-sort.helper";
 import type {
   SearchItemKind,
   SearchItemViewModel,
-} from "@/ui/viewmodels/search/search-item.viewmodel";
+} from "@/presentation/viewmodels/search/search-item.viewmodel";
 
 const props = defineProps<{
   items: SearchItemViewModel[];

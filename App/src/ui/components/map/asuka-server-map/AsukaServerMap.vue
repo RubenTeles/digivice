@@ -3,7 +3,7 @@ import { computed } from "vue";
 import Location from "@/ui/components/map/Location.vue";
 import Enemies from "@/ui/components/map/Enemies.vue";
 import { useGameState } from "@/ui/composables/use-game-state";
-import { AsukaServerMapPresenter } from "@/ui/presenters/map/asuka-server-map.presenter";
+import { AsukaServerMapPresenter } from "@/presentation/presenters/map/asuka-server-map.presenter";
 
 const emit = defineEmits<{
   (e: "open-enemy-modal", enemyId: string): void;

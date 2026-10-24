@@ -6,8 +6,8 @@ import WikiEnemyAttributes from "@/ui/components/wiki-modal/wiki-enemy-panel/Wik
 import WikiEnemyElements from "@/ui/components/wiki-modal/wiki-enemy-panel/WikiEnemyElements.vue";
 import WikiEnemyConditions from "@/ui/components/wiki-modal/wiki-enemy-panel/WikiEnemyConditions.vue";
 import WikiEnemyDrops from "@/ui/components/wiki-modal/wiki-enemy-panel/WikiEnemyDrops.vue";
-import type { DropType } from "@/game-data/repositories/tables/raws/drop/drop-type";
-import type { EnemyViewModel } from "@/ui/viewmodels/enemy/enemy.viewmodel";
+import type { DropType } from "@/presentation/repositories/tables/raws/drop/drop-type";
+import type { EnemyViewModel } from "@/presentation/viewmodels/enemy/enemy.viewmodel";
 
 defineProps<{
   enemy: EnemyViewModel;

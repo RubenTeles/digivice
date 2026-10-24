@@ -4,8 +4,8 @@ import { useI18n } from "vue-i18n";
 import DigimonBattleCondition from "@/ui/components/map/digimon-battle/DigimonBattleCondition.vue";
 import DigimonBattleStat from "@/ui/components/map/digimon-battle/DigimonBattleStat.vue";
 import type { TooltipHorizontalAlign } from "@/ui/composables/use-tooltip-position";
-import type { EnemyConditionViewModel } from "@/ui/viewmodels/enemy/enemy-condition.viewmodel";
-import type { EnemyStatViewModel } from "@/ui/viewmodels/enemy/enemy-stat.viewmodel";
+import type { EnemyConditionViewModel } from "@/presentation/viewmodels/enemy/enemy-condition.viewmodel";
+import type { EnemyStatViewModel } from "@/presentation/viewmodels/enemy/enemy-stat.viewmodel";
 
 const props = defineProps<{
   attributes: EnemyStatViewModel[];

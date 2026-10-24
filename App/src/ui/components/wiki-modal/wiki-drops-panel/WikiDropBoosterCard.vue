@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { ImageCatalog } from "@/ui/catalogs/image.catalog";
-import type { WikiDropBoosterCardViewModel } from "@/ui/viewmodels/wiki-modal/wiki-drop-booster-card.viewmodel";
+import type { WikiDropBoosterCardViewModel } from "@/presentation/viewmodels/wiki-modal/wiki-drop-booster-card.viewmodel";
 
 const props = defineProps<{
   card: WikiDropBoosterCardViewModel;

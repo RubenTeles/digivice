@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { DigimonStatIcon } from "@/shared/constants/icon.constant";
 import { useI18n } from "vue-i18n";
 import type { DigimonStat } from "@/shared/types/digimon-stat.type";
-import type { StatViewModel } from "@/ui/viewmodels/digimon/stat.viewmodel";
+import type { StatViewModel } from "@/presentation/viewmodels/digimon/stat.viewmodel";
 
 const props = defineProps<{
   statViewModel: StatViewModel;

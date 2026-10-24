@@ -2,8 +2,8 @@
 import { computed, watch, nextTick, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { Digimon } from "@/state/models";
-import { TreePresenter } from "@/ui/presenters/tree/tree.presenter";
-import type { FamilyViewModel } from "@/ui/viewmodels/digievolution/family.viewmodel";
+import { TreePresenter } from "@/presentation/presenters/tree/tree.presenter";
+import type { FamilyViewModel } from "@/presentation/viewmodels/digievolution/family.viewmodel";
 import { usePreferencesStore } from "@/state/stores/use-preferences-store";
 import { useTooltipPosition } from "@/ui/composables/use-tooltip-position";
 import Tooltip from "@/ui/components/tooltip/Tooltip.vue";

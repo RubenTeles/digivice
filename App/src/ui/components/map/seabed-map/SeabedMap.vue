@@ -4,7 +4,7 @@ import Location from "@/ui/components/map/Location.vue";
 import Enemies from "@/ui/components/map/Enemies.vue";
 import Seabed from "./Seabed.vue";
 import { useGameState } from "@/ui/composables/use-game-state";
-import { SeabedMapPresenter } from "@/ui/presenters/map/seabed-map.presenter";
+import { SeabedMapPresenter } from "@/presentation/presenters/map/seabed-map.presenter";
 
 const emit = defineEmits<{
   (e: "open-enemy-modal", enemyId: string): void;

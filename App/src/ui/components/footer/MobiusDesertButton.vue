@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import MobiusDesertModal from "@/ui/components/mobius-desert-modal/MobiusDesertModal.vue";
-import { MobiusDesertButtonPresenter } from "@/ui/presenters/footer/mobius-desert-button.presenter";
+import { MobiusDesertButtonPresenter } from "@/presentation/presenters/footer/mobius-desert-button.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
 
 const emit = defineEmits<{

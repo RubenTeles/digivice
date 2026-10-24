@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Digimon } from "@/state/models";
-import type { NodeViewModel } from "@/ui/viewmodels/digievolution/node.viewmodel";
+import type { NodeViewModel } from "@/presentation/viewmodels/digievolution/node.viewmodel";
 import Branch from "./Branch.vue";
 
 defineProps<{

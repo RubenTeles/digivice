@@ -8,8 +8,8 @@ import DesertExitNorth from "./DesertExitNorth.vue";
 import DesertExitEast from "./DesertExitEast.vue";
 import DesertExitSouth from "./DesertExitSouth.vue";
 import { useGameState } from "@/ui/composables/use-game-state";
-import { MobiusDesertMapPresenter } from "@/ui/presenters/map/mobius-desert-map.presenter";
-import { DesertNeighborHelper } from "@/ui/presenters/helper/desert-neighbor.helper";
+import { MobiusDesertMapPresenter } from "@/presentation/presenters/map/mobius-desert-map.presenter";
+import { DesertNeighborHelper } from "@/presentation/presenters/helper/desert-neighbor.helper";
 
 const emit = defineEmits<{
   (e: "open-enemy-modal", enemyId: string): void;

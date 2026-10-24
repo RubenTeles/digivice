@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import WikiCardShop from "@/ui/components/wiki-modal/wiki-card-panel/WikiCardShop.vue";
-import { WikiCardShopsPresenter } from "@/ui/presenters/map/wiki-modal/wiki-card-shops.presenter";
+import { WikiCardShopsPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-card-shops.presenter";
 import type { Quest } from "@/state/models";
-import type { CardShopViewModel } from "@/ui/viewmodels/card/card-shop.viewmodel";
+import type { CardShopViewModel } from "@/presentation/viewmodels/card/card-shop.viewmodel";
 
 const props = defineProps<{
   cardShops: CardShopViewModel[];

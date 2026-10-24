@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import type { EquipmentSlotViewModel } from "@/ui/viewmodels/digimon/equipment-slot.viewmodel";
-import type { EquipmentViewModel } from "@/ui/viewmodels/digimon/equipment.viewmodel";
+import type { EquipmentSlotViewModel } from "@/presentation/viewmodels/digimon/equipment-slot.viewmodel";
+import type { EquipmentViewModel } from "@/presentation/viewmodels/digimon/equipment.viewmodel";
 import { computed } from "vue";
 
 const props = defineProps<{

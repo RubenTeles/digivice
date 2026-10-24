@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { EnemySourceIcon } from "@/shared/constants/icon.constant";
-import type { WikiLocationEncounterLineViewModel } from "@/ui/viewmodels/wiki-modal/wiki-location-encounter-line.viewmodel";
+import type { WikiLocationEncounterLineViewModel } from "@/presentation/viewmodels/wiki-modal/wiki-location-encounter-line.viewmodel";
 
 const props = defineProps<{
   lines: WikiLocationEncounterLineViewModel[];

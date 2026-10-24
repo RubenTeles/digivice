@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject } from "vue";
-import type { QuestCardVariant, QuestViewModel } from "@/ui/viewmodels/quest/quest.viewmodel";
+import type { QuestCardVariant, QuestViewModel } from "@/presentation/viewmodels/quest/quest.viewmodel";
 import {
   getJournalSectionPalette,
   journalSectionPaletteKey,

@@ -4,8 +4,8 @@ import WikiDropBooster from "@/ui/components/wiki-modal/wiki-drops-panel/WikiDro
 import WikiDropConsumableItem from "@/ui/components/wiki-modal/wiki-drops-panel/WikiDropConsumableItem.vue";
 import WikiDropEquipment from "@/ui/components/wiki-modal/wiki-drops-panel/WikiDropEquipment.vue";
 import WikiDroppedBy from "@/ui/components/wiki-modal/wiki-drops-panel/WikiDroppedBy.vue";
-import { WikiDropsPanelPresenter } from "@/ui/presenters/map/wiki-modal/wiki-drops-panel.presenter";
-import type { DropType } from "@/game-data/repositories/tables/raws/drop/drop-type";
+import { WikiDropsPanelPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-drops-panel.presenter";
+import type { DropType } from "@/presentation/repositories/tables/raws/drop/drop-type";
 import type { DropSourceKind } from "@/shared/types/drop-source-kind.type";
 
 const props = defineProps<{

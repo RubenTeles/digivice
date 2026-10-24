@@ -3,8 +3,8 @@ import { computed, ref, watch } from "vue";
 import Modal from "@/ui/components/modal/Modal.vue";
 import MobiusDesertAreas from "@/ui/components/mobius-desert-modal/MobiusDesertAreas.vue";
 import MobiusDesertAreaDetails from "@/ui/components/mobius-desert-modal/MobiusDesertAreaDetails.vue";
-import type { DesertAreaViewModel } from "@/ui/viewmodels/desert/desert-area.viewmodel";
-import type { LocationViewModel } from "@/ui/viewmodels/location/location.viewmodel";
+import type { DesertAreaViewModel } from "@/presentation/viewmodels/desert/desert-area.viewmodel";
+import type { LocationViewModel } from "@/presentation/viewmodels/location/location.viewmodel";
 
 const props = defineProps<{
   isOpen: boolean;

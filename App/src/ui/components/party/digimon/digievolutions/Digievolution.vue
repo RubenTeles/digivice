@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import DigievolutionDvexp from "@/ui/components/party/digimon/digievolutions/DigievolutionDvexp.vue";
-import { DigievolutionPresenter } from "@/ui/presenters/digievolution/digievolution.presenter";
-import type { DigievolutionResumedViewModel } from "@/ui/viewmodels/digievolution/digievolution-resumed.viewmodel";
+import { DigievolutionPresenter } from "@/presentation/presenters/digievolution/digievolution.presenter";
+import type { DigievolutionResumedViewModel } from "@/presentation/viewmodels/digievolution/digievolution-resumed.viewmodel";
 
 const props = defineProps<{
   digievolutionId: number | null;

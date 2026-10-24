@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AuctionViewModel } from "@/ui/viewmodels/auction/auction.viewmodel";
+import type { AuctionViewModel } from "@/presentation/viewmodels/auction/auction.viewmodel";
 import AuctionAvailable from "./AuctionAvailable.vue";
 import AuctionMissed from "./AuctionMissed.vue";
 import AuctionNotYetOccurred from "./AuctionNotYetOccurred.vue";

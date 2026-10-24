@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { useGameStore } from "@/state/stores/use-game-store";
-import type { AppHealthyScreenViewModel } from "@/ui/viewmodels/app-healthy/app-healthy-screen.viewmodel";
+import type { AppHealthyScreenViewModel } from "@/presentation/viewmodels/app-healthy/app-healthy-screen.viewmodel";
 import { isKnownEmulatorConnectionErrorCode } from "@/shared/constants/emulator-connection-error-code.constant";
 
 function resolveEmulatorErrorKeys(errorCode: string | null): { titleKey: string; hintKey: string } {

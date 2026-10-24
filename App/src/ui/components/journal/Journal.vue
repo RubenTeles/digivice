@@ -5,7 +5,7 @@ import JournalQuestCard from "@/ui/components/journal/JournalQuestCard.vue";
 import AuctionCard from "@/ui/components/journal/auction-card/AuctionCard.vue";
 import QuestModal from "@/ui/components/journal/quest-modal/QuestModal.vue";
 import { useGameState } from "@/ui/composables/use-game-state";
-import { JournalPresenter } from "@/ui/presenters/journal/journal.presenter";
+import { JournalPresenter } from "@/presentation/presenters/journal/journal.presenter";
 
 const gameState = useGameState();
 

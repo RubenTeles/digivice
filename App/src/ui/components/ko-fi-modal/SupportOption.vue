@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExternalLinkService } from "@/game-data/services/external-link.service";
+import { ExternalLinkService } from "@/presentation/services/external-link.service";
 
 const props = defineProps<{
   description: string;

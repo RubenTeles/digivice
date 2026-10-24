@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import AuctionModal from "@/ui/components/journal/auction-modal/AuctionModal.vue";
 import { useGameState } from "@/ui/composables/use-game-state";
-import { AuctionCardPresenter } from "@/ui/presenters/auction/auction-card.presenter";
+import { AuctionCardPresenter } from "@/presentation/presenters/auction/auction-card.presenter";
 import AuctionCardAvailable from "./AuctionCardAvailable.vue";
 import AuctionCardUnavailable from "./AuctionCardUnavailable.vue";
 

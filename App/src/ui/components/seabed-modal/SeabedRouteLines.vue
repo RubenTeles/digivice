@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SeabedDirectionViewModel } from "@/ui/viewmodels/seabed-modal/seabed-direction.viewmodel";
+import type { SeabedDirectionViewModel } from "@/presentation/viewmodels/seabed-modal/seabed-direction.viewmodel";
 
 defineProps<{
   routes: SeabedDirectionViewModel[];

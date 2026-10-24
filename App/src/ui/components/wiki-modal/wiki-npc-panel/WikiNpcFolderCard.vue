@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { ImageCatalog } from "@/ui/catalogs/image.catalog";
-import type { WikiNpcFolderCardViewModel } from "@/ui/viewmodels/wiki-modal/wiki-npc-folder-card.viewmodel";
+import type { WikiNpcFolderCardViewModel } from "@/presentation/viewmodels/wiki-modal/wiki-npc-folder-card.viewmodel";
 
 const props = defineProps<{
   card: WikiNpcFolderCardViewModel;

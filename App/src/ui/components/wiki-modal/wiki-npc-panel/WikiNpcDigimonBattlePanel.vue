@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { WikiNpcDigimonBattlePresenter } from "@/ui/presenters/map/wiki-modal/wiki-npc-digimon-battle.presenter";
+import { WikiNpcDigimonBattlePresenter } from "@/presentation/presenters/map/wiki-modal/wiki-npc-digimon-battle.presenter";
 import WikiNpcDigimonBattleRewards from "@/ui/components/wiki-modal/wiki-npc-panel/WikiNpcDigimonBattleRewards.vue";
 import WikiNpcDigimonPortrait from "@/ui/components/wiki-modal/wiki-npc-panel/WikiNpcDigimonPortrait.vue";
 import WikiEnemyAttributes from "@/ui/components/wiki-modal/wiki-enemy-panel/WikiEnemyAttributes.vue";
@@ -9,7 +9,7 @@ import WikiEnemyConditions from "@/ui/components/wiki-modal/wiki-enemy-panel/Wik
 import WikiEnemyTechniques from "@/ui/components/wiki-modal/wiki-enemy-panel/WikiEnemyTechniques.vue";
 import WikiEnemyDrops from "@/ui/components/wiki-modal/wiki-enemy-panel/WikiEnemyDrops.vue";
 import { useGameState } from "@/ui/composables/use-game-state";
-import type { DropType } from "@/game-data/repositories/tables/raws/drop/drop-type";
+import type { DropType } from "@/presentation/repositories/tables/raws/drop/drop-type";
 
 const props = defineProps<{
   npcId: string;

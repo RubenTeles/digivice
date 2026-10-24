@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import WikiEnemyImage from "@/ui/components/wiki-modal/wiki-enemy-panel/WikiEnemyImage.vue";
-import type { EnemyViewModel } from "@/ui/viewmodels/enemy/enemy.viewmodel";
+import type { EnemyViewModel } from "@/presentation/viewmodels/enemy/enemy.viewmodel";
 
 defineProps<{
   enemy: EnemyViewModel;

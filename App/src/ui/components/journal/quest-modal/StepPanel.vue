@@ -2,8 +2,8 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import MapFrame from "@/ui/components/map-frame/MapFrame.vue";
-import type { MapFrameSlideViewModel } from "@/ui/viewmodels/map-frame/map-frame-slide.viewmodel";
-import type { StepViewModel } from "@/ui/viewmodels/quest/step.viewmodel";
+import type { MapFrameSlideViewModel } from "@/presentation/viewmodels/map-frame/map-frame-slide.viewmodel";
+import type { StepViewModel } from "@/presentation/viewmodels/quest/step.viewmodel";
 
 /**
  * Canonical width for quest pin / zoomed-location map rendering.

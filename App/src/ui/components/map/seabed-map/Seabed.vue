@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { SeabedDirectionIcon } from "@/shared/constants/icon.constant";
 import type { SeabedDirection } from "@/shared/types/seabed-direction.type";
-import { SeabedPresenter } from "@/ui/presenters/map/seabed.presenter";
+import { SeabedPresenter } from "@/presentation/presenters/map/seabed.presenter";
 
 const props = defineProps<{
   seabedRoute: number | null;

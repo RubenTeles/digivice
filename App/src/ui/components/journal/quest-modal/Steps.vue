@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Requisites from "./Requisites.vue";
-import type { StepViewModel } from "@/ui/viewmodels/quest/step.viewmodel";
+import type { StepViewModel } from "@/presentation/viewmodels/quest/step.viewmodel";
 
 withDefaults(
   defineProps<{

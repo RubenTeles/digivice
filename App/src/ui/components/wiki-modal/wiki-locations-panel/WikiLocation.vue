@@ -2,9 +2,9 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { EnemySourceIcon } from "@/shared/constants/icon.constant";
-import { splitLocationLabel } from "@/ui/presenters/helper/location-label.helper";
+import { splitLocationLabel } from "@/presentation/presenters/helper/location-label.helper";
 import type { EnemySource } from "@/shared/types/enemy-source.type";
-import type { EnemyLocationViewModel } from "@/ui/viewmodels/enemy/enemy-location.viewmodel";
+import type { EnemyLocationViewModel } from "@/presentation/viewmodels/enemy/enemy-location.viewmodel";
 
 const props = withDefaults(
   defineProps<{

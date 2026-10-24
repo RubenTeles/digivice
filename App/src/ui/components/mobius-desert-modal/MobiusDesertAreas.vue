@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import MobiusDesertArea from "@/ui/components/mobius-desert-modal/MobiusDesertArea.vue";
-import { MobiusDesertAreasPresenter } from "@/ui/presenters/mobius-desert-modal/mobius-desert-areas.presenter";
-import type { DesertAreaViewModel } from "@/ui/viewmodels/desert/desert-area.viewmodel";
+import { MobiusDesertAreasPresenter } from "@/presentation/presenters/mobius-desert-modal/mobius-desert-areas.presenter";
+import type { DesertAreaViewModel } from "@/presentation/viewmodels/desert/desert-area.viewmodel";
 import type { MobiusDesertAreaType } from "@/shared/types/mobius-desert-area-type.type";
-import type { LocationViewModel } from "@/ui/viewmodels/location/location.viewmodel";
+import type { LocationViewModel } from "@/presentation/viewmodels/location/location.viewmodel";
 
 const props = defineProps<{
   location: LocationViewModel;

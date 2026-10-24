@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import type { WikiDroppedBySourceViewModel } from "@/ui/viewmodels/wiki-modal/wiki-dropped-by-source.viewmodel";
+import type { WikiDroppedBySourceViewModel } from "@/presentation/viewmodels/wiki-modal/wiki-dropped-by-source.viewmodel";
 
 const props = defineProps<{
   source: WikiDroppedBySourceViewModel;

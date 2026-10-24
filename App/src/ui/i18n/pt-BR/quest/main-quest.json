@@ -365,11 +365,11 @@
         "locationTarget": "Letra \"O\""
       },
       "87": {
-        "description": "Derrote os Guardas na entrada Quartel General",
+        "description": "Derrote os Guardas na entrada Quartel General A.o.A",
         "locationTarget": "Guardas"
       },
       "88": {
-        "description": "Confronte a Game Master dentro do Quartel General",
+        "description": "Confronte a Game Master dentro do Quartel General A.o.A",
         "locationTarget": "Game Master"
       }
     }

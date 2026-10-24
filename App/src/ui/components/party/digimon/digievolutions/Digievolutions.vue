@@ -4,7 +4,7 @@ import Modal from "@/ui/components/modal/Modal.vue";
 import DigievolutionTechniques from "@/ui/components/party/digimon/digievolution-techniques/DigievolutionTechniques.vue";
 import type { DigievolutionSlot } from "@/state/models";
 import Digievolution from "./Digievolution.vue";
-import type { DigievolutionResumedViewModel } from "@/ui/viewmodels/digievolution/digievolution-resumed.viewmodel";
+import type { DigievolutionResumedViewModel } from "@/presentation/viewmodels/digievolution/digievolution-resumed.viewmodel";
 
 defineProps<{
   slots: DigievolutionSlot[];

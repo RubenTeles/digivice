@@ -35,7 +35,7 @@ types, readers, assemblers, presenters or card components.
 | Read | `QuestReader`, `QuestResource` |
 | Assemble | `QuestAssembler` (pass-through), `MainQuestAssembler`, `DuelIslandAssembler` |
 | Models | `Quest`, `Step`, `Requisite` |
-| Presenter converter | `QuestConverter` (`ui/presenters/converter/quest.converter.ts`) |
+| Presenter converter | `QuestConverter` (`presentation/presenters/converter/quest.converter.ts`) |
 | UI | `JournalQuestCard`, `JournalQuestsSection`, `QuestModal` tree |
 
 ## Pick the workflow
@@ -63,7 +63,7 @@ Same byte as an existing tracker?  → Likely another bit; still a separate ques
 | Duel Island | `duel-island/` | `duelIsland` | `DuelIslandAssembler` (normalization) | `getAllDuelIsland()` | `duel-island/` | `getDuelIslandRaw()` | `sky` |
 
 Repository getters live in `memory/repositories/addresses.repository.ts`; static
-getters in `game-data/repositories/quest.repository.ts`. Current quests: [status.md](status.md).
+getters in `presentation/repositories/quest.repository.ts`. Current quests: [status.md](status.md).
 File map: [pipeline.md](pipeline.md).
 
 **Aside order (fixed):** Main quest → Auction card → Side → Legendary → DRI → Duel Island.
@@ -137,14 +137,14 @@ Conventions: skill `frontend-memory-tests`.
 ### 3. Static quest data
 
 - [ ] `data/game/quest/{category}/{id-kebab}.json` — mirror a quest in the same folder
-- [ ] `game-data/repositories/tables/quest/{category}/{id-kebab}.table.ts` → `export type {Name}Table = QuestRaw`
+- [ ] `presentation/repositories/tables/quest/{category}/{id-kebab}.table.ts` → `export type {Name}Table = QuestRaw`
 - [ ] `ui/i18n/en-US/quest/{category}/{id-kebab}.json`
 - [ ] `ui/i18n/pt-BR/quest/{category}/{id-kebab}.json`
 - [ ] Import + spread in `ui/i18n/{en-US,pt-BR}/index.ts`
 
 ### 4. Repository
 
-- [ ] `game-data/repositories/quest.repository.ts` — import JSON + table type; append to the category getter in the **desired UI position** (default: end)
+- [ ] `presentation/repositories/quest.repository.ts` — import JSON + table type; append to the category getter in the **desired UI position** (default: end)
 
 **SKIP:** `Journal.vue`, palette, `journal.viewmodel.ts`, `journal.presenter.ts`,
 `quest-modal.presenter.ts` — all iterate the full repository array per category.

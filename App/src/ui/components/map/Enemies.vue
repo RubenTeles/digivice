@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { EnemySourceIcon, NpcBattleKindIcon } from "@/shared/constants/icon.constant";
-import { MapEnemiesPresenter } from "@/ui/presenters/map/map-enemies.presenter";
-import type { MapNpcViewModel } from "@/ui/viewmodels/map/map-npc.viewmodel";
+import { MapEnemiesPresenter } from "@/presentation/presenters/map/map-enemies.presenter";
+import type { MapNpcViewModel } from "@/presentation/viewmodels/map/map-npc.viewmodel";
 
 const props = withDefaults(
   defineProps<{

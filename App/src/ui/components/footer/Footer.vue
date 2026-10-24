@@ -9,7 +9,7 @@ import Tooltip from "@/ui/components/tooltip/Tooltip.vue";
 import { useI18n } from "vue-i18n";
 import { useTooltipPosition } from "@/ui/composables/use-tooltip-position";
 import { useGameState } from "@/ui/composables/use-game-state";
-import { FooterPresenter } from "@/ui/presenters/footer/footer.presenter";
+import { FooterPresenter } from "@/presentation/presenters/footer/footer.presenter";
 
 const gameState = useGameState();
 const { t } = useI18n();

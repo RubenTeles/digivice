@@ -2,8 +2,8 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { ImageCatalog } from "@/ui/catalogs/image.catalog";
-import { CardRepository } from "@/game-data/repositories/card.repository";
-import type { WikiCardShopInventoryCardViewModel } from "@/ui/viewmodels/wiki-modal/wiki-card-shop-inventory-card.viewmodel";
+import { CardRepository } from "@/presentation/repositories/card.repository";
+import type { WikiCardShopInventoryCardViewModel } from "@/presentation/viewmodels/wiki-modal/wiki-card-shop-inventory-card.viewmodel";
 
 const props = defineProps<{
   card: WikiCardShopInventoryCardViewModel;

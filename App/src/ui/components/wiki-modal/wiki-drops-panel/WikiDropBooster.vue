@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import WikiDropBoosterCard from "@/ui/components/wiki-modal/wiki-drops-panel/WikiDropBoosterCard.vue";
-import { WikiDropBoosterPresenter } from "@/ui/presenters/map/wiki-modal/wiki-drop-booster.presenter";
+import { WikiDropBoosterPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-drop-booster.presenter";
 
 const props = defineProps<{
   boosterId: number;

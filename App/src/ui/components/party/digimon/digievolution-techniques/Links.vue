@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { LinkViewModel } from "@/ui/viewmodels/digievolution/link.viewmodel";
+import type { LinkViewModel } from "@/presentation/viewmodels/digievolution/link.viewmodel";
 
 defineProps<{
   digievolutionLinks: LinkViewModel[];

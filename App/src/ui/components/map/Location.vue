@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { MapService } from "@/game-data/services/map.service";
+import { MapService } from "@/presentation/services/map.service";
 
 const props = withDefaults(
   defineProps<{

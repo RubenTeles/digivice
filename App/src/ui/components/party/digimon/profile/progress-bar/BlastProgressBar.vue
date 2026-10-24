@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import ProgressBar from "@/ui/components/party/digimon/profile/progress-bar/ProgressBar.vue";
-import { BlastProgressBarPresenter } from "@/ui/presenters/party/digimon/profile/progress-bar/blast-progress-bar.presenter";
+import { BlastProgressBarPresenter } from "@/presentation/presenters/party/digimon/profile/progress-bar/blast-progress-bar.presenter";
 
 const props = defineProps<{
   blast: number;

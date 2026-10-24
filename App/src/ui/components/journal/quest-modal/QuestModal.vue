@@ -5,8 +5,8 @@ import Chapter from "./Chapter.vue";
 import StepPanel from "./StepPanel.vue";
 import Steps from "./Steps.vue";
 import Requisites from "./Requisites.vue";
-import type { StepViewModel } from "@/ui/viewmodels/quest/step.viewmodel";
-import { QuestModalPresenter } from "@/ui/presenters/journal/quest-modal.presenter";
+import type { StepViewModel } from "@/presentation/viewmodels/quest/step.viewmodel";
+import { QuestModalPresenter } from "@/presentation/presenters/journal/quest-modal.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
 
 const props = defineProps<{

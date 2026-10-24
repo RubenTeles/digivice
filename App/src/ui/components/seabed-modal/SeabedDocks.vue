@@ -5,7 +5,7 @@ import SeabedDockMarker from "@/ui/components/seabed-modal/SeabedDockMarker.vue"
 import SeabedRouteLines from "@/ui/components/seabed-modal/SeabedRouteLines.vue";
 import { MapFrameMaxHeightPx, MapFrameWidthPx } from "@/shared/constants/map-display.constant";
 import { useMapFrame } from "@/ui/composables/use-map-frame";
-import { SeabedDocksPresenter } from "@/ui/presenters/map/seabed-docks.presenter";
+import { SeabedDocksPresenter } from "@/presentation/presenters/map/seabed-docks.presenter";
 
 const emit = defineEmits<{
   "select-dock": [locationId: string];

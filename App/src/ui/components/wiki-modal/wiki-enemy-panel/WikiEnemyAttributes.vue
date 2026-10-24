@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { WikiEnemyAttributesPresenter } from "@/ui/presenters/map/wiki-modal/wiki-enemy-attributes.presenter";
-import type { EnemyViewModel } from "@/ui/viewmodels/enemy/enemy.viewmodel";
+import { WikiEnemyAttributesPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-enemy-attributes.presenter";
+import type { EnemyViewModel } from "@/presentation/viewmodels/enemy/enemy.viewmodel";
 
 const props = defineProps<{
   attributes: EnemyViewModel["attributes"];

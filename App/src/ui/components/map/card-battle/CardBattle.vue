@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { CardBattlePresenter } from "@/ui/presenters/map/card-battle.presenter";
+import { CardBattlePresenter } from "@/presentation/presenters/map/card-battle.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
 
 const emit = defineEmits<{

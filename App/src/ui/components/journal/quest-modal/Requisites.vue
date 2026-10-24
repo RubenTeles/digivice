@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RequisiteViewModel } from "@/ui/viewmodels/quest/requisite.viewmodel";
+import type { RequisiteViewModel } from "@/presentation/viewmodels/quest/requisite.viewmodel";
 
 withDefaults(
   defineProps<{

@@ -5,9 +5,9 @@ import Modal from "@/ui/components/modal/Modal.vue";
 import Tree from "./tree/Tree.vue";
 import DigievolutionTechniques from "@/ui/components/party/digimon/digievolution-techniques/DigievolutionTechniques.vue";
 import SearchBar from "@/ui/components/search/SearchBar.vue";
-import { DigievolutionsModalPresenter } from "@/ui/presenters/digievolution/digievolutions-modal.presenter";
+import { DigievolutionsModalPresenter } from "@/presentation/presenters/digievolution/digievolutions-modal.presenter";
 import { useI18n } from "vue-i18n";
-import type { SearchItemViewModel } from "@/ui/viewmodels/search/search-item.viewmodel";
+import type { SearchItemViewModel } from "@/presentation/viewmodels/search/search-item.viewmodel";
 
 const props = defineProps<{
   isOpen: boolean;

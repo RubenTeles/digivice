@@ -9,7 +9,7 @@ import TrainingPoints from "@/ui/components/party/digimon/profile/TrainingPoints
 import DigievolutionsButton from "@/ui/components/party/digimon/profile/DigievolutionsButton.vue";
 import Tooltip from "@/ui/components/tooltip/Tooltip.vue";
 import type { Digimon } from "@/state/models";
-import { ProfilePresenter } from "@/ui/presenters/party/digimon/profile.presenter";
+import { ProfilePresenter } from "@/presentation/presenters/party/digimon/profile.presenter";
 import { useTooltipPosition } from "@/ui/composables/use-tooltip-position";
 import { useGameState } from "@/ui/composables/use-game-state";
 import { useI18n } from "vue-i18n";

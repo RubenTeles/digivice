@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PartyDvexpViewModel } from "@/ui/viewmodels/dvexp/party-dvexp.viewmodel";
+import type { PartyDvexpViewModel } from "@/presentation/viewmodels/dvexp/party-dvexp.viewmodel";
 
 defineProps<{
   partyDvexps: PartyDvexpViewModel[];

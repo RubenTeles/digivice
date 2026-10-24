@@ -3,8 +3,8 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import WikiNpcFolderCard from "@/ui/components/wiki-modal/wiki-npc-panel/WikiNpcFolderCard.vue";
 import WikiEnemyDrops from "@/ui/components/wiki-modal/wiki-enemy-panel/WikiEnemyDrops.vue";
-import { WikiNpcCardBattlePresenter } from "@/ui/presenters/map/wiki-modal/wiki-npc-card-battle.presenter";
-import type { DropType } from "@/game-data/repositories/tables/raws/drop/drop-type";
+import { WikiNpcCardBattlePresenter } from "@/presentation/presenters/map/wiki-modal/wiki-npc-card-battle.presenter";
+import type { DropType } from "@/presentation/repositories/tables/raws/drop/drop-type";
 
 const { t } = useI18n();
 

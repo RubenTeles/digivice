@@ -7,7 +7,7 @@ import MobiusDesertMap from "./mobius-desert-map/MobiusDesertMap.vue";
 import WikiModal from "@/ui/components/wiki-modal/WikiModal.vue";
 import { computed, ref } from "vue";
 import { useGameState } from "@/ui/composables/use-game-state";
-import { MapPresenter } from "@/ui/presenters/map/map.presenter";
+import { MapPresenter } from "@/presentation/presenters/map/map.presenter";
 
 const gameState = useGameState();
 

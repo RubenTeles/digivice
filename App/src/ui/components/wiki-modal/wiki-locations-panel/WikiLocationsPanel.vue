@@ -6,7 +6,7 @@ import WikiLocationEncounters from "@/ui/components/wiki-modal/wiki-locations-pa
 import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import { MapFrameWidthPx } from "@/shared/constants/map-display.constant";
 import { useImageNaturalAspectRatio } from "@/ui/composables/use-image-natural-aspect-ratio";
-import { WikiLocationsPanelPresenter } from "@/ui/presenters/map/wiki-modal/wiki-locations-panel.presenter";
+import { WikiLocationsPanelPresenter } from "@/presentation/presenters/map/wiki-modal/wiki-locations-panel.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
 
 const props = defineProps<{

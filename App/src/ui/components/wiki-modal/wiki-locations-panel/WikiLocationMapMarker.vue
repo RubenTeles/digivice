@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import type { WikiLocationMapMarkerViewModel } from "@/ui/viewmodels/wiki-modal/wiki-location-map-marker.viewmodel";
+import type { WikiLocationMapMarkerViewModel } from "@/presentation/viewmodels/wiki-modal/wiki-location-map-marker.viewmodel";
 
 const props = defineProps<{
   marker: WikiLocationMapMarkerViewModel;

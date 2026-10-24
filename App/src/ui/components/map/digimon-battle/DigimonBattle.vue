@@ -18,10 +18,10 @@ import {
   type TooltipHorizontalAlign,
   type TooltipPlacement,
 } from "@/ui/composables/use-tooltip-position";
-import { DigimonBattlePresenter } from "@/ui/presenters/map/digimon-battle.presenter";
+import { DigimonBattlePresenter } from "@/presentation/presenters/map/digimon-battle.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
-import type { EnemyConditionViewModel } from "@/ui/viewmodels/enemy/enemy-condition.viewmodel";
-import type { EnemyStatViewModel } from "@/ui/viewmodels/enemy/enemy-stat.viewmodel";
+import type { EnemyConditionViewModel } from "@/presentation/viewmodels/enemy/enemy-condition.viewmodel";
+import type { EnemyStatViewModel } from "@/presentation/viewmodels/enemy/enemy-stat.viewmodel";
 
 type TooltipVariant = "none" | "tiny" | "buff";
 

@@ -2,9 +2,9 @@
 import { computed } from "vue";
 import WikiEnemyLocations from "@/ui/components/wiki-modal/wiki-enemy-panel/WikiEnemyLocations.vue";
 import WikiPartyDvexp from "@/ui/components/wiki-modal/wiki-party-dvexp/WikiPartyDvexp.vue";
-import { WikiEnemyResumePresenter } from "@/ui/presenters/map/wiki-modal/wiki-enemy-resume.presenter";
+import { WikiEnemyResumePresenter } from "@/presentation/presenters/map/wiki-modal/wiki-enemy-resume.presenter";
 import { useGameState } from "@/ui/composables/use-game-state";
-import type { EnemyViewModel } from "@/ui/viewmodels/enemy/enemy.viewmodel";
+import type { EnemyViewModel } from "@/presentation/viewmodels/enemy/enemy.viewmodel";
 
 const props = withDefaults(
   defineProps<{

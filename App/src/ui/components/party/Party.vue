@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useGameState } from "@/ui/composables/use-game-state";
 import Digimon from "@/ui/components/party/digimon/Digimon.vue";
-import { PartyPresenter } from "@/ui/presenters/party/party.presenter";
+import { PartyPresenter } from "@/presentation/presenters/party/party.presenter";
 
 const gameState = useGameState();
 

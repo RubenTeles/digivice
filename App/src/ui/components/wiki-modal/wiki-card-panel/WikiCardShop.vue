@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CardShopViewModel } from "@/ui/viewmodels/card/card-shop.viewmodel";
+import type { CardShopViewModel } from "@/presentation/viewmodels/card/card-shop.viewmodel";
 
 defineProps<{
   cardShop: CardShopViewModel;

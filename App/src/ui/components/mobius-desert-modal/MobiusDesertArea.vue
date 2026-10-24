@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { DesertNeighborHelper } from "@/ui/presenters/helper/desert-neighbor.helper";
+import { DesertNeighborHelper } from "@/presentation/presenters/helper/desert-neighbor.helper";
 import type { MobiusDesertAreaType } from "@/shared/types/mobius-desert-area-type.type";
 
 const props = defineProps<{

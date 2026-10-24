@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Steps from "./Steps.vue";
-import type { ChapterViewModel } from "@/ui/viewmodels/quest/chapter.viewmodel";
-import type { StepViewModel } from "@/ui/viewmodels/quest/step.viewmodel";
+import type { ChapterViewModel } from "@/presentation/viewmodels/quest/chapter.viewmodel";
+import type { StepViewModel } from "@/presentation/viewmodels/quest/step.viewmodel";
 
 defineProps<{
   chapter: ChapterViewModel;

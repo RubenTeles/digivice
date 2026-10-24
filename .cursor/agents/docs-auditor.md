@@ -20,7 +20,7 @@ You audit whether the Digivice guidance files still match the codebase. You neve
 3. **Coverage** — entities and categories present in code but missing from guidance:
    - `State` properties in `App/src/state/models/state.ts` vs `digivice-business.mdc` and the entity map in `memory-field-integration`
    - Quest folders under `App/src/data/memory-addresses/quests/` vs the `journal-quest-integration` category map and its `status.md`
-   - Quest ids in `App/src/game-data/repositories/quest.repository.ts` vs `journal-quest-integration/status.md`
+   - Quest ids in `App/src/presentation/repositories/quest.repository.ts` vs `journal-quest-integration/status.md`
    - Accents in `App/src/ui/components/journal/journal-section-palette.ts` vs `journal-quest-integration`
    - `App/src/data/memory-addresses/**/*-addresses.json` files vs `memory-regions.md` "integrated" markers
 4. **Consistency** — contradictions between files (same fact stated differently), skills referencing skills/agents that do not exist, frontmatter `description` promising workflows the body does not have.
