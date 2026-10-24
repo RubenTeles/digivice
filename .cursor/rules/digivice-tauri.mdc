@@ -6,12 +6,18 @@ alwaysApply: false
 
 # Digivice — Tauri (Rust)
 
-Contexto histórico da migração: `AI/MIGRATION_PLAN.md`.
+O antigo backend C# (sidecar com SignalR) foi removido; o código pode ser consultado na tag git `last-csharp-backend`.
 
 ## Responsabilidade
 
 - O Rust é uma **ponte mínima**: acha o DuckStation, abre a memória compartilhada `duckstation_{pid}` e entrega **bytes brutos**. Nenhuma lógica de domínio (endereços, sentinelas, assemblers) vive aqui; isso é da camada TS `Frontend/src/memory/`.
 - `lib.rs` registra só o plugin shell (usado pelo `open` de `external-link.service.ts`, capability `shell:allow-open`), o `MemoryState` e o comando `read_ram`. Sem sidecar nem outro processo auxiliar.
+
+## Desenvolvimento local
+
+- Fluxo diário: `npm run tauri:dev` (em `Frontend/`). Sobe o Vite com HMR e abre a janela do Tauri apontando para ele (`devUrl`); só a casca Rust é compilada (debug, incremental).
+- DevTools: botão direito → Inspect ou `Ctrl+Shift+I` na janela do Tauri. No navegador comum não existe a ponte com o Rust (`invoke("read_ram")`).
+- `npm run dev` no navegador puro só lê memória com `VITE_MEMORY_SNAPSHOT_URL` (`.bin`; ver `digivice-frontend.mdc`).
 
 ## Contrato do `read_ram`
 

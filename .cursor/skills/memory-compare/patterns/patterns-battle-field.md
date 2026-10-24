@@ -53,12 +53,12 @@ Strengthen multiplier = `1 + A4532 / 128`. `0` when no field.
 
 | Source | `A4532` | Multiplier | Damage evidence |
 |--------|--------:|-----------:|-----------------|
-| Item (any element) | `64` (`0x40`) | ×1.5 (+50%) | Sakuyamon thunder tech vs Kunemon 850 → **1275**; Raio Elétrico vs Hagurumon/Clockmon 2200 → **3300**; Giga Congelar 780 → **1170**; Chuva de Neve 650 → **975** (Ice item) |
-| Skill (any Campo skill) | `127` (`0x7F`) | ×1.992 (~+99%) | Sakuyamon thunder tech vs Kunemon 850 → **1693** (predicted 1693.4); repeated to rule out crits |
+| Item (any element) | `64` (`0x40`) | ×1.5 (+50%) | Sakuyamon thunder tech vs Kunemon 850 → **1275**; Lightning Bolt vs Hagurumon/Clockmon 2200 → **3300**; Giga Freeze 780 → **1170**; Snow Storm 650 → **975** (Ice item) |
+| Skill (any Field-type skill) | `127` (`0x7F`) | ×1.992 (~+99%) | Sakuyamon thunder tech vs Kunemon 850 → **1693** (predicted 1693.4); repeated to rule out crits |
 
 ### Field skills are bugged — always Thunder (**confirmed** 2026-09-28)
 
-Every Digimon Campo skill writes **`A4530 = 6` (Thunder)** + **`A4532 = 127`**,
+Every Digimon Field-type skill writes **`A4530 = 6` (Thunder)** + **`A4532 = 127`**,
 regardless of the element it claims. The item path is the only one that writes
 the matching element id (`2`–`8`, potency `64`).
 
@@ -84,7 +84,7 @@ Water identical). No address found yet that stores the claimed element / skill u
 
 | Attacker | Move | Field (item) | Should weaken | Result |
 |----------|------|--------------|---------------|--------|
-| Clockmon | Míssil Mágico (magic, Machine) | Thunder | Machine | 426 → 426 (also 426 under skill field) |
+| Clockmon | Magic Missile (magic, Machine) | Thunder | Machine | 426 → 426 (also 426 under skill field) |
 | Airdramon (gold) | Mega Tornado (Wind) | Ice | Wind | 259 → 259 |
 | Sakuyamon (player) | thunder technique | Dark | Thunder | unchanged |
 
@@ -106,13 +106,13 @@ Side notes from the same session:
 - **Duration:** item field ends after **5 player actions** (skill field untested).
   Countdown address not found (`A441C=2` / `A4418=220` right after apply do not
   look like a 5-count) — needs one snap per turn until the field expires.
-- Where (if anywhere) the claimed element / skill id of a Campo cast is stored.
+- Where (if anywhere) the claimed element / skill id of a Field-type cast is stored.
 
 ---
 
 ## Cardmon “curse” (suspected / incomplete — 2026-08-26)
 
-Snaps: `cardmon-cursed.bin` (message “amaldiçoado”) vs `cardmon-normal.bin`
+Snaps: `cardmon-cursed.bin` (in-game "cursed" message) vs `cardmon-normal.bin`
 (later fight, start of Cardmon battle before hit). **Not** a same-fight pair —
 expect HP/turn noise.
 
@@ -120,7 +120,7 @@ expect HP/turn noise.
 |-------|--------|
 | Ally/enemy Condition `@ +0x1C` | **`0` in both** — curse is **not** the poison/confuse status byte (matches “no condition icon”) |
 | `0xA4530` field id | **`0` both** — not elemental Field |
-| `0xA4414…A442A` cluster | **On only in cursed** (`A4414=0x10`, `A441C=0x7A`, `A4424=1`, `A442A=1`) — same neighborhood as Campo skills, different `A441C` |
+| `0xA4414…A442A` cluster | **On only in cursed** (`A4414=0x10`, `A441C=0x7A`, `A4424=1`, `A442A=1`) — same neighborhood as Field-type skills, different `A441C` |
 | Digimon status region `stats` | **0 diffs** |
 | Enemy `+0x04` | `0→1` on cursed (known turn/state noise) |
 

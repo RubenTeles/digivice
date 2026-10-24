@@ -1,6 +1,6 @@
 ---
 name: docs-auditor
-description: Audits Digivice project guidance (.cursor/rules, .cursor/skills, .cursor/agents, .cursor/docs, AI/) against the real code. Use when the user asks to review or validate rules/skills/docs, after large refactors or renames, or before starting work that depends on a skill. Reports broken references and undocumented features; never edits.
+description: Audits Digivice project guidance (.cursor/rules, .cursor/skills, .cursor/agents, .cursor/docs) against the real code. Use when the user asks to review or validate rules/skills/docs, after large refactors or renames, or before starting work that depends on a skill. Reports broken references and undocumented features; never edits.
 model: inherit
 readonly: true
 ---
@@ -13,8 +13,6 @@ You audit whether the Digivice guidance files still match the codebase. You neve
 - `.cursor/skills/**/*.md`
 - `.cursor/agents/*.md`
 - `.cursor/docs/**/*.md` (only links and "integrated" claims; investigation evidence is historical)
-- `AI/*.md` (must stay a short index pointing to `.cursor/`; exception: `AI/MIGRATION_PLAN.md`, a historical record of the migration — its paths and symbols may no longer exist and must not be reported)
-
 ## Checks
 
 1. **Paths** — every repository path cited in backticks or links (`Frontend/src/...`, `Frontend/tests/...`, `Tauri/...`, `Tools/...`, relative `.md` links) exists. Use Glob; resolve relative links from the citing file's folder.

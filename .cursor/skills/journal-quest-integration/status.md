@@ -29,8 +29,8 @@ Definitions paths are relative to `Frontend/src/memory/definitions/`.
 
 ### Legendary weapons (2026-07-14)
 
-- `superNova` — `Quests/LegendaryWeapons/SuperNovaAddresses.json` (`0x4B38E` `0x08`; quest-level requisite `submarimon`); coords provisórias (`021C` / 50,50)
-- `punishment` — `Quests/LegendaryWeapons/PunishmentAddresses.json` (`0x4B38E` `0x10`; quest-level requisite `numemon`); coords provisórias (`0252` / 50,50)
+- `superNova` — `Quests/LegendaryWeapons/SuperNovaAddresses.json` (`0x4B38E` `0x08`; quest-level requisite `submarimon`); provisional coords (`021C` / 50,50)
+- `punishment` — `Quests/LegendaryWeapons/PunishmentAddresses.json` (`0x4B38E` `0x10`; quest-level requisite `numemon`); provisional coords (`0252` / 50,50)
 
 ### DRI agents (2026-06-06)
 
@@ -50,15 +50,15 @@ Definitions paths are relative to `Frontend/src/memory/definitions/`.
 
 ### DRI agents (2026-07-14)
 
-- `driAgentPatamon` — `Quests/DriAgents/DriAgentPatamonAddresses.json` (3 steps + `patamonDDNA` requisite; quest-level requisite `submarimon`); coords provisórias (`021D` / `0247` / 50,50)
+- `driAgentPatamon` — `Quests/DriAgents/DriAgentPatamonAddresses.json` (3 steps + `patamonDDNA` requisite; quest-level requisite `submarimon`); provisional coords (`021D` / `0247` / 50,50)
 
 ### Duel Island (2026-08-30)
 
-- `asukaTrophy` — `Quests/DuelIsland/AsukaTrophyAddresses.json`; coords provisórias (`0228` / 50,50)
+- `asukaTrophy` — `Quests/DuelIsland/AsukaTrophyAddresses.json`; provisional coords (`0228` / 50,50)
 
 ### Duel Island (2026-08-31)
 
-- `asukaRematch` — `Quests/DuelIsland/AsukaRematchAddresses.json` (quest-level requisite `asukaTrophy`; step 6 provisional = step 5 bit `0x4B3B3` / `0x08`); coords provisórias (`0228` / 50,50)
+- `asukaRematch` — `Quests/DuelIsland/AsukaRematchAddresses.json` (quest-level requisite `asukaTrophy`; step 6 provisional = step 5 bit `0x4B3B3` / `0x08`); provisional coords (`0228` / 50,50)
 
 ## Palette notes
 
