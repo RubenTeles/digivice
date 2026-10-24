@@ -4,7 +4,6 @@
 
 export const AppConfig = {
   memory: {
-    snapshotUrl: import.meta.env.VITE_MEMORY_SNAPSHOT_URL,
     pollingIntervalMs: 500,
   },
   // Simple check to see if we are running inside Tauri

@@ -1,5 +1,4 @@
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
-import { AppConfig } from "@/core/config";
 import { useGameStore } from "@/state/stores/use-game-store";
 
 const OpenStorageKey = "debug-monitor-open";
@@ -14,8 +13,6 @@ export function useDebugMonitor() {
   const lastErrorCode = computed(() => store.lastErrorCode);
   const lastErrorDetail = computed(() => store.lastErrorDetail);
   const currentState = computed(() => store.currentState);
-  const memorySource = AppConfig.memory.snapshotUrl || "read_ram";
-
   function toggle(): void {
     isOpen.value = !isOpen.value;
     localStorage.setItem(OpenStorageKey, String(isOpen.value));
@@ -48,7 +45,6 @@ export function useDebugMonitor() {
     lastErrorCode,
     lastErrorDetail,
     currentState,
-    memorySource,
     lastChangedAt,
   };
 }

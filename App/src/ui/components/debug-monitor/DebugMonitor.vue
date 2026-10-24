@@ -5,15 +5,8 @@ import DebugPlayer from "@/ui/components/debug-monitor/DebugPlayer.vue";
 import DebugParty from "@/ui/components/debug-monitor/DebugParty.vue";
 import DebugBattle from "@/ui/components/debug-monitor/DebugBattle.vue";
 
-const {
-  isOpen,
-  healthStatus,
-  lastErrorCode,
-  lastErrorDetail,
-  currentState,
-  memorySource,
-  lastChangedAt,
-} = useDebugMonitor();
+const { isOpen, healthStatus, lastErrorCode, lastErrorDetail, currentState, lastChangedAt } =
+  useDebugMonitor();
 </script>
 
 <template>
@@ -25,7 +18,6 @@ const {
       :health-status="healthStatus"
       :last-error-code="lastErrorCode"
       :last-error-detail="lastErrorDetail"
-      :memory-source="memorySource"
       :last-changed-at="lastChangedAt"
     />
 

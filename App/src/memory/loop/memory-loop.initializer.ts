@@ -1,21 +1,17 @@
 import { AppConfig } from "@/core/config";
 import { memoryLogger } from "@/core/logger/logger";
 import { GameLoop } from "@/memory/loop/game.loop";
-import { SnapshotProviderFactory } from "@/memory/loop/snapshot-provider.factory";
+import { TauriSnapshotProvider } from "@/memory/snapshot/tauri-snapshot.provider";
 import { StateComposer } from "@/memory/state.composer";
 import { useGameStore } from "@/state/stores/use-game-store";
 
 export function initializeMemoryLoop(): void {
-  const snapshotProvider = SnapshotProviderFactory.create(
-    AppConfig.memory.snapshotUrl,
-    AppConfig.isTauri,
-  );
-  if (!snapshotProvider) {
-    memoryLogger.warn(
-      "The memory loop needs the Tauri window or VITE_MEMORY_SNAPSHOT_URL. Memory loop not started.",
-    );
+  if (!AppConfig.isTauri) {
+    memoryLogger.warn("The memory loop needs the Tauri window. Memory loop not started.");
     return;
   }
+
+  const snapshotProvider = new TauriSnapshotProvider();
 
   const gameStore = useGameStore();
 
@@ -56,7 +52,7 @@ export function initializeMemoryLoop(): void {
     },
   });
 
-  memoryLogger.info(`Memory loop started (${AppConfig.memory.snapshotUrl || "read_ram"}).`);
+  memoryLogger.info("Memory loop started.");
   gameLoop.start();
 
   if (import.meta.hot) {

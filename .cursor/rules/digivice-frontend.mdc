@@ -45,7 +45,7 @@ Agrupada por responsabilidade; as camadas e sufixos de arquivo valem dentro de c
 
 | Pasta | Conteúdo |
 |---|---|
-| `snapshot/` | `MemorySnapshot` (leituras little-endian sobre os 2 MiB; `readInt16`/`readInt32` com sinal), `SnapshotProvider` (`TauriSnapshotProvider` via `read_ram`, `FileSnapshotProvider` via `fetch` de `.bin`), `MemoryReadError`, `EmulatorConnectionError`, `PlayStationRamSize`. |
+| `snapshot/` | `MemorySnapshot` (leituras little-endian sobre os 2 MiB; `readInt16`/`readInt32` com sinal), `SnapshotProvider` (`TauriSnapshotProvider` via `read_ram`), `MemoryReadError`, `EmulatorConnectionError`, `PlayStationRamSize`. |
 | `addresses/` | Tipos de endereço (`{nome}.addresses.ts`): tipo final + `...Raw` no mesmo arquivo. |
 | `converters/` | `AddressValueConverter` (hex `0x`, decimal, negativo; inválido **lança**) + um converter por arquivo de definitions. |
 | `repositories/` | `AddressesRepository` (estático, cache lazy). Importa `@/memory/definitions/...`; pastas de quests via `import.meta.glob`, ordenadas pelo nome do arquivo. |
@@ -57,9 +57,9 @@ Agrupada por responsabilidade; as camadas e sufixos de arquivo valem dentro de c
 | `state.composer.ts` | `StateComposer.compose(snapshot)` → `State` completo; lança `SaveNotLoadedError` se o `SaveLoadedValidator` apontar violação. |
 | `validators/` | `SaveLoadedValidator.findViolation(party)`: invariantes da party (regra em `digivice-business.mdc`); devolve a descrição da violação ou `null`. `SaveNotLoadedError`. |
 | `patch/` | `StatePatcher`: patch in-place do `State` da store (regras em `digivice-frontend-sync.mdc`). |
-| `loop/` | `GameLoop` (`setTimeout` encadeado, sem sobrepor ticks; erros → `EmulatorConnectionError.code`, `memory_read_failed`, `save_not_loaded` ou `state_compose_failed`), `SnapshotProviderFactory`, `initializeMemoryLoop` (liga loop e `useGameStore`; chamado no `main.ts`). |
+| `loop/` | `GameLoop` (`setTimeout` encadeado, sem sobrepor ticks; erros → `EmulatorConnectionError.code`, `memory_read_failed`, `save_not_loaded` ou `state_compose_failed`), `initializeMemoryLoop` (liga loop e `useGameStore`; chamado no `main.ts`). |
 
-- **Fonte do snapshot:** `VITE_MEMORY_SNAPSHOT_URL` (ex.: `/tests/fixtures/snapshots/field-central-park.bin`) usa um `.bin` em vez do `read_ram`; sem ela, o loop só sobe dentro do Tauri (no navegador puro a tela fica em `Loading`). Configurar em `App/.env.development.local` (não versionado). A UI lê só `useGameStore`.
+- **Fonte do snapshot:** só o `read_ram`, dentro do Tauri; no navegador puro o loop não sobe e a tela fica em `Loading`. A UI lê só `useGameStore`.
 
 ## Constants e types
 

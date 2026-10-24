@@ -73,7 +73,6 @@ const snapshot = new MemorySnapshot(SnapshotFixtureLoader.load("field-central-pa
 ## Mocking the outside world
 
 - Tauri bridge: `vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }))` + `vi.mocked(invoke)`. Rust errors reject with `{ code, detail }`. Reference: `tests/memory/snapshot/tauri-snapshot.provider.spec.ts`.
-- `fetch`: `vi.stubGlobal("fetch", fetchMock)` with `new Response(buffer)`, and `vi.unstubAllGlobals()` in `afterEach`. Reference: `tests/memory/snapshot/file-snapshot.provider.spec.ts`.
 - Definitions: never mock. Specs that need addresses use `AddressesRepository` (real JSONs from `src/memory/definitions/`); converter specs build `...Raw` objects inline.
 
 ## Test shapes per layer
