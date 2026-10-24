@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { defineAsyncComponent } from "vue";
 import Journal from "@/components/journal/Journal.vue";
 import Map from "@/components/map/Map.vue";
 import Footer from "@/components/footer/Footer.vue";
@@ -7,6 +8,11 @@ import AppHealthyScreen from "@/components/app-healthy/AppHealthyScreen.vue";
 import { useAppHealthyScreen } from "@/composables/use-app-healthy-screen";
 
 const healthyScreen = useAppHealthyScreen();
+
+// Checked inline so the production build drops the monitor chunk entirely.
+const DebugMonitor = import.meta.env.DEV
+  ? defineAsyncComponent(() => import("@/components/debug-monitor/DebugMonitor.vue"))
+  : null;
 </script>
 
 <template>
@@ -34,4 +40,6 @@ const healthyScreen = useAppHealthyScreen();
 
     <Footer class="shrink-0" />
   </main>
+
+  <component :is="DebugMonitor" v-if="DebugMonitor" />
 </template>
