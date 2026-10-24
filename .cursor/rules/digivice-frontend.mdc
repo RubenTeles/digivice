@@ -47,7 +47,7 @@ Agrupada por responsabilidade; as camadas e sufixos de arquivo valem dentro de c
 | `addresses/` | Tipos de endereço (`{nome}.addresses.ts`): tipo final + `...Raw` no mesmo arquivo. |
 | `converters/` | `AddressValueConverter` (hex `0x`, decimal, negativo; inválido **lança**) + um converter por arquivo de definitions. |
 | `repositories/` | `AddressesRepository` (estático, cache lazy). Importa `@/memory/definitions/...`; pastas de quests via `import.meta.glob`, ordenadas pelo nome do arquivo. |
-| `definitions/` | JSONs de endereços (`*Addresses.json`). Fonte única; o `Tools/MemoryScanner` também lê o `Quests/MainQuestAddresses.json` daqui (não mover nem renomear). |
+| `definitions/` | JSONs de endereços (`*-addresses.json`). Fonte única; o `Tools/MemoryScanner` também lê o `quests/main-quest-addresses.json` daqui (não mover nem renomear). |
 | `resources/` | `{Entity}Resource`: valores crus lidos da RAM (só `number`). |
 | `readers/` | `{Entity}Reader.read(snapshot, addresses)`: função pura sobre o `MemorySnapshot`, devolve o Resource. |
 | `assemblers/` | `{Entity}Assembler.assemble(resource)`: função pura, normaliza (sentinela → `null`, hex `X4`) e devolve o model de `@/state/models`. |

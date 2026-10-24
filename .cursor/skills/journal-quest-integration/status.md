@@ -17,48 +17,48 @@ Definitions paths are relative to `App/src/memory/definitions/`.
 
 ### Side quests
 
-- `folderBag` — `Quests/SideQuests/FolderBagAddresses.json`
-- `fishingPole` — `Quests/SideQuests/FishingPoleAddresses.json` (quest-level requisite `folderBag`)
-- `treeBoots` — `Quests/SideQuests/TreeBootsAddresses.json` (quest-level requisite `folderBag`)
+- `folderBag` — `quests/side-quests/folder-bag-addresses.json`
+- `fishingPole` — `quests/side-quests/fishing-pole-addresses.json` (quest-level requisite `folderBag`)
+- `treeBoots` — `quests/side-quests/tree-boots-addresses.json` (quest-level requisite `folderBag`)
 
 ### Legendary weapons (2026-06-06)
 
-- `eternally` — `Quests/LegendaryWeapons/EternallyAddresses.json` (`0x4B38E` `0x01`)
-- `invincible` — `Quests/LegendaryWeapons/InvincibleAddresses.json` (`0x4B38E` `0x02`; quest-level requisite `seiryuLeader`)
-- `muramasa` — `Quests/LegendaryWeapons/MuramasaAddresses.json` (`0x4B38E` `0x04`; quest-level requisite `smellHerb`)
+- `eternally` — `quests/legendary-weapons/eternally-addresses.json` (`0x4B38E` `0x01`)
+- `invincible` — `quests/legendary-weapons/invincible-addresses.json` (`0x4B38E` `0x02`; quest-level requisite `seiryuLeader`)
+- `muramasa` — `quests/legendary-weapons/muramasa-addresses.json` (`0x4B38E` `0x04`; quest-level requisite `smellHerb`)
 
 ### Legendary weapons (2026-07-14)
 
-- `superNova` — `Quests/LegendaryWeapons/SuperNovaAddresses.json` (`0x4B38E` `0x08`; quest-level requisite `submarimon`); provisional coords (`021C` / 50,50)
-- `punishment` — `Quests/LegendaryWeapons/PunishmentAddresses.json` (`0x4B38E` `0x10`; quest-level requisite `numemon`); provisional coords (`0252` / 50,50)
+- `superNova` — `quests/legendary-weapons/super-nova-addresses.json` (`0x4B38E` `0x08`; quest-level requisite `submarimon`); provisional coords (`021C` / 50,50)
+- `punishment` — `quests/legendary-weapons/punishment-addresses.json` (`0x4B38E` `0x10`; quest-level requisite `numemon`); provisional coords (`0252` / 50,50)
 
 ### DRI agents (2026-06-06)
 
-- `driAgentGuilmon` — `Quests/DriAgents/DriAgentGuilmonAddresses.json` (3 steps + `guilmonDDNA` requisite; quest-level requisite `seiryuLeader`)
-- `driAgentAgumon` — `Quests/DriAgents/DriAgentAgumonAddresses.json` (3 steps + `agumonDDNA` requisite; quest-level requisite `seiryuLeader`)
-- `driAgentVeemon` — `Quests/DriAgents/DriAgentVeemonAddresses.json` (3 steps + `veemonDDNA` requisite; quest-level requisite `byakkoLeader`)
+- `driAgentGuilmon` — `quests/dri-agents/dri-agent-guilmon-addresses.json` (3 steps + `guilmonDDNA` requisite; quest-level requisite `seiryuLeader`)
+- `driAgentAgumon` — `quests/dri-agents/dri-agent-agumon-addresses.json` (3 steps + `agumonDDNA` requisite; quest-level requisite `seiryuLeader`)
+- `driAgentVeemon` — `quests/dri-agents/dri-agent-veemon-addresses.json` (3 steps + `veemonDDNA` requisite; quest-level requisite `byakkoLeader`)
 
 ### DRI agents (2026-07-12)
 
-- `driAgentKumamon` — `Quests/DriAgents/DriAgentKumamonAddresses.json` (3 steps + `kumamonDDNA` requisite; quest-level requisite `submarimon`)
-- `driAgentMonmon` — `Quests/DriAgents/DriAgentMonmonAddresses.json` (3 steps + `monmonDDNA` requisite; quest-level requisite `submarimon`)
+- `driAgentKumamon` — `quests/dri-agents/dri-agent-kumamon-addresses.json` (3 steps + `kumamonDDNA` requisite; quest-level requisite `submarimon`)
+- `driAgentMonmon` — `quests/dri-agents/dri-agent-monmon-addresses.json` (3 steps + `monmonDDNA` requisite; quest-level requisite `submarimon`)
 
 ### DRI agents (2026-07-13)
 
-- `driAgentKotemon` — `Quests/DriAgents/DriAgentKotemonAddresses.json` (3 steps + `kotemonDDNA` requisite; quest-level requisite `submarimon`)
-- `driAgentRenamon` — `Quests/DriAgents/DriAgentRenamonAddresses.json` (3 steps + `renamonDDNA` requisite; quest-level requisite `submarimon`)
+- `driAgentKotemon` — `quests/dri-agents/dri-agent-kotemon-addresses.json` (3 steps + `kotemonDDNA` requisite; quest-level requisite `submarimon`)
+- `driAgentRenamon` — `quests/dri-agents/dri-agent-renamon-addresses.json` (3 steps + `renamonDDNA` requisite; quest-level requisite `submarimon`)
 
 ### DRI agents (2026-07-14)
 
-- `driAgentPatamon` — `Quests/DriAgents/DriAgentPatamonAddresses.json` (3 steps + `patamonDDNA` requisite; quest-level requisite `submarimon`); provisional coords (`021D` / `0247` / 50,50)
+- `driAgentPatamon` — `quests/dri-agents/dri-agent-patamon-addresses.json` (3 steps + `patamonDDNA` requisite; quest-level requisite `submarimon`); provisional coords (`021D` / `0247` / 50,50)
 
 ### Duel Island (2026-08-30)
 
-- `asukaTrophy` — `Quests/DuelIsland/AsukaTrophyAddresses.json`; provisional coords (`0228` / 50,50)
+- `asukaTrophy` — `quests/duel-island/asuka-trophy-addresses.json`; provisional coords (`0228` / 50,50)
 
 ### Duel Island (2026-08-31)
 
-- `asukaRematch` — `Quests/DuelIsland/AsukaRematchAddresses.json` (quest-level requisite `asukaTrophy`; step 6 provisional = step 5 bit `0x4B3B3` / `0x08`); provisional coords (`0228` / 50,50)
+- `asukaRematch` — `quests/duel-island/asuka-rematch-addresses.json` (quest-level requisite `asukaTrophy`; step 6 provisional = step 5 bit `0x4B3B3` / `0x08`); provisional coords (`0228` / 50,50)
 
 ## Palette notes
 

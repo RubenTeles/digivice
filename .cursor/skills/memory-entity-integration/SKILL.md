@@ -33,7 +33,7 @@ name before starting: `{Entity}` (PascalCase, classes and types), `{entity}`
 
 ```mermaid
 graph LR
-    json["definitions/{Entity}Addresses.json"] --> converter["{Entity}AddressesConverter"]
+    json["definitions/{entity-kebab}-addresses.json"] --> converter["{Entity}AddressesConverter"]
     converter --> repo[AddressesRepository]
     repo --> provider["{Entity}Provider"]
     provider --> reader["{Entity}Reader"]
@@ -50,7 +50,7 @@ Paths under `App/src/memory/` unless stated otherwise. Mirror each
 
 ### 1. Definitions + addresses
 
-- [ ] `definitions/{Entity}Addresses.json` (or a subfolder such as `Battles/`, `Parties/`)
+- [ ] `definitions/{entity-kebab}-addresses.json` (or a subfolder such as `battles/`, `parties/`)
 - [ ] `addresses/{entity-kebab}.addresses.ts` — `{Entity}AddressesRaw` (PascalCase keys, `AddressValueRaw`) and `{Entity}Addresses` (camelCase, `number`)
 - [ ] `converters/{entity-kebab}-addresses.converter.ts` — `{Entity}AddressesConverter.convert(raw)` with `AddressValueConverter`
 - [ ] `repositories/addresses.repository.ts` — JSON import, `private static` cache field and `get{Entity}Addresses()` through `load(fileName, convert)`

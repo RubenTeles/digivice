@@ -1,15 +1,15 @@
-import AuctionAddressesJson from "@/memory/definitions/AuctionAddresses.json";
-import DigimonBattleAddressesJson from "@/memory/definitions/Battles/DigimonBattleAddresses.json";
-import EnemyAddressesJson from "@/memory/definitions/Battles/EnemyAddresses.json";
-import CardBattleAddressesJson from "@/memory/definitions/CardBattleAddresses.json";
-import ImportantItemsAddressesJson from "@/memory/definitions/ImportantItemsAddresses.json";
-import NpcAddressesJson from "@/memory/definitions/NpcAddresses.json";
-import DigimonStatusAddressesJson from "@/memory/definitions/Parties/DigimonStatusAddresses.json";
-import DigimonsAddressesJson from "@/memory/definitions/Parties/DigimonsAddresses.json";
-import InBattleAddressesJson from "@/memory/definitions/Parties/InBattleAddresses.json";
-import PartyAddressesJson from "@/memory/definitions/PartyAddresses.json";
-import PlayerAddressesJson from "@/memory/definitions/PlayerAddresses.json";
-import MainQuestAddressesJson from "@/memory/definitions/Quests/MainQuestAddresses.json";
+import AuctionAddressesJson from "@/memory/definitions/auction-addresses.json";
+import DigimonBattleAddressesJson from "@/memory/definitions/battles/digimon-battle-addresses.json";
+import EnemyAddressesJson from "@/memory/definitions/battles/enemy-addresses.json";
+import CardBattleAddressesJson from "@/memory/definitions/card-battle-addresses.json";
+import ImportantItemsAddressesJson from "@/memory/definitions/important-items-addresses.json";
+import NpcAddressesJson from "@/memory/definitions/npc-addresses.json";
+import DigimonStatusAddressesJson from "@/memory/definitions/parties/digimon-status-addresses.json";
+import DigimonsAddressesJson from "@/memory/definitions/parties/digimons-addresses.json";
+import InBattleAddressesJson from "@/memory/definitions/parties/in-battle-addresses.json";
+import PartyAddressesJson from "@/memory/definitions/party-addresses.json";
+import PlayerAddressesJson from "@/memory/definitions/player-addresses.json";
+import MainQuestAddressesJson from "@/memory/definitions/quests/main-quest-addresses.json";
 import type { AuctionsAddresses } from "@/memory/addresses/auctions.addresses";
 import type { CardBattleAddresses } from "@/memory/addresses/card-battle.addresses";
 import type { DigimonBattleAddresses } from "@/memory/addresses/digimon-battle.addresses";
@@ -42,25 +42,25 @@ import { PartyAddressesConverter } from "@/memory/converters/party-addresses.con
 import { PlayerAddressesConverter } from "@/memory/converters/player-addresses.converter";
 
 const SideQuestFiles = import.meta.glob<QuestAddressesRaw>(
-  "@/memory/definitions/Quests/SideQuests/*.json",
+  "@/memory/definitions/quests/side-quests/*.json",
   {
     eager: true,
     import: "default",
   },
 );
 const LegendaryWeaponFiles = import.meta.glob<QuestAddressesRaw>(
-  "@/memory/definitions/Quests/LegendaryWeapons/*.json",
+  "@/memory/definitions/quests/legendary-weapons/*.json",
   { eager: true, import: "default" },
 );
 const DriAgentFiles = import.meta.glob<QuestAddressesRaw>(
-  "@/memory/definitions/Quests/DriAgents/*.json",
+  "@/memory/definitions/quests/dri-agents/*.json",
   {
     eager: true,
     import: "default",
   },
 );
 const DuelIslandFiles = import.meta.glob<QuestAddressesRaw>(
-  "@/memory/definitions/Quests/DuelIsland/*.json",
+  "@/memory/definitions/quests/duel-island/*.json",
   {
     eager: true,
     import: "default",
@@ -119,63 +119,63 @@ export class AddressesRepository {
         AddressesRepository.compareOrdinalIgnoreCase(first.fileName, second.fileName),
       )
       .map(({ fileName, raw }) =>
-        AddressesRepository.load(`Quests/${folderName}/${fileName}`, () =>
+        AddressesRepository.load(`quests/${folderName}/${fileName}`, () =>
           QuestAddressesConverter.convert(raw),
         ),
       );
   }
 
   public static getPlayerAddresses(): PlayerAddresses {
-    this.playerAddresses ??= this.load("PlayerAddresses.json", () =>
+    this.playerAddresses ??= this.load("player-addresses.json", () =>
       PlayerAddressesConverter.convert(PlayerAddressesJson),
     );
     return this.playerAddresses;
   }
 
   public static getImportantItemsAddresses(): ImportantItemsAddresses {
-    this.importantItemsAddresses ??= this.load("ImportantItemsAddresses.json", () =>
+    this.importantItemsAddresses ??= this.load("important-items-addresses.json", () =>
       ImportantItemsAddressesConverter.convert(ImportantItemsAddressesJson),
     );
     return this.importantItemsAddresses;
   }
 
   public static getPartyAddresses(): PartyAddresses {
-    this.partyAddresses ??= this.load("PartyAddresses.json", () =>
+    this.partyAddresses ??= this.load("party-addresses.json", () =>
       PartyAddressesConverter.convert(PartyAddressesJson),
     );
     return this.partyAddresses;
   }
 
   public static getDigimonStatusAddresses(): DigimonStatusAddresses {
-    this.digimonStatusAddresses ??= this.load("Parties/DigimonStatusAddresses.json", () =>
+    this.digimonStatusAddresses ??= this.load("parties/digimon-status-addresses.json", () =>
       DigimonStatusAddressesConverter.convert(DigimonStatusAddressesJson),
     );
     return this.digimonStatusAddresses;
   }
 
   public static getInBattleAddresses(): InBattleAddresses {
-    this.inBattleAddresses ??= this.load("Parties/InBattleAddresses.json", () =>
+    this.inBattleAddresses ??= this.load("parties/in-battle-addresses.json", () =>
       InBattleAddressesConverter.convert(InBattleAddressesJson),
     );
     return this.inBattleAddresses;
   }
 
   public static getDigimonBattleAddresses(): DigimonBattleAddresses {
-    this.digimonBattleAddresses ??= this.load("Battles/DigimonBattleAddresses.json", () =>
+    this.digimonBattleAddresses ??= this.load("battles/digimon-battle-addresses.json", () =>
       DigimonBattleAddressesConverter.convert(DigimonBattleAddressesJson),
     );
     return this.digimonBattleAddresses;
   }
 
   public static getEnemyAddresses(): EnemyAddresses {
-    this.enemyAddresses ??= this.load("Battles/EnemyAddresses.json", () =>
+    this.enemyAddresses ??= this.load("battles/enemy-addresses.json", () =>
       EnemyAddressesConverter.convert(EnemyAddressesJson),
     );
     return this.enemyAddresses;
   }
 
   public static getDigimonsAddresses(): DigimonsAddresses {
-    this.digimonsAddresses ??= this.load("Parties/DigimonsAddresses.json", () =>
+    this.digimonsAddresses ??= this.load("parties/digimons-addresses.json", () =>
       DigimonsAddressesConverter.convert(DigimonsAddressesJson),
     );
     return this.digimonsAddresses;
@@ -186,51 +186,51 @@ export class AddressesRepository {
   }
 
   public static getMainQuest(): QuestAddresses {
-    this.mainQuestAddresses ??= this.load("Quests/MainQuestAddresses.json", () =>
+    this.mainQuestAddresses ??= this.load("quests/main-quest-addresses.json", () =>
       QuestAddressesConverter.convert(MainQuestAddressesJson),
     );
     return this.mainQuestAddresses;
   }
 
   public static getAllSideQuests(): QuestAddresses[] {
-    this.sideQuestAddresses ??= this.loadQuestFolder("SideQuests", SideQuestFiles);
+    this.sideQuestAddresses ??= this.loadQuestFolder("side-quests", SideQuestFiles);
     return this.sideQuestAddresses;
   }
 
   public static getAllLegendaryWeapons(): QuestAddresses[] {
     this.legendaryWeaponAddresses ??= this.loadQuestFolder(
-      "LegendaryWeapons",
+      "legendary-weapons",
       LegendaryWeaponFiles,
     );
     return this.legendaryWeaponAddresses;
   }
 
   public static getAllDriAgents(): QuestAddresses[] {
-    this.driAgentAddresses ??= this.loadQuestFolder("DriAgents", DriAgentFiles);
+    this.driAgentAddresses ??= this.loadQuestFolder("dri-agents", DriAgentFiles);
     return this.driAgentAddresses;
   }
 
   public static getAllDuelIsland(): QuestAddresses[] {
-    this.duelIslandAddresses ??= this.loadQuestFolder("DuelIsland", DuelIslandFiles);
+    this.duelIslandAddresses ??= this.loadQuestFolder("duel-island", DuelIslandFiles);
     return this.duelIslandAddresses;
   }
 
   public static getAuctionsAddresses(): AuctionsAddresses {
-    this.auctionsAddresses ??= this.load("AuctionAddresses.json", () =>
+    this.auctionsAddresses ??= this.load("auction-addresses.json", () =>
       AuctionsAddressesConverter.convert(AuctionAddressesJson),
     );
     return this.auctionsAddresses;
   }
 
   public static getNpcsAddresses(): NpcsAddresses {
-    this.npcsAddresses ??= this.load("NpcAddresses.json", () =>
+    this.npcsAddresses ??= this.load("npc-addresses.json", () =>
       NpcsAddressesConverter.convert(NpcAddressesJson),
     );
     return this.npcsAddresses;
   }
 
   public static getCardBattleAddresses(): CardBattleAddresses {
-    this.cardBattleAddresses ??= this.load("CardBattleAddresses.json", () =>
+    this.cardBattleAddresses ??= this.load("card-battle-addresses.json", () =>
       CardBattleAddressesConverter.convert(CardBattleAddressesJson),
     );
     return this.cardBattleAddresses;

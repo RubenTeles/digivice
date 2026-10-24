@@ -37,8 +37,8 @@ Layout per slot (Int16 LE) — **note: Max then Current** (inverted vs
 | 2 | `0xA44B0` | Ally party slot 2 — live HP Current @ `0xA44B8` |
 | 3 | `0xA44D0` | Enemy — live HP Current @ `0xA44D8` |
 
-Wired: ally slots via `Parties/InBattleAddresses.json` (`digimon.inBattle`);
-enemy slots via `Battles/EnemyAddresses.json` (`digimonBattle.enemy`, no MP).
+Wired: ally slots via `parties/in-battle-addresses.json` (`digimon.inBattle`);
+enemy slots via `battles/enemy-addresses.json` (`digimonBattle.enemy`, no MP).
 
 **Slots are fixed by party position, not by who is front/active.**
 Switch snaps (`in-combat-kotemon` / `patamon` / `renamon`, same Kunemon fight):
@@ -93,10 +93,10 @@ which of the three enemy slots to expose as `digimonBattle.enemy`:
 3. Else highest-index slot with `id != 0` (all KO — stay on last defeated).
 4. Else slot 0 (empty battle fallback).
 
-Wired in `EnemyAddresses.json` as `SlotStride`, `SlotCount`, `ActiveEnemySlotIndex`.
+Wired in `enemy-addresses.json` as `SlotStride`, `SlotCount`, `ActiveEnemySlotIndex`.
 
 **Changed 2026-09-27:** removed the former step 1 (match `0xA4558` to a slot id)
-and `ActiveUnitId` from `EnemyAddresses.json`. `0xA4558` is camera focus; it never
+and `ActiveUnitId` from `enemy-addresses.json`. `0xA4558` is camera focus; it never
 changed the result in wild/tamer phase snaps and risked stale picks mid-switch and
 wrong slot with duplicate enemy ids.
 
@@ -127,8 +127,8 @@ tables in [patterns-battle-combatants.md](patterns-battle-combatants.md) (*Attr 
 | `+0x12` | **DEF delta** | Ally: `growlmon-normal`→`def-up` `0xA4482` `0→185` (= combat DEF `494→679`) |
 | `+0x14` | **SPD delta** | Enemy: `hagurumon-1`→`2` `0xA44E4` `0→84` (= combat SPD `336→420`) |
 
-Wired: ally slots via `Parties/InBattleAddresses.json` (`Strength` / `Defense` /
-`Speed` → `digimon.inBattle`); enemy `0xA44D0` via `Battles/EnemyAddresses.json`
+Wired: ally slots via `parties/in-battle-addresses.json` (`Strength` / `Defense` /
+`Speed` → `digimon.inBattle`); enemy `0xA44D0` via `battles/enemy-addresses.json`
 (`EnemyReader` → `digimonBattle.enemy`).
 
 ---
@@ -139,8 +139,8 @@ Battle HP/MP slot offset **`+0x1C`** (byte) — same layout for ally and enemy.
 
 | Side | Slot base | Condition abs | Source |
 |------|-----------|---------------|--------|
-| Ally | `0xA4470` + `n × 0x20` | e.g. Guilmon slot0 `0xA448C` | `InBattleAddresses.json` |
-| Enemy | `0xA44D0` (+ `0x20` / `0x40` multi) | first enemy `0xA44EC` | `EnemyAddresses.json` |
+| Ally | `0xA4470` + `n × 0x20` | e.g. Guilmon slot0 `0xA448C` | `in-battle-addresses.json` |
+| Enemy | `0xA44D0` (+ `0x20` / `0x40` multi) | first enemy `0xA44EC` | `enemy-addresses.json` |
 
 | Snap pair | Side | Normal | Debuff | Value @ `+0x1C` |
 |-----------|------|--------|--------|-----------------|
@@ -167,7 +167,7 @@ pair: `+0x04` `0x00→0x01` (unknown — not Condition); HP current also dropped
 | Address | Notes |
 |---------|-------|
 | `0x42B28` | battle-related counter/flag (1 Natsumi, 20 Genji, varies wild) |
-| `0x42B2C` | **`GroupId`** (Int16 LE) — encounter group template id (site: "Group F-201"). Natsumi **201**, Genji **272**, wild 39–43. Stable across multi-enemy NPC fights. Wired in `EnemyAddresses.json` → `digimonBattle.enemy.groupId` |
+| `0x42B2C` | **`GroupId`** (Int16 LE) — encounter group template id (site: "Group F-201"). Natsumi **201**, Genji **272**, wild 39–43. Stable across multi-enemy NPC fights. Wired in `enemy-addresses.json` → `digimonBattle.enemy.groupId` |
 | `0x42B34` | same enemy token as `0xA44D0` |
 | `0x42B38` | enemy level (Mammothmon 23) |
 | `0x42B3A` | enemy **max/initial** HP only — stayed 672 while `0xA44D8` dropped |

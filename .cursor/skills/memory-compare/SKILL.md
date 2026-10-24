@@ -66,27 +66,27 @@ Natsumi card rematch + map scripts, DRI agent hunt, and the
 
 - Flag set: `(byte & bitMask) != 0`; one byte holds up to 8 independent flags
 - Definitions use `BitMasks` (array) on steps and requisites; empty → `byte != 0`; multiple → **all** must be set
-- Some non-quest files use singular `BitMask` objects (`AuctionAddresses.json`, `NpcAddresses.json`)
+- Some non-quest files use singular `BitMask` objects (`auction-addresses.json`, `npc-addresses.json`)
 
 ## Domain hints
 
 | Domain | Definitions / anchors | Typical diff shape |
 |--------|----------------------|-------------------|
-| Main quest | `Quests/MainQuestAddresses.json` | Bit flip in `0x4B3xx` |
-| Side quests | `Quests/SideQuests/` | Bit flip or raw byte |
-| Legendary weapons | `Quests/LegendaryWeapons/` | Sequential bit on `0x4B38E` |
-| DRI agents (8/8 done) | `Quests/DriAgents/` + `.cursor/docs/investigations/dri-agent-hunt.md` | Talk `0x4B38C` / boss `0x4B3B7`–`B8` / deliver per-agent byte |
-| Duel Island | `Quests/DuelIsland/` | Round bits `0x4B3B2` `0x80`, `0x4B3B3` `0x01`–`0x08`; trophies `0x48DC2` / `0x48DC4` |
-| Important items | `ImportantItemsAddresses.json` | Possession byte `0 → 1` in `~0x48DBx`–`0x48DCx` |
-| Player | `PlayerAddresses.json` (`Bits`, `MapId`, `PreviousMapId`, `SeabedRoute`, `MapVariant`) | MapId / PreviousMapId on transition |
-| Map / seabed / Mobius | `PlayerAddresses.json` + `patterns-map.md` | `0x48D78` / `0x48D7A` / `0x4B400` |
+| Main quest | `quests/main-quest-addresses.json` | Bit flip in `0x4B3xx` |
+| Side quests | `quests/side-quests/` | Bit flip or raw byte |
+| Legendary weapons | `quests/legendary-weapons/` | Sequential bit on `0x4B38E` |
+| DRI agents (8/8 done) | `quests/dri-agents/` + `.cursor/docs/investigations/dri-agent-hunt.md` | Talk `0x4B38C` / boss `0x4B3B7`–`B8` / deliver per-agent byte |
+| Duel Island | `quests/duel-island/` | Round bits `0x4B3B2` `0x80`, `0x4B3B3` `0x01`–`0x08`; trophies `0x48DC2` / `0x48DC4` |
+| Important items | `important-items-addresses.json` | Possession byte `0 → 1` in `~0x48DBx`–`0x48DCx` |
+| Player | `player-addresses.json` (`Bits`, `MapId`, `PreviousMapId`, `SeabedRoute`, `MapVariant`) | MapId / PreviousMapId on transition |
+| Map / seabed / Mobius | `player-addresses.json` + `patterns-map.md` | `0x48D78` / `0x48D7A` / `0x4B400` |
 | Map subzones | skill `map-subzone-investigate` | Same MapId, different encounter regions |
-| Party | `PartyAddresses.json` (slots `0x48DA4+`) | Slot ID bytes |
-| Digimon stats | `Parties/DigimonStatusAddresses.json` (offsets) | Multi-byte counters at `~0x494xxx` |
-| Digimon battle | `Battles/*.json`, `Parties/InBattleAddresses.json` | skill `battle-memory-investigate` |
-| NPC digimon battles | `NpcAddresses.json` | BattledTamer bits `0x4B3DF`, `0x4B39A+` |
-| Card battle | `CardBattleAddresses.json` (`0x4B404`) | Config id on MapId `0x0700`; win counters `0x48E0B` / `0x48F19` |
-| Auctions | `AuctionAddresses.json` | Bits on `0x4B38A`; story window `0x4B370` |
+| Party | `party-addresses.json` (slots `0x48DA4+`) | Slot ID bytes |
+| Digimon stats | `parties/digimon-status-addresses.json` (offsets) | Multi-byte counters at `~0x494xxx` |
+| Digimon battle | `battles/*.json`, `parties/in-battle-addresses.json` | skill `battle-memory-investigate` |
+| NPC digimon battles | `npc-addresses.json` | BattledTamer bits `0x4B3DF`, `0x4B39A+` |
+| Card battle | `card-battle-addresses.json` (`0x4B404`) | Config id on MapId `0x0700`; win counters `0x48E0B` / `0x48F19` |
+| Auctions | `auction-addresses.json` | Bits on `0x4B38A`; story window `0x4B370` |
 | Common items | — | Quantity table `0x4858F+`; possession `~0x48ECx` may clear on sell |
 
 ## Output template
@@ -142,6 +142,6 @@ Doc: `Tools/MemoryScanner/README.md`. Value sizes: 1=byte, 2=Int16, 4=Int32.
 
 | Target | Skill |
 |--------|-------|
-| `Quests/**` tracker | `journal-quest-integration` |
+| `quests/**` tracker | `journal-quest-integration` |
 | Field on an existing entity | `memory-field-integration` |
 | New entity on `State` | `memory-entity-integration` |

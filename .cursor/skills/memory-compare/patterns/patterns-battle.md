@@ -17,17 +17,17 @@ Blast gauge (below) stays in this file.
 
 | Address | Meaning | Status | Integrated as | Details |
 |---------|---------|--------|---------------|---------|
-| `0x42B74 + 2 × rookieId` | Blast gauge (Int16, 0–1000, per Digimon) | confirmed | `DigimonsAddresses.json` `BlastAddress` → `digimon.blast` | this file |
+| `0x42B74 + 2 × rookieId` | Blast gauge (Int16, 0–1000, per Digimon) | confirmed | `digimons-addresses.json` `BlastAddress` → `digimon.blast` | this file |
 | `0x42B28` | Battle counter/flag | suspected | — | slots |
-| `0x42B2C` | Encounter `groupId` (Int16) | confirmed | `EnemyAddresses.json` `GroupId` → `enemy.groupId` | slots |
+| `0x42B2C` | Encounter `groupId` (Int16) | confirmed | `enemy-addresses.json` `GroupId` → `enemy.groupId` | slots |
 | `0x42B38` / `0x42B3A` / `0x42B3C` | Enemy level / max HP / MP | confirmed | — | slots |
 | `0x42B6C` | Live drop item Val (Int16) | confirmed | — (open design) | slots |
 | `0xA4468` | Active ally slot index | confirmed | — | slots |
-| `0xA446C` | Active enemy slot index | confirmed | `EnemyAddresses.json` `ActiveEnemySlotIndex` | slots |
-| `0xA4470 + n × 0x20` | Ally battle slots (HP/MP, buff deltas, condition) | confirmed | `InBattleAddresses.json` → `digimon.inBattle` | slots |
-| `0xA44D0 + n × 0x20` | Enemy battle slots (3, NPC multi-enemy) | confirmed | `EnemyAddresses.json` → `digimonBattle.enemy` | slots |
+| `0xA446C` | Active enemy slot index | confirmed | `enemy-addresses.json` `ActiveEnemySlotIndex` | slots |
+| `0xA4470 + n × 0x20` | Ally battle slots (HP/MP, buff deltas, condition) | confirmed | `in-battle-addresses.json` → `digimon.inBattle` | slots |
+| `0xA44D0 + n × 0x20` | Enemy battle slots (3, NPC multi-enemy) | confirmed | `enemy-addresses.json` → `digimonBattle.enemy` | slots |
 | `0xA4558` | Camera focus unit id (not the actor) | confirmed | — (removed from the reader) | slots |
-| `0xA4530` | Active field id | confirmed | `DigimonBattleAddresses.json` `Field` → `digimonBattle.field` | field |
+| `0xA4530` | Active field id | confirmed | `digimon-battle-addresses.json` `Field` → `digimonBattle.field` | field |
 | `0xA4532` | Field potency | confirmed | — | field |
 | `0xA4414…0xA442A` | Field / curse effect cluster | suspected | — | field |
 | `0xA38A0…0xA38A3` | Last-action record (not the skill id) | suspected | — | field |
@@ -45,7 +45,7 @@ out of battle (no HUD display, but values persist per slot).
 
 **Formula:** `address = 0x00042B74 + (2 × rookieId)` — Int16 LE, range 0–1000
 (2-byte stride between Digimons; read with `readInt16` in `DigimonReader`).
-`rookieId` matches the numeric key in `DigimonsAddresses.json` (0–7).
+`rookieId` matches the numeric key in `digimons-addresses.json` (0–7).
 
 | Address | Digimon | Rookie `Id` | Evidence |
 |---------|---------|-------------|----------|

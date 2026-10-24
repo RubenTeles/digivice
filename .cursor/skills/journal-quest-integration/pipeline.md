@@ -3,7 +3,7 @@
 ## Data flow
 
 ```
-memory/definitions/Quests/**/*.json
+memory/definitions/quests/**/*.json
   → AddressesRepository (getMainQuest / getAll{Category}, import.meta.glob ordered by file name)
   → JournalProvider → JournalReader → QuestReader (snapshot) → JournalResource
   → JournalAssembler → QuestAssembler | MainQuestAssembler | DuelIslandAssembler
@@ -25,7 +25,7 @@ Paths under `App/src/`.
 
 | Concern | Path |
 |---------|------|
-| Definitions | `memory/definitions/Quests/` |
+| Definitions | `memory/definitions/quests/` |
 | Addresses types | `memory/addresses/journal.addresses.ts`, `memory/addresses/journals/` |
 | Addresses converter | `memory/converters/journals/quest-addresses.converter.ts` |
 | Addresses repository | `memory/repositories/addresses.repository.ts` |
@@ -58,7 +58,7 @@ Paths under `App/src/`.
 
 | Layer | Reference |
 |-------|-----------|
-| Definitions | `memory/definitions/Quests/SideQuests/` |
+| Definitions | `memory/definitions/quests/side-quests/` |
 | Repository getter | `AddressesRepository.getAllSideQuests()` |
 | Reader / assembler | `sideQuests` in `journal.reader.ts` / `journal.assembler.ts` |
 | Model field | `Journal.sideQuests` |

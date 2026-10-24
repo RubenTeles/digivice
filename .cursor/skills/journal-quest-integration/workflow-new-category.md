@@ -7,17 +7,17 @@ Paths under `App/src/` unless stated otherwise.
 ## 0. Preconditions
 
 - [ ] **At least one quest id** ready (section invariant — no empty sections)
-- [ ] Property name agreed: `{category}` (camelCase, `Journal` property) and `{Category}` (PascalCase, definitions folder)
+- [ ] Property name agreed: `{category}` (camelCase, `Journal` property) `{Category}` (PascalCase, TS names) and `{category-kebab}` (definitions folder)
 - [ ] Accent color confirmed (see the accent color rule in [SKILL.md](SKILL.md))
 - [ ] Normalization: pass-through unless the product asked otherwise
 
 ## 1. Definitions + repository
 
-- [ ] Folder `memory/definitions/Quests/{Category}/` with at least one `{Name}Addresses.json`
+- [ ] Folder `memory/definitions/quests/{category-kebab}/` with at least one `{name-kebab}-addresses.json`
 - [ ] `memory/repositories/addresses.repository.ts`:
-  - `const {Category}Files = import.meta.glob<QuestAddressesRaw>("@/memory/definitions/Quests/{Category}/*.json", { eager: true, import: "default" })`
+  - `const {Category}Files = import.meta.glob<QuestAddressesRaw>("@/memory/definitions/quests/{category-kebab}/*.json", { eager: true, import: "default" })`
   - `private static {category}Addresses: QuestAddresses[] | null = null`
-  - `getAll{Category}()` through `this.loadQuestFolder("{Category}", {Category}Files)`
+  - `getAll{Category}()` through `this.loadQuestFolder("{category-kebab}", {Category}Files)`
 
 ## 2. Memory pipeline
 

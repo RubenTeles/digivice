@@ -4,7 +4,7 @@ description: >-
   Adds a new RAM field to an existing Digivice State entity in the TypeScript
   memory layer (App/src/memory/) — Player, Party/Digimon, InBattle,
   DigimonBattle/Enemy, CardBattle, ImportantItems, Auctions, Npcs. Use when the
-  user asks to integrate a confirmed address into an existing *Addresses.json,
+  user asks to integrate a confirmed address into an existing *-addresses.json,
   read a new scalar or nested value, or expose a new property on an existing
   model after memory-compare. Do not use for journal quests
   (journal-quest-integration) or a brand-new State entity
@@ -24,8 +24,8 @@ definitions JSON to the model in `useGameStore`. Layers and conventions:
 
 | Case | Use instead |
 |------|-------------|
-| Quest / side quest / legendary / DRI / Duel Island under `Quests/` | `journal-quest-integration` |
-| New entity on `State` (new `*Addresses.json`, new `State` property) | `memory-entity-integration` |
+| Quest / side quest / legendary / DRI / Duel Island under `quests/` | `journal-quest-integration` |
+| New entity on `State` (new `*-addresses.json`, new `State` property) | `memory-entity-integration` |
 
 ## Reuse rule (critical)
 
@@ -46,16 +46,16 @@ Paths are under `App/src/memory/` unless stated otherwise.
 
 | Entity | Definitions | Addresses / converter | Resource | Reader | Assembler | Model (`src/state/models/`) |
 |--------|-------------|-----------------------|----------|--------|-----------|-----------------------|
-| Player | `PlayerAddresses.json` | `addresses/player.addresses.ts`, `converters/player-addresses.converter.ts` | `resources/player.resource.ts` | `readers/player.reader.ts` | `assemblers/player.assembler.ts` | `player.ts` |
-| Party slots | `PartyAddresses.json` | `addresses/party.addresses.ts`, `addresses/parties/slot.addresses.ts` + converters | `resources/party.resource.ts`, `resources/parties/digimon-slot.resource.ts` | `readers/party.reader.ts` | `assemblers/party.assembler.ts` | `party/party.ts`, `party/digimon-slot.ts` |
-| Digimon (persistent) | `Parties/DigimonStatusAddresses.json` (offsets) + `Parties/DigimonsAddresses.json` (block base and `BlastAddress` per rookie) | `addresses/parties/digimon-status.addresses.ts`, `addresses/parties/digimon.addresses.ts`, `addresses/parties/digimons/*` + converters | `resources/parties/digimon.resource.ts`, `resources/parties/digimons/*` | `readers/digimon.reader.ts` (`memoryBlockAddress + offset`) | `assemblers/digimon.assembler.ts` | `party/digimon/*` |
-| Digimon in combat | `Parties/InBattleAddresses.json` | `addresses/parties/in-battle.addresses.ts`, `converters/parties/in-battle-addresses.converter.ts` | `resources/parties/digimons/in-battle.resource.ts` | `readers/in-battle.reader.ts` | `assemblers/digimon.assembler.ts` | `party/digimon/in-battle.ts` |
-| Digimon battle | `Battles/DigimonBattleAddresses.json` | `addresses/digimon-battle.addresses.ts` + converter | `resources/digimon-battle.resource.ts` | `readers/digimon-battle.reader.ts` | `assemblers/digimon-battle.assembler.ts` | `digimon-battle.ts` |
-| Enemy | `Battles/EnemyAddresses.json` (slot base + offsets) | `addresses/enemy.addresses.ts` + converter | `resources/battles/enemy.resource.ts` | `readers/enemy.reader.ts` (called by `DigimonBattleReader`) | `assemblers/digimon-battle.assembler.ts` | `battle/enemy.ts` |
-| Card battle | `CardBattleAddresses.json` | `addresses/card-battle.addresses.ts` + converter | `resources/card-battle.resource.ts` | `readers/card-battle.reader.ts` | `assemblers/card-battle.assembler.ts` | `card-battle.ts` |
-| Important items | `ImportantItemsAddresses.json` | `addresses/important-items.addresses.ts` + converter | `resources/important-items.resource.ts` | `readers/important-items.reader.ts` | `assemblers/important-items.assembler.ts` | `important-items.ts` |
-| Auctions | `AuctionAddresses.json` | `addresses/auctions.addresses.ts` + converter | `resources/auctions.resource.ts` | `readers/auctions.reader.ts` | `assemblers/auctions.assembler.ts` | `auctions.ts` |
-| Npcs | `NpcAddresses.json` | `addresses/npcs.addresses.ts` + converter | `resources/npcs.resource.ts` | `readers/npcs.reader.ts` | `assemblers/npcs.assembler.ts` | `npcs.ts`, `npc.ts`, `npc-battle.ts` |
+| Player | `player-addresses.json` | `addresses/player.addresses.ts`, `converters/player-addresses.converter.ts` | `resources/player.resource.ts` | `readers/player.reader.ts` | `assemblers/player.assembler.ts` | `player.ts` |
+| Party slots | `party-addresses.json` | `addresses/party.addresses.ts`, `addresses/parties/slot.addresses.ts` + converters | `resources/party.resource.ts`, `resources/parties/digimon-slot.resource.ts` | `readers/party.reader.ts` | `assemblers/party.assembler.ts` | `party/party.ts`, `party/digimon-slot.ts` |
+| Digimon (persistent) | `parties/digimon-status-addresses.json` (offsets) + `parties/digimons-addresses.json` (block base and `BlastAddress` per rookie) | `addresses/parties/digimon-status.addresses.ts`, `addresses/parties/digimon.addresses.ts`, `addresses/parties/digimons/*` + converters | `resources/parties/digimon.resource.ts`, `resources/parties/digimons/*` | `readers/digimon.reader.ts` (`memoryBlockAddress + offset`) | `assemblers/digimon.assembler.ts` | `party/digimon/*` |
+| Digimon in combat | `parties/in-battle-addresses.json` | `addresses/parties/in-battle.addresses.ts`, `converters/parties/in-battle-addresses.converter.ts` | `resources/parties/digimons/in-battle.resource.ts` | `readers/in-battle.reader.ts` | `assemblers/digimon.assembler.ts` | `party/digimon/in-battle.ts` |
+| Digimon battle | `battles/digimon-battle-addresses.json` | `addresses/digimon-battle.addresses.ts` + converter | `resources/digimon-battle.resource.ts` | `readers/digimon-battle.reader.ts` | `assemblers/digimon-battle.assembler.ts` | `digimon-battle.ts` |
+| Enemy | `battles/enemy-addresses.json` (slot base + offsets) | `addresses/enemy.addresses.ts` + converter | `resources/battles/enemy.resource.ts` | `readers/enemy.reader.ts` (called by `DigimonBattleReader`) | `assemblers/digimon-battle.assembler.ts` | `battle/enemy.ts` |
+| Card battle | `card-battle-addresses.json` | `addresses/card-battle.addresses.ts` + converter | `resources/card-battle.resource.ts` | `readers/card-battle.reader.ts` | `assemblers/card-battle.assembler.ts` | `card-battle.ts` |
+| Important items | `important-items-addresses.json` | `addresses/important-items.addresses.ts` + converter | `resources/important-items.resource.ts` | `readers/important-items.reader.ts` | `assemblers/important-items.assembler.ts` | `important-items.ts` |
+| Auctions | `auction-addresses.json` | `addresses/auctions.addresses.ts` + converter | `resources/auctions.resource.ts` | `readers/auctions.reader.ts` | `assemblers/auctions.assembler.ts` | `auctions.ts` |
+| Npcs | `npc-addresses.json` | `addresses/npcs.addresses.ts` + converter | `resources/npcs.resource.ts` | `readers/npcs.reader.ts` | `assemblers/npcs.assembler.ts` | `npcs.ts`, `npc.ts`, `npc-battle.ts` |
 
 `providers/party.provider.ts` passes `PartyAddresses`, `DigimonsAddresses`,
 `DigimonStatusAddresses` and `InBattleAddresses` individually to
@@ -97,7 +97,7 @@ Enemy) stay relative hex strings, mirroring an adjacent field
 rejects invalid values when the repository loads the file.
 
 `App/src/memory/definitions/` is the single source of the addresses
-(`Tools/MemoryScanner` also reads `Quests/MainQuestAddresses.json` from there).
+(`Tools/MemoryScanner` also reads `quests/main-quest-addresses.json` from there).
 
 ---
 
@@ -107,7 +107,7 @@ rejects invalid values when the repository loads the file.
 
 - [ ] Address confirmed; primary (not mirror) chosen
 - [ ] Entity row identified in the map above; reference field chosen
-- [ ] Not a `Quests/**` tracker
+- [ ] Not a `quests/**` tracker
 
 ### 1. Definitions + addresses
 
@@ -155,7 +155,7 @@ in `state/stores/selectors/`, composition with static data in presenters.
 
 ## Reference walkthrough — Player `seabedRoute`
 
-1. `definitions/PlayerAddresses.json` → `"SeabedRoute"`
+1. `definitions/player-addresses.json` → `"SeabedRoute"`
 2. `addresses/player.addresses.ts` (`SeabedRoute` / `seabedRoute`) + `converters/player-addresses.converter.ts`
 3. `resources/player.resource.ts` + `readers/player.reader.ts` (`readByte`)
 4. `src/state/models/player.ts` + `assemblers/player.assembler.ts` (`0` → `null`)

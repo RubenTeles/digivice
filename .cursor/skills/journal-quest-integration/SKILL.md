@@ -11,7 +11,7 @@ description: >-
 
 # Journal Quest Integration
 
-Wires a quest from its RAM definitions (`App/src/memory/definitions/Quests/`)
+Wires a quest from its RAM definitions (`App/src/memory/definitions/quests/`)
 to the Journal UI. Product rules of each category: `.cursor/rules/digivice-business.mdc`
 (Journal).
 
@@ -54,13 +54,13 @@ Same byte as an existing tracker?  → Likely another bit; still a separate ques
 
 ## Category map (all wired)
 
-| Category | Definitions (`memory/definitions/Quests/`) | `Journal` property | Assembler | Repository getter | Static JSON (`data/quest/`) | Static getter | Accent |
+| Category | Definitions (`memory/definitions/quests/`) | `Journal` property | Assembler | Repository getter | Static JSON (`data/quest/`) | Static getter | Accent |
 |----------|--------------------------------------------|--------------------|-----------|-------------------|---------------------------------|---------------|--------|
-| Main quest | `MainQuestAddresses.json` | `mainQuest` (single) | `MainQuestAssembler` (cascade) | `getMainQuest()` | `main-quest.json` | `getMainQuestRaw()` | yellow (hardcoded) |
-| Side quests | `SideQuests/` | `sideQuests` | `QuestAssembler` | `getAllSideQuests()` | `side-quest/` | `getSideQuestsRaw()` | `emerald` |
-| Legendary weapons | `LegendaryWeapons/` | `legendaryWeapons` | `QuestAssembler` | `getAllLegendaryWeapons()` | `legendary-weapons/` | `getLegendaryWeaponsRaw()` | `teal` |
-| DRI agents | `DriAgents/` | `driAgents` | `QuestAssembler` | `getAllDriAgents()` | `dri-agents/` | `getDriAgentsRaw()` | `cyan` |
-| Duel Island | `DuelIsland/` | `duelIsland` | `DuelIslandAssembler` (normalization) | `getAllDuelIsland()` | `duel-island/` | `getDuelIslandRaw()` | `sky` |
+| Main quest | `main-quest-addresses.json` | `mainQuest` (single) | `MainQuestAssembler` (cascade) | `getMainQuest()` | `main-quest.json` | `getMainQuestRaw()` | yellow (hardcoded) |
+| Side quests | `side-quests/` | `sideQuests` | `QuestAssembler` | `getAllSideQuests()` | `side-quest/` | `getSideQuestsRaw()` | `emerald` |
+| Legendary weapons | `legendary-weapons/` | `legendaryWeapons` | `QuestAssembler` | `getAllLegendaryWeapons()` | `legendary-weapons/` | `getLegendaryWeaponsRaw()` | `teal` |
+| DRI agents | `dri-agents/` | `driAgents` | `QuestAssembler` | `getAllDriAgents()` | `dri-agents/` | `getDriAgentsRaw()` | `cyan` |
+| Duel Island | `duel-island/` | `duelIsland` | `DuelIslandAssembler` (normalization) | `getAllDuelIsland()` | `duel-island/` | `getDuelIslandRaw()` | `sky` |
 
 Repository getters live in `memory/repositories/addresses.repository.ts`; static
 getters in `game-data/repositories/quest.repository.ts`. Current quests: [status.md](status.md).
@@ -92,12 +92,12 @@ cards and `calculateNewStatus: true` (locked/done/new variants).
 }
 ```
 
-- `Requisites` exist at **two levels**: quest root (gate for the whole quest, e.g. `AsukaRematchAddresses.json` → `asukaTrophy`; `DriAgentPatamonAddresses.json` → `submarimon`) and per step (e.g. DRI step 3 → `{rookie}DDNA`). Both are optional.
+- `Requisites` exist at **two levels**: quest root (gate for the whole quest, e.g. `asuka-rematch-addresses.json` → `asukaTrophy`; `dri-agent-patamon-addresses.json` → `submarimon`) and per step (e.g. DRI step 3 → `{rookie}DDNA`). Both are optional.
 - `BitMasks` (array) on steps **and** requisites. Empty = raw byte (`!= 0`). Multiple = **all** must be set. Singular `BitMask` → normalize to `"BitMasks": ["0x04"]`.
 - Single mask on one line (`"BitMasks": ["0x04"]`); multiline only for many entries.
 - **Ids in camelCase** (`muramasa`, `driAgentGuilmon`, `guilmonDDNA`). The same id is used by the definitions, the static quest JSON and i18n.
 - Step `Number` sequential and unique within the quest; equal to the step `number` in the static JSON.
-- `App/src/memory/definitions/` is the single source of the addresses. `Tools/MemoryScanner` (`analyze-pair`) reads `Quests/MainQuestAddresses.json` from there by a fixed path: do not move or rename it.
+- `App/src/memory/definitions/` is the single source of the addresses. `Tools/MemoryScanner` (`analyze-pair`) reads `quests/main-quest-addresses.json` from there by a fixed path: do not move or rename it.
 
 ## Section invariant
 
@@ -111,7 +111,7 @@ A section **only exists when it has at least one quest**. No empty-state UI.
 
 ## Naming and i18n
 
-- Static files kebab-case (`dri-agent-patamon.json`); definitions PascalCase (`DriAgentPatamonAddresses.json`).
+- Static files kebab-case (`dri-agent-patamon.json`); definitions kebab-case with the `-addresses` suffix (`dri-agent-patamon-addresses.json`).
 - `ui/i18n/{en-US,pt-BR}/quest/{category}/{id-kebab}.json`, registered in each locale `index.ts`. Section titles in `journal.json`.
 - Quest texts use i18n; **Digimon/digievolution names stay literal** (proper names).
 
@@ -123,7 +123,7 @@ Paths under `App/src/` unless stated otherwise.
 
 ### 1. Definitions
 
-- [ ] `memory/definitions/Quests/{Category}/{Name}Addresses.json` — mirror a quest of the same folder; normalize the schema
+- [ ] `memory/definitions/quests/{category-kebab}/{name-kebab}-addresses.json` — mirror a quest of the same folder; normalize the schema
 - [ ] **SKIP** repository, reader, assembler, provider, model, patcher — `import.meta.glob` picks up every `*.json` of the folder (ordered by file name) and `StatePatcher` already keys the category list by `id`
 
 ### 2. Memory tests

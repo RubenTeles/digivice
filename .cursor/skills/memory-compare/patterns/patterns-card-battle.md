@@ -67,7 +67,7 @@ Snaps: `before/after-*-card-battle.bin` for genji, natsumi, nacky,
 wong, gloria, steve; `after-lose-to-natsumi`;
 `before/after-defeat-gloria-first.bin`.
 
-Current `NpcAddresses.json`: wire **DigimonBattles** only (e.g. Genji `0x4B3DF`,
+Current `npc-addresses.json`: wire **DigimonBattles** only (e.g. Genji `0x4B3DF`,
 Natsumi `0x4B39A`). Card battles are **not** tracked in journal RAM — wiki uses
 static `npc.json` + charisma range only.
 
@@ -119,14 +119,14 @@ follow `groupId − 200`; treat as special rematch bit until script index
 confirmed.
 
 **Integrated (2026-08-31):** all confirmed tamers wired in
-[`NpcAddresses.json`](../../../../App/src/memory/definitions/NpcAddresses.json) —
+[`npc-addresses.json`](../../../../App/src/memory/definitions/npc-addresses.json) —
 `genji` (first+second), `natsumi`, `catherine`, `lucia`, `robert`,
 `akiba`, `chris`, `tomomi`, `mitch`, `bob`, `andy`, `george`, `meiLin`,
 `jessica`, `gordon`, `alice`, `nakano`.
 
 **A.o.A Attacker digimon battle (suspected 2026-09-02):**
 `before/after-aoa-attacker.bin` (Secret Room `0255`, MQ steps 60–61
-already complete). Current `NpcAddresses.json` entry `0x4B3CA` / `0x20`
+already complete). Current `npc-addresses.json` entry `0x4B3CA` / `0x20`
 matches **MainQuest step 61** only — byte `0xBF` in **both** snaps (bit
 already set pre-fight; **no flip on win**). Best sticky quest-band delta:
 `0x4B3E5` bit `0x08` (`0x53→0x5B`, single-bit add; same byte as MQ
@@ -137,7 +137,7 @@ validation before wiring.
 **Optional Admin Center NPC digimon battles (confirmed 2026-10-13):**
 `antes/durante/depois-{patrulheiro,soldado}-opcional-*` snaps (MQ ~66–77).
 Each win added exactly **one** new bit in `0x4B370–0x4B3F0` (no other delta
-in that band or `0x48DB0–0x48DC8`); none collide with `MainQuestAddresses.json`.
+in that band or `0x48DB0–0x48DC8`); none collide with `main-quest-addresses.json`.
 Rewards match existing groups (Bits delta 580 / 590 / 890).
 
 | Digivice `npcId` | MapId | groupId | Address | BitMask |
@@ -152,7 +152,7 @@ Rewards match existing groups (Bits delta 580 / 590 / 890).
 Not yet validated against a lose / reload.
 
 **Integrated (2026-10-13):** all six wired in
-[`NpcAddresses.json`](../../../../App/src/memory/definitions/NpcAddresses.json)
+[`npc-addresses.json`](../../../../App/src/memory/definitions/npc-addresses.json)
 (battle id `first`) and through the Npcs pipeline / frontend sync.
 
 **Natsumi card:** no duel flag in those snaps — only booster `0x48F19`.
@@ -209,7 +209,7 @@ On transition **`0x0600 → 0x0700`** (card battle screen), **`0x4B404`** (Int32
 **card battle config id** (which fight/deck setup), **not** a unique NPC id.
 **`0`** outside card battle (`0x0600` digimon battle).
 
-Integrated: `cardBattle.id` via [`CardBattleAddresses.json`](../../../../App/src/memory/definitions/CardBattleAddresses.json) `Id`.
+Integrated: `cardBattle.id` via [`card-battle-addresses.json`](../../../../App/src/memory/definitions/card-battle-addresses.json) `Id`.
 Frontend static: `cardBattles.first` / `cardBattles.second` → `id` in
 `tamer.json` / `duel-island.json` (lookup NPC by scanning those ids).
 

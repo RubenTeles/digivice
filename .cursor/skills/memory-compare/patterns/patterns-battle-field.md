@@ -9,7 +9,7 @@ Maintained by the memory-compare skill (retrofeed). Mark `(confirmed)` or `(susp
 
 ## Field skill / item (element strengthen / weaken) — **confirmed** id @ `0xA4530`
 
-**Integrated:** `Battles/DigimonBattleAddresses.json` `Field` → `digimonBattle.field`. `0` = neutral field (valid value).
+**Integrated:** `battles/digimon-battle-addresses.json` `Field` → `digimonBattle.field`. `0` = neutral field (valid value).
 
 Live combat attrs/resists (`0xA4580` / `0xA45C0`) do **not** change when a field
 is applied. Field is a global battle state that **only strengthens** one element.
