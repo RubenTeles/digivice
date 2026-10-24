@@ -8,7 +8,7 @@ body {
   height: 100vh;
   overflow: hidden;
   background-color: #000030;
-  background-image: url("./content/assets/bg-pattern.svg");
+  background-image: url("./assets/bg-pattern.svg");
   background-size: 256px 256px;
   background-repeat: repeat;
   animation: slideBackground 6s linear infinite;
