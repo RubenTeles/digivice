@@ -1,4 +1,4 @@
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import type { PartyDvexpGain } from "@/game-data/services/dvexp.service";
 import type { PartyDvexpViewModel } from "@/ui/viewmodels/dvexp/party-dvexp.viewmodel";
 

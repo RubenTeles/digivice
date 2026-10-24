@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import type { WikiDropBoosterCardViewModel } from "@/ui/viewmodels/wiki-modal/wiki-drop-booster-card.viewmodel";
 
 const props = defineProps<{

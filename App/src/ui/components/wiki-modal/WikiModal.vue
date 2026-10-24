@@ -11,7 +11,7 @@ import WikiCardShopPanel from "@/ui/components/wiki-modal/wiki-card-shop-panel/W
 import SearchBar from "@/ui/components/search/SearchBar.vue";
 import { useI18n } from "vue-i18n";
 import { useTooltipPosition } from "@/ui/composables/use-tooltip-position";
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import { WikiModalPresenter } from "@/ui/presenters/map/wiki-modal.presenter";
 import type { DropType } from "@/game-data/repositories/tables/raws/drop/drop-type";
 import type { DropSourceKind } from "@/shared/types/drop-source-kind.type";

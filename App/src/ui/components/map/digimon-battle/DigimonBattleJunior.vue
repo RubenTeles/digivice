@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 
 const juniorImageUrl = ImageCatalog.getJuniorImageUrl();
 </script>

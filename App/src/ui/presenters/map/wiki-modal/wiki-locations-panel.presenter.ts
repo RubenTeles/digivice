@@ -1,4 +1,4 @@
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import type { Quest } from "@/state/models";
 import { MapFrameSlideConverter } from "@/ui/presenters/converter/map-frame-slide.converter";
 import { LocationEncounterHelper } from "@/ui/presenters/helper/location-encounter.helper";

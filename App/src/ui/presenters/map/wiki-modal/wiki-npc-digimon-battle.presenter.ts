@@ -1,4 +1,4 @@
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import type { Party } from "@/state/models";
 import { EnemyConverter } from "@/ui/presenters/converter/enemy.converter";
 import { PartyDvexpConverter } from "@/ui/presenters/converter/party-dvexp.converter";

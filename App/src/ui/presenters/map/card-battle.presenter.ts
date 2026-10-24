@@ -1,4 +1,4 @@
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import { MapId } from "@/shared/constants/map-id.constant";
 import { NpcBattleOpponentHelper } from "@/ui/presenters/helper/npc-battle-opponent.helper";
 import { MapService } from "@/game-data/services/map.service";

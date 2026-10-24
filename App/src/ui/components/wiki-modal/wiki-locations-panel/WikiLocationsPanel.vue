@@ -3,7 +3,7 @@ import { computed, onUnmounted, ref, watch, type Ref } from "vue";
 import MapFrame from "@/ui/components/map-frame/MapFrame.vue";
 import WikiLocalMap from "@/ui/components/wiki-modal/wiki-locations-panel/WikiLocalMap.vue";
 import WikiLocationEncounters from "@/ui/components/wiki-modal/wiki-locations-panel/WikiLocationEncounters.vue";
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import { MapFrameWidthPx } from "@/shared/constants/map-display.constant";
 import { useImageNaturalAspectRatio } from "@/ui/composables/use-image-natural-aspect-ratio";
 import { WikiLocationsPanelPresenter } from "@/ui/presenters/map/wiki-modal/wiki-locations-panel.presenter";

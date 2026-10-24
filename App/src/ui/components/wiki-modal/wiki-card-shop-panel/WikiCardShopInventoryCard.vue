@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import { CardRepository } from "@/game-data/repositories/card.repository";
 import type { WikiCardShopInventoryCardViewModel } from "@/ui/viewmodels/wiki-modal/wiki-card-shop-inventory-card.viewmodel";
 

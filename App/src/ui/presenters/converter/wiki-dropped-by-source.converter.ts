@@ -1,4 +1,4 @@
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import { NpcBattleOpponentHelper } from "@/ui/presenters/helper/npc-battle-opponent.helper";
 import type { DropSourceViewModel } from "@/ui/viewmodels/drop/drop-source.viewmodel";
 import type { WikiDroppedBySourceViewModel } from "@/ui/viewmodels/wiki-modal/wiki-dropped-by-source.viewmodel";

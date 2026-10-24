@@ -1,6 +1,6 @@
 ---
 description: Frontend Digivice — dados estáticos (Repository, Service, Presenter, Converter, ViewModel), i18n, extensions, assets
-globs: App/src/{game-data,ui/presenters,ui/viewmodels,ui/i18n,core/extensions,data/game}/**
+globs: App/src/{game-data,ui/presenters,ui/viewmodels,ui/catalogs,ui/i18n,core/extensions,data/game}/**
 alwaysApply: false
 ---
 
@@ -70,7 +70,7 @@ Nomes de Digimons/Digievoluções são nomes próprios: literais, nunca via i18n
 
 - `imageName` em JSON estático começa com letra maiúscula e bate exatamente com o arquivo em `src/assets/` (sem extensão).
 - Nomes usados como chave de asset (ex.: boss via `enemyRaw.name`) seguem a mesma regra.
-- `ImageCatalog` (`game-data/catalogs/image.catalog.ts`) faz lookup exato; não normaliza casing.
+- `ImageCatalog` (`ui/catalogs/image.catalog.ts`) faz lookup exato; não normaliza casing.
 
 ## Proibido em código novo ou refatorado
 

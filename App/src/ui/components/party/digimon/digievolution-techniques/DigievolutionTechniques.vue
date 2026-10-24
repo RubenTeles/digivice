@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import Links from "@/ui/components/party/digimon/digievolution-techniques/Links.vue";
 import SectionTitle from "@/ui/components/party/digimon/digievolution-techniques/SectionTitle.vue";
 import Technique from "@/ui/components/party/digimon/digievolution-techniques/Technique.vue";

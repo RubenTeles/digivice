@@ -1,7 +1,7 @@
 import { DuelIslandRepository } from "@/game-data/repositories/duel-island.repository";
 import { NpcRepository } from "@/game-data/repositories/npc.repository";
 import { TamerRepository } from "@/game-data/repositories/tamer.repository";
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import type { DuelIslandRaw } from "@/game-data/repositories/tables/raws/duel-island/duel-island.raw";
 import type { NpcRaw } from "@/game-data/repositories/tables/raws/npc/npc.raw";
 import type { TamerRaw } from "@/game-data/repositories/tables/raws/tamer/tamer.raw";

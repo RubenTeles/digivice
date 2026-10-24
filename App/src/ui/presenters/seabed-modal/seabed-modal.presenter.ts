@@ -1,4 +1,4 @@
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import { SeabedModalConverter } from "@/ui/presenters/converter/dock.converter";
 import { MapRepository } from "@/game-data/repositories";
 import { SeabedDockRepository } from "@/game-data/repositories/seabed-dock.repository";

@@ -1,4 +1,4 @@
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import { MobiusDesertAreasMapRepository } from "@/game-data/repositories/mobius-desert-areas-map.repository";
 import type { DesertAreaDetailsViewModel } from "@/ui/viewmodels/desert/desert-area-details.viewmodel";
 import type { DesertAreaViewModel } from "@/ui/viewmodels/desert/desert-area.viewmodel";

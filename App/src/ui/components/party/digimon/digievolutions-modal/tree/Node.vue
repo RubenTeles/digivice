@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import type { Digimon } from "@/state/models";
 import { NodePresenter } from "@/ui/presenters/tree/node.presenter";
 import type { NodeViewModel } from "@/ui/viewmodels/digievolution/node.viewmodel";

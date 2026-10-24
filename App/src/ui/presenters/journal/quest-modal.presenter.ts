@@ -1,4 +1,4 @@
-import { ImageCatalog } from "@/game-data/catalogs/image.catalog";
+import { ImageCatalog } from "@/ui/catalogs/image.catalog";
 import type { Journal, Party } from "@/state/models";
 import { QuestConverter } from "@/ui/presenters/converter/quest.converter";
 import { MapFrameSlideConverter } from "@/ui/presenters/converter/map-frame-slide.converter";
