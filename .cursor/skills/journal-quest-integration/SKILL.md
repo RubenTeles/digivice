@@ -11,7 +11,7 @@ description: >-
 
 # Journal Quest Integration
 
-Wires a quest from its RAM definitions (`Frontend/src/memory/definitions/Quests/`)
+Wires a quest from its RAM definitions (`App/src/memory/definitions/Quests/`)
 to the Journal UI. Product rules of each category: `.cursor/rules/digivice-business.mdc`
 (Journal).
 
@@ -97,7 +97,7 @@ cards and `calculateNewStatus: true` (locked/done/new variants).
 - Single mask on one line (`"BitMasks": ["0x04"]`); multiline only for many entries.
 - **Ids in camelCase** (`muramasa`, `driAgentGuilmon`, `guilmonDDNA`). The same id is used by the definitions, the static quest JSON and i18n.
 - Step `Number` sequential and unique within the quest; equal to the step `number` in the static JSON.
-- `Frontend/src/memory/definitions/` is the single source of the addresses. `Tools/MemoryScanner` (`analyze-pair`) reads `Quests/MainQuestAddresses.json` from there by a fixed path: do not move or rename it.
+- `App/src/memory/definitions/` is the single source of the addresses. `Tools/MemoryScanner` (`analyze-pair`) reads `Quests/MainQuestAddresses.json` from there by a fixed path: do not move or rename it.
 
 ## Section invariant
 
@@ -119,7 +119,7 @@ A section **only exists when it has at least one quest**. No empty-state UI.
 
 ## Workflow A — Quest in an existing category
 
-Paths under `Frontend/src/` unless stated otherwise.
+Paths under `App/src/` unless stated otherwise.
 
 ### 1. Definitions
 

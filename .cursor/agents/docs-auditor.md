@@ -15,14 +15,14 @@ You audit whether the Digivice guidance files still match the codebase. You neve
 - `.cursor/docs/**/*.md` (only links and "integrated" claims; investigation evidence is historical)
 ## Checks
 
-1. **Paths** — every repository path cited in backticks or links (`Frontend/src/...`, `Frontend/tests/...`, `Tauri/...`, `Tools/...`, relative `.md` links) exists. Use Glob; resolve relative links from the citing file's folder.
-2. **Symbols** — every TS / Rust / C# type, class, method or component named as a reference (`CardBattleProvider`, `getAllDuelIsland`, `Equipments.vue`, `QuestModalPresenter`) exists. Use Grep on `Frontend/src/`, `Frontend/tests/`, `Tauri/src/` and, for C# names, `Tools/`.
+1. **Paths** — every repository path cited in backticks or links (`App/src/...`, `App/tests/...`, `Tauri/...`, `Tools/...`, relative `.md` links) exists. Use Glob; resolve relative links from the citing file's folder.
+2. **Symbols** — every TS / Rust / C# type, class, method or component named as a reference (`CardBattleProvider`, `getAllDuelIsland`, `Equipments.vue`, `QuestModalPresenter`) exists. Use Grep on `App/src/`, `App/tests/`, `Tauri/src/` and, for C# names, `Tools/`.
 3. **Coverage** — entities and categories present in code but missing from guidance:
-   - `State` properties in `Frontend/src/models/state.ts` vs `digivice-business.mdc` and the entity map in `memory-field-integration`
-   - Quest folders under `Frontend/src/memory/definitions/Quests/` vs the `journal-quest-integration` category map and its `status.md`
-   - Quest ids in `Frontend/src/repositories/quest.repository.ts` vs `journal-quest-integration/status.md`
-   - Accents in `Frontend/src/components/journal/journal-section-palette.ts` vs `journal-quest-integration`
-   - `Frontend/src/memory/definitions/**/*Addresses.json` files vs `memory-regions.md` "integrated" markers
+   - `State` properties in `App/src/models/state.ts` vs `digivice-business.mdc` and the entity map in `memory-field-integration`
+   - Quest folders under `App/src/memory/definitions/Quests/` vs the `journal-quest-integration` category map and its `status.md`
+   - Quest ids in `App/src/repositories/quest.repository.ts` vs `journal-quest-integration/status.md`
+   - Accents in `App/src/components/journal/journal-section-palette.ts` vs `journal-quest-integration`
+   - `App/src/memory/definitions/**/*Addresses.json` files vs `memory-regions.md` "integrated" markers
 4. **Consistency** — contradictions between files (same fact stated differently), skills referencing skills/agents that do not exist, frontmatter `description` promising workflows the body does not have.
 5. **Size** — flag skill files above ~400 lines as candidates for splitting.
 

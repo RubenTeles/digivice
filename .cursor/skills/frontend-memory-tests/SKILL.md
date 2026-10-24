@@ -5,7 +5,7 @@ description: >-
   memory reading layer (src/memory/) — where each test goes, naming,
   FakeSnapshotBuilder for synthetic RAM, SnapshotFixtureLoader for real 2 MiB
   .bin dumps from Tools/MemoryScanner, and the test shape of each layer.
-  Use when creating or updating tests under Frontend/tests/, after
+  Use when creating or updating tests under App/tests/, after
   adding a field, entity or quest to the memory layer, or when the user asks
   for test coverage of the memory layer.
 ---
@@ -18,9 +18,9 @@ This skill is the practical how-to. Only the memory reading layer has tests; the
 ## Stack
 
 - Vitest (`describe`, `it`, `expect`, `vi`), environment `node`, explicit imports from `vitest`.
-- Config: `Frontend/vitest.config.ts` (merges `vite.config.ts`, so `@/`, `import.meta.glob` and JSON imports resolve exactly like the app). Includes only `tests/**/*.spec.ts`.
-- Types: `Frontend/tsconfig.vitest.json`, part of `npm run type-check`.
-- Run (in `Frontend/`): `npm run test:run` (single run) or `npm run test` (watch). Filter: `npx vitest run tests/helpers`.
+- Config: `App/vitest.config.ts` (merges `vite.config.ts`, so `@/`, `import.meta.glob` and JSON imports resolve exactly like the app). Includes only `tests/**/*.spec.ts`.
+- Types: `App/tsconfig.vitest.json`, part of `npm run type-check`.
+- Run (in `App/`): `npm run test:run` (single run) or `npm run test` (watch). Filter: `npx vitest run tests/helpers`.
 
 ## Where each test goes
 

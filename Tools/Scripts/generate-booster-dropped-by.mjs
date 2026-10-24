@@ -5,10 +5,10 @@ import { fileURLToPath } from "node:url";
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(scriptDirectory, "../..");
 
-const boosterPath = path.join(repositoryRoot, "Frontend/src/database/tcg/booster.json");
-const enemyPath = path.join(repositoryRoot, "Frontend/src/database/enemy.json");
-const tamerPath = path.join(repositoryRoot, "Frontend/src/database/npc/tamer.json");
-const duelIslandPath = path.join(repositoryRoot, "Frontend/src/database/npc/duel-island.json");
+const boosterPath = path.join(repositoryRoot, "App/src/database/tcg/booster.json");
+const enemyPath = path.join(repositoryRoot, "App/src/database/enemy.json");
+const tamerPath = path.join(repositoryRoot, "App/src/database/npc/tamer.json");
+const duelIslandPath = path.join(repositoryRoot, "App/src/database/npc/duel-island.json");
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));

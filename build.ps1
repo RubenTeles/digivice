@@ -10,7 +10,7 @@ function Invoke-Step([string]$Command) {
 
 Write-Host "Building Digivice" -ForegroundColor Cyan
 
-Push-Location (Join-Path $PSScriptRoot "Frontend")
+Push-Location (Join-Path $PSScriptRoot "App")
 try {
     Invoke-Step "npm install"
     Invoke-Step "npm run test:run"

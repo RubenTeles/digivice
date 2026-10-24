@@ -1,6 +1,6 @@
 ---
 description: Convenções básicas Frontend Vue/TS Digivice — sintaxe, imports, naming, escopo de testes
-globs: Frontend/**/*
+globs: App/**/*
 alwaysApply: false
 ---
 
@@ -21,7 +21,7 @@ Regras especializadas por pasta:
 5. **Converters:** classe `{AlgumaCoisa}Converter`; arquivo `{alguma-coisa}.converter.ts`; API pública estática `convert` (helpers privados permitidos). Dois contextos, pastas distintas:
    - `presenters/converter/` — Raw → ViewModel (dados estáticos)
    - `memory/converters/` — JSON de definitions (`...Raw`, PascalCase) → tipos de endereço (camelCase, `number`)
-6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, providers, repositories, converters, snapshot, validators, loop, patch) e as actions `applyState`/`applyError` da `useGameStore` têm testes Vitest em `Frontend/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
+6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, providers, repositories, converters, snapshot, validators, loop, patch) e as actions `applyState`/`applyError` da `useGameStore` têm testes Vitest em `App/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
 
 ## Camada de leitura de memória (`src/memory/`)
 
@@ -43,7 +43,7 @@ Regras especializadas por pasta:
 | `patch/` | `StatePatcher`: patch in-place do `State` da store (regras em `digivice-frontend-sync.mdc`). |
 | `loop/` | `GameLoop` (`setTimeout` encadeado, sem sobrepor ticks; erros → `EmulatorConnectionError.code`, `memory_read_failed`, `save_not_loaded` ou `state_compose_failed`), `SnapshotProviderFactory`, `initializeMemoryLoop` (liga loop e `useGameStore`; chamado no `main.ts`). |
 
-- **Fonte do snapshot:** `VITE_MEMORY_SNAPSHOT_URL` (ex.: `/tests/fixtures/snapshots/field-central-park.bin`) usa um `.bin` em vez do `read_ram`; sem ela, o loop só sobe dentro do Tauri (no navegador puro a tela fica em `Loading`). Configurar em `Frontend/.env.development.local` (não versionado). A UI lê só `useGameStore`.
+- **Fonte do snapshot:** `VITE_MEMORY_SNAPSHOT_URL` (ex.: `/tests/fixtures/snapshots/field-central-park.bin`) usa um `.bin` em vez do `read_ram`; sem ela, o loop só sobe dentro do Tauri (no navegador puro a tela fica em `Loading`). Configurar em `App/.env.development.local` (não versionado). A UI lê só `useGameStore`.
 
 ## Constants e types
 

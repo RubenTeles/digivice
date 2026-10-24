@@ -1,18 +1,18 @@
 {
-  "$schema": "../Frontend/node_modules/@tauri-apps/cli/config.schema.json",
+  "$schema": "../App/node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Digivice",
-  "version": "../Frontend/package.json",
+  "version": "../App/package.json",
   "identifier": "com.digivice.app",
   "build": {
-    "frontendDist": "../Frontend/dist",
+    "frontendDist": "../App/dist",
     "devUrl": "http://localhost:5173",
     "beforeDevCommand": {
       "script": "npm run dev",
-      "cwd": "../Frontend"
+      "cwd": "../App"
     },
     "beforeBuildCommand": {
       "script": "npm run build",
-      "cwd": "../Frontend"
+      "cwd": "../App"
     }
   },
   "app": {

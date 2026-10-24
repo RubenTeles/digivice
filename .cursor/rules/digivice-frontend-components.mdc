@@ -1,6 +1,6 @@
 ---
 description: Frontend Digivice — componentes Vue, estilo DW3, tooltips e modais
-globs: Frontend/src/{components,composables}/**,Frontend/src/App.vue,Frontend/src/style.css
+globs: App/src/{components,composables}/**,App/src/App.vue,App/src/style.css
 alwaysApply: false
 ---
 
@@ -18,7 +18,7 @@ Componentes consomem o estado do jogo via `useGameState()` e **apenas o presente
 
 ## Coerência visual e estilos
 
-Priorize `Frontend/src/style.css` e componentes similares do mesmo contexto (aparência DW3).
+Priorize `App/src/style.css` e componentes similares do mesmo contexto (aparência DW3).
 
 - Fonte única: **Press Start 2P** (global no `body`). Fundo, cor padrão e `image-rendering: pixelated` também vêm do global.
 - Antes de estilizar: checar utilitários em `style.css` → componente similar → só então Tailwind/CSS novo.

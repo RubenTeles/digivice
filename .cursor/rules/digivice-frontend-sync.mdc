@@ -1,6 +1,6 @@
 ---
 description: Frontend Digivice — sincronização de estado (loop TS, StatePatcher, Pinia store, selectors, models)
-globs: Frontend/src/{stores,models,memory/patch,memory/loop}/**
+globs: App/src/{stores,models,memory/patch,memory/loop}/**
 alwaysApply: false
 ---
 

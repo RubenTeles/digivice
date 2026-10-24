@@ -1,6 +1,6 @@
 ---
 description: Convenções de testes Frontend Digivice (Vitest) — escopo restrito à camada de leitura de memória, espelhamento 1:1, nomes e corner cases
-globs: Frontend/tests/**
+globs: App/tests/**
 alwaysApply: false
 ---
 
@@ -16,14 +16,14 @@ Padrões concretos (helpers, fixtures, onde colocar cada teste): skill `frontend
 
 ## Stack
 
-- Vitest, ambiente `node` (sem DOM, sem `@vue/test-utils`). Config: `Frontend/vitest.config.ts` (herda `vite.config.ts`: alias `@/`, `import.meta.glob`).
+- Vitest, ambiente `node` (sem DOM, sem `@vue/test-utils`). Config: `App/vitest.config.ts` (herda `vite.config.ts`: alias `@/`, `import.meta.glob`).
 - Imports explícitos de `vitest` (`import { describe, expect, it } from "vitest";`), sem globals.
 - Tipos checados por `tsconfig.vitest.json` dentro do `npm run type-check`.
-- Rodar: `npm run test:run` (uma vez) ou `npm run test` (watch), em `Frontend/`.
+- Rodar: `npm run test:run` (uma vez) ou `npm run test` (watch), em `App/`.
 
 ## Regras
 
-1. **Local:** `Frontend/tests/` espelhando `src/` (ex.: `src/memory/readers/player.reader.ts` → `tests/memory/readers/player.reader.spec.ts`). Nunca `*.spec.ts` ou `__tests__` dentro de `src/`.
+1. **Local:** `App/tests/` espelhando `src/` (ex.: `src/memory/readers/player.reader.ts` → `tests/memory/readers/player.reader.spec.ts`). Nunca `*.spec.ts` ou `__tests__` dentro de `src/`.
 2. **Um arquivo de produção ↔ um arquivo de testes** (`{nome}.ts` → `{nome}.spec.ts`). Exceções (não forçar split): testes de integração de um fluxo inteiro, suites transversais, helpers compartilhados sem arquivo de produção.
 3. **Nomes em inglês:** `describe("{Classe}")` → `describe("{método}")` → `it("should {resultado} when {condição}")`.
 4. **Imports:** código de produção via `@/`; helpers de teste por caminho relativo dentro de `tests/`.

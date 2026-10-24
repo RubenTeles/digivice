@@ -2,7 +2,7 @@
 
 Rare. Use only when `Journal` gains a new property. Template: `duelIsland`
 (latest category added). Every step mirrors the existing `duelIsland` branch.
-Paths under `Frontend/src/` unless stated otherwise.
+Paths under `App/src/` unless stated otherwise.
 
 ## 0. Preconditions
 

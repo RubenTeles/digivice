@@ -2,7 +2,7 @@
 name: memory-field-integration
 description: >-
   Adds a new RAM field to an existing Digivice State entity in the TypeScript
-  memory layer (Frontend/src/memory/) — Player, Party/Digimon, InBattle,
+  memory layer (App/src/memory/) — Player, Party/Digimon, InBattle,
   DigimonBattle/Enemy, CardBattle, ImportantItems, Auctions, Npcs. Use when the
   user asks to integrate a confirmed address into an existing *Addresses.json,
   read a new scalar or nested value, or expose a new property on an existing
@@ -40,7 +40,7 @@ definitions/*.json → *AddressesRaw → *AddressesConverter → *Addresses
   → *Assembler → model → StateComposer → useGameStore.applyState (StatePatcher)
 ```
 
-Paths are under `Frontend/src/memory/` unless stated otherwise.
+Paths are under `App/src/memory/` unless stated otherwise.
 
 ## Entity map
 
@@ -96,7 +96,7 @@ Enemy) stay relative hex strings, mirroring an adjacent field
 (`"HP": { "Current": "0x20", "Max": "0x22" }`). `AddressValueConverter`
 rejects invalid values when the repository loads the file.
 
-`Frontend/src/memory/definitions/` is the single source of the addresses
+`App/src/memory/definitions/` is the single source of the addresses
 (`Tools/MemoryScanner` also reads `Quests/MainQuestAddresses.json` from there).
 
 ---

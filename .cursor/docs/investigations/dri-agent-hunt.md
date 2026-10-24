@@ -81,6 +81,6 @@ Unchanged known slots are expected when that agent is already complete on the sa
 }
 ```
 
-Path: `Frontend/src/memory/definitions/Quests/DriAgents/{Name}Addresses.json`.
+Path: `App/src/memory/definitions/Quests/DriAgents/{Name}Addresses.json`.
 
 After confirmation, integrate via skill `journal-quest-integration`.

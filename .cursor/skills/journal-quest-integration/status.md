@@ -1,7 +1,7 @@
 # Integration Status
 
 Maintained by the journal-quest-integration skill. Append entries; do not remove without reason.
-Definitions paths are relative to `Frontend/src/memory/definitions/`.
+Definitions paths are relative to `App/src/memory/definitions/`.
 
 ## Categories on Journal
 

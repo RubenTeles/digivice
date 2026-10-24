@@ -14,7 +14,7 @@ graph TD
     subgraph tauriSide [Tauri - Rust]
         emulator[Duckstation RAM] --> readRam[read_ram]
     end
-    subgraph frontendSide [Frontend - TS / Vue 3]
+    subgraph appSide [App - TS / Vue 3]
         readRam -->|"snapshot 2 MiB"| gameLoop[GameLoop]
         gameLoop --> composer[StateComposer]
         composer --> providers[Providers]
@@ -30,7 +30,7 @@ graph TD
 ```
 
 - **Responsabilidades:**
-  - **Camada de memória** (`Frontend/src/memory/`, readers + assemblers) lê a RAM e normaliza o necessário para que cada dado tenha significado próprio (sentinela → `null`, valor inválido ajustado — ex.: negativo → `0`). Não gera informação composta.
+  - **Camada de memória** (`App/src/memory/`, readers + assemblers) lê a RAM e normaliza o necessário para que cada dado tenha significado próprio (sentinela → `null`, valor inválido ajustado — ex.: negativo → `0`). Não gera informação composta.
   - **Selectors** geram informação nova a partir de dados já consistentes, em `stores/selectors/` (ex.: `isInBattle` = `mapId` + `inBattle.hp.max`).
   - Composição com dados estáticos (repositórios, equipamentos, i18n) fica em presenters/services, não em selectors.
 

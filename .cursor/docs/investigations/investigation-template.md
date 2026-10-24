@@ -24,9 +24,9 @@ Suggested read: `(byte & 0x__) != 0`
 
 Path examples (quest-like trackers under `Quests/`):
 
-- `Frontend/src/memory/definitions/Quests/LegendaryWeapons/{Name}Addresses.json`
-- `Frontend/src/memory/definitions/Quests/DriAgents/{Name}Addresses.json`
-- `Frontend/src/memory/definitions/Quests/SideQuests/{Name}Addresses.json`
+- `App/src/memory/definitions/Quests/LegendaryWeapons/{Name}Addresses.json`
+- `App/src/memory/definitions/Quests/DriAgents/{Name}Addresses.json`
+- `App/src/memory/definitions/Quests/SideQuests/{Name}Addresses.json`
 ```json
 
 ```

@@ -21,7 +21,7 @@ useGameState().journal
 
 ## Key paths
 
-Paths under `Frontend/src/`.
+Paths under `App/src/`.
 
 | Concern | Path |
 |---------|------|

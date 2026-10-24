@@ -2,7 +2,7 @@
 name: memory-entity-integration
 description: >-
   Creates a brand-new Digivice State entity in the TypeScript memory layer
-  (Frontend/src/memory/) — new definitions JSON, addresses type and converter,
+  (App/src/memory/) — new definitions JSON, addresses type and converter,
   repository getter, resource, reader, assembler, provider, model, State
   property and StateComposer entry. Use when the user asks to track a new
   concept that does not fit an existing entity (like CardBattle, Npcs and
@@ -45,7 +45,7 @@ graph LR
 
 ## Checklist
 
-Paths under `Frontend/src/memory/` unless stated otherwise. Mirror each
+Paths under `App/src/memory/` unless stated otherwise. Mirror each
 `card-battle*` file.
 
 ### 1. Definitions + addresses
