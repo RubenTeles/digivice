@@ -37,7 +37,10 @@ export const usePreferencesStore = defineStore("preferences", () => {
       pinnedFamilyKeyByDigimonId.value[digimonKey] = familyKey;
     }
 
-    localStorage.setItem(PinnedFamiliesStorageKey, JSON.stringify(pinnedFamilyKeyByDigimonId.value));
+    localStorage.setItem(
+      PinnedFamiliesStorageKey,
+      JSON.stringify(pinnedFamilyKeyByDigimonId.value),
+    );
   }
 
   return {

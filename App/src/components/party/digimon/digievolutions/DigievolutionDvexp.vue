@@ -11,7 +11,11 @@ const props = defineProps<{
 }>();
 
 const filledSegments = computed(() => {
-  return DigievolutionDvexpPresenter.getFilledSegments(props.digievolutionId, props.level, props.dvexp);
+  return DigievolutionDvexpPresenter.getFilledSegments(
+    props.digievolutionId,
+    props.level,
+    props.dvexp,
+  );
 });
 function getDvexpClass(isFilled: boolean): string {
   if (props.isActiveDigievolution) {

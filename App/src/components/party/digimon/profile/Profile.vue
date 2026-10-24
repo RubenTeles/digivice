@@ -121,10 +121,14 @@ const digimonStatusTooltip = computed(() => {
         />
 
         <div class="col-start-2 row-start-1 flex justify-between items-baseline min-w-0">
-          <h2 class="text-sm font-bold text-white leading-none truncate pr-2 tracking-wide cursor-default">
+          <h2
+            class="text-sm font-bold text-white leading-none truncate pr-2 tracking-wide cursor-default"
+          >
             {{ digimonName }}
           </h2>
-          <span class="text-[0.6rem] font-medium text-yellow-400 shrink-0 leading-none cursor-default">
+          <span
+            class="text-[0.6rem] font-medium text-yellow-400 shrink-0 leading-none cursor-default"
+          >
             {{ t("digimon.lv") }} {{ digimon.level }}
           </span>
         </div>

@@ -52,7 +52,9 @@ const handleOpenEnemy = (enemyId: string): void => {
             class="ml-0.5 text-[12px] 2xl:text-[16px]"
             :aria-label="getSourceAriaLabel(line.source)"
           >
-            <span class="inline-flex leading-none text-[1.2rem] -translate-y-0.5">{{ getSourceIcon(line.source) }}</span>
+            <span class="inline-flex leading-none text-[1.2rem] -translate-y-0.5">{{
+              getSourceIcon(line.source)
+            }}</span>
           </span>
         </button>
       </div>

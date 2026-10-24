@@ -41,7 +41,9 @@ const handleSelect = (): void => {
       :alt="cardName"
       class="w-12 h-16 shrink-0 object-contain rendering-pixelated"
     />
-    <span class="h-[2.5em] w-full text-[8px] font-bold text-blue-200 leading-tight text-center line-clamp-2">
+    <span
+      class="h-[2.5em] w-full text-[8px] font-bold text-blue-200 leading-tight text-center line-clamp-2"
+    >
       {{ cardName }}
     </span>
     <span class="w-full shrink-0 text-[8px] font-bold text-amber-400 leading-tight text-center">

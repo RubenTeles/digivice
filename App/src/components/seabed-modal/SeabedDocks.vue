@@ -3,10 +3,7 @@ import { computed, ref } from "vue";
 import SeabedDockLabel from "@/components/seabed-modal/SeabedDockLabel.vue";
 import SeabedDockMarker from "@/components/seabed-modal/SeabedDockMarker.vue";
 import SeabedRouteLines from "@/components/seabed-modal/SeabedRouteLines.vue";
-import {
-  MapFrameMaxHeightPx,
-  MapFrameWidthPx,
-} from "@/constants/map-display.constant";
+import { MapFrameMaxHeightPx, MapFrameWidthPx } from "@/constants/map-display.constant";
 import { useMapFrame } from "@/composables/use-map-frame";
 import { SeabedDocksPresenter } from "@/presenters/map/seabed-docks.presenter";
 

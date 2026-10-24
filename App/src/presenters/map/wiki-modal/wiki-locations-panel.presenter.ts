@@ -169,9 +169,7 @@ export class WikiLocationsPanelPresenter {
     };
   }
 
-  private static toLabelPlacement(
-    labelPlacement: LabelPlacement | undefined,
-  ): LabelPlacement {
+  private static toLabelPlacement(labelPlacement: LabelPlacement | undefined): LabelPlacement {
     if (labelPlacement === undefined) {
       return "below";
     }
@@ -185,15 +183,8 @@ export class WikiLocationsPanelPresenter {
     sideQuests: Quest[],
     previousMapId: string,
   ): WikiLocationEncounterLineViewModel[] {
-    const encounterSources: Exclude<EnemySource, "boss">[] = [
-      "walking",
-      "fishing",
-      "kickingTree",
-    ];
-    const enemyIdsBySource: Record<
-      Exclude<EnemySource, "boss">,
-      string[]
-    > = {
+    const encounterSources: Exclude<EnemySource, "boss">[] = ["walking", "fishing", "kickingTree"];
+    const enemyIdsBySource: Record<Exclude<EnemySource, "boss">, string[]> = {
       walking: LocationEncounterHelper.resolveWalkingIds(locationId, mainQuest, previousMapId),
       fishing: LocationEncounterHelper.resolveFishingIds(locationId, sideQuests),
       kickingTree: LocationEncounterHelper.resolveKickingTreeIds(locationId, sideQuests),

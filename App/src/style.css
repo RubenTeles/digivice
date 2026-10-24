@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Opcional: Adicionar estilos globais básicos que o Tailwind não cobre, ou sobrescrever o reset */
 html,
 body {
   margin: 0;
@@ -12,7 +11,6 @@ body {
   background-image: url("./assets/bg-pattern.svg");
   background-size: 256px 256px;
   background-repeat: repeat;
-  /* Animação rolando a textura do background suavemente e infinitamente */
   animation: slideBackground 6s linear infinite;
   color: white;
   font-family: "Press Start 2P", cursive;
@@ -24,7 +22,7 @@ body {
     background-position: 0 0;
   }
 
-  /* Desloca exatamente o mosaico de 256 pra recomeçar fisicamente o loop */
+  /* Must match background-size so the loop restarts seamlessly */
   100% {
     background-position: 256px 256px;
   }

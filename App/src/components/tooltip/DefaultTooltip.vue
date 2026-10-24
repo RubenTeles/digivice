@@ -30,10 +30,7 @@ withDefaults(
     :min-width="minWidth"
     :placement="placement"
   >
-    <div
-      v-if="text"
-      class="text-gray-100 text-xs leading-relaxed shadow-black shadow-text"
-    >
+    <div v-if="text" class="text-gray-100 text-xs leading-relaxed shadow-black shadow-text">
       {{ text }}
     </div>
   </Tooltip>

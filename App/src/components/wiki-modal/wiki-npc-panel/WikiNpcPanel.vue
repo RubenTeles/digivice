@@ -57,9 +57,7 @@ const battleOptions = computed(() => {
 
 const selectedOptionId = ref<string | null>(null);
 
-const resolveSelectedBattleOptionId = (
-  options: WikiNpcBattleOptionViewModel[],
-): string | null => {
+const resolveSelectedBattleOptionId = (options: WikiNpcBattleOptionViewModel[]): string | null => {
   if (
     props.initialBattleOptionId !== undefined &&
     props.initialBattleOptionId !== null &&
@@ -175,10 +173,7 @@ const openLocation = () => {
 </script>
 
 <template>
-  <div
-    v-if="panelViewModel !== null"
-    class="flex h-full min-h-0 overflow-hidden"
-  >
+  <div v-if="panelViewModel !== null" class="flex h-full min-h-0 overflow-hidden">
     <aside
       class="w-[20%] shrink-0 flex flex-col gap-3 p-3 border-r border-[#0055ff]/30 min-h-0 overflow-y-auto custom-scroll"
     >
@@ -191,13 +186,7 @@ const openLocation = () => {
           :alt="t(panelViewModel.nameKey)"
           class="h-[90%] drop-shadow-[0_0_15px_rgba(0,170,255,0.2)]"
         />
-        <span
-          v-else
-          class="text-2xl font-bold text-gray-500"
-          aria-hidden="true"
-        >
-          ?
-        </span>
+        <span v-else class="text-2xl font-bold text-gray-500" aria-hidden="true"> ? </span>
       </div>
 
       <span class="text-center text-xs font-bold text-gray-300 tracking-wide uppercase">
@@ -225,9 +214,7 @@ const openLocation = () => {
           @mouseleave="emit('hide-stat-tooltip')"
         >
           <span class="inline-flex items-center justify-center gap-1">
-            <span>
-              {{ $t(battleKindLabelKey(option.kind)) }} {{ option.charismaRangeText }}
-            </span>
+            <span> {{ $t(battleKindLabelKey(option.kind)) }} {{ option.charismaRangeText }} </span>
             <span
               v-if="option.showTrophyEmoji"
               class="inline-flex leading-none text-[1.2rem] -translate-y-1"
@@ -260,9 +247,7 @@ const openLocation = () => {
         :npc-id="npcId"
         :battle-id="selectedOption.battleId"
         @open-drops="emit('open-drops', $event)"
-        @show-stat-key-tooltip="
-          (event, statKey) => emit('show-stat-key-tooltip', event, statKey)
-        "
+        @show-stat-key-tooltip="(event, statKey) => emit('show-stat-key-tooltip', event, statKey)"
         @show-condition-tooltip="
           (event, tooltipKey) => emit('show-condition-tooltip', event, tooltipKey)
         "

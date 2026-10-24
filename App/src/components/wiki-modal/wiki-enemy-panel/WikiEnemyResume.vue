@@ -72,15 +72,11 @@ const handleOpenLocation = (locationId: string): void => {
       <span class="font-bold text-blue-500 tracking-wider uppercase"
         >{{ $t("enemy.specie") }}:</span
       >
-      <span class="font-bold text-gray-300 capitalize">{{
-        $t(`species.${enemy.species}`)
-      }}</span>
+      <span class="font-bold text-gray-300 capitalize">{{ $t(`species.${enemy.species}`) }}</span>
     </div>
 
     <div class="flex items-center justify-between text-xs shrink-0">
-      <span class="font-bold text-blue-500 tracking-wider uppercase"
-        >{{ $t("enemy.level") }}:</span
-      >
+      <span class="font-bold text-blue-500 tracking-wider uppercase">{{ $t("enemy.level") }}:</span>
       <span class="font-bold text-gray-300">{{ enemy.level }}</span>
     </div>
 
@@ -89,23 +85,15 @@ const handleOpenLocation = (locationId: string): void => {
       <span class="font-bold text-white">{{ enemy.hp }}</span>
     </div>
 
-    <div
-      v-if="showBaseExp"
-      class="flex items-center justify-between text-xs shrink-0"
-    >
+    <div v-if="showBaseExp" class="flex items-center justify-between text-xs shrink-0">
       <span class="font-bold text-blue-500 tracking-wider uppercase">
         {{ $t("enemy.baseExp") }}:
       </span>
       <span class="font-bold text-gray-300">{{ enemy.exp }}</span>
     </div>
 
-    <div
-      v-if="showBaseBits"
-      class="flex items-center justify-between text-xs shrink-0"
-    >
-      <span class="font-bold text-blue-500 tracking-wider uppercase"
-        >{{ $t("enemy.bits") }}:</span
-      >
+    <div v-if="showBaseBits" class="flex items-center justify-between text-xs shrink-0">
+      <span class="font-bold text-blue-500 tracking-wider uppercase">{{ $t("enemy.bits") }}:</span>
       <span class="font-bold text-gray-300">{{ enemy.bits }}</span>
     </div>
 

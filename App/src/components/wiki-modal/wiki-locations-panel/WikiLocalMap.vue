@@ -54,11 +54,7 @@ const handleMarkerSelect = (marker: WikiLocationMapMarkerViewModel): void => {
     :style="frameStyle"
   >
     <div class="relative" :style="mapImageFrameStyle">
-      <img
-        :src="imageUrl"
-        class="block w-full h-full"
-        @load="onImageLoad"
-      />
+      <img :src="imageUrl" class="block w-full h-full" @load="onImageLoad" />
 
       <WikiLocationMapMarker
         v-for="marker in markers"

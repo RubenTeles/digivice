@@ -42,7 +42,14 @@ const modifierColorClass = computed(() => {
 </script>
 
 <template>
-  <TinyTooltip :show="show" :x="x" :y="y" :title="title" :max-width="maxWidth" :placement="placement">
+  <TinyTooltip
+    :show="show"
+    :x="x"
+    :y="y"
+    :title="title"
+    :max-width="maxWidth"
+    :placement="placement"
+  >
     <div class="flex flex-col w-full">
       <div
         class="text-white text-[10px] font-bold text-center mb-1 tracking-wider shadow-text whitespace-nowrap"

@@ -161,12 +161,7 @@ function getImageUrl(
 
 export class ImageCatalog {
   public static getLocationImageUrl(imageName: string | null): string | null {
-    return getImageUrl(
-      mapModules,
-      MapAssetConfig.pathSuffix,
-      MapAssetConfig.extension,
-      imageName,
-    );
+    return getImageUrl(mapModules, MapAssetConfig.pathSuffix, MapAssetConfig.extension, imageName);
   }
 
   public static getDigimonImageUrl(digimonName: string | null): string | null {
@@ -234,12 +229,7 @@ export class ImageCatalog {
   }
 
   public static getNpcImageUrl(imageName: string | null | undefined): string | null {
-    return getImageUrl(
-      npcModules,
-      NpcAssetConfig.pathSuffix,
-      NpcAssetConfig.extension,
-      imageName,
-    );
+    return getImageUrl(npcModules, NpcAssetConfig.pathSuffix, NpcAssetConfig.extension, imageName);
   }
 
   public static getDuelIslandImageUrl(imageName: string | null | undefined): string | null {
@@ -269,9 +259,7 @@ export class ImageCatalog {
     );
   }
 
-  public static getFlagIconUrls(
-    flagCode: string | null,
-  ): { src: string; src2x: string } | null {
+  public static getFlagIconUrls(flagCode: string | null): { src: string; src2x: string } | null {
     const src = getImageUrl(
       flagModules,
       FlagAssetConfig.pathSuffix,

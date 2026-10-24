@@ -89,7 +89,10 @@ function computeMapWidth(
   return Math.max(1, Math.floor(maxHeight / aspectRatio));
 }
 
-function observeMapSlot(element: HTMLElement | null, heightRef: Ref<number>): ResizeObserver | null {
+function observeMapSlot(
+  element: HTMLElement | null,
+  heightRef: Ref<number>,
+): ResizeObserver | null {
   if (element === null) {
     heightRef.value = 0;
     return null;
@@ -204,10 +207,7 @@ const handleOpenCardShop = (cardShopId: string): void => {
           @open-card-shop="handleOpenCardShop"
         />
       </div>
-      <div
-        v-else
-        class="flex items-center justify-center min-h-0 px-8"
-      >
+      <div v-else class="flex items-center justify-center min-h-0 px-8">
         <span class="text-xs text-gray-500 font-bold tracking-wide">
           {{
             locationsViewModel.selectedLocationLabelKey

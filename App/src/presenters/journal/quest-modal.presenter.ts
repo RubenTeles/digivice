@@ -82,9 +82,7 @@ export class QuestModalPresenter {
     return null;
   }
 
-  public static getWorldMapLocations(
-    selectedStep: StepViewModel | null,
-  ): MapFrameSlideViewModel[] {
+  public static getWorldMapLocations(selectedStep: StepViewModel | null): MapFrameSlideViewModel[] {
     if (!selectedStep?.location) {
       return [];
     }
@@ -100,11 +98,7 @@ export class QuestModalPresenter {
     }
 
     return [
-      MapFrameSlideConverter.convert(
-        asukaMapUrl,
-        worldLocation,
-        `map.${selectedStep.location}`,
-      ),
+      MapFrameSlideConverter.convert(asukaMapUrl, worldLocation, `map.${selectedStep.location}`),
     ];
   }
 

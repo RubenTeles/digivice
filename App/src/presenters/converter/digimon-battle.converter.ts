@@ -1,9 +1,5 @@
 import { ImageCatalog } from "@/catalogs/image.catalog";
-import {
-  DigimonElementIcon,
-  DigimonSpeciesIcon,
-  EnemySourceIcon,
-} from "@/constants/icon.constant";
+import { DigimonElementIcon, DigimonSpeciesIcon, EnemySourceIcon } from "@/constants/icon.constant";
 import type { Vital } from "@/models";
 import { EnemyConditionConverter } from "@/presenters/converter/enemy-condition.converter";
 import { EnemyStatConverter } from "@/presenters/converter/enemy-stat.converter";

@@ -34,10 +34,7 @@ const equipmentNote = computed(() => {
 
 <template>
   <div class="flex flex-col min-h-0 overflow-y-auto custom-scroll text-xs text-center gap-4">
-    <div
-      v-if="equipmentType"
-      class="flex flex-col gap-1"
-    >
+    <div v-if="equipmentType" class="flex flex-col gap-1">
       <p class="bg-[#002266]/40 px-2 py-1 rounded-sm text-blue-500 uppercase font-bold">
         {{ $t("enemy.type") }}
       </p>
@@ -46,10 +43,7 @@ const equipmentNote = computed(() => {
       </p>
     </div>
 
-    <div
-      v-if="equipment.attributes.length > 0"
-      class="flex flex-col gap-1"
-    >
+    <div v-if="equipment.attributes.length > 0" class="flex flex-col gap-1">
       <p class="bg-[#002266]/40 px-2 py-1 rounded-sm text-blue-500 uppercase font-bold">
         {{ $t("enemy.attributes") }}
       </p>
@@ -59,7 +53,9 @@ const equipmentNote = computed(() => {
           :key="attribute.attribute"
           class="flex justify-between text-xs items-center px-2 py-1 rounded-sm"
         >
-          <span class="text-gray-100 uppercase">{{ t("stat." + attribute.attribute.toLowerCase()) }}</span>
+          <span class="text-gray-100 uppercase">{{
+            t("stat." + attribute.attribute.toLowerCase())
+          }}</span>
           <span
             :class="attribute.type === '+' ? 'text-green-400' : 'text-red-400'"
             class="font-bold tracking-wider"
@@ -89,10 +85,7 @@ const equipmentNote = computed(() => {
       </p>
     </div>
 
-    <p
-      v-if="equipmentNote"
-      class="mt-2 text-gray-400 text-[10px] italic leading-tight"
-    >
+    <p v-if="equipmentNote" class="mt-2 text-gray-400 text-[10px] italic leading-tight">
       "{{ equipmentNote }}"
     </p>
   </div>

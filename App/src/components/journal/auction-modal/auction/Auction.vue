@@ -12,13 +12,7 @@ defineProps<{
 
 <template>
   <AuctionAvailable v-if="auction.status === 'available'" :auction="auction" />
-  <AuctionNotYetOccurred
-    v-else-if="auction.status === 'notYetOccurred'"
-    :auction="auction"
-  />
-  <AuctionParticipated
-    v-else-if="auction.status === 'participated'"
-    :auction="auction"
-  />
+  <AuctionNotYetOccurred v-else-if="auction.status === 'notYetOccurred'" :auction="auction" />
+  <AuctionParticipated v-else-if="auction.status === 'participated'" :auction="auction" />
   <AuctionMissed v-else-if="auction.status === 'missed'" :auction="auction" />
 </template>

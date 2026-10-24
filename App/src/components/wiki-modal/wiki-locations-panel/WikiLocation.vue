@@ -68,11 +68,7 @@ defineExpose({
       class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-1 w-full"
     >
       <span class="min-w-0 text-[10px] font-bold tracking-wide leading-tight text-left">
-        <span
-          v-for="(line, lineIndex) in locationLabelLines"
-          :key="lineIndex"
-          class="block"
-        >
+        <span v-for="(line, lineIndex) in locationLabelLines" :key="lineIndex" class="block">
           {{ line }}
         </span>
       </span>

@@ -37,18 +37,9 @@ const handleOpenCardShop = (cardShopId: string): void => {
 
 <template>
   <div class="p-4 flex flex-col gap-4 h-full min-h-0 overflow-hidden">
-    <WikiCardDetails
-      v-if="viewModel !== null"
-      :card="viewModel.card"
-    />
-    <div
-      v-if="viewModel !== null"
-      class="flex gap-4 shrink-0 w-full"
-    >
-      <WikiCardBoosters
-        :booster-ids="viewModel.boosters"
-        @open-drop="handleOpenDrop"
-      />
+    <WikiCardDetails v-if="viewModel !== null" :card="viewModel.card" />
+    <div v-if="viewModel !== null" class="flex gap-4 shrink-0 w-full">
+      <WikiCardBoosters :booster-ids="viewModel.boosters" @open-drop="handleOpenDrop" />
       <WikiCardShops
         :card-shops="viewModel.cardShops"
         :main-quest="mainQuest"

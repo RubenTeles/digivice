@@ -24,29 +24,16 @@ const handleSelect = (cardShopId: string): void => {
 </script>
 
 <template>
-  <section
-    class="shrink-0 w-1/2 bg-[#000a1a] border border-blue-900/50 rounded p-4 shadow-inner"
-  >
+  <section class="shrink-0 w-1/2 bg-[#000a1a] border border-blue-900/50 rounded p-4 shadow-inner">
     <h4 class="text-[10px] uppercase font-bold tracking-widest text-blue-500 mb-3">
       {{ $t("enemy.purchasableAt") }}
     </h4>
 
-    <p
-      v-if="shops.length === 0"
-      class="text-xs text-gray-400 italic"
-    >
+    <p v-if="shops.length === 0" class="text-xs text-gray-400 italic">
       {{ $t("enemy.purchasableAtNone") }}
     </p>
-    <div
-      v-else
-      class="flex flex-wrap gap-2"
-    >
-      <WikiCardShop
-        v-for="shop in shops"
-        :key="shop.id"
-        :card-shop="shop"
-        @select="handleSelect"
-      />
+    <div v-else class="flex flex-wrap gap-2">
+      <WikiCardShop v-for="shop in shops" :key="shop.id" :card-shop="shop" @select="handleSelect" />
     </div>
   </section>
 </template>

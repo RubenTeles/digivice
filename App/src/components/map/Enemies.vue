@@ -79,16 +79,29 @@ const openNpcWikiModal = (npcId: string) => {
             v-if="enemy.boss"
             class="ml-0.5 text-[12px] 2xl:text-[16px] -translate-y-0.5"
             aria-hidden="true"
-          >{{ EnemySourceIcon.boss }}</span>
-          <span v-if="enemy.walking && !enemy.boss" class="ml-0.5 text-[12px] 2xl:text-[16px] -translate-y-0.5" aria-hidden="true">{{ EnemySourceIcon.walking }}</span>
-          <span v-if="enemy.fishing && !enemy.boss" class="ml-0.5 text-[12px] 2xl:text-[16px] -translate-y-0.5" aria-hidden="true">{{ EnemySourceIcon.fishing }}</span>
-          <span v-if="enemy.kickingTree && !enemy.boss" class="ml-0.5 text-[12px] 2xl:text-[16px] -translate-y-0.5" aria-hidden="true">{{ EnemySourceIcon.kickingTree }}</span>
+            >{{ EnemySourceIcon.boss }}</span
+          >
+          <span
+            v-if="enemy.walking && !enemy.boss"
+            class="ml-0.5 text-[12px] 2xl:text-[16px] -translate-y-0.5"
+            aria-hidden="true"
+            >{{ EnemySourceIcon.walking }}</span
+          >
+          <span
+            v-if="enemy.fishing && !enemy.boss"
+            class="ml-0.5 text-[12px] 2xl:text-[16px] -translate-y-0.5"
+            aria-hidden="true"
+            >{{ EnemySourceIcon.fishing }}</span
+          >
+          <span
+            v-if="enemy.kickingTree && !enemy.boss"
+            class="ml-0.5 text-[12px] 2xl:text-[16px] -translate-y-0.5"
+            aria-hidden="true"
+            >{{ EnemySourceIcon.kickingTree }}</span
+          >
         </button>
       </div>
-      <div
-        v-if="hasNpcs"
-        class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1"
-      >
+      <div v-if="hasNpcs" class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
         <button
           v-for="npc in npcs"
           :key="npc.id"
@@ -106,12 +119,14 @@ const openNpcWikiModal = (npcId: string) => {
             v-if="npc.availableBattleKind === 'card'"
             class="ml-0.5 text-[12px] 2xl:text-[16px] -translate-y-0.5 font-emoji filter-[sepia(1)_saturate(5)_hue-rotate(165deg)_brightness(1.05)] drop-shadow-[0_0_3px_rgba(34,211,238,0.7)]"
             aria-hidden="true"
-          >{{ NpcBattleKindIcon.card }}</span>
+            >{{ NpcBattleKindIcon.card }}</span
+          >
           <span
             v-if="npc.availableBattleKind === 'digimon'"
             class="ml-0.5 text-[12px] 2xl:text-[16px] -translate-y-0.5 font-emoji"
             aria-hidden="true"
-          >{{ NpcBattleKindIcon.digimon }}</span>
+            >{{ NpcBattleKindIcon.digimon }}</span
+          >
         </button>
       </div>
     </div>

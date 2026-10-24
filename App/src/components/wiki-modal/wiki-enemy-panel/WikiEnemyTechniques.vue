@@ -32,9 +32,7 @@ const techniqueLabel = computed(() => {
   >
     <div class="flex flex-col gap-5">
       <div class="flex flex-col gap-1.5">
-        <h4
-          class="text-[10px] uppercase font-bold tracking-widest text-blue-500 w-full"
-        >
+        <h4 class="text-[10px] uppercase font-bold tracking-widest text-blue-500 w-full">
           {{ $t("enemy.regularAttack") }}
         </h4>
         <span class="text-gray-200 text-xs">
@@ -43,9 +41,7 @@ const techniqueLabel = computed(() => {
       </div>
 
       <div class="flex flex-col gap-1.5">
-        <h4
-          class="text-[10px] uppercase font-bold tracking-widest text-blue-500 w-full"
-        >
+        <h4 class="text-[10px] uppercase font-bold tracking-widest text-blue-500 w-full">
           {{ $t("enemy.technique") }}
         </h4>
         <span class="text-gray-200 text-xs">

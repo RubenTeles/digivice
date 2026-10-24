@@ -60,8 +60,10 @@ const modifierColorClass = computed(() => {
           <template v-if="hasBattleDelta">
             <template v-if="isBuff"> + </template>
             <template v-else> − </template>
-            <span class="font-bold" :class="modifierColorClass">{{ deltaMagnitude }}</span>
-          </template>)
+            <span class="font-bold" :class="modifierColorClass">{{
+              deltaMagnitude
+            }}</span> </template
+          >)
         </span>
       </div>
 

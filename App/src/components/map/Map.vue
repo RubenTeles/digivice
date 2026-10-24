@@ -88,10 +88,7 @@ const closeWikiModal = () => {
     <div class="dw3-scan-corner bottom-right" />
 
     <DigimonBattle v-if="isInBattle" @open-enemy-modal="openWikiModal" />
-    <CardBattle
-      v-else-if="isInCardBattle"
-      @open-npc-modal="openWikiModalForNpc"
-    />
+    <CardBattle v-else-if="isInCardBattle" @open-npc-modal="openWikiModalForNpc" />
     <SeabedMap
       v-else-if="mapViewModel.locationRegion === 'seabed'"
       @open-enemy-modal="openWikiModal"

@@ -184,9 +184,7 @@ function onHideTooltip(): void {
       />
     </div>
 
-    <div
-      class="relative z-1 flex-1 min-h-0 overflow-visible -mx-3 -mb-1.5 w-[calc(100%+1.5rem)]"
-    >
+    <div class="relative z-1 flex-1 min-h-0 overflow-visible -mx-3 -mb-1.5 w-[calc(100%+1.5rem)]">
       <DigimonBattleEnemyImage
         v-if="digimonBattleViewModel.enemyImageUrl"
         :image-url="digimonBattleViewModel.enemyImageUrl"

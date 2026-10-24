@@ -48,18 +48,12 @@ const cardNote = computed(() => {
     />
 
     <template v-if="isActionCard">
-      <p
-        v-if="cardNote !== ''"
-        class="text-xs text-gray-400 italic"
-      >
+      <p v-if="cardNote !== ''" class="text-xs text-gray-400 italic">
         {{ cardNote }}
       </p>
     </template>
     <template v-else>
-      <p
-        v-if="card.points"
-        class="text-gray-100 uppercase font-bold"
-      >
+      <p v-if="card.points" class="text-gray-100 uppercase font-bold">
         AP {{ card.points.ap }} / HP {{ card.points.hp }}
       </p>
       <p class="text-gray-100 uppercase font-bold">

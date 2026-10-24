@@ -14,7 +14,9 @@ import type { CoordinatesRaw } from "@/repositories/tables/raws/quest/coordinate
 
 export class MapService {
   public static getSeabedEnemies(seabedRoute: number | null): string[] {
-    return seabedRoute === null ? [] : SeabedRoutesRepository.getEnemiesByRoute(String(seabedRoute));
+    return seabedRoute === null
+      ? []
+      : SeabedRoutesRepository.getEnemiesByRoute(String(seabedRoute));
   }
 
   public static getWalkingEnemies(mapId: string, lastCompletedMainQuestStep: number): string[] {
@@ -34,14 +36,8 @@ export class MapService {
     return MapRepository.getMapById(mapId).enemies?.kickingTree ?? [];
   }
 
-  public static getMapOpponentIds(
-    mapId: string,
-    lastCompletedMainQuestStep: number,
-  ): string[] {
-    const npcIds = MapNpcRepository.getIdsByMapId(
-      mapId,
-      lastCompletedMainQuestStep,
-    );
+  public static getMapOpponentIds(mapId: string, lastCompletedMainQuestStep: number): string[] {
+    const npcIds = MapNpcRepository.getIdsByMapId(mapId, lastCompletedMainQuestStep);
     const tamerIds = MapTamerRepository.getIdsByMapId(mapId);
     const duelIslandIds = MapDuelIslandRepository.getIdsByMapId(mapId);
 

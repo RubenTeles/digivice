@@ -90,9 +90,7 @@ const localMapSlides = computed(() => {
         :pin-dot-size-px="MapFrameQuestWorldPinDotSizePx"
         pin-label-class="text-[9px] px-3 py-1"
         :pin-label-vertical-offset-px="MapFrameQuestWorldPinLabelVerticalOffsetPx"
-        :pin-label-vertical-threshold-percent="
-          MapFrameQuestWorldPinLabelVerticalThresholdPercent
-        "
+        :pin-label-vertical-threshold-percent="MapFrameQuestWorldPinLabelVerticalThresholdPercent"
       />
 
       <MapFrame

@@ -11,9 +11,7 @@ export function useMapFrame(
       return Math.round(width.value * 0.75);
     }
 
-    return Math.round(
-      width.value * (imageNaturalSize.value.height / imageNaturalSize.value.width),
-    );
+    return Math.round(width.value * (imageNaturalSize.value.height / imageNaturalSize.value.width));
   });
 
   const mapImageFrameStyle = computed(() => {

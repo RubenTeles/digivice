@@ -53,7 +53,9 @@ const additionalInformation = computed(() => {
         {{ $t("enemy.resaleValueLabel") }}
       </p>
       <p>
-        <span class="text-gray-100 uppercase font-bold">{{ consumableItem.resaleValue }}&nbsp;</span>
+        <span class="text-gray-100 uppercase font-bold"
+          >{{ consumableItem.resaleValue }}&nbsp;</span
+        >
         <span class="text-blue-500 uppercase font-bold">{{ $t("player.bits") }}</span>
       </p>
     </div>
@@ -70,20 +72,11 @@ const additionalInformation = computed(() => {
       </p>
     </div>
 
-    <div
-      v-if="note !== '' || additionalInformation !== ''"
-      class="flex flex-col gap-4"
-    >
-      <p
-        v-if="note !== ''"
-        class="text-violet-400 font-bold"
-      >
+    <div v-if="note !== '' || additionalInformation !== ''" class="flex flex-col gap-4">
+      <p v-if="note !== ''" class="text-violet-400 font-bold">
         {{ note }}
       </p>
-      <p
-        v-if="additionalInformation !== ''"
-        class="text-gray-400 italic leading-tight"
-      >
+      <p v-if="additionalInformation !== ''" class="text-gray-400 italic leading-tight">
         {{ additionalInformation }}
       </p>
     </div>
