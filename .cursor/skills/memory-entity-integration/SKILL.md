@@ -59,13 +59,13 @@ Paths under `App/src/memory/` unless stated otherwise. Mirror each
 
 - [ ] `resources/{entity-kebab}.resource.ts` — raw `number`s, no domain rules
 - [ ] `readers/{entity-kebab}.reader.ts` — `static read(snapshot, addresses)`, stateless
-- [ ] `src/models/{entity-kebab}.ts` — domain model; export it in `src/models/index.ts`
+- [ ] `src/state/models/{entity-kebab}.ts` — domain model; export it in `src/state/models/index.ts`
 - [ ] `assemblers/{entity-kebab}.assembler.ts` — `static assemble(resource)`, pure, sentinel rules from `.cursor/rules/digivice-business.mdc`
 - [ ] `providers/{entity-kebab}.provider.ts` — `static get(snapshot)`: repository → reader → assembler
 
 ### 3. State
 
-- [ ] `src/models/state.ts` — `{entity}: {Entity}`
+- [ ] `src/state/models/state.ts` — `{entity}: {Entity}`
 - [ ] `state.composer.ts` — `{entity}: {Entity}Provider.get(snapshot)`
 - [ ] Lists inside the entity → key per list property in `ListKeys` (`patch/state.patcher.ts`); list items need a stable key (`id`, `index`, …)
 - [ ] **SKIP** `useGameStore`, `GameLoop` and `StatePatcher` logic — they work on the whole `State`
@@ -85,7 +85,7 @@ Conventions: skill `frontend-memory-tests`.
 ### 5. UI (only when the user asks)
 
 Components read through `useGameState()`; derived information in
-`stores/selectors/`, composition with static data in presenters.
+`state/stores/selectors/`, composition with static data in presenters.
 
 ### 6. Docs
 

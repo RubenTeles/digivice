@@ -1,4 +1,4 @@
-import type { Digimon, DigimonSlot, Party } from "@/models";
+import type { Digimon, DigimonSlot, Party } from "@/state/models";
 
 type OccupiedDigimonSlot = DigimonSlot & { digimonId: number; digimon: Digimon };
 

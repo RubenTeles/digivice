@@ -1,9 +1,9 @@
-import { AppConfig } from "@/config";
-import { memoryLogger } from "@/logger/logger";
+import { AppConfig } from "@/core/config";
+import { memoryLogger } from "@/core/logger/logger";
 import { GameLoop } from "@/memory/loop/game.loop";
 import { SnapshotProviderFactory } from "@/memory/loop/snapshot-provider.factory";
 import { StateComposer } from "@/memory/state.composer";
-import { useGameStore } from "@/stores/use-game-store";
+import { useGameStore } from "@/state/stores/use-game-store";
 
 export function initializeMemoryLoop(): void {
   const snapshotProvider = SnapshotProviderFactory.create(

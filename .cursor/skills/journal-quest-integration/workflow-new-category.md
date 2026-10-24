@@ -27,7 +27,7 @@ Paths under `App/src/` unless stated otherwise.
 | `memory/providers/journal.provider.ts` | `{category}: AddressesRepository.getAll{Category}()` in `getAddresses` |
 | `memory/resources/journal.resource.ts` | `{category}: QuestResource[]` |
 | `memory/readers/journal.reader.ts` | `{category}: JournalReader.readQuests(snapshot, addresses.{category})` |
-| `models/journal/journal.ts` | `{category}: Quest[]` |
+| `state/models/journal/journal.ts` | `{category}: Quest[]` |
 | `memory/assemblers/journal.assembler.ts` | `resource.{category}.map((quest) => QuestAssembler.assemble(quest))` (or the category assembler) |
 | `memory/patch/state.patcher.ts` | `{category}: "id"` in `ListKeys` |
 
@@ -46,31 +46,31 @@ Conventions: skill `frontend-memory-tests`.
 
 ## 4. Static quest data (per quest)
 
-- [ ] `database/quest/{category-kebab}/{id-kebab}.json`
-- [ ] `repositories/tables/quest/{category-kebab}/{id-kebab}.table.ts` → `export type XxxTable = QuestRaw`
-- [ ] `i18n/locales/{en-US,pt-BR}/quest/{category-kebab}/{id-kebab}.json`
-- [ ] Register imports in both `i18n/locales/{en-US,pt-BR}/index.ts`
+- [ ] `content/database/quest/{category-kebab}/{id-kebab}.json`
+- [ ] `game-data/repositories/tables/quest/{category-kebab}/{id-kebab}.table.ts` → `export type XxxTable = QuestRaw`
+- [ ] `content/locales/{en-US,pt-BR}/quest/{category-kebab}/{id-kebab}.json`
+- [ ] Register imports in both `content/locales/{en-US,pt-BR}/index.ts`
 
 ## 5. Repository
 
-`repositories/quest.repository.ts`: import JSON + table types; add
+`game-data/repositories/quest.repository.ts`: import JSON + table types; add
 `get{Category}Raw(): QuestRaw[]`. Array order = **UI display order**.
 
 ## 6. ViewModel + presenters
 
 | File | Change |
 |------|--------|
-| `viewmodels/quest/journal.viewmodel.ts` | new collection field |
-| `presenters/journal/journal.presenter.ts` | map `get{Category}Raw()` → `QuestModalPresenter.getQuestViewModel` + filter nulls |
-| `presenters/journal/quest-modal.presenter.ts` | new `find(raw => raw.id === questId)` branch with `calculateNewStatus: true` |
+| `ui/viewmodels/quest/journal.viewmodel.ts` | new collection field |
+| `ui/presenters/journal/journal.presenter.ts` | map `get{Category}Raw()` → `QuestModalPresenter.getQuestViewModel` + filter nulls |
+| `ui/presenters/journal/quest-modal.presenter.ts` | new `find(raw => raw.id === questId)` branch with `calculateNewStatus: true` |
 
-`presenters/converter/quest.converter.ts`: **SKIP**.
+`ui/presenters/converter/quest.converter.ts`: **SKIP**.
 
 ## 7. UI
 
-- [ ] `components/journal/Journal.vue` — `JournalQuestsSection` in the fixed order, `accent-color="{color}"`, `v-for` over `journalViewModel.{category}`, `display-mode="side"` on each `JournalQuestCard`; `defaultExpanded` omitted (closed)
-- [ ] `components/journal/journal-section-palette.ts` — extend `JournalSectionAccentColor` and copy the `teal` entry changing only the color name
-- [ ] `i18n/locales/{en-US,pt-BR}/journal.json` — section title key `journal.{category}`
+- [ ] `ui/components/journal/Journal.vue` — `JournalQuestsSection` in the fixed order, `accent-color="{color}"`, `v-for` over `journalViewModel.{category}`, `display-mode="side"` on each `JournalQuestCard`; `defaultExpanded` omitted (closed)
+- [ ] `ui/components/journal/journal-section-palette.ts` — extend `JournalSectionAccentColor` and copy the `teal` entry changing only the color name
+- [ ] `content/locales/{en-US,pt-BR}/journal.json` — section title key `journal.{category}`
 
 ## 8. Manual verification
 

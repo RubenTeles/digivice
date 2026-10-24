@@ -1,4 +1,4 @@
-import type { Npcs } from "@/models";
+import type { Npcs } from "@/state/models";
 
 export interface NpcBattleResource {
   id: string;

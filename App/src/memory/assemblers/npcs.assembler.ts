@@ -1,4 +1,4 @@
-import type { Npc, Npcs } from "@/models";
+import type { Npc, Npcs } from "@/state/models";
 import type { NpcResource, NpcsResource } from "@/memory/resources/npcs.resource";
 
 export class NpcsAssembler {

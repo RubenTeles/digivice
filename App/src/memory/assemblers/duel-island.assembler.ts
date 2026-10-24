@@ -1,4 +1,4 @@
-import type { Quest } from "@/models";
+import type { Quest } from "@/state/models";
 import { QuestAssembler } from "@/memory/assemblers/quest.assembler";
 import type { QuestResource } from "@/memory/resources/journals/quest.resource";
 

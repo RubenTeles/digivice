@@ -1,4 +1,4 @@
-import type { Player } from "@/models";
+import type { Player } from "@/state/models";
 import { PlayerAssembler } from "@/memory/assemblers/player.assembler";
 import { PlayerReader } from "@/memory/readers/player.reader";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";

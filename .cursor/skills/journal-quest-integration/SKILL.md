@@ -35,7 +35,7 @@ types, readers, assemblers, presenters or card components.
 | Read | `QuestReader`, `QuestResource` |
 | Assemble | `QuestAssembler` (pass-through), `MainQuestAssembler`, `DuelIslandAssembler` |
 | Models | `Quest`, `Step`, `Requisite` |
-| Presenter converter | `QuestConverter` (`presenters/converter/quest.converter.ts`) |
+| Presenter converter | `QuestConverter` (`ui/presenters/converter/quest.converter.ts`) |
 | UI | `JournalQuestCard`, `JournalQuestsSection`, `QuestModal` tree |
 
 ## Pick the workflow
@@ -54,7 +54,7 @@ Same byte as an existing tracker?  → Likely another bit; still a separate ques
 
 ## Category map (all wired)
 
-| Category | Definitions (`memory/definitions/Quests/`) | `Journal` property | Assembler | Repository getter | Static JSON (`database/quest/`) | Static getter | Accent |
+| Category | Definitions (`memory/definitions/Quests/`) | `Journal` property | Assembler | Repository getter | Static JSON (`content/database/quest/`) | Static getter | Accent |
 |----------|--------------------------------------------|--------------------|-----------|-------------------|---------------------------------|---------------|--------|
 | Main quest | `MainQuestAddresses.json` | `mainQuest` (single) | `MainQuestAssembler` (cascade) | `getMainQuest()` | `main-quest.json` | `getMainQuestRaw()` | yellow (hardcoded) |
 | Side quests | `SideQuests/` | `sideQuests` | `QuestAssembler` | `getAllSideQuests()` | `side-quest/` | `getSideQuestsRaw()` | `emerald` |
@@ -63,7 +63,7 @@ Same byte as an existing tracker?  → Likely another bit; still a separate ques
 | Duel Island | `DuelIsland/` | `duelIsland` | `DuelIslandAssembler` (normalization) | `getAllDuelIsland()` | `duel-island/` | `getDuelIslandRaw()` | `sky` |
 
 Repository getters live in `memory/repositories/addresses.repository.ts`; static
-getters in `repositories/quest.repository.ts`. Current quests: [status.md](status.md).
+getters in `game-data/repositories/quest.repository.ts`. Current quests: [status.md](status.md).
 File map: [pipeline.md](pipeline.md).
 
 **Aside order (fixed):** Main quest → Auction card → Side → Legendary → DRI → Duel Island.
@@ -112,7 +112,7 @@ A section **only exists when it has at least one quest**. No empty-state UI.
 ## Naming and i18n
 
 - Static files kebab-case (`dri-agent-patamon.json`); definitions PascalCase (`DriAgentPatamonAddresses.json`).
-- `i18n/locales/{en-US,pt-BR}/quest/{category}/{id-kebab}.json`, registered in each locale `index.ts`. Section titles in `journal.json`.
+- `content/locales/{en-US,pt-BR}/quest/{category}/{id-kebab}.json`, registered in each locale `index.ts`. Section titles in `journal.json`.
 - Quest texts use i18n; **Digimon/digievolution names stay literal** (proper names).
 
 ---
@@ -136,15 +136,15 @@ Conventions: skill `frontend-memory-tests`.
 
 ### 3. Static quest data
 
-- [ ] `database/quest/{category}/{id-kebab}.json` — mirror a quest in the same folder
-- [ ] `repositories/tables/quest/{category}/{id-kebab}.table.ts` → `export type {Name}Table = QuestRaw`
-- [ ] `i18n/locales/en-US/quest/{category}/{id-kebab}.json`
-- [ ] `i18n/locales/pt-BR/quest/{category}/{id-kebab}.json`
-- [ ] Import + spread in `i18n/locales/{en-US,pt-BR}/index.ts`
+- [ ] `content/database/quest/{category}/{id-kebab}.json` — mirror a quest in the same folder
+- [ ] `game-data/repositories/tables/quest/{category}/{id-kebab}.table.ts` → `export type {Name}Table = QuestRaw`
+- [ ] `content/locales/en-US/quest/{category}/{id-kebab}.json`
+- [ ] `content/locales/pt-BR/quest/{category}/{id-kebab}.json`
+- [ ] Import + spread in `content/locales/{en-US,pt-BR}/index.ts`
 
 ### 4. Repository
 
-- [ ] `repositories/quest.repository.ts` — import JSON + table type; append to the category getter in the **desired UI position** (default: end)
+- [ ] `game-data/repositories/quest.repository.ts` — import JSON + table type; append to the category getter in the **desired UI position** (default: end)
 
 **SKIP:** `Journal.vue`, palette, `journal.viewmodel.ts`, `journal.presenter.ts`,
 `quest-modal.presenter.ts` — all iterate the full repository array per category.

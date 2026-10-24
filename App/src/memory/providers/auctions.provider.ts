@@ -1,4 +1,4 @@
-import type { Auctions } from "@/models";
+import type { Auctions } from "@/state/models";
 import { AuctionsAssembler } from "@/memory/assemblers/auctions.assembler";
 import { AuctionsReader } from "@/memory/readers/auctions.reader";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";

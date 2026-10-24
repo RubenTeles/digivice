@@ -1,4 +1,4 @@
-import type { ImportantItems } from "@/models";
+import type { ImportantItems } from "@/state/models";
 import type { ImportantItemsResource } from "@/memory/resources/important-items.resource";
 
 export class ImportantItemsAssembler {

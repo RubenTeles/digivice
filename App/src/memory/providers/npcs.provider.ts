@@ -1,4 +1,4 @@
-import type { Npcs } from "@/models";
+import type { Npcs } from "@/state/models";
 import { NpcsAssembler } from "@/memory/assemblers/npcs.assembler";
 import { NpcsReader } from "@/memory/readers/npcs.reader";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";

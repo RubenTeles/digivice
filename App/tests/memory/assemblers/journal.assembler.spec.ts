@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { Quest } from "@/models";
+import type { Quest } from "@/state/models";
 import { JournalAssembler } from "@/memory/assemblers/journal.assembler";
 import type { JournalResource } from "@/memory/resources/journal.resource";
 import type { QuestResource } from "@/memory/resources/journals/quest.resource";

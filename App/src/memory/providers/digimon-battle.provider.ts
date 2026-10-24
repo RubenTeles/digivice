@@ -1,4 +1,4 @@
-import type { DigimonBattle } from "@/models";
+import type { DigimonBattle } from "@/state/models";
 import { DigimonBattleAssembler } from "@/memory/assemblers/digimon-battle.assembler";
 import { DigimonBattleReader } from "@/memory/readers/digimon-battle.reader";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";

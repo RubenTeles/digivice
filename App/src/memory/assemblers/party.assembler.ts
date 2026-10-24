@@ -1,4 +1,4 @@
-import type { DigimonSlot, Party } from "@/models";
+import type { DigimonSlot, Party } from "@/state/models";
 import { DigimonAssembler } from "@/memory/assemblers/digimon.assembler";
 import type { PartyResource } from "@/memory/resources/party.resource";
 import type { DigimonSlotResource } from "@/memory/resources/parties/digimon-slot.resource";

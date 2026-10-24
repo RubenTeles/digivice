@@ -1,5 +1,5 @@
-import type { State } from "@/models";
-import { storeLogger } from "@/logger/logger";
+import type { State } from "@/state/models";
+import { storeLogger } from "@/core/logger/logger";
 
 type PlainObject = Record<string, unknown>;
 

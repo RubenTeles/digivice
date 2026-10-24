@@ -1,4 +1,4 @@
-import type { Journal } from "@/models";
+import type { Journal } from "@/state/models";
 import { DuelIslandAssembler } from "@/memory/assemblers/duel-island.assembler";
 import { MainQuestAssembler } from "@/memory/assemblers/main-quest.assembler";
 import { QuestAssembler } from "@/memory/assemblers/quest.assembler";

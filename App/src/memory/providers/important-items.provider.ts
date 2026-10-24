@@ -1,4 +1,4 @@
-import type { ImportantItems } from "@/models";
+import type { ImportantItems } from "@/state/models";
 import { ImportantItemsAssembler } from "@/memory/assemblers/important-items.assembler";
 import { ImportantItemsReader } from "@/memory/readers/important-items.reader";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";

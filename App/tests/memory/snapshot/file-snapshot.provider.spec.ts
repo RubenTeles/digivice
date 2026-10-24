@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { EmulatorConnectionErrorCodes } from "@/constants/emulator-connection-error-code.constant";
+import { EmulatorConnectionErrorCodes } from "@/shared/constants/emulator-connection-error-code.constant";
 import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.error";
 import { FileSnapshotProvider } from "@/memory/snapshot/file-snapshot.provider";
 import { FakeSnapshotBuilder } from "../../helpers/fake-snapshot.builder";

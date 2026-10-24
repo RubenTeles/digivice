@@ -31,7 +31,7 @@ graph TD
 
 - **Responsabilidades:**
   - **Camada de memória** (`App/src/memory/`, readers + assemblers) lê a RAM e normaliza o necessário para que cada dado tenha significado próprio (sentinela → `null`, valor inválido ajustado — ex.: negativo → `0`). Não gera informação composta.
-  - **Selectors** geram informação nova a partir de dados já consistentes, em `stores/selectors/` (ex.: `isInBattle` = `mapId` + `inBattle.hp.max`).
+  - **Selectors** geram informação nova a partir de dados já consistentes, em `state/stores/selectors/` (ex.: `isInBattle` = `mapId` + `inBattle.hp.max`).
   - Composição com dados estáticos (repositórios, equipamentos, i18n) fica em presenters/services, não em selectors.
 
 - **Game loop:** `GameLoop` (TS) lê o snapshot via `read_ram` e compõe o `State` via `StateComposer` a cada `AppConfig.memory.pollingIntervalMs` (**500ms**). Saúde na `useGameStore`: `Loading` até o primeiro tick, `Healthy` com estado, `Error` (código do Rust, `memory_read_failed`, `save_not_loaded` ou `state_compose_failed`) limpa o estado.

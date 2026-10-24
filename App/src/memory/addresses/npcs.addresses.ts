@@ -1,4 +1,4 @@
-import type { Npcs } from "@/models";
+import type { Npcs } from "@/state/models";
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface NpcBattleAddressesRaw {

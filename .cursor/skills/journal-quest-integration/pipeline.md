@@ -13,7 +13,7 @@ memory/definitions/Quests/**/*.json
 useGameState().journal
   → JournalPresenter
   → QuestRepository (static JSON Raw)
-  → QuestModalPresenter + presenters/converter/QuestConverter
+  → QuestModalPresenter + ui/presenters/converter/QuestConverter
   → JournalViewModel
   → Journal.vue → JournalQuestsSection + JournalQuestCard
   → QuestModal (on card click)
@@ -34,25 +34,25 @@ Paths under `App/src/`.
 | Assemblers | `memory/assemblers/journal.assembler.ts`, `quest.assembler.ts`, `main-quest.assembler.ts`, `duel-island.assembler.ts` |
 | Provider | `memory/providers/journal.provider.ts` |
 | Patcher list keys | `memory/patch/state.patcher.ts` (`ListKeys`) |
-| Models | `models/journal/` |
-| Static JSON | `database/quest/` |
-| Static repository | `repositories/quest.repository.ts` |
-| Table types | `repositories/tables/quest/` |
-| Raw types | `repositories/tables/raws/quest/` |
-| Presenters | `presenters/journal/` |
-| Presenter converters | `presenters/converter/` |
-| ViewModels | `viewmodels/quest/` |
-| Journal UI | `components/journal/` |
-| Section palette | `components/journal/journal-section-palette.ts` |
-| i18n journal | `i18n/locales/{en-US,pt-BR}/journal.json` |
-| i18n quests | `i18n/locales/{en-US,pt-BR}/quest/` |
+| Models | `state/models/journal/` |
+| Static JSON | `content/database/quest/` |
+| Static repository | `game-data/repositories/quest.repository.ts` |
+| Table types | `game-data/repositories/tables/quest/` |
+| Raw types | `game-data/repositories/tables/raws/quest/` |
+| Presenters | `ui/presenters/journal/` |
+| Presenter converters | `ui/presenters/converter/` |
+| ViewModels | `ui/viewmodels/quest/` |
+| Journal UI | `ui/components/journal/` |
+| Section palette | `ui/components/journal/journal-section-palette.ts` |
+| i18n journal | `content/locales/{en-US,pt-BR}/journal.json` |
+| i18n quests | `content/locales/{en-US,pt-BR}/quest/` |
 
 ## Two converter contexts (do not mix)
 
 | Context | Folder | Direction |
 |---------|--------|-----------|
 | Definitions | `memory/converters/` | definitions `Raw` (PascalCase JSON) → `*Addresses` |
-| Static/UI | `presenters/converter/` | static `Raw` + `Model` → `ViewModel` |
+| Static/UI | `ui/presenters/converter/` | static `Raw` + `Model` → `ViewModel` |
 
 ## Side quests reference (copy pattern)
 

@@ -1,4 +1,4 @@
-import type { Auctions } from "@/models";
+import type { Auctions } from "@/state/models";
 import type { AuctionsResource } from "@/memory/resources/auctions.resource";
 
 export class AuctionsAssembler {

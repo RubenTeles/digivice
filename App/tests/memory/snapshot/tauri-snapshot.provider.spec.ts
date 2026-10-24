@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { EmulatorConnectionErrorCodes } from "@/constants/emulator-connection-error-code.constant";
+import { EmulatorConnectionErrorCodes } from "@/shared/constants/emulator-connection-error-code.constant";
 import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.error";
 import { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
 import { TauriSnapshotProvider } from "@/memory/snapshot/tauri-snapshot.provider";

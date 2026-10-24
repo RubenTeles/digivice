@@ -1,4 +1,4 @@
-import type { Player } from "@/models";
+import type { Player } from "@/state/models";
 import type { PlayerResource } from "@/memory/resources/player.resource";
 
 export class PlayerAssembler {

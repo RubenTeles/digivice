@@ -1,4 +1,4 @@
-import type { DigievolutionSlot, Digimon, Equipments, StoredDigievolution } from "@/models";
+import type { DigievolutionSlot, Digimon, Equipments, StoredDigievolution } from "@/state/models";
 import type { DigimonResource } from "@/memory/resources/parties/digimon.resource";
 import type { DigievolutionSlotResource } from "@/memory/resources/parties/digimons/digievolution-slot.resource";
 import type { EquipmentsResource } from "@/memory/resources/parties/digimons/equipments.resource";

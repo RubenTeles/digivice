@@ -2,13 +2,13 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 
 import App from "./App.vue";
-import "@/extensions/math.extensions";
+import "@/core/extensions/math.extensions";
 import "@fontsource/press-start-2p/latin-400.css";
 import "@fontsource/exo-2/latin-400.css";
 import "@fontsource/exo-2/latin-700.css";
 import "./style.css";
 
-import i18n from "./i18n";
+import i18n from "@/core/i18n";
 import { initializeMemoryLoop } from "@/memory/loop/memory-loop.initializer";
 
 const app = createApp(App);

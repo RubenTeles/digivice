@@ -1,4 +1,4 @@
-import type { Journal } from "@/models";
+import type { Journal } from "@/state/models";
 import type { JournalAddresses } from "@/memory/addresses/journal.addresses";
 import { JournalAssembler } from "@/memory/assemblers/journal.assembler";
 import { JournalReader } from "@/memory/readers/journal.reader";

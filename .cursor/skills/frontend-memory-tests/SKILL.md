@@ -29,7 +29,7 @@ Mirror `src/` under `tests/`, one spec per production file:
 | Production | Test file |
 |---|---|
 | `src/memory/{folder}/{name}.ts` | `tests/memory/{folder}/{name}.spec.ts` |
-| `src/stores/use-game-store.ts` (`applyState`/`applyError` only) | `tests/stores/use-game-store.spec.ts` |
+| `src/state/stores/use-game-store.ts` (`applyState`/`applyError` only) | `tests/state/stores/use-game-store.spec.ts` |
 | Test helper `tests/helpers/{name}.ts` | `tests/helpers/{name}.spec.ts` |
 
 Helpers and fixtures:
@@ -88,7 +88,7 @@ Reference implementation: Player.
 | Composer | `tests/memory/state.composer.spec.ts` | Real fixture → full `State`; empty RAM → `SaveNotLoadedError`. |
 | Validator | `tests/memory/validators/{x}.validator.spec.ts` | `structuredClone` of a fixture's expected model, mutated per case; assert the violation text or `null`. |
 | Patcher | `tests/memory/patch/state.patcher.spec.ts` | Target and source from `structuredClone` of the fixture expected values, mutate the source; assert values and preserved references (`toBe`); `vi.spyOn(storeLogger, "warn")` for the ignored transitions. |
-| Store | `tests/stores/use-game-store.spec.ts` | `setActivePinia(createPinia())` in `beforeEach`; first tick, patch, error and recovery. |
+| Store | `tests/state/stores/use-game-store.spec.ts` | `setActivePinia(createPinia())` in `beforeEach`; first tick, patch, error and recovery. |
 | Loop | `tests/memory/loop/game.loop.spec.ts` | Fake `SnapshotProvider` (`{ read: vi.fn() }`), `vi.useFakeTimers()` + `await vi.advanceTimersByTimeAsync(ms)`; always `stop()` at the end of the test. |
 
 ## Corner-case pass (before finishing)

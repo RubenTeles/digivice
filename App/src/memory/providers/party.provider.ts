@@ -1,4 +1,4 @@
-import type { Party } from "@/models";
+import type { Party } from "@/state/models";
 import { PartyAssembler } from "@/memory/assemblers/party.assembler";
 import { PartyReader } from "@/memory/readers/party.reader";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";

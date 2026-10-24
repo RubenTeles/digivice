@@ -44,7 +44,7 @@ Paths are under `App/src/memory/` unless stated otherwise.
 
 ## Entity map
 
-| Entity | Definitions | Addresses / converter | Resource | Reader | Assembler | Model (`src/models/`) |
+| Entity | Definitions | Addresses / converter | Resource | Reader | Assembler | Model (`src/state/models/`) |
 |--------|-------------|-----------------------|----------|--------|-----------|-----------------------|
 | Player | `PlayerAddresses.json` | `addresses/player.addresses.ts`, `converters/player-addresses.converter.ts` | `resources/player.resource.ts` | `readers/player.reader.ts` | `assemblers/player.assembler.ts` | `player.ts` |
 | Party slots | `PartyAddresses.json` | `addresses/party.addresses.ts`, `addresses/parties/slot.addresses.ts` + converters | `resources/party.resource.ts`, `resources/parties/digimon-slot.resource.ts` | `readers/party.reader.ts` | `assemblers/party.assembler.ts` | `party/party.ts`, `party/digimon-slot.ts` |
@@ -123,7 +123,7 @@ rejects invalid values when the repository loads the file.
 
 ### 3. Model + assembler
 
-- [ ] Property on the model in `src/models/`
+- [ ] Property on the model in `src/state/models/`
 - [ ] Map in `*Assembler.assemble`, applying the sentinel rules if applicable (pure; never mutate the resource)
 
 ### 4. Patcher
@@ -144,7 +144,7 @@ Conventions: skill `frontend-memory-tests`.
 ### 6. UI (only when the user asks)
 
 Components read the field through `useGameState()`; derived information goes
-in `stores/selectors/`, composition with static data in presenters.
+in `state/stores/selectors/`, composition with static data in presenters.
 
 ### 7. Docs retrofeed (when the field came from an investigation)
 
@@ -158,7 +158,7 @@ in `stores/selectors/`, composition with static data in presenters.
 1. `definitions/PlayerAddresses.json` → `"SeabedRoute"`
 2. `addresses/player.addresses.ts` (`SeabedRoute` / `seabedRoute`) + `converters/player-addresses.converter.ts`
 3. `resources/player.resource.ts` + `readers/player.reader.ts` (`readByte`)
-4. `src/models/player.ts` + `assemblers/player.assembler.ts` (`0` → `null`)
+4. `src/state/models/player.ts` + `assemblers/player.assembler.ts` (`0` → `null`)
 5. `tests/memory/readers/player.reader.spec.ts`, `tests/memory/assemblers/player.assembler.spec.ts`, `field-central-park.expected.ts`
 
 Int16 → `X4` string: mirror `mapId` / `previousMapId`. Single byte: mirror `seabedRoute`.

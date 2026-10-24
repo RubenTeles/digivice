@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { EmulatorConnectionErrorCodes } from "@/constants/emulator-connection-error-code.constant";
+import { EmulatorConnectionErrorCodes } from "@/shared/constants/emulator-connection-error-code.constant";
 import { GameLoop, type GameLoopOptions } from "@/memory/loop/game.loop";
-import type { State } from "@/models";
+import type { State } from "@/state/models";
 import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.error";
 import { MemoryReadError } from "@/memory/snapshot/memory-read.error";
 import { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";

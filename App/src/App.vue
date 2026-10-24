@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from "vue";
-import Journal from "@/components/journal/Journal.vue";
-import Map from "@/components/map/Map.vue";
-import Footer from "@/components/footer/Footer.vue";
-import Party from "@/components/party/Party.vue";
-import AppHealthyScreen from "@/components/app-healthy/AppHealthyScreen.vue";
-import { useAppHealthyScreen } from "@/composables/use-app-healthy-screen";
+import Journal from "@/ui/components/journal/Journal.vue";
+import Map from "@/ui/components/map/Map.vue";
+import Footer from "@/ui/components/footer/Footer.vue";
+import Party from "@/ui/components/party/Party.vue";
+import AppHealthyScreen from "@/ui/components/app-healthy/AppHealthyScreen.vue";
+import { useAppHealthyScreen } from "@/ui/composables/use-app-healthy-screen";
 
 const healthyScreen = useAppHealthyScreen();
 
 // Checked inline so the production build drops the monitor chunk entirely.
 const DebugMonitor = import.meta.env.DEV
-  ? defineAsyncComponent(() => import("@/components/debug-monitor/DebugMonitor.vue"))
+  ? defineAsyncComponent(() => import("@/ui/components/debug-monitor/DebugMonitor.vue"))
   : null;
 </script>
 

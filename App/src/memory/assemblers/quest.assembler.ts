@@ -1,4 +1,4 @@
-import type { Quest, Requisite, Step } from "@/models";
+import type { Quest, Requisite, Step } from "@/state/models";
 import type { QuestResource } from "@/memory/resources/journals/quest.resource";
 import type { RequisiteResource } from "@/memory/resources/journals/quests/requisite.resource";
 import type { StepResource } from "@/memory/resources/journals/quests/step.resource";

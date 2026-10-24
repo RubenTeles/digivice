@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { SaveLoadedValidator } from "@/memory/validators/save-loaded.validator";
-import type { Party } from "@/models";
+import type { Party } from "@/state/models";
 import { BattleAgainstNatsumiExpected } from "../../fixtures/snapshots/battle-against-natsumi.expected";
 import { FieldCentralParkExpected } from "../../fixtures/snapshots/field-central-park.expected";
 

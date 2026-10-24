@@ -1,5 +1,5 @@
-import { EmulatorConnectionErrorCodes } from "@/constants/emulator-connection-error-code.constant";
-import type { State } from "@/models";
+import { EmulatorConnectionErrorCodes } from "@/shared/constants/emulator-connection-error-code.constant";
+import type { State } from "@/state/models";
 import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.error";
 import { MemoryReadError } from "@/memory/snapshot/memory-read.error";
 import type { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";

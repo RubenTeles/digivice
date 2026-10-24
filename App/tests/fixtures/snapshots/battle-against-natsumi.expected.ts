@@ -1,4 +1,4 @@
-import type { State } from "@/models";
+import type { State } from "@/state/models";
 import {
   CentralParkKotemon,
   digievolutionSlot,

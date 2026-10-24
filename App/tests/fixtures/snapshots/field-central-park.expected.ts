@@ -7,7 +7,7 @@ import type {
   Requisite,
   State,
   StoredDigievolution,
-} from "@/models";
+} from "@/state/models";
 import type { QuestAddresses } from "@/memory/addresses/journals/quest.addresses";
 import type { RequisiteAddresses } from "@/memory/addresses/journals/quests/requisite.addresses";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";

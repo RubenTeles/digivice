@@ -1,4 +1,4 @@
-import type { CardBattle } from "@/models";
+import type { CardBattle } from "@/state/models";
 import { CardBattleAssembler } from "@/memory/assemblers/card-battle.assembler";
 import { CardBattleReader } from "@/memory/readers/card-battle.reader";
 import { AddressesRepository } from "@/memory/repositories/addresses.repository";

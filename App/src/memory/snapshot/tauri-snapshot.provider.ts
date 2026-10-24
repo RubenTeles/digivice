@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { EmulatorConnectionErrorCodes } from "@/constants/emulator-connection-error-code.constant";
+import { EmulatorConnectionErrorCodes } from "@/shared/constants/emulator-connection-error-code.constant";
 import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.error";
 import { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
 import { PlayStationRamSize } from "@/memory/snapshot/snapshot.constant";

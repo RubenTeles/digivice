@@ -1,4 +1,4 @@
-import type { CardBattle } from "@/models";
+import type { CardBattle } from "@/state/models";
 import type { CardBattleResource } from "@/memory/resources/card-battle.resource";
 
 export class CardBattleAssembler {

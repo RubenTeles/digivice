@@ -1,4 +1,4 @@
-import type { State } from "@/models";
+import type { State } from "@/state/models";
 import { AuctionsProvider } from "@/memory/providers/auctions.provider";
 import { CardBattleProvider } from "@/memory/providers/card-battle.provider";
 import { DigimonBattleProvider } from "@/memory/providers/digimon-battle.provider";
