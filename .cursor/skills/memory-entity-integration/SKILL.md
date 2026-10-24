@@ -50,7 +50,7 @@ Paths under `Frontend/src/memory/` unless stated otherwise. Mirror each
 
 ### 1. Definitions + addresses
 
-- [ ] `definitions/{Entity}Addresses.json` (or a subfolder such as `Battles/`, `Parties/`) — official copy; never edit `Backend/Memory/Definitions/` (frozen)
+- [ ] `definitions/{Entity}Addresses.json` (or a subfolder such as `Battles/`, `Parties/`)
 - [ ] `addresses/{entity-kebab}.addresses.ts` — `{Entity}AddressesRaw` (PascalCase keys, `AddressValueRaw`) and `{Entity}Addresses` (camelCase, `number`)
 - [ ] `converters/{entity-kebab}-addresses.converter.ts` — `{Entity}AddressesConverter.convert(raw)` with `AddressValueConverter`
 - [ ] `repositories/addresses.repository.ts` — JSON import, `private static` cache field and `get{Entity}Addresses()` through `load(fileName, convert)`
@@ -92,10 +92,3 @@ Components read through `useGameState()`; derived information in
 - [ ] Add the entity row to the entity map in `.cursor/skills/memory-field-integration/SKILL.md`
 - [ ] Product rules of the entity in `.cursor/rules/digivice-business.mdc`
 - [ ] Retrofeed `.cursor/skills/memory-compare/memory-regions.md` when it came from an investigation
-
-## Frozen C# and compare mode
-
-Do not touch the C# backend nor the legacy SignalR path (`events/dto/`,
-`events/converters/`, `stores/syncers/`, `use-csharp-shadow-store.ts`). In
-`VITE_MEMORY_MODE=compare` the new entity shows up as divergences with
-`C#=undefined`; that is expected.

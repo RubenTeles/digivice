@@ -97,7 +97,7 @@ cards and `calculateNewStatus: true` (locked/done/new variants).
 - Single mask on one line (`"BitMasks": ["0x04"]`); multiline only for many entries.
 - **Ids in camelCase** (`muramasa`, `driAgentGuilmon`, `guilmonDDNA`). The same id is used by the definitions, the static quest JSON and i18n.
 - Step `Number` sequential and unique within the quest; equal to the step `number` in the static JSON.
-- `Frontend/src/memory/definitions/` is the **official** copy. Never edit `Backend/Memory/Definitions/` (frozen C#). Exception: `Tools/MemoryScanner` reads `Backend/Memory/Definitions/Quests/MainQuestAddresses.json`; touch it only if the user asks to update the tool.
+- `Frontend/src/memory/definitions/` is the single source of the addresses. `Tools/MemoryScanner` (`analyze-pair`) reads `Quests/MainQuestAddresses.json` from there by a fixed path: do not move or rename it.
 
 ## Section invariant
 
@@ -180,11 +180,6 @@ the product explicitly asks:
 - Main quest cascade lives in `MainQuestAssembler` (later step done → earlier steps done). **Main quest only.**
 - Duel Island normalization lives in `DuelIslandAssembler` (requisite not met → all steps false; trophy done → earlier steps true). **Duel Island only.**
 - New normalization → new `memory/assemblers/{category-kebab}.assembler.ts` wrapping `QuestAssembler.assemble`, used in `JournalAssembler`, plus its spec. Never reuse another category's normalization silently.
-
-## Compare mode
-
-The C# backend is frozen. In `VITE_MEMORY_MODE=compare` quests added after the
-freeze show up as divergences with `C#=undefined`; that is expected.
 
 ## Debugging
 

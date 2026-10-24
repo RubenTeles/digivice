@@ -1,5 +1,4 @@
 export const EmulatorConnectionErrorCodes = {
-  ConfigMissing: "config_missing",
   ProcessNotFound: "process_not_found",
   MappingNotFound: "mapping_not_found",
   ConnectionFailed: "connection_failed",

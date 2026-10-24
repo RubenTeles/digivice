@@ -4,8 +4,8 @@ description: >-
   Concrete conventions for writing Digivice frontend tests (Vitest) for the
   memory reading layer (src/memory/) — where each test goes, naming,
   FakeSnapshotBuilder for synthetic RAM, SnapshotFixtureLoader for real 2 MiB
-  .bin dumps from Tools/MemoryScanner, and where each frozen C# test was
-  ported. Use when creating or updating tests under Frontend/tests/, after
+  .bin dumps from Tools/MemoryScanner, and the test shape of each layer.
+  Use when creating or updating tests under Frontend/tests/, after
   adding a field, entity or quest to the memory layer, or when the user asks
   for test coverage of the memory layer.
 ---
@@ -14,8 +14,6 @@ description: >-
 
 Rules (scope, 1:1 file mapping, naming, corner cases): `.cursor/rules/digivice-frontend-tests.mdc`.
 This skill is the practical how-to. Only the memory reading layer has tests; the rest of the frontend does not.
-
-Migration context: `AI/MIGRATION_PLAN.md`.
 
 ## Stack
 
@@ -47,8 +45,6 @@ Helpers and fixtures:
 
 ## Synthetic snapshot (`FakeSnapshotBuilder`)
 
-Replaces the C# `Mock<IMemoryReader>` and `LoaderIntegrationTestBase.WriteInt16/WriteInt32`.
-
 ```ts
 const snapshot = new MemorySnapshot(
   new FakeSnapshotBuilder()
@@ -78,54 +74,21 @@ const snapshot = new MemorySnapshot(SnapshotFixtureLoader.load("field-central-pa
 
 - Tauri bridge: `vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }))` + `vi.mocked(invoke)`. Rust errors reject with `{ code, detail }`. Reference: `tests/memory/snapshot/tauri-snapshot.provider.spec.ts`.
 - `fetch`: `vi.stubGlobal("fetch", fetchMock)` with `new Response(buffer)`, and `vi.unstubAllGlobals()` in `afterEach`. Reference: `tests/memory/snapshot/file-snapshot.provider.spec.ts`.
-- Definitions: never mock. Specs that need addresses use `AddressesRepository` (real JSONs from `src/memory/definitions/`, the official copy); converter specs build `...Raw` objects inline.
-
-## Ported C# tests (record)
-
-The port is finished; the C# project is frozen and kept only to check old behavior. Where each C# test went:
-
-| C# test | TS equivalent | Status |
-|---|---|---|
-| `Tests/Unit/Memory/Readers/MemoryReaderTests.cs` | `tests/memory/snapshot/memory.snapshot.spec.ts` | ported |
-| `Tests/Unit/Memory/Converters/*Tests.cs` (3 files) | `tests/memory/converters/address-value.converter.spec.ts` | ported (invalid values throw instead of falling back to `0`) |
-| `Tests/Integration/Memory/Repositories/AddressesRepositoryDefinitionsTests.cs` | `tests/memory/repositories/addresses.repository.spec.ts` | ported |
-| `WindowsMemoryProviderTests`, `DuckstationConnectorTests`, `MemoryBlockReaderTests` | none (Rust bridge validated manually; no memory blocks in TS) | n/a |
-| `PlayerReaderTests`, `PlayerLoaderTests` | `tests/memory/readers/player.reader.spec.ts` | ported |
-| `PlayerAssemblerTests` | `tests/memory/assemblers/player.assembler.spec.ts` | ported |
-| `PlayerProviderTests` (C# unit, mocks) | `tests/memory/providers/player.provider.spec.ts` (real fixture + real definitions) | ported |
-| `ImportantItems`, `Auctions`, `CardBattle` `ReaderTests` + `LoaderTests` | `tests/memory/readers/{important-items,auctions,card-battle}.reader.spec.ts` | ported |
-| `ImportantItems`, `Auctions`, `CardBattle` `AssemblerTests` | `tests/memory/assemblers/{important-items,auctions,card-battle}.assembler.spec.ts` | ported |
-| `ImportantItems`, `Auctions`, `CardBattle` `ProviderTests` | `tests/memory/providers/{important-items,auctions,card-battle}.provider.spec.ts` | ported |
-| `GameLoopService`, `HealthEventFactory` (no C# tests) | `tests/memory/loop/game.loop.spec.ts` | new |
-| `NpcsReaderTests` + `NpcsLoaderTests`, `NpcsAssemblerTests`, `NpcsProviderTests` | `tests/memory/{readers,assemblers,providers}/npcs.*.spec.ts` | ported |
-| `EnemyReaderTests` | `tests/memory/readers/enemy.reader.spec.ts` | ported |
-| `DigimonBattleReaderTests` + `DigimonBattleLoaderTests`, `DigimonBattleAssemblerTests`, `DigimonBattleProviderTests` | `tests/memory/{readers,assemblers,providers}/digimon-battle.*.spec.ts` | ported |
-| `RequisiteReaderTests`, `StepReaderTests`, `QuestReaderTests`, `QuestLoaderTests` | `tests/memory/readers/quest.reader.spec.ts` (single `QuestReader`) | ported |
-| `JournalLoaderTests` | `tests/memory/readers/journal.reader.spec.ts` | ported |
-| `RequisiteAssemblerTests`, `StepAssemblerTests`, `QuestAssemblerTests` | `tests/memory/assemblers/quest.assembler.spec.ts` | ported |
-| `MainQuestAssemblerTests`, `DuelIslandAssemblerTests`, `JournalAssemblerTests` | `tests/memory/assemblers/{main-quest,duel-island,journal}.assembler.spec.ts` | ported (plus "does not mutate the resource") |
-| `JournalProviderTests` | `tests/memory/providers/journal.provider.spec.ts` | ported |
-| `InBattleReaderTests`, `DigimonReaderTests`, `DigievolutionSlotReaderTests`, `StoredDigievolutionReaderTests` + `DigimonLoaderTests` | `tests/memory/readers/{in-battle,digimon}.reader.spec.ts` | ported (`DigimonLoader` "block too short → null" is n/a: no block reads in TS; out of bounds throws) |
-| `PartyReaderTests`, `DigimonSlotReaderTests` + `PartyLoaderTests` | `tests/memory/readers/party.reader.spec.ts` | ported |
-| `DigimonAssemblerTests`, `DigievolutionSlotAssemblerTests`, `StoredDigievolutionAssemblerTests`, `DigimonSlotAssemblerTests`, `PartyAssemblerTests` | `tests/memory/assemblers/{digimon,party}.assembler.spec.ts` | ported |
-| `PartyProviderTests` | `tests/memory/providers/party.provider.spec.ts` | ported |
-| Differ, DTO Converter, EventFactory, Hub, DI, `Optional`, `GameStateStore` | none (layers do not exist in the TS model) | n/a |
-| Syncer rules (no C# tests): filled → empty digievolution slot, stored digievolutions only grow, Digimon swap | `tests/memory/patch/state.patcher.spec.ts` | new |
+- Definitions: never mock. Specs that need addresses use `AddressesRepository` (real JSONs from `src/memory/definitions/`); converter specs build `...Raw` objects inline.
 
 ## Test shapes per layer
 
-Reference implementation: Player (migration step 4).
+Reference implementation: Player.
 
 | Layer | Spec | Shape |
 |---|---|---|
-| Reader | `tests/memory/readers/{x}.reader.spec.ts` | Synthetic addresses + `FakeSnapshotBuilder` (port of `{X}ReaderTests`); real addresses from `AddressesRepository` written at the definition offsets (port of `{X}LoaderTests`); signed `0xFFFF`; empty RAM; address outside the snapshot → `MemoryReadError`. Assert the whole resource with `toEqual`. |
-| Assembler | `tests/memory/assemblers/{x}.assembler.spec.ts` | Build the resource inline (`createResource(overrides)`); port every `{X}AssemblerTests` case and add sentinel boundaries (`-1`, `0`, `1`). No snapshot. |
+| Reader | `tests/memory/readers/{x}.reader.spec.ts` | Synthetic addresses + `FakeSnapshotBuilder`; real addresses from `AddressesRepository` written at the definition offsets; signed `0xFFFF`; empty RAM; address outside the snapshot → `MemoryReadError`. Assert the whole resource with `toEqual`. |
+| Assembler | `tests/memory/assemblers/{x}.assembler.spec.ts` | Build the resource inline (`createResource(overrides)`); cover every mapping and the sentinel boundaries (`-1`, `0`, `1`). No snapshot. |
 | Provider | `tests/memory/providers/{x}.provider.spec.ts` | Real fixture (`SnapshotFixtureLoader`) with values confirmed in game (catalog), plus one synthetic snapshot at the real addresses. |
 | Composer | `tests/memory/state.composer.spec.ts` | Real fixture → full `State`. |
 | Patcher | `tests/memory/patch/state.patcher.spec.ts` | Target and source from `structuredClone` of the fixture expected values, mutate the source; assert values and preserved references (`toBe`); `vi.spyOn(storeLogger, "warn")` for the ignored transitions. |
 | Store | `tests/stores/use-game-store.spec.ts` | `setActivePinia(createPinia())` in `beforeEach`; first tick, patch, error and recovery. |
 | Loop | `tests/memory/loop/game.loop.spec.ts` | Fake `SnapshotProvider` (`{ read: vi.fn() }`), `vi.useFakeTimers()` + `await vi.advanceTimersByTimeAsync(ms)`; always `stop()` at the end of the test. |
-| Comparison | `tests/memory/comparison/*.spec.ts` | Plain objects; assert the exact divergence list (`path`, `expected`, `actual`). |
 
 ## Corner-case pass (before finishing)
 

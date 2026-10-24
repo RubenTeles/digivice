@@ -13,19 +13,18 @@ You audit whether the Digivice guidance files still match the codebase. You neve
 - `.cursor/skills/**/*.md`
 - `.cursor/agents/*.md`
 - `.cursor/docs/**/*.md` (only links and "integrated" claims; investigation evidence is historical)
-- `AI/*.md` (must stay a short index pointing to `.cursor/`; exception: `AI/MIGRATION_PLAN.md`, the migration planning document)
+- `AI/*.md` (must stay a short index pointing to `.cursor/`; exception: `AI/MIGRATION_PLAN.md`, a historical record of the migration — its paths and symbols may no longer exist and must not be reported)
 
 ## Checks
 
-1. **Paths** — every repository path cited in backticks or links (`Frontend/src/...`, `Frontend/tests/...`, `Tauri/...`, `Tools/...`, `Backend/...`, `Tests/...`, relative `.md` links) exists. Use Glob; resolve relative links from the citing file's folder.
-2. **Symbols** — every TS / Rust / C# type, class, method or component named as a reference (`CardBattleProvider`, `getAllDuelIsland`, `Equipments.vue`, `QuestModalPresenter`) exists. Use Grep on `Frontend/src/`, `Frontend/tests/`, `Tauri/src/` and, for C# names, `Backend/` and `Tests/`.
+1. **Paths** — every repository path cited in backticks or links (`Frontend/src/...`, `Frontend/tests/...`, `Tauri/...`, `Tools/...`, relative `.md` links) exists. Use Glob; resolve relative links from the citing file's folder.
+2. **Symbols** — every TS / Rust / C# type, class, method or component named as a reference (`CardBattleProvider`, `getAllDuelIsland`, `Equipments.vue`, `QuestModalPresenter`) exists. Use Grep on `Frontend/src/`, `Frontend/tests/`, `Tauri/src/` and, for C# names, `Tools/`.
 3. **Coverage** — entities and categories present in code but missing from guidance:
    - `State` properties in `Frontend/src/models/state.ts` vs `digivice-business.mdc` and the entity map in `memory-field-integration`
    - Quest folders under `Frontend/src/memory/definitions/Quests/` vs the `journal-quest-integration` category map and its `status.md`
    - Quest ids in `Frontend/src/repositories/quest.repository.ts` vs `journal-quest-integration/status.md`
    - Accents in `Frontend/src/components/journal/journal-section-palette.ts` vs `journal-quest-integration`
    - `Frontend/src/memory/definitions/**/*Addresses.json` files vs `memory-regions.md` "integrated" markers
-   - The C# backend (`Backend/`, `Tests/`) is frozen and kept only for reference: do not report it as missing from guidance nor require guidance to match it, except `digivice-backend.mdc`, which describes it
 4. **Consistency** — contradictions between files (same fact stated differently), skills referencing skills/agents that do not exist, frontmatter `description` promising workflows the body does not have.
 5. **Size** — flag skill files above ~400 lines as candidates for splitting.
 

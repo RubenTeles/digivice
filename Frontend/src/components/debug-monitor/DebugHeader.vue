@@ -6,7 +6,6 @@ const props = defineProps<{
   healthStatus: HealthStatus;
   lastErrorCode: string | null;
   lastErrorDetail: string | null;
-  memoryMode: string;
   memorySource: string;
   lastChangedAt: Date | null;
 }>();
@@ -41,10 +40,7 @@ const lastChangedLabel = computed(() => props.lastChangedAt?.toLocaleTimeString(
     <div v-if="props.lastErrorDetail !== null" class="text-red-300/80 wrap-break-word">
       {{ props.lastErrorDetail }}
     </div>
-    <div>
-      <span class="text-gray-400">Mode: </span>{{ props.memoryMode }}
-      <span class="text-gray-400"> | Source: </span>{{ props.memorySource }}
-    </div>
+    <div><span class="text-gray-400">Source: </span>{{ props.memorySource }}</div>
     <div><span class="text-gray-400">Last change: </span>{{ lastChangedLabel }}</div>
   </section>
 </template>

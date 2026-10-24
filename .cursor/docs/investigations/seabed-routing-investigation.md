@@ -180,15 +180,15 @@ map IDs directly.
 
 ## Tracker implications
 
-### Done (backend Player pipeline)
+### Done (Player pipeline)
 
 - `SeabedRoute` (`0x48D78`) and `MapVariant` (`0x48D7A`, formerly
   SeabedRouteType, formerly documented as IsSubmerged) are in `PlayerAddresses.json`, read by
-  `PlayerReader`, assembled on `Player`, and emitted via `PlayerChanged`
-  (`PlayerDTO`).
+  `PlayerReader` and assembled on `Player` (`seabedRoute`, `mapVariant`) by
+  `PlayerAssembler`.
 - `PreviousMapId` (`0x4B400`) is in `PlayerAddresses.json` — same shape as
-  `MapId` (Int16 → hex `X4` string) through the Player pipeline and frontend
-  syncer (`previousMapId`).
+  `MapId` (Int16 → hex `X4` string) through the Player pipeline
+  (`previousMapId`).
 
 ### Still open
 
@@ -210,8 +210,8 @@ When `MapId` is a seabed ID (`02Ex`) and submerged (`MapVariant == 1`):
       Divermon's ↔ Duel both ways)
 - [x] `0x48D78` confirmed as corridor identity (direction-independent)
 - [x] Retrofed to `memory-regions.md` and `patterns/*.md`
-- [x] Integrated in `PlayerAddresses.json` / backend (`SeabedRoute`, `MapVariant`)
-- [x] Frontend syncer/store for `SeabedRoute` / `MapVariant`
-- [x] `PreviousMapId` (`0x4B400`) in backend + frontend syncer
+- [x] Integrated in `PlayerAddresses.json` / TS memory layer (`seabedRoute`, `mapVariant`)
+- [x] Exposed in `useGameStore` (`player.seabedRoute` / `player.mapVariant`)
+- [x] `PreviousMapId` (`0x4B400`) in the TS memory layer (`player.previousMapId`)
 - [ ] Route table complete for all dive points
 - [ ] Reverse test for Suzaku City ↔ Suzaku UG Lake (`0x07`)

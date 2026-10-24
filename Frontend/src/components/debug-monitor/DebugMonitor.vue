@@ -11,7 +11,6 @@ const {
   lastErrorCode,
   lastErrorDetail,
   currentState,
-  memoryMode,
   memorySource,
   lastChangedAt,
 } = useDebugMonitor();
@@ -26,7 +25,6 @@ const {
       :health-status="healthStatus"
       :last-error-code="lastErrorCode"
       :last-error-detail="lastErrorDetail"
-      :memory-mode="memoryMode"
       :memory-source="memorySource"
       :last-changed-at="lastChangedAt"
     />

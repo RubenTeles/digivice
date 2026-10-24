@@ -6,19 +6,19 @@ alwaysApply: false
 
 # Digivice — Tauri (Rust)
 
-Contexto da migração: `AI/MIGRATION_PLAN.md`.
+Contexto histórico da migração: `AI/MIGRATION_PLAN.md`.
 
 ## Responsabilidade
 
 - O Rust é uma **ponte mínima**: acha o DuckStation, abre a memória compartilhada `duckstation_{pid}` e entrega **bytes brutos**. Nenhuma lógica de domínio (endereços, sentinelas, assemblers) vive aqui; isso é da camada TS `Frontend/src/memory/`.
-- `lib.rs` registra só o plugin shell (usado pelo `open` de `external-link.service.ts`, capability `shell:allow-open`), o `MemoryState` e o comando `read_ram`. Sem sidecar: o backend C# não é empacotado nem iniciado pelo Tauri (só roda à mão, com `dotnet run`, para o modo `compare` em dev).
+- `lib.rs` registra só o plugin shell (usado pelo `open` de `external-link.service.ts`, capability `shell:allow-open`), o `MemoryState` e o comando `read_ram`. Sem sidecar nem outro processo auxiliar.
 
 ## Contrato do `read_ram`
 
 - Comando `async` em `src/commands.rs`; no JS, `invoke("read_ram")` resolve com um `ArrayBuffer`.
 - Sempre **2 MiB** (`RAM_SIZE`), mesmo formato dos `.bin` do `Tools/MemoryScanner` e do `FakeSnapshotBuilder`.
 - Resposta binária via `tauri::ipc::Response`; nunca serializar bytes como JSON.
-- Erro rejeita a Promise com `{ code, detail }` (`MemoryError`). Códigos, iguais aos de `Frontend/src/constants/emulator-connection-error-code.constant.ts`:
+- Erro rejeita a Promise com `{ code, detail }` (`MemoryError`). Códigos, também listados em `Frontend/src/constants/emulator-connection-error-code.constant.ts` (que soma o `state_compose_failed`, gerado pelo `GameLoop` no TS):
   - `process_not_found` — DuckStation não está aberto.
   - `mapping_not_found` — processo existe, mas a memória compartilhada não (exportação desligada no DuckStation) ou não pôde ser mapeada.
   - `connection_failed` — falha inesperada ao listar ou abrir o processo.

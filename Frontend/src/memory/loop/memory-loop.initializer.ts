@@ -1,80 +1,11 @@
 import { AppConfig } from "@/config";
-import { compareLogger, memoryLogger } from "@/logger/logger";
-import { initializeSignalRHandlers } from "@/events/signalr.handlers";
-import { signalRService } from "@/events/signalr.service";
-import { DivergenceTracker } from "@/memory/comparison/divergence.tracker";
-import { StateComparator, type Divergence } from "@/memory/comparison/state.comparator";
+import { memoryLogger } from "@/logger/logger";
 import { GameLoop } from "@/memory/loop/game.loop";
 import { SnapshotProviderFactory } from "@/memory/loop/snapshot-provider.factory";
 import { StateComposer } from "@/memory/state.composer";
-import { useCSharpShadowStore } from "@/stores/use-csharp-shadow-store";
 import { useGameStore } from "@/stores/use-game-store";
 
-const MemoryModes = ["typescript", "compare"] as const;
-
-type MemoryMode = (typeof MemoryModes)[number];
-
-type GameStore = ReturnType<typeof useGameStore>;
-
-function isMemoryMode(value: string): value is MemoryMode {
-  return (MemoryModes as readonly string[]).includes(value);
-}
-
-function resolveMemoryMode(value: string | undefined): MemoryMode {
-  if (!value) {
-    return "typescript";
-  }
-
-  if (!isMemoryMode(value)) {
-    memoryLogger.warn(`Unknown VITE_MEMORY_MODE '${value}'. Falling back to 'typescript'.`);
-    return "typescript";
-  }
-
-  if (value === "compare" && !AppConfig.isDev) {
-    memoryLogger.warn("Compare mode only runs in development. Falling back to 'typescript'.");
-    return "typescript";
-  }
-
-  return value;
-}
-
-function formatValue(value: unknown): string {
-  return value === undefined ? "undefined" : JSON.stringify(value);
-}
-
-function formatDivergence(divergence: Divergence): string {
-  return `${divergence.path}: C#=${formatValue(divergence.expected)}, TS=${formatValue(divergence.actual)}`;
-}
-
-function startCSharpComparison(gameStore: GameStore): () => void {
-  const csharpShadowStore = useCSharpShadowStore();
-  const divergenceTracker = new DivergenceTracker(AppConfig.memory.divergenceThreshold);
-
-  initializeSignalRHandlers();
-  void signalRService.startConnection();
-
-  return () => {
-    const divergences = [
-      ...StateComparator.compare(
-        { status: csharpShadowStore.healthStatus, errorCode: csharpShadowStore.lastErrorCode },
-        { status: gameStore.healthStatus, errorCode: gameStore.lastErrorCode },
-        "health",
-      ),
-      ...StateComparator.compare(csharpShadowStore.currentState, gameStore.currentState, "state"),
-    ];
-
-    const { reported, resolved } = divergenceTracker.update(divergences);
-    for (const divergence of reported) {
-      compareLogger.warn(formatDivergence(divergence));
-    }
-    for (const path of resolved) {
-      compareLogger.info(`${path}: resolved.`);
-    }
-  };
-}
-
 export function initializeMemoryLoop(): void {
-  const memoryMode = resolveMemoryMode(AppConfig.memory.mode);
   const snapshotProvider = SnapshotProviderFactory.create(
     AppConfig.memory.snapshotUrl,
     AppConfig.isTauri,
@@ -87,7 +18,6 @@ export function initializeMemoryLoop(): void {
   }
 
   const gameStore = useGameStore();
-  const compareWithCSharp = memoryMode === "compare" ? startCSharpComparison(gameStore) : null;
 
   function logHealthChange(previousStatus: string, previousErrorCode: string | null): void {
     if (
@@ -117,20 +47,16 @@ export function initializeMemoryLoop(): void {
       const previousErrorCode = gameStore.lastErrorCode;
       gameStore.applyState(state);
       logHealthChange(previousStatus, previousErrorCode);
-      compareWithCSharp?.();
     },
     onError: (code, detail) => {
       const previousStatus = gameStore.healthStatus;
       const previousErrorCode = gameStore.lastErrorCode;
       gameStore.applyError(code, detail);
       logHealthChange(previousStatus, previousErrorCode);
-      compareWithCSharp?.();
     },
   });
 
-  memoryLogger.info(
-    `Memory loop started in ${memoryMode} mode (${AppConfig.memory.snapshotUrl || "read_ram"}).`,
-  );
+  memoryLogger.info(`Memory loop started (${AppConfig.memory.snapshotUrl || "read_ram"}).`);
   gameLoop.start();
 
   if (import.meta.hot) {

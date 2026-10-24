@@ -1,6 +1,6 @@
 ---
-description: Frontend Digivice — sincronização de estado (loop TS, StatePatcher, Pinia store, selectors, models) e o caminho SignalR legado do modo compare
-globs: Frontend/src/{events,stores,models,memory/patch,memory/loop}/**
+description: Frontend Digivice — sincronização de estado (loop TS, StatePatcher, Pinia store, selectors, models)
+globs: Frontend/src/{stores,models,memory/patch,memory/loop}/**
 alwaysApply: false
 ---
 
@@ -35,11 +35,3 @@ alwaysApply: false
   - Informação global que cruza entidades → `computed` chamando o selector. Informação por item → função pura chamada pelos presenters.
   - Normalização de dado bruto da RAM (sentinela, negativo) é do assembler, não do selector.
   - Existentes: `DigimonBattleSelector` (`isInBattle`).
-
-## Caminho SignalR (legado, só `VITE_MEMORY_MODE=compare`)
-
-`SignalRService` → `signalr.handlers.ts` → `useCSharpShadowStore` (`setInitialState` / `sync{Entity}`) → `events/converters/` (bootstrap completo) ou `stores/syncers/` (patch incremental). Nenhum componente lê a sombra; o `initializeMemoryLoop` compara `useGameStore` (TS) com ela e loga divergências por `compareLogger`.
-
-- Congelado junto com o C#: DTOs (`events/dto/`), `EventsMap`, converters e syncers só existem para comparar com o backend congelado. Não estender para funcionalidade nova; o que existir só no TS aparece como divergência `C#=undefined` (esperado).
-- **Regra de ouro do syncer:** propriedade `undefined` no DTO → **não mutar**. `null` explícito é valor válido, exceto no `DigievolutionSlotSyncer` (preenchido → vazio ignorado, como no patcher).
-- Converters recebem `DeepRequired<DTO>` (`events/dto/deep-required.ts`) e não inventam fallback (`?? 0`, `=== true`).

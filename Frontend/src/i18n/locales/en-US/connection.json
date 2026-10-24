@@ -8,10 +8,6 @@
       "title": "Oops! Something went wrong during the memory reading process...",
       "hint": "It would be really kind of you to send a screenshot of this failure to the developer :)",
       "codes": {
-        "config_missing": {
-          "title": "Emulator configuration missing",
-          "hint": "The app could not find EmulatorProcessName in the backend settings."
-        },
         "process_not_found": {
           "title": "Is your DuckStation open?",
           "hint": "Digivice could not find a running emulator. Make sure DuckStation is running, and under Debugging enable Shared memory export."

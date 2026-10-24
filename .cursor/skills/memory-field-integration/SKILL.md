@@ -96,9 +96,8 @@ Enemy) stay relative hex strings, mirroring an adjacent field
 (`"HP": { "Current": "0x20", "Max": "0x22" }`). `AddressValueConverter`
 rejects invalid values when the repository loads the file.
 
-`Frontend/src/memory/definitions/` is the **official** copy. Never edit
-`Backend/Memory/Definitions/` (frozen C#, no longer synced; `Tools/MemoryScanner`
-still reads `Quests/MainQuestAddresses.json` from there).
+`Frontend/src/memory/definitions/` is the single source of the addresses
+(`Tools/MemoryScanner` also reads `Quests/MainQuestAddresses.json` from there).
 
 ---
 
@@ -151,12 +150,6 @@ in `stores/selectors/`, composition with static data in presenters.
 
 - [ ] Mark the address as integrated in `.cursor/skills/memory-compare/memory-regions.md` and the relevant `patterns/*.md`
 - [ ] Update the investigation doc in `.cursor/docs/investigations/` if one exists
-
-## Compare mode
-
-The C# backend is frozen. In `VITE_MEMORY_MODE=compare` a field added after the
-freeze shows up as a divergence with `C#=undefined`; that is expected and needs
-no code change.
 
 ---
 

@@ -14,7 +14,6 @@ export function useDebugMonitor() {
   const lastErrorCode = computed(() => store.lastErrorCode);
   const lastErrorDetail = computed(() => store.lastErrorDetail);
   const currentState = computed(() => store.currentState);
-  const memoryMode = AppConfig.memory.mode || "typescript";
   const memorySource = AppConfig.memory.snapshotUrl || "read_ram";
 
   function toggle(): void {
@@ -49,7 +48,6 @@ export function useDebugMonitor() {
     lastErrorCode,
     lastErrorDetail,
     currentState,
-    memoryMode,
     memorySource,
     lastChangedAt,
   };

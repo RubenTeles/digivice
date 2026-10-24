@@ -2,7 +2,6 @@
 /// <reference types="unplugin-icons/types/vue" />
 
 interface ImportMetaEnv {
-    readonly VITE_MEMORY_MODE?: string
     readonly VITE_MEMORY_SNAPSHOT_URL?: string
 }
 

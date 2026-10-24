@@ -27,9 +27,6 @@ Path examples (quest-like trackers under `Quests/`):
 - `Frontend/src/memory/definitions/Quests/LegendaryWeapons/{Name}Addresses.json`
 - `Frontend/src/memory/definitions/Quests/DriAgents/{Name}Addresses.json`
 - `Frontend/src/memory/definitions/Quests/SideQuests/{Name}Addresses.json`
-
-Only the frontend copy is edited; `Backend/Memory/Definitions/` belongs to the frozen C# backend.
-
 ```json
 
 ```

@@ -20,7 +20,7 @@ The parent passes the compare output (lines like `0xADDRESS: 0xBB -> 0xAA (+ fla
    - digimon battle → `.cursor/skills/battle-memory-investigate/SKILL.md`, the index `patterns/patterns-battle.md` and only the `patterns-battle-{slots,combatants,field}.md` file of the subject
    - tamer / card battles → `patterns/patterns-card-battle.md`
    - map / seabed / Mobius / subzones → `patterns/patterns-map.md` (subzones: also `.cursor/skills/map-subzone-investigate/SKILL.md`)
-4. Cross-reference candidates against `Frontend/src/memory/definitions/**/*.json` (official copy; `Backend/Memory/Definitions/` belongs to the frozen C# backend and may be outdated) (Grep the address in several spellings: `0x0004B38C`, `0x4B38C`, `4B38C`).
+4. Cross-reference candidates against `Frontend/src/memory/definitions/**/*.json` (Grep the address in several spellings: `0x0004B38C`, `0x4B38C`, `4B38C`).
 5. Open files under `.cursor/docs/investigations/` only when the domain has an ongoing investigation there.
 
 ## Output (return exactly these sections)

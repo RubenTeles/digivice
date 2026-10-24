@@ -19,7 +19,6 @@
     "tauri:build": "powershell -ExecutionPolicy Bypass -File ../Tauri/run-tauri.ps1 build"
   },
   "dependencies": {
-    "@microsoft/signalr": "^10.0.0",
     "pinia": "^4.1.0",
     "pixelarticons": "^2.0.2",
     "vue": "^3.5.28",

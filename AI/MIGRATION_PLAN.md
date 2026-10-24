@@ -1,5 +1,7 @@
 # Plano de migração — leitura de memória em TS (Tauri + Rust mínimo)
 
+> **Documento histórico.** A migração e a remoção do backend C# (etapa 9) estão concluídas. Caminhos e símbolos citados aqui (`Backend/`, `Tests/`, `events/`, `stores/syncers/`, modo `compare`) podem não existir mais. O código C# pode ser consultado na tag git `last-csharp-backend`. As regras vigentes ficam em `.cursor/`.
+
 Documento de continuidade do planejamento. Registra o diagnóstico, as decisões tomadas, a arquitetura alvo, a lista de mudanças e as etapas.
 
 ## Status
@@ -18,8 +20,9 @@ Documento de continuidade do planejamento. Registra o diagnóstico, as decisões
 | 6 | Patch in-place e troca da fonte | Concluída |
 | 7 | Produção sem sidecar | Concluída |
 | 8 | Fechamento de docs | Concluída |
+| 9 | Remoção do backend C# | Concluída |
 
-**Migração concluída.** O Digivice é uma única aplicação Tauri: o Rust só lê a RAM (`read_ram`) e toda a lógica fica na camada de memória TS (`Frontend/src/memory/`). O C# está congelado no repositório, só como referência.
+**Migração concluída.** O Digivice é uma única aplicação Tauri: o Rust só lê a RAM (`read_ram`) e toda a lógica fica na camada de memória TS (`Frontend/src/memory/`). O C# e o modo `compare` foram removidos do repositório na etapa 9.
 
 ## Contexto e motivação
 
@@ -193,7 +196,7 @@ Feito ao longo das etapas e fechado na etapa 8 (ver o registro da etapa 8):
 - **Skills:** `address-field-backend` + `address-field-frontend` → `memory-field-integration`; `memory-entity-backend` + `memory-entity-frontend` → `memory-entity-integration`; `quest-pattern-backend` + `quest-pattern-frontend` → `journal-quest-integration`; `backend-tests` apagada.
 - **Ajustados:** agents `memory-investigator` e `docs-auditor`, skills `memory-compare`, `battle-memory-investigate`, `map-subzone-investigate` e `frontend-memory-tests`, docs de investigação e índices em `AI/*.md`.
 
-### 10. Pendências para a remoção do backend
+### 10. Pendências para a remoção do backend (concluídas na etapa 9)
 
 O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento:
 
@@ -380,6 +383,19 @@ O C# não é apagado nesta migração (decisão 7). Quando for, no mesmo momento
   - `journal-quest-integration` — quest em categoria existente ou categoria nova, das definitions à UI do Journal (`workflow-new-category.md`, `pipeline.md`, `status.md` unindo os status do backend e do frontend).
 - Apagadas: skills `address-field-backend`, `address-field-frontend`, `memory-entity-backend`, `memory-entity-frontend`, `quest-pattern-backend`, `quest-pattern-frontend`, `backend-tests` e a regra `digivice-tests.mdc`.
 - Atualizadas: regras `digivice-backend.mdc` (aviso de congelamento), `digivice-business.mdc`, `digivice-frontend.mdc`, `digivice-frontend-sync.mdc` e `digivice-frontend-tests.mdc`; skills `frontend-memory-tests`, `memory-compare` (+ `patterns-map.md`), `battle-memory-investigate` e `map-subzone-investigate`; agents `memory-investigator` e `docs-auditor` (C# fora do escopo da auditoria); docs de investigação; `AI/CODE_RULES.md` e `AI/BUSINESS_RULES.md`.
+
+### Etapa 9 — Remoção do backend C# (concluída)
+
+- Tag `last-csharp-backend` criada (e enviada ao remoto) no último commit com o C#, antes de qualquer remoção.
+- Repositório: `Backend/`, `Tests/` e `Digivice.slnx` apagados.
+- Frontend sem o modo `compare`:
+  - apagados `src/events/` (SignalR, DTOs, converters), `src/stores/syncers/`, `use-csharp-shadow-store.ts`, `src/memory/comparison/` (com os specs), `test-signalr.mjs` e a dependência `@microsoft/signalr`;
+  - `initializeMemoryLoop` só liga o loop à `useGameStore`;
+  - saem `AppConfig.backend`, `memory.mode`, `memory.divergenceThreshold`, `VITE_MEMORY_MODE`, `compareLogger` e o proxy `/gamehub` do Vite;
+  - o debug monitor deixa de mostrar o modo de memória.
+- `Tools/MemoryScanner` (`FindMainQuestDefinitionsPath`) passa a ler `Frontend/src/memory/definitions/Quests/MainQuestAddresses.json`. A ferramenta continua em C# e independente (o .NET SDK segue necessário só para ela).
+- Docs: regra `digivice-backend.mdc` apagada; regras, skills (tabela de testes portados removida de `frontend-memory-tests`), agents, docs de investigação e `AI/CODE_RULES.md` sem menções ao C# e ao modo `compare`. A skill `memory-compare` e o comando `compare` do `MemoryScanner` (comparação de dumps de RAM) não têm relação com o modo removido e ficam.
+- Verificação: type-check, 320 testes, build e lint do frontend; `cargo build`; `dotnet build` e `analyze-pair` do `MemoryScanner` lendo o JSON do frontend.
 
 ## Decisões em aberto
 

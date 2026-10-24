@@ -54,9 +54,6 @@ Paths under `Frontend/src/`.
 | Definitions | `memory/converters/` | definitions `Raw` (PascalCase JSON) → `*Addresses` |
 | Static/UI | `presenters/converter/` | static `Raw` + `Model` → `ViewModel` |
 
-`events/converters/` and `stores/syncers/` belong to the legacy SignalR path
-(compare mode only) and are not part of quest integration.
-
 ## Side quests reference (copy pattern)
 
 | Layer | Reference |
