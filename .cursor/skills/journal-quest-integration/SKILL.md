@@ -54,7 +54,7 @@ Same byte as an existing tracker?  → Likely another bit; still a separate ques
 
 ## Category map (all wired)
 
-| Category | Definitions (`memory/definitions/Quests/`) | `Journal` property | Assembler | Repository getter | Static JSON (`content/database/quest/`) | Static getter | Accent |
+| Category | Definitions (`memory/definitions/Quests/`) | `Journal` property | Assembler | Repository getter | Static JSON (`data/quest/`) | Static getter | Accent |
 |----------|--------------------------------------------|--------------------|-----------|-------------------|---------------------------------|---------------|--------|
 | Main quest | `MainQuestAddresses.json` | `mainQuest` (single) | `MainQuestAssembler` (cascade) | `getMainQuest()` | `main-quest.json` | `getMainQuestRaw()` | yellow (hardcoded) |
 | Side quests | `SideQuests/` | `sideQuests` | `QuestAssembler` | `getAllSideQuests()` | `side-quest/` | `getSideQuestsRaw()` | `emerald` |
@@ -136,7 +136,7 @@ Conventions: skill `frontend-memory-tests`.
 
 ### 3. Static quest data
 
-- [ ] `content/database/quest/{category}/{id-kebab}.json` — mirror a quest in the same folder
+- [ ] `data/quest/{category}/{id-kebab}.json` — mirror a quest in the same folder
 - [ ] `game-data/repositories/tables/quest/{category}/{id-kebab}.table.ts` → `export type {Name}Table = QuestRaw`
 - [ ] `ui/i18n/en-US/quest/{category}/{id-kebab}.json`
 - [ ] `ui/i18n/pt-BR/quest/{category}/{id-kebab}.json`

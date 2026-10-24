@@ -35,7 +35,7 @@ Paths under `App/src/`.
 | Provider | `memory/providers/journal.provider.ts` |
 | Patcher list keys | `memory/patch/state.patcher.ts` (`ListKeys`) |
 | Models | `state/models/journal/` |
-| Static JSON | `content/database/quest/` |
+| Static JSON | `data/quest/` |
 | Static repository | `game-data/repositories/quest.repository.ts` |
 | Table types | `game-data/repositories/tables/quest/` |
 | Raw types | `game-data/repositories/tables/raws/quest/` |

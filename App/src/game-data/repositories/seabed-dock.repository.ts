@@ -1,4 +1,4 @@
-import DocksJson from "@/content/database/seabed/seabed-dock.json";
+import DocksJson from "@/data/seabed/seabed-dock.json";
 import type { DockTable } from "./tables/seabed/dock.table";
 import type { DockRaw } from "./tables/raws/seabed/dock.raw";
 

@@ -1,4 +1,4 @@
-import DigimonJson from "@/content/database/digimon.json";
+import DigimonJson from "@/data/digimon.json";
 import type { DigimonTable } from "@/game-data/repositories/tables/digimon/digimon.table";
 import type { DigimonDigievolutionRaw } from "./tables/raws/digimon/digimon-digievolution.raw";
 import type { DigimonDigievolutionRequirementRaw } from "./tables/raws/digimon/digimon-digievolution-requirement.raw";

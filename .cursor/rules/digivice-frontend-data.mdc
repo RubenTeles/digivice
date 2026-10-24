@@ -1,6 +1,6 @@
 ---
 description: Frontend Digivice — dados estáticos (Repository, Service, Presenter, Converter, ViewModel), i18n, extensions, assets
-globs: App/src/{game-data,ui/presenters,ui/viewmodels,ui/i18n,core/extensions,content/database}/**
+globs: App/src/{game-data,ui/presenters,ui/viewmodels,ui/i18n,core/extensions,data}/**
 alwaysApply: false
 ---
 
@@ -14,7 +14,7 @@ Migração dos presenters existentes para este padrão é **incremental** — pr
 |--------|------------------|
 | **Component** | Pinia + **apenas o presenter da sua tela**. Não chama service/repository/converter nem presenters de outras features. |
 | **Service** (`game-data/services/`) | Regras de domínio reutilizáveis por mais de um presenter; pode orquestrar repositories. Sem Vue/presenters/ViewModel de tela. |
-| **Repository** (`game-data/repositories/`) | Dados estáticos (`content/database/*.json` + tipos em `game-data/repositories/tables/`) → tipos **Raw** apenas. |
+| **Repository** (`game-data/repositories/`) | Dados estáticos (`data/*.json` + tipos em `game-data/repositories/tables/`) → tipos **Raw** apenas. |
 | **Converter** (`ui/presenters/converter/`) | Puro e stateless: Raw → ViewModel. Sem repository/regra de tela. |
 | **Presenter** (`ui/presenters/`) | Orquestra service/repo/converter; regras de tela (ex.: `[]` quando não há dado). Não monta ViewModel inline se houver transformação. |
 | **ViewModel** (`ui/viewmodels/`) | Contrato da UI; um tipo por arquivo `{nome}.viewmodel.ts`. |
@@ -38,9 +38,9 @@ Component → (seu) Presenter → Service → Repository → Raw
 - Qualquer transformação/projeção (subset, derivados, enriquecimento) → converter. Referência: `enemy-resumed.converter.ts` (`enemyId` + `EnemyRaw` → `EnemyResumedViewModel`). Converter pode receber parâmetros de contexto além do Raw.
 - Raw e ViewModel continuam tipos distintos mesmo quando espelhados.
 
-## Database (`src/content/database/`)
+## Data (`src/data/`)
 
-- Conceito com um único JSON fica direto na raiz de `content/database/` (ex.: `enemy.json`, `field.json`).
+- Conceito com um único JSON fica direto na raiz de `data/` (ex.: `enemy.json`, `field.json`).
 - Subpasta só quando o conceito tem mais de um JSON (ex.: `digievolution/`, `quest/`, `tcg/`). Quando um arquivo da raiz ganhar um irmão, os dois vão para uma pasta.
 - Exceção: a pasta pode ser criada antes, com um único JSON, quando o conceito já tem novos arquivos previstos (ex.: `shop/`).
 - `game-data/repositories/tables/` e `game-data/repositories/tables/raws/` não precisam espelhar essa estrutura.

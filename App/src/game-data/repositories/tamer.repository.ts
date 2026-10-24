@@ -1,4 +1,4 @@
-import TamerJson from "@/content/database/npc/tamer.json";
+import TamerJson from "@/data/npc/tamer.json";
 import type { TamerTable } from "@/game-data/repositories/tables/tamer/tamer.table";
 import type { TamerRaw } from "@/game-data/repositories/tables/raws/tamer/tamer.raw";
 

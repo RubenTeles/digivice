@@ -1,4 +1,4 @@
-import EnemyJson from "@/content/database/enemy.json";
+import EnemyJson from "@/data/enemy.json";
 import type { EnemyTable } from "@/game-data/repositories/tables/enemy/enemy.table";
 import type { DropType } from "@/game-data/repositories/tables/raws/drop/drop-type";
 import type { EnemyRaw } from "@/game-data/repositories/tables/raws/enemy/enemy.raw";

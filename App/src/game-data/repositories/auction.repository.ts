@@ -1,4 +1,4 @@
-import AuctionJson from "@/content/database/auction.json";
+import AuctionJson from "@/data/auction.json";
 import type { AuctionTable } from "@/game-data/repositories/tables/auction/auction.table";
 import type { AuctionRaw } from "@/game-data/repositories/tables/raws/auction/auction.raw";
 

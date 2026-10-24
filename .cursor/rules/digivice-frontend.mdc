@@ -14,18 +14,16 @@ Regras especializadas por pasta:
 
 ## Estrutura de `src/`
 
-Agrupada por responsabilidade; as camadas e sufixos de arquivo valem dentro de cada área. Na raiz ficam só `main.ts`, `App.vue`, `style.css` e `assets/`.
+Agrupada por responsabilidade; as camadas e sufixos de arquivo valem dentro de cada área. Na raiz ficam só `main.ts`, `App.vue`, `style.css`, `assets/` e `data/` (JSON estático do jogo, fora do Prettier).
 
 | Área | Pastas | Conteúdo |
 |---|---|---|
 | `core/` | `config/`, `logger/`, `extensions/` | Infraestrutura transversal. |
 | `memory/` | ver seção abaixo | Leitura da RAM → `State`. |
 | `state/` | `models/`, `stores/` (com `selectors/`) | Contrato do `State` e Pinia. |
-| `game-data/` | `repositories/` (com `tables/`), `services/`, `catalogs/` | Acesso a dados estáticos e regras de domínio reutilizáveis. |
+| `game-data/` | `repositories/` (com `tables/`), `services/`, `catalogs/` | Código que lê os JSON de `data/` (repositories) e regras de domínio reutilizáveis. |
 | `ui/` | `components/`, `composables/`, `presenters/`, `viewmodels/`, `i18n/` | Telas e o que as alimenta, incluindo as traduções (`i18n/`: setup e JSON por idioma). |
 | `shared/` | `constants/`, `types/` | Consts e unions usadas em mais de uma área. |
-| `content/` | `database/` | Conteúdo, não código: JSON estático. Fica fora do Prettier. |
-
 `tests/` espelha `src/` (ex.: `tests/memory/`, `tests/state/stores/`).
 
 ## Convenções básicas
@@ -69,7 +67,7 @@ Agrupada por responsabilidade; as camadas e sufixos de arquivo valem dentro de c
    - `shared/types/{nome}.type.ts` — unions usadas em mais de um arquivo (mesmo conjunto no Raw e no ViewModel conta como compartilhado).
    - Union usada em um único arquivo fica nesse arquivo.
 3. **Nomes:** PascalCase para consts, types e membros `static readonly` (sem SCREAMING_CASE). Não colidir com globais do DOM (`Element`, `Event`, `Node`). Conceitos de Digimon com prefixo `Digimon` (`DigimonAttribute`, `DigimonElement`, `DigimonCondition`, `DigimonSpecies`, `DigimonStatus`).
-4. **Valores literais:** iguais à fonte de verdade (JSON de `content/database/`, valor do model/`State` ou chave i18n — ex.: `"DigimonLevel"`, `"Healthy"`). Valor gerado no frontend → camelCase igual à chave i18n. Não inventar valor para contornar colisão (separe o mapa por categoria).
+4. **Valores literais:** iguais à fonte de verdade (JSON de `data/`, valor do model/`State` ou chave i18n — ex.: `"DigimonLevel"`, `"Healthy"`). Valor gerado no frontend → camelCase igual à chave i18n. Não inventar valor para contornar colisão (separe o mapa por categoria).
 5. **Const e type com o mesmo nome:** const em expressões, type em anotações; `import type` quando só o tipo é usado.
 
 ```ts

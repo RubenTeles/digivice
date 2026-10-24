@@ -46,7 +46,7 @@ Conventions: skill `frontend-memory-tests`.
 
 ## 4. Static quest data (per quest)
 
-- [ ] `content/database/quest/{category-kebab}/{id-kebab}.json`
+- [ ] `data/quest/{category-kebab}/{id-kebab}.json`
 - [ ] `game-data/repositories/tables/quest/{category-kebab}/{id-kebab}.table.ts` → `export type XxxTable = QuestRaw`
 - [ ] `ui/i18n/{en-US,pt-BR}/quest/{category-kebab}/{id-kebab}.json`
 - [ ] Register imports in both `ui/i18n/{en-US,pt-BR}/index.ts`
