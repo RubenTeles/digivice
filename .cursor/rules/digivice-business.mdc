@@ -34,7 +34,7 @@ graph TD
   - **Selectors** geram informação nova a partir de dados já consistentes, em `stores/selectors/` (ex.: `isInBattle` = `mapId` + `inBattle.hp.max`).
   - Composição com dados estáticos (repositórios, equipamentos, i18n) fica em presenters/services, não em selectors.
 
-- **Game loop:** `GameLoop` (TS) lê o snapshot via `read_ram` e compõe o `State` via `StateComposer` a cada `AppConfig.memory.pollingIntervalMs` (**500ms**). Saúde na `useGameStore`: `Loading` até o primeiro tick, `Healthy` com estado, `Error` (código do Rust, `memory_read_failed` ou `state_compose_failed`) limpa o estado.
+- **Game loop:** `GameLoop` (TS) lê o snapshot via `read_ram` e compõe o `State` via `StateComposer` a cada `AppConfig.memory.pollingIntervalMs` (**500ms**). Saúde na `useGameStore`: `Loading` até o primeiro tick, `Healthy` com estado, `Error` (código do Rust, `memory_read_failed`, `save_not_loaded` ou `state_compose_failed`) limpa o estado.
 - **Composição:** `StateComposer` → `{Entity}Provider.get(snapshot)` → `{Entity}Reader` → `{Entity}Assembler`. Entidades do `State`: `Player`, `ImportantItems`, `Party`, `DigimonBattle`, `CardBattle`, `Auctions`, `Npcs`, `Journal`.
 - **Primeiro estado:** primeiro tick (ou primeiro após erro) atribui o `State` completo; `Healthy` implica estado presente.
 - **Incremental:** ticks seguintes passam pelo `StatePatcher` (`src/memory/patch/`): muda só o valor que mudou, listas casadas por chave, regras dependentes do estado anterior (detalhe em `digivice-frontend-sync.mdc`).
@@ -52,6 +52,8 @@ graph TD
 - Cada `digimonId` é único na party (o jogo não permite Digimons repetidos); por isso o `StatePatcher` troca o `digimon` inteiro quando o `digimonId` do slot muda.
 - Sempre pelo menos 1 slot ocupado.
 - Slot ocupado: `digimonId` e `digimon` ambos não-nulos. Slot vazio: ambos nulos. Um nulo e outro preenchido = inconsistência.
+- **Save carregado** (`SaveLoadedValidator`, chamado pelo `StateComposer`): pelo menos 1 slot ocupado, `digimonId` sem repetição e level 1–99 em todo slot ocupado. Violação = `save_not_loaded` (tela de orientação, estado limpo). Pega DuckStation sem jogo (RAM zerada = três Kotemons nível 0), tela de título e jogo novo sem parceiros; não depende da ROM (funciona com ROMs modificadas). Jogo fechado no DuckStation deixa a RAM congelada com dados válidos: indistinguível de pausa, aceito.
+- **Slot vazio na RAM = `0xFF`** (`EmptySlotId` em `PartyAddresses.json`), não `0`: Kotemon tem id `0`. Id ausente dos endereços de Digimons também vira slot vazio (`PartyReader`).
 - `digimonId` fica no slot; `Digimon` carrega só estado dinâmico da RAM. Dados estáticos (nome, EXP curve, digievolutions) vêm de presenters/repositórios via `digimonId`.
 - UI (`App.vue`): estado chega com 3 slots; renderizar **apenas** slots ocupados (filtro de apresentação, não omissão do modelo).
 

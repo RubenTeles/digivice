@@ -4,6 +4,7 @@ export const EmulatorConnectionErrorCodes = {
   ConnectionFailed: "connection_failed",
   MemoryReadFailed: "memory_read_failed",
   StateComposeFailed: "state_compose_failed",
+  SaveNotLoaded: "save_not_loaded",
 } as const;
 
 export type EmulatorConnectionErrorCode =

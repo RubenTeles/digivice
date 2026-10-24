@@ -27,6 +27,10 @@
         "state_compose_failed": {
           "title": "Failed to process game state",
           "hint": "The app connected to DuckStation but could not build the current game state. See the technical detail below."
+        },
+        "save_not_loaded": {
+          "title": "No save loaded",
+          "hint": "Open Digimon World 2003 in DuckStation and load a save (or pick your partners in a new game)."
         }
       }
     }

@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { StateComposer } from "@/memory/state.composer";
 import { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
+import { SaveNotLoadedError } from "@/memory/validators/save-not-loaded.error";
 import { BattleAgainstNatsumiExpected } from "../fixtures/snapshots/battle-against-natsumi.expected";
 import { FieldCentralParkExpected } from "../fixtures/snapshots/field-central-park.expected";
+import { FakeSnapshotBuilder } from "../helpers/fake-snapshot.builder";
 import { SnapshotFixtureLoader } from "../helpers/snapshot-fixture.loader";
 
 describe("StateComposer", () => {
@@ -23,6 +25,12 @@ describe("StateComposer", () => {
       expect(state.party).toEqual(BattleAgainstNatsumiExpected.party);
       expect(state.digimonBattle).toEqual(BattleAgainstNatsumiExpected.digimonBattle);
       expect(state.journal).toEqual(BattleAgainstNatsumiExpected.journal);
+    });
+
+    it("should throw SaveNotLoadedError when the RAM is empty", () => {
+      const snapshot = new MemorySnapshot(new FakeSnapshotBuilder().build());
+
+      expect(() => StateComposer.compose(snapshot)).toThrow(SaveNotLoadedError);
     });
   });
 });

@@ -5,6 +5,7 @@ import type { State } from "@/models";
 import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.error";
 import { MemoryReadError } from "@/memory/snapshot/memory-read.error";
 import { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
+import { SaveNotLoadedError } from "@/memory/validators/save-not-loaded.error";
 import { FieldCentralParkExpected } from "../../fixtures/snapshots/field-central-park.expected";
 import { FakeSnapshotBuilder } from "../../helpers/fake-snapshot.builder";
 
@@ -102,6 +103,23 @@ describe("GameLoop", () => {
       expect(onError).toHaveBeenCalledExactlyOnceWith(
         EmulatorConnectionErrorCodes.MemoryReadFailed,
         "outside the snapshot",
+      );
+      gameLoop.stop();
+    });
+
+    it("should report save_not_loaded when composing throws SaveNotLoadedError", async () => {
+      const { options, compose, onError } = createOptions();
+      compose.mockImplementation(() => {
+        throw new SaveNotLoadedError("No occupied party slot.");
+      });
+      const gameLoop = new GameLoop(options);
+
+      gameLoop.start();
+      await vi.advanceTimersByTimeAsync(0);
+
+      expect(onError).toHaveBeenCalledExactlyOnceWith(
+        EmulatorConnectionErrorCodes.SaveNotLoaded,
+        "No occupied party slot.",
       );
       gameLoop.stop();
     });

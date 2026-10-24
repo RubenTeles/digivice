@@ -4,6 +4,7 @@ import { EmulatorConnectionError } from "@/memory/snapshot/emulator-connection.e
 import { MemoryReadError } from "@/memory/snapshot/memory-read.error";
 import type { MemorySnapshot } from "@/memory/snapshot/memory.snapshot";
 import type { SnapshotProvider } from "@/memory/snapshot/snapshot.provider";
+import { SaveNotLoadedError } from "@/memory/validators/save-not-loaded.error";
 
 export interface GameLoopOptions {
   snapshotProvider: SnapshotProvider;
@@ -36,6 +37,10 @@ export class GameLoop {
 
     if (error instanceof MemoryReadError) {
       return { code: EmulatorConnectionErrorCodes.MemoryReadFailed, detail: error.message };
+    }
+
+    if (error instanceof SaveNotLoadedError) {
+      return { code: EmulatorConnectionErrorCodes.SaveNotLoaded, detail: error.message };
     }
 
     return {

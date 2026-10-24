@@ -10,6 +10,8 @@ alwaysApply: false
 
 `GameLoop` (`memory/loop/`) → `StateComposer.compose(snapshot)` → `State` novo a cada tick → `useGameStore.applyState` → primeiro tick (ou primeiro após erro) atribui o `State` completo; ticks seguintes passam por `StatePatcher.patch` (`memory/patch/state.patcher.ts`) → `currentState.{entity}` (model) → `stores/selectors/{assunto}.selector.ts` (informação nova derivada do model). Erro → `useGameStore.applyError` (limpa `currentState`, guarda código e detalhe).
 
+**Ritmo do loop:** `setTimeout` encadeado (ticks nunca se sobrepõem). Com a janela coberta, mantém os ~500 ms; minimizada, o WebView2 pode espaçar os timers. Aceito: o próximo tick ao restaurar a janela traz o estado atual. Se algo precisar observar todos os ticks com a janela minimizada, a alternativa é o Rust conduzir o loop e empurrar o snapshot por evento.
+
 | Camada | Pasta | Convenção |
 |--------|-------|-----------|
 | Model | `models/` (subpastas `party/`, `journal/`, `battle/`) | Propriedades obrigatórias; reexport em `models/index.ts`; consumidores importam de `@/models` (dentro de `models/`, caminho direto para evitar ciclo) |

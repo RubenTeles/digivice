@@ -17,11 +17,11 @@ Regras especializadas por pasta:
 1. Sempre `;` no fim das instruções.
 2. Prefira aspas duplas `"` em strings.
 3. Importações com `@/` (ex.: `@/models`, `@/presenters/map/map.presenter`) em vez de caminhos relativos longos; sem extensão `.ts` (`.vue` mantém a extensão).
-4. Arquivos kebab-case com sufixo de papel (`.converter.ts`, `.viewmodel.ts`, `.presenter.ts`, `.service.ts`, `.repository.ts`, `.selector.ts`, `.extensions.ts`, `.reader.ts`, `.assembler.ts`, `.provider.ts`, `.addresses.ts`, `.snapshot.ts`, `.raw.ts`, `.error.ts`, `.resource.ts`, `.composer.ts`, `.loop.ts`, `.factory.ts`, `.initializer.ts`, `.patcher.ts`, `.spec.ts`); classes/tipos PascalCase.
+4. Arquivos kebab-case com sufixo de papel (`.converter.ts`, `.viewmodel.ts`, `.presenter.ts`, `.service.ts`, `.repository.ts`, `.selector.ts`, `.extensions.ts`, `.reader.ts`, `.assembler.ts`, `.provider.ts`, `.addresses.ts`, `.snapshot.ts`, `.raw.ts`, `.error.ts`, `.resource.ts`, `.composer.ts`, `.loop.ts`, `.factory.ts`, `.initializer.ts`, `.patcher.ts`, `.validator.ts`, `.spec.ts`); classes/tipos PascalCase.
 5. **Converters:** classe `{AlgumaCoisa}Converter`; arquivo `{alguma-coisa}.converter.ts`; API pública estática `convert` (helpers privados permitidos). Dois contextos, pastas distintas:
    - `presenters/converter/` — Raw → ViewModel (dados estáticos)
    - `memory/converters/` — JSON de definitions (`...Raw`, PascalCase) → tipos de endereço (camelCase, `number`)
-6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, providers, repositories, converters, snapshot, loop, patch) e as actions `applyState`/`applyError` da `useGameStore` têm testes Vitest em `Frontend/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
+6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, providers, repositories, converters, snapshot, validators, loop, patch) e as actions `applyState`/`applyError` da `useGameStore` têm testes Vitest em `Frontend/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
 
 ## Camada de leitura de memória (`src/memory/`)
 
@@ -38,9 +38,10 @@ Regras especializadas por pasta:
 | `readers/` | `{Entity}Reader.read(snapshot, addresses)`: função pura sobre o `MemorySnapshot`, devolve o Resource. |
 | `assemblers/` | `{Entity}Assembler.assemble(resource)`: função pura, normaliza (sentinela → `null`, hex `X4`) e devolve o model de `@/models`. |
 | `providers/` | `{Entity}Provider.get(snapshot)`: busca endereços no `AddressesRepository` e chama reader + assembler. |
-| `state.composer.ts` | `StateComposer.compose(snapshot)` → `State` completo. |
+| `state.composer.ts` | `StateComposer.compose(snapshot)` → `State` completo; lança `SaveNotLoadedError` se o `SaveLoadedValidator` apontar violação. |
+| `validators/` | `SaveLoadedValidator.findViolation(party)`: invariantes da party (regra em `digivice-business.mdc`); devolve a descrição da violação ou `null`. `SaveNotLoadedError`. |
 | `patch/` | `StatePatcher`: patch in-place do `State` da store (regras em `digivice-frontend-sync.mdc`). |
-| `loop/` | `GameLoop` (`setTimeout` encadeado, sem sobrepor ticks; erros → `EmulatorConnectionError.code`, `memory_read_failed` ou `state_compose_failed`), `SnapshotProviderFactory`, `initializeMemoryLoop` (liga loop e `useGameStore`; chamado no `main.ts`). |
+| `loop/` | `GameLoop` (`setTimeout` encadeado, sem sobrepor ticks; erros → `EmulatorConnectionError.code`, `memory_read_failed`, `save_not_loaded` ou `state_compose_failed`), `SnapshotProviderFactory`, `initializeMemoryLoop` (liga loop e `useGameStore`; chamado no `main.ts`). |
 
 - **Fonte do snapshot:** `VITE_MEMORY_SNAPSHOT_URL` (ex.: `/tests/fixtures/snapshots/field-central-park.bin`) usa um `.bin` em vez do `read_ram`; sem ela, o loop só sobe dentro do Tauri (no navegador puro a tela fica em `Loading`). Configurar em `Frontend/.env.development.local` (não versionado). A UI lê só `useGameStore`.
 

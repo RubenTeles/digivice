@@ -27,6 +27,10 @@
         "state_compose_failed": {
           "title": "Falha ao processar o estado do jogo",
           "hint": "O app conectou ao Duckstation, mas não conseguiu montar o estado atual do jogo. Veja o detalhe técnico abaixo."
+        },
+        "save_not_loaded": {
+          "title": "Nenhum save carregado",
+          "hint": "Abra o Digimon World 2003 no DuckStation e carregue um save (ou escolha seus parceiros num jogo novo)."
         }
       }
     }

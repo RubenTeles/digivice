@@ -85,7 +85,8 @@ Reference implementation: Player.
 | Reader | `tests/memory/readers/{x}.reader.spec.ts` | Synthetic addresses + `FakeSnapshotBuilder`; real addresses from `AddressesRepository` written at the definition offsets; signed `0xFFFF`; empty RAM; address outside the snapshot → `MemoryReadError`. Assert the whole resource with `toEqual`. |
 | Assembler | `tests/memory/assemblers/{x}.assembler.spec.ts` | Build the resource inline (`createResource(overrides)`); cover every mapping and the sentinel boundaries (`-1`, `0`, `1`). No snapshot. |
 | Provider | `tests/memory/providers/{x}.provider.spec.ts` | Real fixture (`SnapshotFixtureLoader`) with values confirmed in game (catalog), plus one synthetic snapshot at the real addresses. |
-| Composer | `tests/memory/state.composer.spec.ts` | Real fixture → full `State`. |
+| Composer | `tests/memory/state.composer.spec.ts` | Real fixture → full `State`; empty RAM → `SaveNotLoadedError`. |
+| Validator | `tests/memory/validators/{x}.validator.spec.ts` | `structuredClone` of a fixture's expected model, mutated per case; assert the violation text or `null`. |
 | Patcher | `tests/memory/patch/state.patcher.spec.ts` | Target and source from `structuredClone` of the fixture expected values, mutate the source; assert values and preserved references (`toBe`); `vi.spyOn(storeLogger, "warn")` for the ignored transitions. |
 | Store | `tests/stores/use-game-store.spec.ts` | `setActivePinia(createPinia())` in `beforeEach`; first tick, patch, error and recovery. |
 | Loop | `tests/memory/loop/game.loop.spec.ts` | Fake `SnapshotProvider` (`{ read: vi.fn() }`), `vi.useFakeTimers()` + `await vi.advanceTimersByTimeAsync(ms)`; always `stop()` at the end of the test. |
