@@ -209,7 +209,7 @@ On transition **`0x0600 → 0x0700`** (card battle screen), **`0x4B404`** (Int32
 **card battle config id** (which fight/deck setup), **not** a unique NPC id.
 **`0`** outside card battle (`0x0600` digimon battle).
 
-Integrated: `cardBattle.id` via [`card-battle-addresses.json`](../../../../App/src/data/memory-addresses/card-battle-addresses.json) `Id`.
+Integrated: `cardBattle.id` via [`card-battle-addresses.json`](../../../../App/src/data/memory-addresses/card-battle-addresses.json) `id`.
 Frontend static: `cardBattles.first` / `cardBattles.second` → `id` in
 `tamer.json` / `duel-island.json` (lookup NPC by scanning those ids).
 

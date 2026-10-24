@@ -1,17 +1,17 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface AuctionAddressesRaw {
-  Address: AddressValueRaw;
-  BitMask: AddressValueRaw;
+  address: AddressValueRaw;
+  bitMask: AddressValueRaw;
 }
 
 export interface AuctionsAddressesRaw {
-  DivineBarrier: AuctionAddressesRaw;
-  HazardShield: AuctionAddressesRaw;
-  SniperShield: AuctionAddressesRaw;
-  DramonShield: AuctionAddressesRaw;
-  YinYangWand: AuctionAddressesRaw;
-  HazardFang: AuctionAddressesRaw;
+  divineBarrier: AuctionAddressesRaw;
+  hazardShield: AuctionAddressesRaw;
+  sniperShield: AuctionAddressesRaw;
+  dramonShield: AuctionAddressesRaw;
+  yinYangWand: AuctionAddressesRaw;
+  hazardFang: AuctionAddressesRaw;
 }
 
 export interface AuctionAddresses {

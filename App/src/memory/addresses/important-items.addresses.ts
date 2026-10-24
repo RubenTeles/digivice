@@ -1,10 +1,10 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface ImportantItemsAddressesRaw {
-  TreeBoots: AddressValueRaw;
-  FishingPole: AddressValueRaw;
-  AsukaTrophy: AddressValueRaw;
-  SunTrophy: AddressValueRaw;
+  treeBoots: AddressValueRaw;
+  fishingPole: AddressValueRaw;
+  asukaTrophy: AddressValueRaw;
+  sunTrophy: AddressValueRaw;
 }
 
 export interface ImportantItemsAddresses {

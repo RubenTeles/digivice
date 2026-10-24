@@ -7,10 +7,10 @@ import { AddressValueConverter } from "@/memory/converters/address-value.convert
 export class ImportantItemsAddressesConverter {
   public static convert(raw: ImportantItemsAddressesRaw): ImportantItemsAddresses {
     return {
-      treeBoots: AddressValueConverter.convert(raw.TreeBoots),
-      fishingPole: AddressValueConverter.convert(raw.FishingPole),
-      asukaTrophy: AddressValueConverter.convert(raw.AsukaTrophy),
-      sunTrophy: AddressValueConverter.convert(raw.SunTrophy),
+      treeBoots: AddressValueConverter.convert(raw.treeBoots),
+      fishingPole: AddressValueConverter.convert(raw.fishingPole),
+      asukaTrophy: AddressValueConverter.convert(raw.asukaTrophy),
+      sunTrophy: AddressValueConverter.convert(raw.sunTrophy),
     };
   }
 }

@@ -1,237 +1,237 @@
 {
-  "Genji": {
-    "Battles": {
+  "genji": {
+    "battles": {
       "first": {
-        "Address": "0x0004B3DF",
-        "BitMask": "0x20"
+        "address": "0x0004B3DF",
+        "bitMask": "0x20"
       },
       "second": {
-        "Address": "0x0004B39A",
-        "BitMask": "0x01"
+        "address": "0x0004B39A",
+        "bitMask": "0x01"
       }
     }
   },
-  "Natsumi": {
-    "Battles": {
+  "natsumi": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39A",
-        "BitMask": "0x02"
+        "address": "0x0004B39A",
+        "bitMask": "0x02"
       }
     }
   },
-  "Catherine": {
-    "Battles": {
+  "catherine": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39A",
-        "BitMask": "0x08"
+        "address": "0x0004B39A",
+        "bitMask": "0x08"
       }
     }
   },
-  "Lucia": {
-    "Battles": {
+  "lucia": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39A",
-        "BitMask": "0x10"
+        "address": "0x0004B39A",
+        "bitMask": "0x10"
       }
     }
   },
-  "Robert": {
-    "Battles": {
+  "robert": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39A",
-        "BitMask": "0x20"
+        "address": "0x0004B39A",
+        "bitMask": "0x20"
       }
     }
   },
-  "Akiba": {
-    "Battles": {
+  "akiba": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39A",
-        "BitMask": "0x40"
+        "address": "0x0004B39A",
+        "bitMask": "0x40"
       }
     }
   },
-  "Chris": {
-    "Battles": {
+  "chris": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39B",
-        "BitMask": "0x02"
+        "address": "0x0004B39B",
+        "bitMask": "0x02"
       }
     }
   },
-  "Tomomi": {
-    "Battles": {
+  "tomomi": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39B",
-        "BitMask": "0x01"
+        "address": "0x0004B39B",
+        "bitMask": "0x01"
       }
     }
   },
-  "Mitch": {
-    "Battles": {
+  "mitch": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39A",
-        "BitMask": "0x04"
+        "address": "0x0004B39A",
+        "bitMask": "0x04"
       }
     }
   },
-  "Bob": {
-    "Battles": {
+  "bob": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39A",
-        "BitMask": "0x80"
+        "address": "0x0004B39A",
+        "bitMask": "0x80"
       }
     }
   },
-  "Andy": {
-    "Battles": {
+  "andy": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39B",
-        "BitMask": "0x04"
+        "address": "0x0004B39B",
+        "bitMask": "0x04"
       }
     }
   },
-  "George": {
-    "Battles": {
+  "george": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39B",
-        "BitMask": "0x08"
+        "address": "0x0004B39B",
+        "bitMask": "0x08"
       }
     }
   },
-  "MeiLin": {
-    "Battles": {
+  "meiLin": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39B",
-        "BitMask": "0x10"
+        "address": "0x0004B39B",
+        "bitMask": "0x10"
       }
     }
   },
-  "Jessica": {
-    "Battles": {
+  "jessica": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39B",
-        "BitMask": "0x20"
+        "address": "0x0004B39B",
+        "bitMask": "0x20"
       }
     }
   },
-  "Gordon": {
-    "Battles": {
+  "gordon": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39B",
-        "BitMask": "0x40"
+        "address": "0x0004B39B",
+        "bitMask": "0x40"
       }
     }
   },
-  "Alice": {
-    "Battles": {
+  "alice": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39B",
-        "BitMask": "0x80"
+        "address": "0x0004B39B",
+        "bitMask": "0x80"
       }
     }
   },
-  "Nakano": {
-    "Battles": {
+  "nakano": {
+    "battles": {
       "first": {
-        "Address": "0x0004B39C",
-        "BitMask": "0x01"
+        "address": "0x0004B39C",
+        "bitMask": "0x01"
       }
     }
   },
-  "SeiryuLeader": {
-    "Battles": {
+  "seiryuLeader": {
+    "battles": {
       "first": {
-        "Address": "0x00048DB9",
-        "BitMask": "0x01"
+        "address": "0x00048DB9",
+        "bitMask": "0x01"
       }
     }
   },
-  "Keith": {
-    "Battles": {
+  "keith": {
+    "battles": {
       "first": {
-        "Address": "0x0004B3E0",
-        "BitMask": "0x40"
+        "address": "0x0004B3E0",
+        "bitMask": "0x40"
       }
     }
   },
-  "SuzakuLeader": {
-    "Battles": {
+  "suzakuLeader": {
+    "battles": {
       "first": {
-        "Address": "0x00048DBA",
-        "BitMask": "0x01"
+        "address": "0x00048DBA",
+        "bitMask": "0x01"
       }
     }
   },
-  "FakeByakkoLeader": {
-    "Battles": {
+  "fakeByakkoLeader": {
+    "battles": {
       "first": {
-        "Address": "0x0004B3E1",
-        "BitMask": "0x40"
+        "address": "0x0004B3E1",
+        "bitMask": "0x40"
       }
     }
   },
-  "ByakkoLeader": {
-    "Battles": {
+  "byakkoLeader": {
+    "battles": {
       "first": {
-        "Address": "0x00048DBB",
-        "BitMask": "0x01"
+        "address": "0x00048DBB",
+        "bitMask": "0x01"
       }
     }
   },
-  "AoaAttacker": {
-    "Battles": {
+  "aoaAttacker": {
+    "battles": {
       "first": {
-        "Address": "0x0004B3E5",
-        "BitMask": "0x08"
+        "address": "0x0004B3E5",
+        "bitMask": "0x08"
       }
     }
   },
-  "OptionalTrooper1AdminCenterB1F": {
-    "Battles": {
+  "optionalTrooper1AdminCenterB1F": {
+    "battles": {
       "first": {
-        "Address": "0x0004B395",
-        "BitMask": "0x01"
+        "address": "0x0004B395",
+        "bitMask": "0x01"
       }
     }
   },
-  "OptionalTrooper2AdminCenterB1F": {
-    "Battles": {
+  "optionalTrooper2AdminCenterB1F": {
+    "battles": {
       "first": {
-        "Address": "0x0004B394",
-        "BitMask": "0x40"
+        "address": "0x0004B394",
+        "bitMask": "0x40"
       }
     }
   },
-  "OptionalTrooperAdminFloor1": {
-    "Battles": {
+  "optionalTrooperAdminFloor1": {
+    "battles": {
       "first": {
-        "Address": "0x0004B392",
-        "BitMask": "0x40"
+        "address": "0x0004B392",
+        "bitMask": "0x40"
       }
     }
   },
-  "OptionalTrooper1AdminFloor2": {
-    "Battles": {
+  "optionalTrooper1AdminFloor2": {
+    "battles": {
       "first": {
-        "Address": "0x0004B393",
-        "BitMask": "0x10"
+        "address": "0x0004B393",
+        "bitMask": "0x10"
       }
     }
   },
-  "OptionalSoldier1AdminFloor2": {
-    "Battles": {
+  "optionalSoldier1AdminFloor2": {
+    "battles": {
       "first": {
-        "Address": "0x0004B394",
-        "BitMask": "0x01"
+        "address": "0x0004B394",
+        "bitMask": "0x01"
       }
     }
   },
-  "OptionalTrooper2AdminFloor2": {
-    "Battles": {
+  "optionalTrooper2AdminFloor2": {
+    "battles": {
       "first": {
-        "Address": "0x0004B393",
-        "BitMask": "0x20"
+        "address": "0x0004B393",
+        "bitMask": "0x20"
       }
     }
   }

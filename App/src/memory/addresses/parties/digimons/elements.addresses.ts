@@ -1,13 +1,13 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface ElementsAddressesRaw {
-  Fire: AddressValueRaw;
-  Water: AddressValueRaw;
-  Ice: AddressValueRaw;
-  Wind: AddressValueRaw;
-  Thunder: AddressValueRaw;
-  Machine: AddressValueRaw;
-  Dark: AddressValueRaw;
+  fire: AddressValueRaw;
+  water: AddressValueRaw;
+  ice: AddressValueRaw;
+  wind: AddressValueRaw;
+  thunder: AddressValueRaw;
+  machine: AddressValueRaw;
+  dark: AddressValueRaw;
 }
 
 export interface ElementsAddresses {

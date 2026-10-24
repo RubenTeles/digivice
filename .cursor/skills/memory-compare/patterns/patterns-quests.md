@@ -13,7 +13,7 @@ Legendary weapons share **0x0004B38E** with power-of-two masks:
 
 When prior bits are set: expect `0x03 → 0x07 (+0x04)`, `0x02 → 0x0A (+0x08)`, `0x0A → 0x1A (+0x10)`.
 
-JSON: `quests/legendary-weapons/*-addresses.json` — `BitMasks` array per step.
+JSON: `quests/legendary-weapons/*-addresses.json` — `bitMasks` array per step.
 
 ---
 
@@ -23,7 +23,7 @@ Main quest reuses bytes with different masks (e.g. **0x4B3E0**: `0x02`, `0x04`,
 `0x40`). A compare may show multi-bit changes — identify which **added** bit
 matches the event.
 
-JSON: `quests/main-quest-addresses.json` — `BitMasks` array.
+JSON: `quests/main-quest-addresses.json` — `bitMasks` array.
 
 ---
 
@@ -63,7 +63,7 @@ Island round bytes `0x4B3B2`/`0x4B3B3` (those reset after the final).
 
 ## Raw byte step (confirmed)
 
-Empty `BitMasks: []` → step complete when `byte != 0`.
+Empty `bitMasks: []` → step complete when `byte != 0`.
 
 Example: side quests in `quests/side-quests/*.json`.
 
@@ -258,11 +258,11 @@ Not used as a quest step (the rematch below does not award it).
 KingDivermon (final) address still needs `before/after-final` snap.
 
 **Integrated (2026-08-30):** `quests/duel-island/asuka-trophy-addresses.json`
-— `Id` `asukaTrophy`, 6 steps (round flags + trophy), normalize in
+— `id` `asukaTrophy`, 6 steps (round flags + trophy), normalize in
 `DuelIslandAssembler`.
 
 **Integrated (2026-08-31, renamed 2026-09-30):**
-`quests/duel-island/asuka-rematch-addresses.json` — `Id` `asukaRematch`, requisite
+`quests/duel-island/asuka-rematch-addresses.json` — `id` `asukaRematch`, requisite
 `asukaTrophy` @ `0x48DC2`, same round flags; step 6 (KingDivermon) is
 **provisional** = step 5 bit (`0x4B3B3` / `0x08`) until the final snap.
 

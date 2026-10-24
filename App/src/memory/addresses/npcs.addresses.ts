@@ -2,15 +2,15 @@ import type { Npcs } from "@/state/models";
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface NpcBattleAddressesRaw {
-  Address: AddressValueRaw;
-  BitMask: AddressValueRaw;
+  address: AddressValueRaw;
+  bitMask: AddressValueRaw;
 }
 
 export interface NpcAddressesRaw {
-  Battles: Record<string, NpcBattleAddressesRaw>;
+  battles: Record<string, NpcBattleAddressesRaw>;
 }
 
-export type NpcsAddressesRaw = Record<Capitalize<keyof Npcs>, NpcAddressesRaw>;
+export type NpcsAddressesRaw = Record<keyof Npcs, NpcAddressesRaw>;
 
 export interface NpcBattleAddresses {
   address: number;

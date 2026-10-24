@@ -5,8 +5,8 @@ import { SlotAddressesConverter } from "@/memory/converters/parties/slot-address
 export class PartyAddressesConverter {
   public static convert(raw: PartyAddressesRaw): PartyAddresses {
     return {
-      slots: (raw.Slots ?? []).map((slot) => SlotAddressesConverter.convert(slot)),
-      emptySlotId: AddressValueConverter.convert(raw.EmptySlotId),
+      slots: (raw.slots ?? []).map((slot) => SlotAddressesConverter.convert(slot)),
+      emptySlotId: AddressValueConverter.convert(raw.emptySlotId),
     };
   }
 }

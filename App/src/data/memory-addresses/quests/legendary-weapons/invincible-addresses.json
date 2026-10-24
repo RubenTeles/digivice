@@ -1,17 +1,17 @@
 {
-  "Id": "invincible",
-  "Requisites": [
+  "id": "invincible",
+  "requisites": [
     {
-      "Id": "seiryuLeader",
-      "Address": "0x0004B3B7",
-      "BitMasks": ["0x01"]
+      "id": "seiryuLeader",
+      "address": "0x0004B3B7",
+      "bitMasks": ["0x01"]
     }
   ],
-  "Steps": [
+  "steps": [
     {
-      "Number": 1,
-      "Address": "0x0004B38E",
-      "BitMasks": ["0x02"]
+      "number": 1,
+      "address": "0x0004B38E",
+      "bitMasks": ["0x02"]
     }
   ]
 }

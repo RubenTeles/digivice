@@ -1,7 +1,7 @@
 # Seabed underwater routing — memory investigation
 
 Domain: map / location  
-Status: confirmed — `SeabedRoute` / `IsSubmerged` in `player-addresses.json` + Player pipeline; frontend pending  
+Status: confirmed — `seabedRoute` / `IsSubmerged` in `player-addresses.json` + Player pipeline; frontend pending  
 Related: [patterns/](../../skills/memory-compare/patterns/), [memory-regions.md](../../skills/memory-compare/memory-regions.md)
 
 ---
@@ -106,7 +106,7 @@ Snapshots used for the reverse Divermon's ↔ Duel run:
 | Address | Field | Type | Behavior |
 |---------|-------|------|----------|
 | `0x00048D68` | PreviousMapId mirror | u8 | Mirrors `0x4B400` on every observed transition (~32 bytes before name at `0x48D88`). |
-| `0x00048D78` | SeabedRoute | u8 | In `player-addresses.json` as `SeabedRoute`. Set on dive; **persists** for the whole underwater session; cleared on surface emerge. Identifies the **corridor** (dock pair), independent of which end you enter. |
+| `0x00048D78` | SeabedRoute | u8 | In `player-addresses.json` as `seabedRoute`. Set on dive; **persists** for the whole underwater session; cleared on surface emerge. Identifies the **corridor** (dock pair), independent of which end you enter. |
 | `0x00048D7A` | IsSubmerged | u8 | In `player-addresses.json` as `IsSubmerged`. `0x01` while underwater; `0x00` on surface. Domain maps to `bool` (`== 0x01`). Indicates session, not which route. |
 
 ---
@@ -186,7 +186,7 @@ map IDs directly.
   SeabedRouteType, formerly documented as IsSubmerged) are in `player-addresses.json`, read by
   `PlayerReader` and assembled on `Player` (`seabedRoute`, `mapVariant`) by
   `PlayerAssembler`.
-- `PreviousMapId` (`0x4B400`) is in `player-addresses.json` — same shape as
+- `previousMapId` (`0x4B400`) is in `player-addresses.json` — same shape as
   `MapId` (Int16 → hex `X4` string) through the Player pipeline
   (`previousMapId`).
 

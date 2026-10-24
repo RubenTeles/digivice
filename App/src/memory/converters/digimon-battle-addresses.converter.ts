@@ -7,7 +7,7 @@ import { AddressValueConverter } from "@/memory/converters/address-value.convert
 export class DigimonBattleAddressesConverter {
   public static convert(raw: DigimonBattleAddressesRaw): DigimonBattleAddresses {
     return {
-      field: AddressValueConverter.convert(raw.Field),
+      field: AddressValueConverter.convert(raw.field),
     };
   }
 }

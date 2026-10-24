@@ -5,17 +5,17 @@ import type {
 } from "@/memory/addresses/parties/digimons/vital.addresses";
 
 export interface EnemyAddressesRaw {
-  EnemySlotBase: AddressValueRaw;
-  SlotStride: AddressValueRaw;
-  SlotCount: AddressValueRaw;
-  ActiveEnemySlotIndex: AddressValueRaw;
-  GroupId: AddressValueRaw;
-  Id: AddressValueRaw;
-  Condition: AddressValueRaw;
-  Strength: AddressValueRaw;
-  Defense: AddressValueRaw;
-  Speed: AddressValueRaw;
-  HP: VitalAddressesRaw;
+  enemySlotBase: AddressValueRaw;
+  slotStride: AddressValueRaw;
+  slotCount: AddressValueRaw;
+  activeEnemySlotIndex: AddressValueRaw;
+  groupId: AddressValueRaw;
+  id: AddressValueRaw;
+  condition: AddressValueRaw;
+  strength: AddressValueRaw;
+  defense: AddressValueRaw;
+  speed: AddressValueRaw;
+  hp: VitalAddressesRaw;
 }
 
 export interface EnemyAddresses {

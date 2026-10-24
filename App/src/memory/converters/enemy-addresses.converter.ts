@@ -5,17 +5,17 @@ import { VitalAddressesConverter } from "@/memory/converters/parties/digimons/vi
 export class EnemyAddressesConverter {
   public static convert(raw: EnemyAddressesRaw): EnemyAddresses {
     return {
-      enemySlotBase: AddressValueConverter.convert(raw.EnemySlotBase),
-      slotStride: AddressValueConverter.convert(raw.SlotStride),
-      slotCount: AddressValueConverter.convert(raw.SlotCount),
-      activeEnemySlotIndex: AddressValueConverter.convert(raw.ActiveEnemySlotIndex),
-      groupId: AddressValueConverter.convert(raw.GroupId),
-      id: AddressValueConverter.convert(raw.Id),
-      condition: AddressValueConverter.convert(raw.Condition),
-      strength: AddressValueConverter.convert(raw.Strength),
-      defense: AddressValueConverter.convert(raw.Defense),
-      speed: AddressValueConverter.convert(raw.Speed),
-      hp: VitalAddressesConverter.convert(raw.HP),
+      enemySlotBase: AddressValueConverter.convert(raw.enemySlotBase),
+      slotStride: AddressValueConverter.convert(raw.slotStride),
+      slotCount: AddressValueConverter.convert(raw.slotCount),
+      activeEnemySlotIndex: AddressValueConverter.convert(raw.activeEnemySlotIndex),
+      groupId: AddressValueConverter.convert(raw.groupId),
+      id: AddressValueConverter.convert(raw.id),
+      condition: AddressValueConverter.convert(raw.condition),
+      strength: AddressValueConverter.convert(raw.strength),
+      defense: AddressValueConverter.convert(raw.defense),
+      speed: AddressValueConverter.convert(raw.speed),
+      hp: VitalAddressesConverter.convert(raw.hp),
     };
   }
 }

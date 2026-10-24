@@ -75,28 +75,28 @@ cards and `calculateNewStatus: true` (locked/done/new variants).
 
 ```json
 {
-    "Id": "questId",
-    "Requisites": [
-        { "Id": "otherQuestOrItemId", "Address": "0x00048DC2" }
+    "id": "questId",
+    "requisites": [
+        { "id": "otherQuestOrItemId", "address": "0x00048DC2" }
     ],
-    "Steps": [
+    "steps": [
         {
-            "Number": 1,
-            "Address": "0x0004B38C",
-            "BitMasks": ["0x04"],
-            "Requisites": [
-                { "Id": "itemId", "Address": "0x00048DD7", "BitMasks": ["0x01"] }
+            "number": 1,
+            "address": "0x0004B38C",
+            "bitMasks": ["0x04"],
+            "requisites": [
+                { "id": "itemId", "address": "0x00048DD7", "bitMasks": ["0x01"] }
             ]
         }
     ]
 }
 ```
 
-- `Requisites` exist at **two levels**: quest root (gate for the whole quest, e.g. `asuka-rematch-addresses.json` → `asukaTrophy`; `dri-agent-patamon-addresses.json` → `submarimon`) and per step (e.g. DRI step 3 → `{rookie}DDNA`). Both are optional.
-- `BitMasks` (array) on steps **and** requisites. Empty = raw byte (`!= 0`). Multiple = **all** must be set. Singular `BitMask` → normalize to `"BitMasks": ["0x04"]`.
-- Single mask on one line (`"BitMasks": ["0x04"]`); multiline only for many entries.
+- `requisites` exist at **two levels**: quest root (gate for the whole quest, e.g. `asuka-rematch-addresses.json` → `asukaTrophy`; `dri-agent-patamon-addresses.json` → `submarimon`) and per step (e.g. DRI step 3 → `{rookie}DDNA`). Both are optional.
+- `bitMasks` (array) on steps **and** requisites. Empty = raw byte (`!= 0`). Multiple = **all** must be set. Singular `bitMask` → normalize to `"bitMasks": ["0x04"]`.
+- Single mask on one line (`"bitMasks": ["0x04"]`); multiline only for many entries.
 - **Ids in camelCase** (`muramasa`, `driAgentGuilmon`, `guilmonDDNA`). The same id is used by the definitions, the static quest JSON and i18n.
-- Step `Number` sequential and unique within the quest; equal to the step `number` in the static JSON.
+- Step `number` sequential and unique within the quest; equal to the step `number` in the static JSON.
 - `App/src/data/memory-addresses/` is the single source of the addresses. `Tools/MemoryScanner` (`analyze-pair`) reads `quests/main-quest-addresses.json` from there by a fixed path: do not move or rename it.
 
 ## Section invariant
@@ -187,7 +187,7 @@ the product explicitly asks:
 |---------|--------------|
 | Card missing | Definitions JSON outside the category folder, or quest not in the static getter; ids differ in casing |
 | Card shows, modal empty | `QuestModalPresenter` id mismatch |
-| Wrong step state | Step `Number` in definitions differs from `number` in the static JSON; wrong `BitMasks` |
+| Wrong step state | Step `number` in the definitions differs from `number` in the static JSON; wrong `bitMasks` |
 | Quest order wrong in tests | Definitions are ordered by file name, not by id |
 | Missing translations | Locale `index.ts` import omitted |
 

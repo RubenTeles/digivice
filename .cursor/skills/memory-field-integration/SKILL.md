@@ -48,7 +48,7 @@ Paths are under `App/src/memory/` unless stated otherwise.
 |--------|-------------|-----------------------|----------|--------|-----------|-----------------------|
 | Player | `player-addresses.json` | `addresses/player.addresses.ts`, `converters/player-addresses.converter.ts` | `resources/player.resource.ts` | `readers/player.reader.ts` | `assemblers/player.assembler.ts` | `player.ts` |
 | Party slots | `party-addresses.json` | `addresses/party.addresses.ts`, `addresses/parties/slot.addresses.ts` + converters | `resources/party.resource.ts`, `resources/parties/digimon-slot.resource.ts` | `readers/party.reader.ts` | `assemblers/party.assembler.ts` | `party/party.ts`, `party/digimon-slot.ts` |
-| Digimon (persistent) | `parties/digimon-status-addresses.json` (offsets) + `parties/digimons-addresses.json` (block base and `BlastAddress` per rookie) | `addresses/parties/digimon-status.addresses.ts`, `addresses/parties/digimon.addresses.ts`, `addresses/parties/digimons/*` + converters | `resources/parties/digimon.resource.ts`, `resources/parties/digimons/*` | `readers/digimon.reader.ts` (`memoryBlockAddress + offset`) | `assemblers/digimon.assembler.ts` | `party/digimon/*` |
+| Digimon (persistent) | `parties/digimon-status-addresses.json` (offsets) + `parties/digimons-addresses.json` (block base and `blastAddress` per rookie) | `addresses/parties/digimon-status.addresses.ts`, `addresses/parties/digimon.addresses.ts`, `addresses/parties/digimons/*` + converters | `resources/parties/digimon.resource.ts`, `resources/parties/digimons/*` | `readers/digimon.reader.ts` (`memoryBlockAddress + offset`) | `assemblers/digimon.assembler.ts` | `party/digimon/*` |
 | Digimon in combat | `parties/in-battle-addresses.json` | `addresses/parties/in-battle.addresses.ts`, `converters/parties/in-battle-addresses.converter.ts` | `resources/parties/digimons/in-battle.resource.ts` | `readers/in-battle.reader.ts` | `assemblers/digimon.assembler.ts` | `party/digimon/in-battle.ts` |
 | Digimon battle | `battles/digimon-battle-addresses.json` | `addresses/digimon-battle.addresses.ts` + converter | `resources/digimon-battle.resource.ts` | `readers/digimon-battle.reader.ts` | `assemblers/digimon-battle.assembler.ts` | `digimon-battle.ts` |
 | Enemy | `battles/enemy-addresses.json` (slot base + offsets) | `addresses/enemy.addresses.ts` + converter | `resources/battles/enemy.resource.ts` | `readers/enemy.reader.ts` (called by `DigimonBattleReader`) | `assemblers/digimon-battle.assembler.ts` | `battle/enemy.ts` |
@@ -80,8 +80,8 @@ little-endian values; resources hold raw `number`s; assemblers apply the rules.
 Sentinel rules (`<= 0` → `null`, `field = 0` neutral, enemy `null` as a whole):
 `.cursor/rules/digivice-business.mdc`.
 
-**Naming:** definitions keys are PascalCase (`"PreviousMapId"`); addresses,
-resource and model properties are the camelCase equivalent (`previousMapId`).
+**Naming:** definitions keys are camelCase (`"previousMapId"`), with the same name
+in the addresses, resource and model properties (`previousMapId`).
 
 **Mirrors:** do not add duplicate mirror addresses unless the user explicitly asks.
 
@@ -112,7 +112,7 @@ rejects invalid values when the repository loads the file.
 ### 1. Definitions + addresses
 
 - [ ] Key in the matching `data/memory-addresses/*.json`
-- [ ] Property on `*AddressesRaw` (PascalCase) and `*Addresses` (camelCase, `number`)
+- [ ] Property on `*AddressesRaw` (camelCase, `AddressValueRaw`) and `*Addresses` (camelCase, `number`)
 - [ ] Map in `*AddressesConverter.convert` with `AddressValueConverter.convert`
 - [ ] **SKIP** `AddressesRepository` — every entity file is already loaded
 
@@ -155,8 +155,8 @@ in `state/stores/selectors/`, composition with static data in presenters.
 
 ## Reference walkthrough — Player `seabedRoute`
 
-1. `data/memory-addresses/player-addresses.json` → `"SeabedRoute"`
-2. `addresses/player.addresses.ts` (`SeabedRoute` / `seabedRoute`) + `converters/player-addresses.converter.ts`
+1. `data/memory-addresses/player-addresses.json` → `"seabedRoute"`
+2. `addresses/player.addresses.ts` (`seabedRoute` in `PlayerAddressesRaw` and `PlayerAddresses`) + `converters/player-addresses.converter.ts`
 3. `resources/player.resource.ts` + `readers/player.reader.ts` (`readByte`)
 4. `src/state/models/player.ts` + `assemblers/player.assembler.ts` (`0` → `null`)
 5. `tests/memory/readers/player.reader.spec.ts`, `tests/memory/assemblers/player.assembler.spec.ts`, `field-central-park.expected.ts`

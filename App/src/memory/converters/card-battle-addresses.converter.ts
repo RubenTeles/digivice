@@ -7,7 +7,7 @@ import { AddressValueConverter } from "@/memory/converters/address-value.convert
 export class CardBattleAddressesConverter {
   public static convert(raw: CardBattleAddressesRaw): CardBattleAddresses {
     return {
-      id: AddressValueConverter.convert(raw.Id),
+      id: AddressValueConverter.convert(raw.id),
     };
   }
 }

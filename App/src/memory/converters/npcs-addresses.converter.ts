@@ -9,19 +9,15 @@ import type {
 import { AddressValueConverter } from "@/memory/converters/address-value.converter";
 
 export class NpcsAddressesConverter {
-  private static uncapitalize(name: string): string {
-    return name.charAt(0).toLowerCase() + name.slice(1);
-  }
-
   private static convertBattle(raw: NpcBattleAddressesRaw): NpcBattleAddresses {
     return {
-      address: AddressValueConverter.convert(raw.Address),
-      bitMask: AddressValueConverter.convert(raw.BitMask),
+      address: AddressValueConverter.convert(raw.address),
+      bitMask: AddressValueConverter.convert(raw.bitMask),
     };
   }
 
   private static convertNpc(raw: NpcAddressesRaw): NpcAddresses {
-    const battles = Object.entries(raw.Battles ?? {}).map(([battleId, battle]) => [
+    const battles = Object.entries(raw.battles ?? {}).map(([battleId, battle]) => [
       battleId,
       NpcsAddressesConverter.convertBattle(battle),
     ]);
@@ -31,7 +27,7 @@ export class NpcsAddressesConverter {
 
   public static convert(raw: NpcsAddressesRaw): NpcsAddresses {
     const npcs = Object.entries(raw).map(([name, npc]) => [
-      NpcsAddressesConverter.uncapitalize(name),
+      name,
       NpcsAddressesConverter.convertNpc(npc),
     ]);
 

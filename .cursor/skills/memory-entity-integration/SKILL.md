@@ -51,7 +51,7 @@ Paths under `App/src/memory/` unless stated otherwise. Mirror each
 ### 1. Definitions + addresses
 
 - [ ] `data/memory-addresses/{entity-kebab}-addresses.json` (or a subfolder such as `battles/`, `parties/`)
-- [ ] `addresses/{entity-kebab}.addresses.ts` — `{Entity}AddressesRaw` (PascalCase keys, `AddressValueRaw`) and `{Entity}Addresses` (camelCase, `number`)
+- [ ] `addresses/{entity-kebab}.addresses.ts` — `{Entity}AddressesRaw` (camelCase keys, `AddressValueRaw`) and `{Entity}Addresses` (camelCase, `number`)
 - [ ] `converters/{entity-kebab}-addresses.converter.ts` — `{Entity}AddressesConverter.convert(raw)` with `AddressValueConverter`
 - [ ] `repositories/addresses.repository.ts` — JSON import, `private static` cache field and `get{Entity}Addresses()` through `load(fileName, convert)`
 

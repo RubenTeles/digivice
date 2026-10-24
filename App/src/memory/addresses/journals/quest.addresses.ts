@@ -8,9 +8,9 @@ import type {
 } from "@/memory/addresses/journals/quests/step.addresses";
 
 export interface QuestAddressesRaw {
-  Id: string;
-  Requisites?: RequisiteAddressesRaw[];
-  Steps?: StepAddressesRaw[];
+  id: string;
+  requisites?: RequisiteAddressesRaw[];
+  steps?: StepAddressesRaw[];
 }
 
 export interface QuestAddresses {

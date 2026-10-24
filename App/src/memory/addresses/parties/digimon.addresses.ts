@@ -1,9 +1,9 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface DigimonAddressRaw {
-  Name: string;
-  MemoryBlockAddress: AddressValueRaw;
-  BlastAddress: AddressValueRaw;
+  name: string;
+  memoryBlockAddress: AddressValueRaw;
+  blastAddress: AddressValueRaw;
 }
 
 export type DigimonsAddressesRaw = Record<string, DigimonAddressRaw>;

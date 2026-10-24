@@ -1,12 +1,12 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface AttributesAddressesRaw {
-  Strength: AddressValueRaw;
-  Defense: AddressValueRaw;
-  Spirit: AddressValueRaw;
-  Wisdom: AddressValueRaw;
-  Speed: AddressValueRaw;
-  Charisma: AddressValueRaw;
+  strength: AddressValueRaw;
+  defense: AddressValueRaw;
+  spirit: AddressValueRaw;
+  wisdom: AddressValueRaw;
+  speed: AddressValueRaw;
+  charisma: AddressValueRaw;
 }
 
 export interface AttributesAddresses {

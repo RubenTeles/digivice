@@ -7,8 +7,8 @@ import { AddressValueConverter } from "@/memory/converters/address-value.convert
 export class VitalAddressesConverter {
   public static convert(raw: VitalAddressesRaw): VitalAddresses {
     return {
-      current: AddressValueConverter.convert(raw.Current),
-      max: AddressValueConverter.convert(raw.Max),
+      current: AddressValueConverter.convert(raw.current),
+      max: AddressValueConverter.convert(raw.max),
     };
   }
 }

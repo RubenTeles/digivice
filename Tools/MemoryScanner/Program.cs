@@ -216,11 +216,11 @@ class Program
         {
             using var document = JsonDocument.Parse(File.ReadAllText(questPath));
             int changed = 0;
-            foreach (var step in document.RootElement.GetProperty("Steps").EnumerateArray())
+            foreach (var step in document.RootElement.GetProperty("steps").EnumerateArray())
             {
-                int number = step.GetProperty("Number").GetInt32();
-                int address = Convert.ToInt32(step.GetProperty("Address").GetString()!.Replace("0x", ""), 16);
-                var bitMasks = step.GetProperty("BitMasks")
+                int number = step.GetProperty("number").GetInt32();
+                int address = Convert.ToInt32(step.GetProperty("address").GetString()!.Replace("0x", ""), 16);
+                var bitMasks = step.GetProperty("bitMasks")
                     .EnumerateArray()
                     .Select(maskElement => Convert.ToByte(maskElement.GetString()!.Replace("0x", ""), 16))
                     .ToList();

@@ -1,7 +1,7 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface CardBattleAddressesRaw {
-  Id: AddressValueRaw;
+  id: AddressValueRaw;
 }
 
 export interface CardBattleAddresses {

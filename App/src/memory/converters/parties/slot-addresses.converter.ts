@@ -4,8 +4,8 @@ import { AddressValueConverter } from "@/memory/converters/address-value.convert
 export class SlotAddressesConverter {
   public static convert(raw: SlotAddressesRaw): SlotAddresses {
     return {
-      index: AddressValueConverter.convert(raw.Index),
-      address: AddressValueConverter.convert(raw.Address),
+      index: AddressValueConverter.convert(raw.index),
+      address: AddressValueConverter.convert(raw.address),
     };
   }
 }

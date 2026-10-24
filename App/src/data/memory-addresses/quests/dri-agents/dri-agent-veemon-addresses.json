@@ -1,31 +1,31 @@
 {
-  "Id": "driAgentVeemon",
-  "Requisites": [
+  "id": "driAgentVeemon",
+  "requisites": [
     {
-      "Id": "byakkoLeader",
-      "Address": "0x0004B3E5",
-      "BitMasks": ["0x40"]
+      "id": "byakkoLeader",
+      "address": "0x0004B3E5",
+      "bitMasks": ["0x40"]
     }
   ],
-  "Steps": [
+  "steps": [
     {
-      "Number": 1,
-      "Address": "0x0004B38C",
-      "BitMasks": ["0x80"]
+      "number": 1,
+      "address": "0x0004B38C",
+      "bitMasks": ["0x80"]
     },
     {
-      "Number": 2,
-      "Address": "0x0004B3B8",
-      "BitMasks": ["0x02"]
+      "number": 2,
+      "address": "0x0004B3B8",
+      "bitMasks": ["0x02"]
     },
     {
-      "Number": 3,
-      "Address": "0x0004A404",
-      "BitMasks": ["0x07"],
-      "Requisites": [
+      "number": 3,
+      "address": "0x0004A404",
+      "bitMasks": ["0x07"],
+      "requisites": [
         {
-          "Id": "veemonDDNA",
-          "Address": "0x00048DD3"
+          "id": "veemonDDNA",
+          "address": "0x00048DD3"
         }
       ]
     }

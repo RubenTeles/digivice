@@ -51,7 +51,7 @@ Paths under `App/src/`.
 
 | Context | Folder | Direction |
 |---------|--------|-----------|
-| Definitions | `memory/converters/` | definitions `Raw` (PascalCase JSON) → `*Addresses` |
+| Definitions | `memory/converters/` | definitions `Raw` (camelCase JSON, hex strings) → `*Addresses` |
 | Static/UI | `ui/presenters/converter/` | static `Raw` + `Model` → `ViewModel` |
 
 ## Side quests reference (copy pattern)

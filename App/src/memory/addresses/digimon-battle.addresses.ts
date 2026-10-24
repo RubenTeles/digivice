@@ -1,7 +1,7 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface DigimonBattleAddressesRaw {
-  Field: AddressValueRaw;
+  field: AddressValueRaw;
 }
 
 export interface DigimonBattleAddresses {

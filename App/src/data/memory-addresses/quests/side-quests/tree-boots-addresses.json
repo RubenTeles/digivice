@@ -1,46 +1,46 @@
 {
-  "Id": "treeBoots",
-  "Requisites": [
+  "id": "treeBoots",
+  "requisites": [
     {
-      "Id": "folderBag",
-      "Address": "0x00048F42"
+      "id": "folderBag",
+      "address": "0x00048F42"
     }
   ],
-  "Steps": [
+  "steps": [
     {
-      "Number": 1,
-      "Address": "0x04B3B0",
-      "BitMasks": ["0x04"]
+      "number": 1,
+      "address": "0x04B3B0",
+      "bitMasks": ["0x04"]
     },
     {
-      "Number": 2,
-      "Address": "0x04B3B0",
-      "BitMasks": ["0x08"]
+      "number": 2,
+      "address": "0x04B3B0",
+      "bitMasks": ["0x08"]
     },
     {
-      "Number": 3,
-      "Address": "0x04B3B0",
-      "BitMasks": ["0x10"]
+      "number": 3,
+      "address": "0x04B3B0",
+      "bitMasks": ["0x10"]
     },
     {
-      "Number": 4,
-      "Address": "0x04B3B0",
-      "BitMasks": ["0xE0"]
+      "number": 4,
+      "address": "0x04B3B0",
+      "bitMasks": ["0xE0"]
     },
     {
-      "Number": 5,
-      "Address": "0x04B3B0",
-      "BitMasks": ["0xC0"]
+      "number": 5,
+      "address": "0x04B3B0",
+      "bitMasks": ["0xC0"]
     },
     {
-      "Number": 6,
-      "Address": "0x04B3B0",
-      "BitMasks": ["0x80"]
+      "number": 6,
+      "address": "0x04B3B0",
+      "bitMasks": ["0x80"]
     },
     {
-      "Number": 7,
-      "Address": "0x04B3B1",
-      "BitMasks": ["0x01"]
+      "number": 7,
+      "address": "0x04B3B1",
+      "bitMasks": ["0x01"]
     }
   ]
 }

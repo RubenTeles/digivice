@@ -93,7 +93,7 @@ which of the three enemy slots to expose as `digimonBattle.enemy`:
 3. Else highest-index slot with `id != 0` (all KO — stay on last defeated).
 4. Else slot 0 (empty battle fallback).
 
-Wired in `enemy-addresses.json` as `SlotStride`, `SlotCount`, `ActiveEnemySlotIndex`.
+Wired in `enemy-addresses.json` as `slotStride`, `slotCount`, `activeEnemySlotIndex`.
 
 **Changed 2026-09-27:** removed the former step 1 (match `0xA4558` to a slot id)
 and `ActiveUnitId` from `enemy-addresses.json`. `0xA4558` is camera focus; it never
@@ -127,8 +127,8 @@ tables in [patterns-battle-combatants.md](patterns-battle-combatants.md) (*Attr 
 | `+0x12` | **DEF delta** | Ally: `growlmon-normal`→`def-up` `0xA4482` `0→185` (= combat DEF `494→679`) |
 | `+0x14` | **SPD delta** | Enemy: `hagurumon-1`→`2` `0xA44E4` `0→84` (= combat SPD `336→420`) |
 
-Wired: ally slots via `parties/in-battle-addresses.json` (`Strength` / `Defense` /
-`Speed` → `digimon.inBattle`); enemy `0xA44D0` via `battles/enemy-addresses.json`
+Wired: ally slots via `parties/in-battle-addresses.json` (`strength` / `defense` /
+`speed` → `digimon.inBattle`); enemy `0xA44D0` via `battles/enemy-addresses.json`
 (`EnemyReader` → `digimonBattle.enemy`).
 
 ---
@@ -167,7 +167,7 @@ pair: `+0x04` `0x00→0x01` (unknown — not Condition); HP current also dropped
 | Address | Notes |
 |---------|-------|
 | `0x42B28` | battle-related counter/flag (1 Natsumi, 20 Genji, varies wild) |
-| `0x42B2C` | **`GroupId`** (Int16 LE) — encounter group template id (site: "Group F-201"). Natsumi **201**, Genji **272**, wild 39–43. Stable across multi-enemy NPC fights. Wired in `enemy-addresses.json` → `digimonBattle.enemy.groupId` |
+| `0x42B2C` | **`groupId`** (Int16 LE) — encounter group template id (site: "Group F-201"). Natsumi **201**, Genji **272**, wild 39–43. Stable across multi-enemy NPC fights. Wired in `enemy-addresses.json` → `digimonBattle.enemy.groupId` |
 | `0x42B34` | same enemy token as `0xA44D0` |
 | `0x42B38` | enemy level (Mammothmon 23) |
 | `0x42B3A` | enemy **max/initial** HP only — stayed 672 while `0xA44D8` dropped |

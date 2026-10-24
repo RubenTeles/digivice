@@ -2,14 +2,14 @@ import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 import type { SlotAddresses, SlotAddressesRaw } from "@/memory/addresses/parties/slot.addresses";
 
 export interface DigievolutionsAddressesRaw {
-  ActiveDigievolution: AddressValueRaw;
-  Slots: SlotAddressesRaw[];
-  UnlockedDigievolutionsStart: AddressValueRaw;
-  UnlockedDigievolutionEntryStride: AddressValueRaw;
-  MaxUnlockedDigievolutions: AddressValueRaw;
-  Id: AddressValueRaw;
-  Level: AddressValueRaw;
-  Dvexp: AddressValueRaw;
+  activeDigievolution: AddressValueRaw;
+  slots: SlotAddressesRaw[];
+  unlockedDigievolutionsStart: AddressValueRaw;
+  unlockedDigievolutionEntryStride: AddressValueRaw;
+  maxUnlockedDigievolutions: AddressValueRaw;
+  id: AddressValueRaw;
+  level: AddressValueRaw;
+  dvexp: AddressValueRaw;
 }
 
 export interface DigievolutionsAddresses {

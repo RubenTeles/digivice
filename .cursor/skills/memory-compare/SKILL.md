@@ -65,8 +65,8 @@ Natsumi card rematch + map scripts, DRI agent hunt, and the
 ## Bitmask rules
 
 - Flag set: `(byte & bitMask) != 0`; one byte holds up to 8 independent flags
-- Definitions use `BitMasks` (array) on steps and requisites; empty → `byte != 0`; multiple → **all** must be set
-- Some non-quest files use singular `BitMask` objects (`auction-addresses.json`, `npc-addresses.json`)
+- Definitions use `bitMasks` (array) on steps and requisites; empty → `byte != 0`; multiple → **all** must be set
+- Some non-quest files use singular `bitMask` objects (`auction-addresses.json`, `npc-addresses.json`)
 
 ## Domain hints
 
@@ -78,7 +78,7 @@ Natsumi card rematch + map scripts, DRI agent hunt, and the
 | DRI agents (8/8 done) | `quests/dri-agents/` + `.cursor/docs/investigations/dri-agent-hunt.md` | Talk `0x4B38C` / boss `0x4B3B7`–`B8` / deliver per-agent byte |
 | Duel Island | `quests/duel-island/` | Round bits `0x4B3B2` `0x80`, `0x4B3B3` `0x01`–`0x08`; trophies `0x48DC2` / `0x48DC4` |
 | Important items | `important-items-addresses.json` | Possession byte `0 → 1` in `~0x48DBx`–`0x48DCx` |
-| Player | `player-addresses.json` (`Bits`, `MapId`, `PreviousMapId`, `SeabedRoute`, `MapVariant`) | MapId / PreviousMapId on transition |
+| Player | `player-addresses.json` (`bits`, `mapId`, `previousMapId`, `seabedRoute`, `mapVariant`) | MapId / PreviousMapId on transition |
 | Map / seabed / Mobius | `player-addresses.json` + `patterns-map.md` | `0x48D78` / `0x48D7A` / `0x4B400` |
 | Map subzones | skill `map-subzone-investigate` | Same MapId, different encounter regions |
 | Party | `party-addresses.json` (slots `0x48DA4+`) | Slot ID bytes |

@@ -23,9 +23,9 @@ export class QuestAddressesConverter {
 
   private static convertRequisite(raw: RequisiteAddressesRaw): RequisiteAddresses {
     return {
-      id: QuestAddressesConverter.convertId(raw.Id),
-      address: AddressValueConverter.convert(raw.Address),
-      bitMasks: AddressValueConverter.convertList(raw.BitMasks),
+      id: QuestAddressesConverter.convertId(raw.id),
+      address: AddressValueConverter.convert(raw.address),
+      bitMasks: AddressValueConverter.convertList(raw.bitMasks),
     };
   }
 
@@ -37,18 +37,18 @@ export class QuestAddressesConverter {
 
   private static convertStep(raw: StepAddressesRaw): StepAddresses {
     return {
-      number: AddressValueConverter.convert(raw.Number),
-      address: AddressValueConverter.convert(raw.Address),
-      bitMasks: AddressValueConverter.convertList(raw.BitMasks),
-      requisites: QuestAddressesConverter.convertRequisites(raw.Requisites),
+      number: AddressValueConverter.convert(raw.number),
+      address: AddressValueConverter.convert(raw.address),
+      bitMasks: AddressValueConverter.convertList(raw.bitMasks),
+      requisites: QuestAddressesConverter.convertRequisites(raw.requisites),
     };
   }
 
   public static convert(raw: QuestAddressesRaw): QuestAddresses {
     return {
-      id: QuestAddressesConverter.convertId(raw.Id),
-      requisites: QuestAddressesConverter.convertRequisites(raw.Requisites),
-      steps: (raw.Steps ?? []).map((step) => QuestAddressesConverter.convertStep(step)),
+      id: QuestAddressesConverter.convertId(raw.id),
+      requisites: QuestAddressesConverter.convertRequisites(raw.requisites),
+      steps: (raw.steps ?? []).map((step) => QuestAddressesConverter.convertStep(step)),
     };
   }
 }

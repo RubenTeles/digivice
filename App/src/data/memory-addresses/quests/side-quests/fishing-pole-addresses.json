@@ -1,40 +1,40 @@
 {
-  "Id": "fishingPole",
-  "Requisites": [
+  "id": "fishingPole",
+  "requisites": [
     {
-      "Id": "folderBag",
-      "Address": "0x00048F42"
+      "id": "folderBag",
+      "address": "0x00048F42"
     }
   ],
-  "Steps": [
+  "steps": [
     {
-      "Number": 1,
-      "Address": "0x04B3B0",
-      "BitMasks": ["0x02"]
+      "number": 1,
+      "address": "0x04B3B0",
+      "bitMasks": ["0x02"]
     },
     {
-      "Number": 2,
-      "Address": "0x04B3B1",
-      "BitMasks": ["0x10"]
+      "number": 2,
+      "address": "0x04B3B1",
+      "bitMasks": ["0x10"]
     },
     {
-      "Number": 3,
-      "Requisites": [
+      "number": 3,
+      "requisites": [
         {
-          "Id": "bambooSpear",
-          "Address": "0x048E57"
+          "id": "bambooSpear",
+          "address": "0x048E57"
         },
         {
-          "Id": "spiderWeb",
-          "Address": "0x048E09"
+          "id": "spiderWeb",
+          "address": "0x048E09"
         },
         {
-          "Id": "redSnapper",
-          "Address": "0x00048DB7"
+          "id": "redSnapper",
+          "address": "0x00048DB7"
         }
       ],
-      "Address": "0x048DB5",
-      "BitMasks": []
+      "address": "0x048DB5",
+      "bitMasks": []
     }
   ]
 }

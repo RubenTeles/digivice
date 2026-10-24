@@ -1,41 +1,41 @@
 {
-  "Id": "asukaRematch",
-  "Requisites": [
+  "id": "asukaRematch",
+  "requisites": [
     {
-      "Id": "asukaTrophy",
-      "Address": "0x00048DC2"
+      "id": "asukaTrophy",
+      "address": "0x00048DC2"
     }
   ],
-  "Steps": [
+  "steps": [
     {
-      "Number": 1,
-      "Address": "0x0004B3B2",
-      "BitMasks": ["0x80"]
+      "number": 1,
+      "address": "0x0004B3B2",
+      "bitMasks": ["0x80"]
     },
     {
-      "Number": 2,
-      "Address": "0x0004B3B3",
-      "BitMasks": ["0x01"]
+      "number": 2,
+      "address": "0x0004B3B3",
+      "bitMasks": ["0x01"]
     },
     {
-      "Number": 3,
-      "Address": "0x0004B3B3",
-      "BitMasks": ["0x02"]
+      "number": 3,
+      "address": "0x0004B3B3",
+      "bitMasks": ["0x02"]
     },
     {
-      "Number": 4,
-      "Address": "0x0004B3B3",
-      "BitMasks": ["0x04"]
+      "number": 4,
+      "address": "0x0004B3B3",
+      "bitMasks": ["0x04"]
     },
     {
-      "Number": 5,
-      "Address": "0x0004B3B3",
-      "BitMasks": ["0x08"]
+      "number": 5,
+      "address": "0x0004B3B3",
+      "bitMasks": ["0x08"]
     },
     {
-      "Number": 6,
-      "Address": "0x0004B3B3",
-      "BitMasks": ["0x08"]
+      "number": 6,
+      "address": "0x0004B3B3",
+      "bitMasks": ["0x08"]
     }
   ]
 }

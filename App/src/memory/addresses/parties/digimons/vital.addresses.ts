@@ -1,8 +1,8 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface VitalAddressesRaw {
-  Current: AddressValueRaw;
-  Max: AddressValueRaw;
+  current: AddressValueRaw;
+  max: AddressValueRaw;
 }
 
 export interface VitalAddresses {

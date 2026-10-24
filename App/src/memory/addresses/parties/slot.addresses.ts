@@ -1,8 +1,8 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface SlotAddressesRaw {
-  Index: AddressValueRaw;
-  Address: AddressValueRaw;
+  index: AddressValueRaw;
+  address: AddressValueRaw;
 }
 
 export interface SlotAddresses {

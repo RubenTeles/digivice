@@ -1,11 +1,11 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface PlayerAddressesRaw {
-  Bits: AddressValueRaw;
-  MapId: AddressValueRaw;
-  PreviousMapId: AddressValueRaw;
-  SeabedRoute: AddressValueRaw;
-  MapVariant: AddressValueRaw;
+  bits: AddressValueRaw;
+  mapId: AddressValueRaw;
+  previousMapId: AddressValueRaw;
+  seabedRoute: AddressValueRaw;
+  mapVariant: AddressValueRaw;
 }
 
 export interface PlayerAddresses {

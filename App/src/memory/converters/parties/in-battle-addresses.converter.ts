@@ -8,14 +8,14 @@ import { VitalAddressesConverter } from "@/memory/converters/parties/digimons/vi
 export class InBattleAddressesConverter {
   public static convert(raw: InBattleAddressesRaw): InBattleAddresses {
     return {
-      allySlotBase: AddressValueConverter.convert(raw.AllySlotBase),
-      slotStride: AddressValueConverter.convert(raw.SlotStride),
-      condition: AddressValueConverter.convert(raw.Condition),
-      strength: AddressValueConverter.convert(raw.Strength),
-      defense: AddressValueConverter.convert(raw.Defense),
-      speed: AddressValueConverter.convert(raw.Speed),
-      hp: VitalAddressesConverter.convert(raw.HP),
-      mp: VitalAddressesConverter.convert(raw.MP),
+      allySlotBase: AddressValueConverter.convert(raw.allySlotBase),
+      slotStride: AddressValueConverter.convert(raw.slotStride),
+      condition: AddressValueConverter.convert(raw.condition),
+      strength: AddressValueConverter.convert(raw.strength),
+      defense: AddressValueConverter.convert(raw.defense),
+      speed: AddressValueConverter.convert(raw.speed),
+      hp: VitalAddressesConverter.convert(raw.hp),
+      mp: VitalAddressesConverter.convert(raw.mp),
     };
   }
 }

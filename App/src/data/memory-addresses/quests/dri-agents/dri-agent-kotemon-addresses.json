@@ -1,31 +1,31 @@
 {
-  "Id": "driAgentKotemon",
-  "Requisites": [
+  "id": "driAgentKotemon",
+  "requisites": [
     {
-      "Id": "submarimon",
-      "Address": "0x00048DC0",
-      "BitMasks": ["0x01"]
+      "id": "submarimon",
+      "address": "0x00048DC0",
+      "bitMasks": ["0x01"]
     }
   ],
-  "Steps": [
+  "steps": [
     {
-      "Number": 1,
-      "Address": "0x0004B38C",
-      "BitMasks": ["0x10"]
+      "number": 1,
+      "address": "0x0004B38C",
+      "bitMasks": ["0x10"]
     },
     {
-      "Number": 2,
-      "Address": "0x0004B3B7",
-      "BitMasks": ["0x40"]
+      "number": 2,
+      "address": "0x0004B3B7",
+      "bitMasks": ["0x40"]
     },
     {
-      "Number": 3,
-      "Address": "0x00049494",
-      "BitMasks": ["0x03"],
-      "Requisites": [
+      "number": 3,
+      "address": "0x00049494",
+      "bitMasks": ["0x03"],
+      "requisites": [
         {
-          "Id": "kotemonDDNA",
-          "Address": "0x00048DC3"
+          "id": "kotemonDDNA",
+          "address": "0x00048DC3"
         }
       ]
     }

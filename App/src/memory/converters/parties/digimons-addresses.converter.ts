@@ -10,9 +10,9 @@ export class DigimonsAddressesConverter {
 
     for (const [id, digimon] of Object.entries(raw)) {
       digimonsAddresses.set(AddressValueConverter.convert(id), {
-        name: digimon.Name,
-        memoryBlockAddress: AddressValueConverter.convert(digimon.MemoryBlockAddress),
-        blastAddress: AddressValueConverter.convert(digimon.BlastAddress),
+        name: digimon.name,
+        memoryBlockAddress: AddressValueConverter.convert(digimon.memoryBlockAddress),
+        blastAddress: AddressValueConverter.convert(digimon.blastAddress),
       });
     }
 

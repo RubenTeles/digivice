@@ -17,7 +17,7 @@ each investigation. Append new entries; do not remove without strong evidence.
 | 0x00048DA0 | Player bits (money etc.) | player-addresses.json — **volatile** |
 | 0x0004B3F8 | MapId | player-addresses.json — changes on map transition; **`0x0700`** = in card battle screen |
 | 0x0004B400 | PreviousMapId | player-addresses.json — map just left on each transition; during card battle holds pre-battle world MapId (e.g. `0x0200` Genji, `0x021D` Natsumi) |
-| 0x0004B404 | Card battle config id (Int32) | **integrated** — [`card-battle-addresses.json`](../../../App/src/data/memory-addresses/card-battle-addresses.json) `Id` → `CardBattle.Id`; maps to `cardBattles.*.id` in tamer/duel-island JSON; Genji `first=1` / `second=2` (confirmed); other NPCs provisional on `first` only; `0` outside card battle |
+| 0x0004B404 | Card battle config id (Int32) | **integrated** — [`card-battle-addresses.json`](../../../App/src/data/memory-addresses/card-battle-addresses.json) `id` → `CardBattle.Id`; maps to `cardBattles.*.id` in tamer/duel-island JSON; Genji `first=1` / `second=2` (confirmed); other NPCs provisional on `first` only; `0` outside card battle |
 | 0x0004B40C | Card battle id mirror (Int32, suspected) | genji first mid-battle mirrored `1`; second series `0`; not needed for Digivice |
 | 0x0004B41C | Card deck level (Int32, suspected) | genji mid-battle — `4` (matches RA deck-level note); not config id |
 | 0x0004B410 | MapId mirror | seabed-routing investigation — tracks current MapId |
@@ -148,10 +148,10 @@ progress flags. Important items (DRI DNA) may persist after quest hand-in.
 | `0x00042B6C` | Enemy **drop item Val** (Int16, live) | **Confirmed** — see [patterns-battle-slots.md](patterns/patterns-battle-slots.md) “Enemy drops (variable)”. Same Digimon can show different Vals by map or roll; static single `dropId` is incomplete. |
 | `0x000A4470` + `n × 0x20` | Battle HP/MP slot table | **Confirmed** live HP/MP + Condition @ +0x1C; attr buff deltas STR/DEF/SPD @ +0x10/+0x12/+0x14 — allies in `parties/in-battle-addresses.json`; enemy slots start `0xA44D0` (also `0xA44F0`, `0xA4510` for NPC multi-enemy parties — each has own memoryId+HP) in `enemy-addresses.json` |
 | `0x000A4468` | Active ally slot index | 0/1/2 — switches with front Digimon (`in-combat-kotemon/patamon/renamon`) |
-| `0x000A446C` | Active enemy slot index | 0/1/2 — Gordon tamer snaps; wired in `enemy-addresses.json` as `ActiveEnemySlotIndex` (primary active-enemy source) |
+| `0x000A446C` | Active enemy slot index | 0/1/2 — Gordon tamer snaps; wired in `enemy-addresses.json` as `activeEnemySlotIndex` (primary active-enemy source) |
 | `0x000A4558` | Camera focus unit id | Target during attack animation, ally at action choice / after switches, stale during switch animations. **Not integrated** (removed from `enemy-addresses.json` 2026-09-27) |
 | `0x000A4580` / `0x000A45C0` | Combatant attr/resist blocks (stride `0x40`) | **Confirmed** layout: Level, STR/DEF/SPI/WIS/SPD, 7 elemental resists, status-resist tail, **species @ +0x24**. Ally↔enemy **swap** which base holds whom — identify by matching enemy.json / slot id `0xA44D0`. No Charisma. Not per party slot (engaged pair only). Field skills do **not** rewrite these resists. Species code table: [patterns-battle-combatants.md](patterns/patterns-battle-combatants.md) |
-| `0x000A4530` | Active battle **field** id (byte) | **Confirmed** + **integrated** in `battles/digimon-battle-addresses.json` as `Field` on `DigimonBattle` — `0` neutral; `2` Fire … `8` Dark. Item fields write the matching id; **all Field-type skills write `6` (Thunder)** regardless of claimed element (game bug) |
+| `0x000A4530` | Active battle **field** id (byte) | **Confirmed** + **integrated** in `battles/digimon-battle-addresses.json` as `field` on `DigimonBattle` — `0` neutral; `2` Fire … `8` Dark. Item fields write the matching id; **all Field-type skills write `6` (Thunder)** regardless of claimed element (game bug) |
 | `0x000A4532` | Field **potency** | **Confirmed**: strengthen multiplier = `1 + value / 128`. `0` none; `64` item (+50%); `127` Field-type skill (~+99%). Not integrated |
 | `0x000A4414`…`0xA442A` | Field support cluster | Lights when field active; **not** per-element SSOT — prefer `0xA4530` |
 | Enemy catalog (variable) | Enemy base attrs copy | `enemyId` then attrs at **+0x0E** (e.g. Mammothmon `0xB97A2`→`0xB97B0`); address moves per fight — audit helper, not a fixed absolute |
@@ -163,7 +163,7 @@ Diffs here are expected after battles; usually not quest flags.
 
 ### Stored (unlocked) digievolutions — per Digimon
 
-Offsets in `digimon-status-addresses.json` → `Digievolutions` (`UnlockedDigievolutionsStart`, `UnlockedDigievolutionEntryStride`, `MaxUnlockedDigievolutions`), relative to each digimon base.
+Offsets in `digimon-status-addresses.json` → `digievolutions` (`unlockedDigievolutionsStart`, `unlockedDigievolutionEntryStride`, `maxUnlockedDigievolutions`), relative to each digimon base.
 
 - **Stack by unlock order:** the first unlocked digievolution takes the first entry; order differs between Digimons (not a fixed list per digievolution id).
 - Entry stride **20 bytes**, max **60** entries.
@@ -187,7 +187,7 @@ Offsets in `digimon-status-addresses.json` → `Digievolutions` (`UnlockedDigiev
 | 0x00044xxx | Coordinates / animations | MemoryScanner compare filter |
 | 0x00048D6C – 0x00048D84 | Player spawn / facing on map transition | seabed-routing investigation |
 | 0x0004B618 – 0x0004B653 | Entity pointer table (map load) | seabed-routing investigation |
-| 0x00048DA0 | Player bits — money/spend | Divine Barrier investigation (`player-addresses.json` `Bits`) |
+| 0x00048DA0 | Player bits — money/spend | Divine Barrier investigation (`player-addresses.json` `bits`) |
 | ASCII runs (0x20, 0x73…) | Dialog/text buffers | Muramasa investigation |
 | 0x000895FD (and `~0x89xxx` overlay area) | MIPS **overlay code** byte, not a flag. RetroAchievements "01 = battle, 25 = card duel" matches (`on-map` 0x00, wild/tamer battle 0x01, card 0x25) only because a different overlay is loaded; value is part of an instruction. Prefer `MapId` `0x4B3F8` (`0600` battle / `0700` card). Wild vs tamer identical. **False positive confirmed:** Piximon/Kadomatsu screen (MapId `0D00`) = `0x01` (different instruction `8E620110`); NPC menu (`0F00`) = `0x80`; inn save (`0C01`) = `0x00` | `on-*` snaps 2026-09-27 |
 

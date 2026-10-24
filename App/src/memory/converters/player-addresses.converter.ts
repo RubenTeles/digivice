@@ -4,11 +4,11 @@ import { AddressValueConverter } from "@/memory/converters/address-value.convert
 export class PlayerAddressesConverter {
   public static convert(raw: PlayerAddressesRaw): PlayerAddresses {
     return {
-      bits: AddressValueConverter.convert(raw.Bits),
-      mapId: AddressValueConverter.convert(raw.MapId),
-      previousMapId: AddressValueConverter.convert(raw.PreviousMapId),
-      seabedRoute: AddressValueConverter.convert(raw.SeabedRoute),
-      mapVariant: AddressValueConverter.convert(raw.MapVariant),
+      bits: AddressValueConverter.convert(raw.bits),
+      mapId: AddressValueConverter.convert(raw.mapId),
+      previousMapId: AddressValueConverter.convert(raw.previousMapId),
+      seabedRoute: AddressValueConverter.convert(raw.seabedRoute),
+      mapVariant: AddressValueConverter.convert(raw.mapVariant),
     };
   }
 }

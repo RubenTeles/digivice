@@ -1,12 +1,12 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface EquipmentsAddressesRaw {
-  Head: AddressValueRaw;
-  Body: AddressValueRaw;
-  Right: AddressValueRaw;
-  Left: AddressValueRaw;
-  Accessory1: AddressValueRaw;
-  Accessory2: AddressValueRaw;
+  head: AddressValueRaw;
+  body: AddressValueRaw;
+  right: AddressValueRaw;
+  left: AddressValueRaw;
+  accessory1: AddressValueRaw;
+  accessory2: AddressValueRaw;
 }
 
 export interface EquipmentsAddresses {

@@ -13,7 +13,7 @@ identify which route or exit applies.
 
 Full method and evidence: [seabed-routing-investigation.md](../../../docs/investigations/seabed-routing-investigation.md).
 
-### Rolling PreviousMapId — `0x4B400` (confirmed, in PlayerAddresses)
+### Rolling PreviousMapId — `0x4B400` (confirmed, in `player-addresses.json`)
 
 Wired as `player.previousMapId` in the TS memory layer — same type as `mapId`
 (`readInt16` → string `X4` in `PlayerAssembler`).
@@ -30,7 +30,7 @@ segments, `0x4B400` is identical across routes.
 `0x48D68` mirrors `0x4B400` in the player block (not in JSON). `0x4B410`
 mirrors current `MapId` (`0x4B3F8`).
 
-### SeabedRoute — `0x48D78` (confirmed, in PlayerAddresses)
+### SeabedRoute — `0x48D78` (confirmed, in `player-addresses.json`)
 
 Wired as `player.seabedRoute` in the TS memory layer (`PlayerReader` / `PlayerAssembler`).
 
@@ -48,7 +48,7 @@ Wired as `player.seabedRoute` in the TS memory layer (`PlayerReader` / `PlayerAs
 
 Table incomplete — more dive points not yet mapped.
 
-### IsSubmerged / MapVariant — `0x48D7A` (confirmed, in PlayerAddresses)
+### IsSubmerged / MapVariant — `0x48D7A` (confirmed, in `player-addresses.json`)
 
 Wired as `player.mapVariant` in the TS memory layer (`PlayerReader` / `PlayerAssembler`).
 

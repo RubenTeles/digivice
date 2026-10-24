@@ -29,10 +29,10 @@ NPC win flags live in `memory-compare/patterns/patterns-card-battle.md`.
 |---------|---------|---------------------|
 | `0xA4470` + `n × 0x20` | Ally slot: HP/MP max+current `+0x06..+0x0C`, STR/DEF/SPD delta `+0x10..+0x14`, condition `+0x1C` | `parties/in-battle-addresses.json` → `digimon.inBattle` |
 | `0xA44D0` + `n × 0x20` (3 slots) | Enemy slot (same offsets except MP; `Id @ +0x00`) | `battles/enemy-addresses.json` → `digimonBattle.enemy` |
-| `0xA446C` | Active enemy slot index (primary active-enemy source) | `enemy-addresses.json` `ActiveEnemySlotIndex` |
-| `0x42B2C` | Encounter group id (Int16) | `enemy-addresses.json` `GroupId` |
+| `0xA446C` | Active enemy slot index (primary active-enemy source) | `enemy-addresses.json` `activeEnemySlotIndex` |
+| `0x42B2C` | Encounter group id (Int16) | `enemy-addresses.json` `groupId` |
 | `0xA4530` | Battle field id (`0` neutral, `2` Fire … `8` Dark) | `battles/digimon-battle-addresses.json` → `digimonBattle.field` |
-| `0x42B74` + `2 × rookieId` | Blast gauge (Int16, 0–1000, per Digimon) | `parties/digimons-addresses.json` `BlastAddress` → `digimon.blast` |
+| `0x42B74` + `2 × rookieId` | Blast gauge (Int16, 0–1000, per Digimon) | `parties/digimons-addresses.json` `blastAddress` → `digimon.blast` |
 
 ## Known, not integrated
 

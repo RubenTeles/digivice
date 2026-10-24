@@ -34,7 +34,7 @@ Agrupada por responsabilidade; as camadas e sufixos de arquivo valem dentro de c
 4. Arquivos kebab-case com sufixo de papel (`.converter.ts`, `.viewmodel.ts`, `.presenter.ts`, `.service.ts`, `.repository.ts`, `.selector.ts`, `.extensions.ts`, `.reader.ts`, `.assembler.ts`, `.provider.ts`, `.addresses.ts`, `.snapshot.ts`, `.raw.ts`, `.error.ts`, `.resource.ts`, `.composer.ts`, `.loop.ts`, `.factory.ts`, `.initializer.ts`, `.patcher.ts`, `.validator.ts`, `.spec.ts`); classes/tipos PascalCase.
 5. **Converters:** classe `{AlgumaCoisa}Converter`; arquivo `{alguma-coisa}.converter.ts`; API pública estática `convert` (helpers privados permitidos). Dois contextos, pastas distintas:
    - `ui/presenters/converter/` — Raw → ViewModel (dados estáticos)
-   - `memory/converters/` — JSON de `data/memory-addresses/` (`...Raw`, PascalCase) → tipos de endereço (camelCase, `number`)
+   - `memory/converters/` — JSON de `data/memory-addresses/` (`...Raw`, valores hex em string) → tipos de endereço (`number`); as chaves são camelCase nos dois
 6. **Testes só na camada de leitura de memória:** `src/memory/**` (readers, assemblers, providers, repositories, converters, snapshot, validators, loop, patch) e as actions `applyState`/`applyError` da `useGameStore` têm testes Vitest em `App/tests/` (regra `digivice-frontend-tests.mdc`). O restante do Frontend (componentes, presenters, services, repositories, viewmodels) **não** tem testes: não criar, sugerir nem incluir, salvo pedido explícito. Nunca `__tests__` nem `*.spec.ts` dentro de `src/`.
 
 ## Camada de leitura de memória (`src/memory/`)

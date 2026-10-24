@@ -30,7 +30,7 @@ The parent passes the compare output (lines like `0xADDRESS: 0xBB -> 0xAA (+ fla
 - **Other candidates** — ranked, with reasons
 - **Discarded** — address + reason (noise ranges, text buffers, encounter cache, counters)
 - **Validation (manual)** — concrete in-game steps or extra snapshots to confirm
-- **Suggested JSON** — target path under `App/src/data/memory-addresses/` and snippet in the project schema (camelCase ids, `BitMasks` arrays)
+- **Suggested JSON** — target path under `App/src/data/memory-addresses/` and snippet in the project schema (camelCase keys and ids, `bitMasks` arrays)
 - **Proposed retrofeed** — exact lines to append to `memory-regions.md` and to which `patterns/*.md` file; only confirmed or clearly marked `(suspected)` items
 - **Next skill** — `journal-quest-integration`, `memory-field-integration` or `memory-entity-integration`
 

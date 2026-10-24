@@ -21,15 +21,15 @@ import type {
 } from "@/memory/addresses/parties/digimons/vital.addresses";
 
 export interface DigimonStatusAddressesRaw {
-  Experience: AddressValueRaw;
-  Level: AddressValueRaw;
-  TP: AddressValueRaw;
-  HP: VitalAddressesRaw;
-  MP: VitalAddressesRaw;
-  Attributes: AttributesAddressesRaw;
-  Elements: ElementsAddressesRaw;
-  Equipments: EquipmentsAddressesRaw;
-  Digievolutions: DigievolutionsAddressesRaw;
+  experience: AddressValueRaw;
+  level: AddressValueRaw;
+  tp: AddressValueRaw;
+  hp: VitalAddressesRaw;
+  mp: VitalAddressesRaw;
+  attributes: AttributesAddressesRaw;
+  elements: ElementsAddressesRaw;
+  equipments: EquipmentsAddressesRaw;
+  digievolutions: DigievolutionsAddressesRaw;
 }
 
 export interface DigimonStatusAddresses {

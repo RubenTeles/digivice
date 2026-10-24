@@ -1,26 +1,26 @@
 {
-  "DivineBarrier": {
-    "Address": "0x0004B38A",
-    "BitMask": "0x01"
+  "divineBarrier": {
+    "address": "0x0004B38A",
+    "bitMask": "0x01"
   },
-  "HazardShield": {
-    "Address": "0x0004B38A",
-    "BitMask": "0x02"
+  "hazardShield": {
+    "address": "0x0004B38A",
+    "bitMask": "0x02"
   },
-  "SniperShield": {
-    "Address": "0x0004B38A",
-    "BitMask": "0x04"
+  "sniperShield": {
+    "address": "0x0004B38A",
+    "bitMask": "0x04"
   },
-  "DramonShield": {
-    "Address": "0x0004B38A",
-    "BitMask": "0x08"
+  "dramonShield": {
+    "address": "0x0004B38A",
+    "bitMask": "0x08"
   },
-  "YinYangWand": {
-    "Address": "0x0004B38A",
-    "BitMask": "0x10"
+  "yinYangWand": {
+    "address": "0x0004B38A",
+    "bitMask": "0x10"
   },
-  "HazardFang": {
-    "Address": "0x0004B38A",
-    "BitMask": "0x20"
+  "hazardFang": {
+    "address": "0x0004B38A",
+    "bitMask": "0x20"
   }
 }

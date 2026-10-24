@@ -1,9 +1,9 @@
 import type { AddressValueRaw } from "@/memory/addresses/address-value.raw";
 
 export interface RequisiteAddressesRaw {
-  Id: string;
-  Address: AddressValueRaw;
-  BitMasks?: AddressValueRaw[];
+  id: string;
+  address: AddressValueRaw;
+  bitMasks?: AddressValueRaw[];
 }
 
 export interface RequisiteAddresses {

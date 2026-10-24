@@ -25,64 +25,64 @@ import { SlotAddressesConverter } from "@/memory/converters/parties/slot-address
 export class DigimonStatusAddressesConverter {
   private static convertAttributes(raw: AttributesAddressesRaw): AttributesAddresses {
     return {
-      strength: AddressValueConverter.convert(raw.Strength),
-      defense: AddressValueConverter.convert(raw.Defense),
-      spirit: AddressValueConverter.convert(raw.Spirit),
-      wisdom: AddressValueConverter.convert(raw.Wisdom),
-      speed: AddressValueConverter.convert(raw.Speed),
-      charisma: AddressValueConverter.convert(raw.Charisma),
+      strength: AddressValueConverter.convert(raw.strength),
+      defense: AddressValueConverter.convert(raw.defense),
+      spirit: AddressValueConverter.convert(raw.spirit),
+      wisdom: AddressValueConverter.convert(raw.wisdom),
+      speed: AddressValueConverter.convert(raw.speed),
+      charisma: AddressValueConverter.convert(raw.charisma),
     };
   }
 
   private static convertElements(raw: ElementsAddressesRaw): ElementsAddresses {
     return {
-      fire: AddressValueConverter.convert(raw.Fire),
-      water: AddressValueConverter.convert(raw.Water),
-      ice: AddressValueConverter.convert(raw.Ice),
-      wind: AddressValueConverter.convert(raw.Wind),
-      thunder: AddressValueConverter.convert(raw.Thunder),
-      machine: AddressValueConverter.convert(raw.Machine),
-      dark: AddressValueConverter.convert(raw.Dark),
+      fire: AddressValueConverter.convert(raw.fire),
+      water: AddressValueConverter.convert(raw.water),
+      ice: AddressValueConverter.convert(raw.ice),
+      wind: AddressValueConverter.convert(raw.wind),
+      thunder: AddressValueConverter.convert(raw.thunder),
+      machine: AddressValueConverter.convert(raw.machine),
+      dark: AddressValueConverter.convert(raw.dark),
     };
   }
 
   private static convertEquipments(raw: EquipmentsAddressesRaw): EquipmentsAddresses {
     return {
-      head: AddressValueConverter.convert(raw.Head),
-      body: AddressValueConverter.convert(raw.Body),
-      right: AddressValueConverter.convert(raw.Right),
-      left: AddressValueConverter.convert(raw.Left),
-      accessory1: AddressValueConverter.convert(raw.Accessory1),
-      accessory2: AddressValueConverter.convert(raw.Accessory2),
+      head: AddressValueConverter.convert(raw.head),
+      body: AddressValueConverter.convert(raw.body),
+      right: AddressValueConverter.convert(raw.right),
+      left: AddressValueConverter.convert(raw.left),
+      accessory1: AddressValueConverter.convert(raw.accessory1),
+      accessory2: AddressValueConverter.convert(raw.accessory2),
     };
   }
 
   private static convertDigievolutions(raw: DigievolutionsAddressesRaw): DigievolutionsAddresses {
     return {
-      activeDigievolution: AddressValueConverter.convert(raw.ActiveDigievolution),
-      slots: (raw.Slots ?? []).map((slot) => SlotAddressesConverter.convert(slot)),
-      unlockedDigievolutionsStart: AddressValueConverter.convert(raw.UnlockedDigievolutionsStart),
+      activeDigievolution: AddressValueConverter.convert(raw.activeDigievolution),
+      slots: (raw.slots ?? []).map((slot) => SlotAddressesConverter.convert(slot)),
+      unlockedDigievolutionsStart: AddressValueConverter.convert(raw.unlockedDigievolutionsStart),
       unlockedDigievolutionEntryStride: AddressValueConverter.convert(
-        raw.UnlockedDigievolutionEntryStride,
+        raw.unlockedDigievolutionEntryStride,
       ),
-      maxUnlockedDigievolutions: AddressValueConverter.convert(raw.MaxUnlockedDigievolutions),
-      id: AddressValueConverter.convert(raw.Id),
-      level: AddressValueConverter.convert(raw.Level),
-      dvexp: AddressValueConverter.convert(raw.Dvexp),
+      maxUnlockedDigievolutions: AddressValueConverter.convert(raw.maxUnlockedDigievolutions),
+      id: AddressValueConverter.convert(raw.id),
+      level: AddressValueConverter.convert(raw.level),
+      dvexp: AddressValueConverter.convert(raw.dvexp),
     };
   }
 
   public static convert(raw: DigimonStatusAddressesRaw): DigimonStatusAddresses {
     return {
-      experience: AddressValueConverter.convert(raw.Experience),
-      level: AddressValueConverter.convert(raw.Level),
-      tp: AddressValueConverter.convert(raw.TP),
-      hp: VitalAddressesConverter.convert(raw.HP),
-      mp: VitalAddressesConverter.convert(raw.MP),
-      attributes: DigimonStatusAddressesConverter.convertAttributes(raw.Attributes),
-      elements: DigimonStatusAddressesConverter.convertElements(raw.Elements),
-      equipments: DigimonStatusAddressesConverter.convertEquipments(raw.Equipments),
-      digievolutions: DigimonStatusAddressesConverter.convertDigievolutions(raw.Digievolutions),
+      experience: AddressValueConverter.convert(raw.experience),
+      level: AddressValueConverter.convert(raw.level),
+      tp: AddressValueConverter.convert(raw.tp),
+      hp: VitalAddressesConverter.convert(raw.hp),
+      mp: VitalAddressesConverter.convert(raw.mp),
+      attributes: DigimonStatusAddressesConverter.convertAttributes(raw.attributes),
+      elements: DigimonStatusAddressesConverter.convertElements(raw.elements),
+      equipments: DigimonStatusAddressesConverter.convertEquipments(raw.equipments),
+      digievolutions: DigimonStatusAddressesConverter.convertDigievolutions(raw.digievolutions),
     };
   }
 }
