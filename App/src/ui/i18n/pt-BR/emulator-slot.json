@@ -1,6 +1,12 @@
 {
   "emulatorSlot": {
     "title": "Encaixe aqui a janela do DuckStation",
-    "hint": "Arraste a janela do emulador para este espaço e redimensione até preencher a borda."
+    "hint": "Arraste a janela do emulador para este espaço e redimensione até preencher a borda.",
+    "fitButton": "Encaixar DuckStation",
+    "errors": {
+      "process_not_found": "O DuckStation não está aberto.",
+      "window_not_found": "O DuckStation está aberto, mas a janela dele não foi encontrada.",
+      "placement_failed": "Não foi possível encaixar a janela do DuckStation."
+    }
   }
 }

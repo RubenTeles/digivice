@@ -1,6 +1,8 @@
+use serde::Deserialize;
 use tauri::ipc::Response;
-use tauri::State;
+use tauri::{State, WebviewWindow};
 
+use crate::emulator_window::{self, EmulatorWindowError, ScreenRect};
 use crate::memory::{MemoryError, MemorySession, MemoryState};
 
 #[tauri::command]
@@ -27,4 +29,31 @@ pub async fn read_ram(state: State<'_, MemoryState>) -> Result<Response, MemoryE
     let bytes = session.copy_ram()?;
     *session_slot = Some(session);
     Ok(Response::new(bytes))
+}
+
+/// Area relative to the Digivice webview, in physical pixels.
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct EmulatorArea {
+    x: i32,
+    y: i32,
+    width: i32,
+    height: i32,
+}
+
+#[tauri::command]
+pub fn fit_emulator_window(
+    window: WebviewWindow,
+    area: EmulatorArea,
+) -> Result<(), EmulatorWindowError> {
+    let origin = window
+        .inner_position()
+        .map_err(EmulatorWindowError::placement_failed)?;
+
+    emulator_window::fit(ScreenRect {
+        x: origin.x + area.x,
+        y: origin.y + area.y,
+        width: area.width,
+        height: area.height,
+    })
 }

@@ -11,7 +11,8 @@ O antigo backend C# (sidecar com SignalR) foi removido; o código pode ser consu
 ## Responsabilidade
 
 - O Rust é uma **ponte mínima**: acha o DuckStation, abre a memória compartilhada `duckstation_{pid}` e entrega **bytes brutos**. Nenhuma lógica de domínio (endereços, sentinelas, assemblers) vive aqui; isso é da camada TS `App/src/memory/`.
-- App só Windows e desktop: sem `lib.rs` nem estrutura de mobile. `main.rs` registra o plugin shell (usado pelo `open` de `external-link.service.ts`, capability `shell:allow-open`), o plugin `window-state` (lembra tamanho e posição da janela; só Rust, sem capability), o `MemoryState` e o comando `read_ram`. Sem sidecar nem outro processo auxiliar.
+- Também posiciona a janela do DuckStation (comando `fit_emulator_window`, módulo `src/emulator_window/`): ponte com o Windows, sem lógica de domínio.
+- App só Windows e desktop: sem `lib.rs` nem estrutura de mobile. `main.rs` registra o plugin shell (usado pelo `open` de `external-link.service.ts`, capability `shell:allow-open`), o plugin `window-state` (lembra tamanho e posição da janela; só Rust, sem capability), o `MemoryState` e os comandos `read_ram` e `fit_emulator_window`. Sem sidecar nem outro processo auxiliar.
 - Build de release: `build.ps1` na raiz (`npm install`, testes, `npm run tauri:build`). `bundle.active: false`: gera só `Tauri/target/release/digivice.exe`, sem instaladores. Versão única no `App/package.json` (lida pelo `tauri.conf.json`; manter o `Cargo.toml` igual).
 
 ## Desenvolvimento local
@@ -33,9 +34,16 @@ O antigo backend C# (sidecar com SignalR) foi removido; o código pode ser consu
 - Toda chamada confere se o processo continua vivo (handle com `PROCESS_SYNCHRONIZE`, `WaitForSingleObject` com timeout 0). Processo morto descarta a sessão e reconecta: com o mapping aberto, a RAM continuaria legível e congelada depois que o emulador fecha.
 - Qualquer erro descarta a sessão; a próxima chamada reconecta do zero.
 
+## Contrato do `fit_emulator_window`
+
+- Usado pelo botão "Encaixar DuckStation" da tela nova (`EmulatorSlot` → `useEmulatorFit` → `EmulatorWindowService`).
+- Recebe `area` (`x`, `y`, `width`, `height`) relativa ao conteúdo da janela do Digivice, em **pixels físicos**; o comando soma `inner_position()` para chegar à tela.
+- Acha a janela principal do processo (visível, sem dono), sai de minimizado/maximizado, compensa as bordas invisíveis (`GetWindowRect` vs `DWMWA_EXTENDED_FRAME_BOUNDS`), aplica `SetWindowPos` e traz o DuckStation para frente.
+- Erro rejeita com `{ code, detail }` (`EmulatorWindowError`), códigos em `App/src/shared/constants/emulator-window-error-code.constant.ts`: `process_not_found`, `window_not_found`, `placement_failed`.
+
 ## Código
 
-1. Um módulo por responsabilidade em `src/memory/`: `process.rs` (processo), `mapping.rs` (view), `handle.rs` (`OwnedHandle`), `session.rs` (sessão e `MemoryState`), `error.rs` (`MemoryError`).
+1. Um módulo por responsabilidade em `src/memory/`: `process.rs` (processo), `mapping.rs` (view), `handle.rs` (`OwnedHandle`), `session.rs` (sessão e `MemoryState`), `error.rs` (`MemoryError`). Em `src/emulator_window/`: `finder.rs` (janela principal via `EnumWindows`), `placement.rs` (restaurar, bordas, `SetWindowPos`), `error.rs` (`EmulatorWindowError`).
 2. Recursos Win32 sempre em wrappers com `Drop` (`OwnedHandle`, `SharedMemoryView`); nunca fechar handle manualmente fora deles.
 3. Todo bloco `unsafe` e todo `unsafe impl` com comentário `// SAFETY:` justificando.
 4. Convenções Rust padrão: `rustfmt`, `snake_case`, constantes `SCREAMING_SNAKE_CASE`; nomes sem abreviação (regra geral do projeto).
