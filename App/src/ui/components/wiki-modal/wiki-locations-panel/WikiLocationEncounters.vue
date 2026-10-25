@@ -18,10 +18,6 @@ const getSourceIcon = (source: WikiLocationEncounterLineViewModel["source"]): st
   return EnemySourceIcon[source];
 };
 
-const getSourceAriaLabel = (source: WikiLocationEncounterLineViewModel["source"]): string => {
-  return t(`enemy.locationSource.${source}`);
-};
-
 const getEnemyButtonClass = (): string => {
   return "text-red-400 hover:text-red-200 drop-shadow-[0_0_2px_rgba(158,55,55,0.8)]";
 };
@@ -48,10 +44,7 @@ const handleOpenEnemy = (enemyId: string): void => {
           @click="handleOpenEnemy(enemy.id)"
         >
           <span>{{ enemy.name }}</span>
-          <span
-            class="ml-0.5 text-[12px] 2xl:text-[16px]"
-            :aria-label="getSourceAriaLabel(line.source)"
-          >
+          <span class="ml-0.5 text-[12px] 2xl:text-[16px]">
             <span class="inline-flex leading-none text-[1.2rem] -translate-y-0.5">{{
               getSourceIcon(line.source)
             }}</span>

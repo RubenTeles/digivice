@@ -51,12 +51,6 @@
       "npc": "(Digimon de {name} Lv {level})"
     },
     "unavailableAtMoment": "Inacessível ou não pode ser desafiado nesse momento da história",
-    "locationSource": {
-      "walking": "Andando",
-      "boss": "Boss",
-      "fishing": "Pesca",
-      "kickingTree": "Árvore"
-    },
     "noEnemiesOnMap": "Zona segura",
     "techniques": "Técnicas"
   }

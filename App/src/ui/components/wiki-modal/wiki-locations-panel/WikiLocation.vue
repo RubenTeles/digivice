@@ -41,10 +41,6 @@ const getSourceIcon = (source: EnemySource): string => {
   return EnemySourceIcon[source];
 };
 
-const getSourceAriaLabel = (source: EnemySource): string => {
-  return t(`enemy.locationSource.${source}`);
-};
-
 defineExpose({
   rootButton,
 });
@@ -77,7 +73,6 @@ defineExpose({
           v-for="source in location.sources"
           :key="source"
           class="text-[12px] 2xl:text-[14px] leading-none"
-          :aria-label="getSourceAriaLabel(source)"
         >
           <span class="inline-flex leading-none text-[1.2rem] -translate-y-1">{{
             getSourceIcon(source)
@@ -95,7 +90,6 @@ defineExpose({
         v-for="source in location.sources"
         :key="source"
         class="text-[12px] 2xl:text-[14px] leading-none"
-        :aria-label="getSourceAriaLabel(source)"
       >
         <span class="inline-flex leading-none text-[1.2rem] -translate-y-1">{{
           getSourceIcon(source)

@@ -35,7 +35,7 @@ function getDvexpClass(isFilled: boolean): string {
 </script>
 
 <template>
-  <div class="flex w-full gap-1 h-1" role="presentation">
+  <div class="flex w-full gap-1 h-1">
     <div
       v-for="i in DvexpBarSegments"
       :key="i"

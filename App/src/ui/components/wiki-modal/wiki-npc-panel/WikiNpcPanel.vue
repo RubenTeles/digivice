@@ -186,7 +186,7 @@ const openLocation = () => {
           :alt="t(panelViewModel.nameKey)"
           class="h-[90%] drop-shadow-[0_0_15px_rgba(0,170,255,0.2)]"
         />
-        <span v-else class="text-2xl font-bold text-gray-500" aria-hidden="true"> ? </span>
+        <span v-else class="text-2xl font-bold text-gray-500"> ? </span>
       </div>
 
       <span class="text-center text-xs font-bold text-gray-300 tracking-wide uppercase">

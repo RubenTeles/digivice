@@ -57,7 +57,7 @@ function openTechniques(): void {
           {{ $t("digimon.states.empty") }}
         </div>
 
-        <div class="w-full shrink-0 px-4 pt-0.5 h-1" aria-hidden="true"></div>
+        <div class="w-full shrink-0 px-4 pt-0.5 h-1"></div>
       </div>
     </template>
 

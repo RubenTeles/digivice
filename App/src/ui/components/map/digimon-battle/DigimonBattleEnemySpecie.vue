@@ -13,7 +13,6 @@ const emit = defineEmits<{
 <template>
   <span
     class="font-emoji text-[16px] shrink-0 justify-self-center -translate-y-1 cursor-help"
-    aria-hidden="true"
     @mouseenter="emit('showTooltip', $event)"
     @mousemove="emit('moveTooltip', $event)"
     @mouseleave="emit('hideTooltip')"

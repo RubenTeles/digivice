@@ -51,12 +51,6 @@
       "npc": "({name}'s Digimon Lv {level})"
     },
     "unavailableAtMoment": "Unavailable or cannot be challenged at this point in the story",
-    "locationSource": {
-      "walking": "Walk",
-      "boss": "Boss",
-      "fishing": "Fishing",
-      "kickingTree": "Kicking tree"
-    },
     "noEnemiesOnMap": "Safe zone",
     "techniques": "Techniques"
   }
