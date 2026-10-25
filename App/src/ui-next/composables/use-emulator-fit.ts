@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, type Ref } from "vue";
+import { onMounted, onUnmounted, ref, watch, type Ref } from "vue";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import {
   EmulatorWindowService,
@@ -9,11 +9,14 @@ import type { EmulatorWindowErrorCode } from "@/shared/constants/emulator-window
 const RefitDelayMs = 200;
 const TitleBarResizeTimeoutMs = 500;
 
-// Shared by EmulatorSlot (fit) and Footer (release).
+// Shared by EmulatorSlot (fit), Footer (release) and modals (cut suspension).
 const isFitted = ref(false);
 const isFitting = ref(false);
 const errorCode = ref<EmulatorWindowErrorCode | null>(null);
 let slotElement: HTMLElement | null = null;
+// Counter so stacked modals keep the cut suspended until the last one closes.
+let suspensionCount = 0;
+let hasPendingRefit = false;
 
 function measure(element: HTMLElement): EmulatorArea {
   // Rounding the edges (not the size) keeps the slot gap-free at fractional DPI scales.
@@ -61,6 +64,7 @@ async function release(): Promise<void> {
   }
 
   isFitted.value = false;
+  hasPendingRefit = false;
   await EmulatorWindowService.release();
   await showTitleBar();
 }
@@ -83,6 +87,12 @@ async function fit(): Promise<void> {
 
   if (errorCode.value === null) {
     isFitted.value = true;
+
+    // A refit that lands while a modal is open must not cut the modal.
+    if (suspensionCount > 0) {
+      await EmulatorWindowService.suspendCut();
+    }
+
     return;
   }
 
@@ -94,6 +104,33 @@ async function fit(): Promise<void> {
   await showTitleBar();
 }
 
+async function suspendCut(): Promise<void> {
+  suspensionCount += 1;
+  if (suspensionCount === 1 && isFitted.value) {
+    await EmulatorWindowService.suspendCut();
+  }
+}
+
+async function resumeCut(): Promise<void> {
+  if (suspensionCount === 0) {
+    return;
+  }
+
+  suspensionCount -= 1;
+  if (suspensionCount > 0 || !isFitted.value || slotElement === null) {
+    return;
+  }
+
+  // The window changed size while suspended, so DuckStation has to follow the slot too.
+  if (hasPendingRefit) {
+    hasPendingRefit = false;
+    await fit();
+    return;
+  }
+
+  await EmulatorWindowService.resumeCut(measure(slotElement));
+}
+
 export function useEmulatorSlot(slotElementRef: Readonly<Ref<HTMLElement | null>>) {
   let resizeObserver: ResizeObserver | null = null;
   let stopMovedListener: (() => void) | null = null;
@@ -102,6 +139,11 @@ export function useEmulatorSlot(slotElementRef: Readonly<Ref<HTMLElement | null>
 
   function scheduleRefit(): void {
     if (!isFitted.value) {
+      return;
+    }
+
+    if (suspensionCount > 0) {
+      hasPendingRefit = true;
       return;
     }
 
@@ -147,4 +189,22 @@ export function useEmulatorRelease() {
     isFitted,
     release,
   };
+}
+
+/** Keeps the Digivice window rectangular while `isActive` (e.g. a modal's isOpen) is true. */
+export function useEmulatorCutSuspension(isActive: Readonly<Ref<boolean>>) {
+  watch(isActive, (active) => {
+    if (active) {
+      void suspendCut();
+      return;
+    }
+
+    void resumeCut();
+  });
+
+  onUnmounted(() => {
+    if (isActive.value) {
+      void resumeCut();
+    }
+  });
 }

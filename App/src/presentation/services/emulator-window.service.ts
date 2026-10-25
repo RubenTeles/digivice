@@ -44,4 +44,20 @@ export class EmulatorWindowService {
       emulatorWindowLogger.warn("release_emulator_window failed.", error);
     }
   }
+
+  public static async suspendCut(): Promise<void> {
+    try {
+      await invoke("suspend_emulator_cut");
+    } catch (error) {
+      emulatorWindowLogger.warn("suspend_emulator_cut failed.", error);
+    }
+  }
+
+  public static async resumeCut(area: EmulatorArea): Promise<void> {
+    try {
+      await invoke("resume_emulator_cut", { area });
+    } catch (error) {
+      emulatorWindowLogger.warn("resume_emulator_cut failed.", error);
+    }
+  }
 }

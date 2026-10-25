@@ -51,25 +51,32 @@ fn digivice_window_handle(window: &WebviewWindow) -> Result<HWND, EmulatorWindow
     Ok(HWND(handle.0))
 }
 
+fn to_screen_rect(
+    window: &WebviewWindow,
+    area: EmulatorArea,
+) -> Result<ScreenRect, EmulatorWindowError> {
+    let origin = window
+        .inner_position()
+        .map_err(EmulatorWindowError::placement_failed)?;
+
+    Ok(ScreenRect {
+        x: origin.x + area.x,
+        y: origin.y + area.y,
+        width: area.width,
+        height: area.height,
+    })
+}
+
 #[tauri::command]
 pub fn fit_emulator_window(
     window: WebviewWindow,
     state: State<'_, EmulatorWindowState>,
     area: EmulatorArea,
 ) -> Result<(), EmulatorWindowError> {
-    let origin = window
-        .inner_position()
-        .map_err(EmulatorWindowError::placement_failed)?;
-
     emulator_window::fit(
         &state,
         digivice_window_handle(&window)?,
-        ScreenRect {
-            x: origin.x + area.x,
-            y: origin.y + area.y,
-            width: area.width,
-            height: area.height,
-        },
+        to_screen_rect(&window, area)?,
     )
 }
 
@@ -79,4 +86,20 @@ pub fn release_emulator_window(
     state: State<'_, EmulatorWindowState>,
 ) -> Result<(), EmulatorWindowError> {
     emulator_window::release(&state, digivice_window_handle(&window)?)
+}
+
+#[tauri::command]
+pub fn suspend_emulator_cut(window: WebviewWindow) -> Result<(), EmulatorWindowError> {
+    emulator_window::suspend_cut(digivice_window_handle(&window)?)
+}
+
+#[tauri::command]
+pub fn resume_emulator_cut(
+    window: WebviewWindow,
+    area: EmulatorArea,
+) -> Result<(), EmulatorWindowError> {
+    emulator_window::resume_cut(
+        digivice_window_handle(&window)?,
+        to_screen_rect(&window, area)?,
+    )
 }

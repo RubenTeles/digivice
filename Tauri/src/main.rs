@@ -22,7 +22,9 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       commands::read_ram,
       commands::fit_emulator_window,
-      commands::release_emulator_window
+      commands::release_emulator_window,
+      commands::suspend_emulator_cut,
+      commands::resume_emulator_cut
     ])
     .build(tauri::generate_context!())
     .expect("error while building tauri application")

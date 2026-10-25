@@ -55,6 +55,16 @@ pub fn release(
     region::clear(digivice_window).map_err(EmulatorWindowError::placement_failed)
 }
 
+/// Makes the Digivice window rectangular again (e.g. while a modal is open); DuckStation is left as is.
+pub fn suspend_cut(digivice_window: HWND) -> Result<(), EmulatorWindowError> {
+    region::clear(digivice_window).map_err(EmulatorWindowError::placement_failed)
+}
+
+/// Cuts the area again without moving or focusing DuckStation.
+pub fn resume_cut(digivice_window: HWND, target: ScreenRect) -> Result<(), EmulatorWindowError> {
+    region::cut_hole(digivice_window, &target).map_err(EmulatorWindowError::placement_failed)
+}
+
 /// Restores only what `fit` removed; a DuckStation that was never fitted (e.g. fullscreen) is left untouched.
 pub fn restore_emulator_frame(state: &EmulatorWindowState) {
     let mut stripped_slot = state
