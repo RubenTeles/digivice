@@ -1,6 +1,6 @@
 import { onUnmounted, ref, watch } from "vue";
 
-// Manual toggle until the server value is found in RAM.
+// Fixed on Asuka until the server value is found in RAM.
 const isAmaterasu = ref(false);
 
 /** Applies the theme on <html> so teleported modals inherit it too. */
@@ -18,15 +18,4 @@ export function useServerThemeRoot() {
     stopWatch();
     delete document.documentElement.dataset.server;
   });
-}
-
-export function useServerThemeToggle() {
-  function toggle(): void {
-    isAmaterasu.value = !isAmaterasu.value;
-  }
-
-  return {
-    isAmaterasu,
-    toggle,
-  };
 }
