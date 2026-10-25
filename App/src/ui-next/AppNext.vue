@@ -2,6 +2,9 @@
 import EmulatorSlot from "@/ui-next/components/emulator-slot/EmulatorSlot.vue";
 import SidePanel from "@/ui-next/components/side-panel/SidePanel.vue";
 import Footer from "@/ui-next/components/footer/Footer.vue";
+import { useServerThemeRoot } from "@/ui-next/composables/use-server-theme";
+
+useServerThemeRoot();
 </script>
 
 <template>

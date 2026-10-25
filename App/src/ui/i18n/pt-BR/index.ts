@@ -52,6 +52,7 @@ import tamer from "./tamer.json";
 import duelIsland from "./duel-island.json";
 import npcs from "./npcs.json";
 import emulatorSlot from "./emulator-slot.json";
+import serverTheme from "./server-theme.json";
 
 export default {
   ...seabed,
@@ -108,4 +109,5 @@ export default {
   ...duelIsland,
   ...npcs,
   ...emulatorSlot,
+  ...serverTheme,
 };
