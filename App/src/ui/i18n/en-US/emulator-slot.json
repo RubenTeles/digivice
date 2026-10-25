@@ -1,9 +1,8 @@
 {
   "emulatorSlot": {
-    "title": "Fit your DuckStation window here",
-    "hint": "Drag the emulator window into this space and resize it until it fills the border.",
     "fitButton": "Fit DuckStation",
-    "releaseButton": "Release",    "errors": {
+    "releaseButton": "Release",
+    "errors": {
       "process_not_found": "DuckStation is not running.",
       "window_not_found": "DuckStation is running, but its window was not found.",
       "placement_failed": "Could not fit the DuckStation window."

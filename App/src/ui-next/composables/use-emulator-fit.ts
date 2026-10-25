@@ -9,7 +9,7 @@ import type { EmulatorWindowErrorCode } from "@/shared/constants/emulator-window
 const RefitDelayMs = 200;
 const TitleBarResizeTimeoutMs = 500;
 
-// Shared by EmulatorSlot (fit), Footer (release) and modals (cut suspension).
+// Shared by EmulatorSlot (measured area, errors), Footer (toggle) and modals (cut suspension).
 const isFitted = ref(false);
 const isFitting = ref(false);
 const errorCode = ref<EmulatorWindowErrorCode | null>(null);
@@ -178,16 +178,24 @@ export function useEmulatorSlot(slotElementRef: Readonly<Ref<HTMLElement | null>
   });
 
   return {
-    fit,
     errorCode,
-    isFitting,
   };
 }
 
-export function useEmulatorRelease() {
+export function useEmulatorToggle() {
+  async function toggle(): Promise<void> {
+    if (isFitted.value) {
+      await release();
+      return;
+    }
+
+    await fit();
+  }
+
   return {
     isFitted,
-    release,
+    isFitting,
+    toggle,
   };
 }
 
