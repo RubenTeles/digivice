@@ -80,7 +80,16 @@ Modais de domínio: `WikiModal`, `QuestModal`, `AuctionModal`, `SeabedModal`, `M
 
 Painel lateral de diagnóstico em `ui/components/debug-monitor/`, aberto/fechado com `F2` (estado em `localStorage`, chave `debug-monitor-open`). Exceção às regras acima, por ser ferramenta de dev:
 
-- Montado só no `App.vue`, fora do `v-if` do `AppHealthyScreen` (aparece em `Loading`/`Error`), via `import.meta.env.DEV` inline + `defineAsyncComponent` (o build de produção precisa eliminar o chunk). Nenhum outro componente o importa.
+- Montado só no `App.vue`, fora do `v-if` do `AppHealthyScreen` (aparece em `Loading`/`Error`), via `import.meta.env.DEV` inline + `defineAsyncComponent` (o build de produção precisa eliminar o chunk). Exceção: o `ui-next/UiSwitcher.vue` o monta quando a tela nova está ativa. Nenhum outro componente o importa.
 - Lê a `useGameStore` via `ui/composables/use-debug-monitor.ts` (nunca `useGameState()`) e pode chamar selectors direto; sem presenters, repositórios nem i18n.
 - Mostra **valores crus do model** (ids, números), com rótulos literais em inglês.
 - Visual próprio: `font-mono`, sem moldura DW3.
+
+## Tela nova (dev)
+
+Reconstrução da UI do zero em `ui-next/`, sem tocar no `App.vue` nem em `ui/`:
+
+- `main.ts` monta `ui-next/UiSwitcher.vue` só com `import.meta.env.DEV` (via `defineAsyncComponent`); o release monta `App.vue` e elimina o chunk de `ui-next/`.
+- `F3` alterna entre `App.vue` e `AppNext.vue` (estado em `localStorage`, chave `ui-next-active`; `ui-next/composables/use-ui-switcher.ts`).
+- `UiSwitcher` concentra o controle de fluxo da tela nova: chama `useBootLoader`, monta o `AppNext` só em `Healthy` (`useGameState()` seguro) e monta o debug monitor. Em `Error` a tela nova fica em branco por enquanto.
+- `AppNext.vue` começa em branco; componentes novos entram em `ui-next/components/`.

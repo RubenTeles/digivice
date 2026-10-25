@@ -80,7 +80,7 @@ Conventions: skill `frontend-memory-tests`.
 - [ ] `tests/memory/repositories/addresses.repository.spec.ts` — the new file in "should load every addresses file"
 - [ ] `tests/fixtures/snapshots/*.expected.ts` — the entity in each expected `State` (values confirmed with the user against the game); the composer spec fails until then
 - [ ] Lists → case in `tests/memory/patch/state.patcher.spec.ts`
-- [ ] `npx vitest run`
+- [ ] `npx vitest run` — only when the user asks
 
 ### 5. UI (only when the user asks)
 

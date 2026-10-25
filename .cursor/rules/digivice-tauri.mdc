@@ -39,4 +39,4 @@ O antigo backend C# (sidecar com SignalR) foi removido; o código pode ser consu
 2. Recursos Win32 sempre em wrappers com `Drop` (`OwnedHandle`, `SharedMemoryView`); nunca fechar handle manualmente fora deles.
 3. Todo bloco `unsafe` e todo `unsafe impl` com comentário `// SAFETY:` justificando.
 4. Convenções Rust padrão: `rustfmt`, `snake_case`, constantes `SCREAMING_SNAKE_CASE`; nomes sem abreviação (regra geral do projeto).
-5. Build sem warnings novos (`cargo build` em `Tauri/`).
+5. Build sem warnings novos (`cargo build` em `Tauri/`, rodado pelo usuário ou quando ele pedir).

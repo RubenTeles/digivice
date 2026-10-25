@@ -42,7 +42,7 @@ Conventions: skill `frontend-memory-tests`.
 - [ ] `tests/fixtures/snapshots/field-central-park.expected.ts` — `const {Category} = AddressesRepository.getAll{Category}()` and `{category}: [questIn(...)]` in the journal
 - [ ] `tests/memory/patch/state.patcher.spec.ts` — only if the list needs a case beyond the existing `id` lists
 - [ ] Category assembler spec when there is a normalization
-- [ ] `npx vitest run`
+- [ ] `npx vitest run` — only when the user asks
 
 ## 4. Static quest data (per quest)
 

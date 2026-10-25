@@ -132,7 +132,7 @@ Conventions: skill `frontend-memory-tests`.
 
 - [ ] `tests/memory/repositories/addresses.repository.spec.ts` — bump the category count in "should load every quest folder"; update "should order the quests of each folder by file name"
 - [ ] `tests/fixtures/snapshots/field-central-park.expected.ts` — `questIn({Category}, "{id}", { doneSteps, doneRequisites })` in file-name order, with the progress present in the `.bin` (confirm with the user against the game). `battle-against-natsumi.expected.ts` reuses this journal; a new fixture with a different journal needs its own entries
-- [ ] `npx vitest run`
+- [ ] `npx vitest run` — only when the user asks
 
 ### 3. Static quest data
 

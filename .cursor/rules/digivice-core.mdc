@@ -12,6 +12,7 @@ alwaysApply: true
 1. **Respostas objetivas**: concisas e diretas. Detalhe só se o usuário pedir.
 2. **Foque na tarefa**: não espalhe impacto sem necessidade; o usuário orienta o fluxo.
 3. **Aprovação de planos**: não execute planos de implementação antes de aprovação explícita. Mudanças mínimas podem ir direto; planos solicitados aguardam revisão.
+4. **Build e testes**: não rode build, type-check, lint nem testes após alterações, a menos que o usuário peça. Ele roda manualmente.
 
 ## Diretrizes gerais
 

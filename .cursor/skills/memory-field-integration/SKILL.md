@@ -139,7 +139,7 @@ Conventions: skill `frontend-memory-tests`.
 - [ ] Assembler spec: mapping + sentinel cases (`-1`, `0`, `1`)
 - [ ] `tests/memory/repositories/addresses.repository.spec.ts` — Player addresses are asserted with `toEqual`; other entities only when the test names the field
 - [ ] Real fixtures: add the value read from each `.bin` to `tests/fixtures/snapshots/*.expected.ts` (confirm the value with the user against the game) — provider and composer specs compare the full object
-- [ ] `npx vitest run`
+- [ ] `npx vitest run` — only when the user asks
 
 ### 6. UI (only when the user asks)
 
