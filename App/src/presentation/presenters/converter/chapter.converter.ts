@@ -1,15 +1,9 @@
-import { createLogger } from "@/core/logger/logger";
 import type { ChapterRaw } from "@/presentation/repositories/tables/raws/quest/chapter.raw";
 import type { ChapterViewModel } from "@/presentation/viewmodels/quest/chapter.viewmodel";
 import type { StepViewModel } from "@/presentation/viewmodels/quest/step.viewmodel";
 
-const presenterLogger = createLogger("Presenter", "#e67e22");
-
 export class ChapterConverter {
-  private static readonly warnedQuestIds = new Set<string>();
-
   public static convert(
-    questId: string,
     chapterRaws: ChapterRaw[],
     steps: StepViewModel[],
     currentStep: StepViewModel | null,
@@ -17,8 +11,6 @@ export class ChapterConverter {
     if (chapterRaws.length === 0) {
       return [];
     }
-
-    ChapterConverter.warnUncoveredSteps(questId, chapterRaws, steps);
 
     const lastChapterNumber = chapterRaws.at(-1)?.number ?? null;
 
@@ -42,32 +34,5 @@ export class ChapterConverter {
         totalCount: chapterSteps.length,
       };
     });
-  }
-
-  private static warnUncoveredSteps(
-    questId: string,
-    chapterRaws: ChapterRaw[],
-    steps: StepViewModel[],
-  ): void {
-    if (ChapterConverter.warnedQuestIds.has(questId)) {
-      return;
-    }
-
-    const uncoveredStepNumbers = steps
-      .map((step) => Number(step.number))
-      .filter((stepNumber) => {
-        return !chapterRaws.some((chapterRaw) => {
-          return stepNumber >= chapterRaw.starts && stepNumber <= chapterRaw.ends;
-        });
-      });
-
-    if (uncoveredStepNumbers.length === 0) {
-      return;
-    }
-
-    ChapterConverter.warnedQuestIds.add(questId);
-    presenterLogger.warn(
-      `Quest "${questId}" has steps outside any chapter: ${uncoveredStepNumbers.join(", ")}`,
-    );
   }
 }

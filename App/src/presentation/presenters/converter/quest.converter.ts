@@ -42,12 +42,7 @@ export class QuestConverter {
       firstStep?.isDone === false;
     const currentStep = steps.find((step) => !step.isDone) ?? null;
     const cardVariant = QuestConverter.resolveCardVariant(isUnavailable, isLocked, isDone, isNew);
-    const chapters = ChapterConverter.convert(
-      questRaw.id,
-      questRaw.chapters ?? [],
-      steps,
-      currentStep,
-    );
+    const chapters = ChapterConverter.convert(questRaw.chapters ?? [], steps, currentStep);
     const currentChapter = chapters.find((chapter) => chapter.isCurrent) ?? null;
 
     return {

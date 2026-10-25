@@ -60,7 +60,7 @@ class Logger {
 }
 
 // Factory to create loggers with specific colors
-export const createLogger = (context: string, color?: string) => new Logger(context, color);
+const createLogger = (context: string, color?: string) => new Logger(context, color);
 
 // Default loggers
 export const storeLogger = createLogger("Store", "#42b883"); // Green
