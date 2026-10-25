@@ -1,9 +1,5 @@
 {
   "errors": {
-    "loading": {
-      "title": "Loading...",
-      "hint": "Digivice will be ready to use in a moment!"
-    },
     "emulator": {
       "title": "Oops! Something went wrong during the memory reading process...",
       "hint": "It would be really kind of you to send a screenshot of this failure to the developer :)",

@@ -21,33 +21,16 @@ export function useAppHealthyScreen() {
   const store = useGameStore();
 
   return computed((): AppHealthyScreenViewModel | null => {
-    if (store.healthStatus === "Loading") {
-      return {
-        kind: "loading",
-        titleKey: "errors.loading.title",
-        hintKey: "errors.loading.hint",
-      };
+    if (store.healthStatus !== "Error") {
+      return null;
     }
 
-    if (store.healthStatus === "Error") {
-      const { titleKey, hintKey } = resolveEmulatorErrorKeys(store.lastErrorCode);
+    const { titleKey, hintKey } = resolveEmulatorErrorKeys(store.lastErrorCode);
 
-      return {
-        kind: "operational-error",
-        titleKey,
-        hintKey,
-        detail: store.lastErrorDetail ?? undefined,
-      };
-    }
-
-    if (store.currentState === null) {
-      return {
-        kind: "loading",
-        titleKey: "errors.loading.title",
-        hintKey: "errors.loading.hint",
-      };
-    }
-
-    return null;
+    return {
+      titleKey,
+      hintKey,
+      detail: store.lastErrorDetail ?? undefined,
+    };
   });
 }

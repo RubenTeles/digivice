@@ -10,11 +10,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div
-    class="fixed inset-0 z-200 flex items-center justify-center bg-[#000030]/95 p-6"
-    :role="props.viewModel.kind === 'loading' ? 'status' : 'alert'"
-    :aria-live="props.viewModel.kind === 'loading' ? 'polite' : 'assertive'"
-  >
+  <div class="fixed inset-0 z-200 flex items-center justify-center bg-[#000030]/95 p-6">
     <div class="dw3-panel max-w-lg w-full shadow-text">
       <div class="dw3-panel-border dw3-beveled"></div>
       <div class="dw3-panel-inner dw3-beveled"></div>

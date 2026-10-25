@@ -7,25 +7,9 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: #000030;
-  background-image: url("./assets/bg-pattern.svg");
-  background-size: 256px 256px;
-  background-repeat: repeat;
-  animation: slideBackground 6s linear infinite;
   color: white;
   font-family: "Press Start 2P", cursive;
   image-rendering: pixelated;
-}
-
-@keyframes slideBackground {
-  0% {
-    background-position: 0 0;
-  }
-
-  /* Must match background-size so the loop restarts seamlessly */
-  100% {
-    background-position: 256px 256px;
-  }
 }
 
 /* DW3 Global Utility Classes */

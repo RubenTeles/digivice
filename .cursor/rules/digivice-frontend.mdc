@@ -56,7 +56,7 @@ Agrupada por responsabilidade; as camadas e sufixos de arquivo valem dentro de c
 | `patch/` | `StatePatcher`: patch in-place do `State` da store (regras em `digivice-frontend-sync.mdc`). |
 | `loop/` | `GameLoop` (`setTimeout` encadeado, sem sobrepor ticks; erros → `EmulatorConnectionError.code`, `memory_read_failed`, `save_not_loaded` ou `state_compose_failed`), `initializeMemoryLoop` (liga loop e `useGameStore`; chamado no `main.ts`). |
 
-- **Fonte do snapshot:** só o `read_ram`, dentro do Tauri; no navegador puro o loop não sobe e a tela fica em `Loading`. A UI lê só `useGameStore`.
+- **Fonte do snapshot:** só o `read_ram`, dentro do Tauri; no navegador puro o loop não sobe e o loader do `index.html` fica na tela. A UI lê só `useGameStore`.
 
 ## Constants e types
 

@@ -1,9 +1,5 @@
 {
   "errors": {
-    "loading": {
-      "title": "Carregando...",
-      "hint": "Em instantes, o Digivice estará pronto para uso!"
-    },
     "emulator": {
       "title": "Opa! Aconteceu algum problema durante o processo de leitura de memória...",
       "hint": "Seria muito gentil da sua parte se você mandasse um \"print\" dessa falha para o desenvolvedor :)",

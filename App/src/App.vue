@@ -6,8 +6,10 @@ import Footer from "@/ui/components/footer/Footer.vue";
 import Party from "@/ui/components/party/Party.vue";
 import AppHealthyScreen from "@/ui/components/app-healthy/AppHealthyScreen.vue";
 import { useAppHealthyScreen } from "@/ui/composables/use-app-healthy-screen";
+import { useBootLoader } from "@/ui/composables/use-boot-loader";
 
 const healthyScreen = useAppHealthyScreen();
+const isLoading = useBootLoader();
 
 // Checked inline so the production build drops the monitor chunk entirely.
 const DebugMonitor = import.meta.env.DEV
@@ -19,7 +21,7 @@ const DebugMonitor = import.meta.env.DEV
   <AppHealthyScreen v-if="healthyScreen" :view-model="healthyScreen" />
 
   <main
-    v-else
+    v-else-if="!isLoading"
     class="h-screen min-h-0 overflow-hidden bg-transparent p-4 flex flex-col gap-4 max-w-450 mx-auto text-white"
   >
     <div class="flex-1 min-h-0 flex gap-4 overflow-hidden">
