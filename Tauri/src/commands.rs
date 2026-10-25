@@ -1,8 +1,9 @@
 use serde::Deserialize;
 use tauri::ipc::Response;
 use tauri::{State, WebviewWindow};
+use windows::Win32::Foundation::HWND;
 
-use crate::emulator_window::{self, EmulatorWindowError, ScreenRect};
+use crate::emulator_window::{self, EmulatorWindowError, EmulatorWindowState, ScreenRect};
 use crate::memory::{MemoryError, MemorySession, MemoryState};
 
 #[tauri::command]
@@ -41,19 +42,41 @@ pub struct EmulatorArea {
     height: i32,
 }
 
+fn digivice_window_handle(window: &WebviewWindow) -> Result<HWND, EmulatorWindowError> {
+    let handle = window
+        .hwnd()
+        .map_err(EmulatorWindowError::placement_failed)?;
+
+    // Tauri links a newer `windows` crate; both HWND types wrap the same raw pointer.
+    Ok(HWND(handle.0))
+}
+
 #[tauri::command]
 pub fn fit_emulator_window(
     window: WebviewWindow,
+    state: State<'_, EmulatorWindowState>,
     area: EmulatorArea,
 ) -> Result<(), EmulatorWindowError> {
     let origin = window
         .inner_position()
         .map_err(EmulatorWindowError::placement_failed)?;
 
-    emulator_window::fit(ScreenRect {
-        x: origin.x + area.x,
-        y: origin.y + area.y,
-        width: area.width,
-        height: area.height,
-    })
+    emulator_window::fit(
+        &state,
+        digivice_window_handle(&window)?,
+        ScreenRect {
+            x: origin.x + area.x,
+            y: origin.y + area.y,
+            width: area.width,
+            height: area.height,
+        },
+    )
+}
+
+#[tauri::command]
+pub fn release_emulator_window(
+    window: WebviewWindow,
+    state: State<'_, EmulatorWindowState>,
+) -> Result<(), EmulatorWindowError> {
+    emulator_window::release(&state, digivice_window_handle(&window)?)
 }

@@ -10,15 +10,17 @@ use windows::Win32::UI::WindowsAndMessaging::{
 
 use super::ScreenRect;
 
-pub fn place_window(window: HWND, target: &ScreenRect) -> windows::core::Result<()> {
+/// A maximized window ignores SetWindowPos sizing, and its style carries the maximized bit.
+pub fn restore_window(window: HWND) {
     // SAFETY: plain Win32 calls on a window handle found by `find_main_window`.
     unsafe {
-        // A maximized window ignores SetWindowPos sizing, and invisible borders differ while maximized.
         if IsIconic(window).as_bool() || IsZoomed(window).as_bool() {
             let _ = ShowWindow(window, SW_RESTORE);
         }
     }
+}
 
+pub fn place_window(window: HWND, target: &ScreenRect) -> windows::core::Result<()> {
     let mut window_rect = RECT::default();
     let mut visible_rect = RECT::default();
 

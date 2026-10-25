@@ -36,4 +36,12 @@ export class EmulatorWindowService {
       return EmulatorWindowService.toErrorCode(error);
     }
   }
+
+  public static async release(): Promise<void> {
+    try {
+      await invoke("release_emulator_window");
+    } catch (error) {
+      emulatorWindowLogger.warn("release_emulator_window failed.", error);
+    }
+  }
 }

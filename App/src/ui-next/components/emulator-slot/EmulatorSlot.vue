@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useTemplateRef } from "vue";
-import { useEmulatorFit } from "@/ui-next/composables/use-emulator-fit";
+import { useEmulatorSlot } from "@/ui-next/composables/use-emulator-fit";
 
 const slotElement = useTemplateRef<HTMLElement>("slotElement");
-const { fit, errorCode, isFitting } = useEmulatorFit(slotElement);
+const { fit, errorCode, isFitting } = useEmulatorSlot(slotElement);
 </script>
 
 <template>
