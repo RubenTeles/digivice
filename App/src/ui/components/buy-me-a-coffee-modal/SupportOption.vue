@@ -22,7 +22,7 @@ async function openLink(): Promise<void> {
     <img :src="qrCodeUrl" :alt="qrCodeAlt" class="w-56 h-56 rounded bg-white p-2 object-contain" />
 
     <p class="text-sm text-white/90">
-      {{ $t("koFi.orClickLink") }}
+      {{ $t("buyMeACoffee.orClickLink") }}
       <button
         type="button"
         class="text-cyan-300 underline hover:text-cyan-100 transition-colors cursor-pointer"

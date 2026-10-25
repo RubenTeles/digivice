@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import LanguageSelector from "@/ui/components/footer/LanguageSelector.vue";
 import SeabedButton from "@/ui/components/footer/SeabedButton.vue";
 import MobiusDesertButton from "@/ui/components/footer/MobiusDesertButton.vue";
-import KoFiButton from "@/ui/components/footer/KoFiButton.vue";
+import BuyMeACoffeeButton from "@/ui/components/footer/BuyMeACoffeeButton.vue";
 import DefaultTooltip from "@/ui/components/tooltip/DefaultTooltip.vue";
 import Tooltip from "@/ui/components/tooltip/Tooltip.vue";
 import { useI18n } from "vue-i18n";
@@ -56,18 +56,18 @@ const hideMobiusDesertTooltip = () => {
   isTitleOnlyTooltip.value = false;
 };
 
-const showKoFiTooltip = (event: MouseEvent) => {
+const showBuyMeACoffeeTooltip = (event: MouseEvent) => {
   isTitleOnlyTooltip.value = true;
-  tooltipTitle.value = t("koFi.title");
+  tooltipTitle.value = t("buyMeACoffee.title");
   tooltipText.value = "";
   showAt(event, { maxWidth: 300, placement: "above", align: "left" });
 };
 
-const moveKoFiTooltip = (event: MouseEvent) => {
+const moveBuyMeACoffeeTooltip = (event: MouseEvent) => {
   move(event, "above");
 };
 
-const hideKoFiTooltip = () => {
+const hideBuyMeACoffeeTooltip = () => {
   hide();
   isTitleOnlyTooltip.value = false;
 };
@@ -167,10 +167,10 @@ const groupPartyLevel = computed(() => {
       </div>
 
       <div class="flex items-center">
-        <KoFiButton
-          @show-tooltip="showKoFiTooltip"
-          @move-tooltip="moveKoFiTooltip"
-          @hide-tooltip="hideKoFiTooltip"
+        <BuyMeACoffeeButton
+          @show-tooltip="showBuyMeACoffeeTooltip"
+          @move-tooltip="moveBuyMeACoffeeTooltip"
+          @hide-tooltip="hideBuyMeACoffeeTooltip"
         />
       </div>
     </div>

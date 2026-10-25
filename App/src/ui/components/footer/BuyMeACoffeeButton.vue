@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import KoFiModal from "@/ui/components/ko-fi-modal/KoFiModal.vue";
+import BuyMeACoffeeModal from "@/ui/components/buy-me-a-coffee-modal/BuyMeACoffeeModal.vue";
 
 const emit = defineEmits<{
   (e: "show-tooltip", event: MouseEvent): void;
@@ -8,14 +8,14 @@ const emit = defineEmits<{
   (e: "hide-tooltip"): void;
 }>();
 
-const isKoFiModalOpen = ref(false);
+const isBuyMeACoffeeModalOpen = ref(false);
 
 function onClick(): void {
-  isKoFiModalOpen.value = true;
+  isBuyMeACoffeeModalOpen.value = true;
 }
 
-function closeKoFiModal(): void {
-  isKoFiModalOpen.value = false;
+function closeBuyMeACoffeeModal(): void {
+  isBuyMeACoffeeModalOpen.value = false;
 }
 
 function onMouseEnter(event: MouseEvent): void {
@@ -43,5 +43,5 @@ function onMouseLeave(): void {
     ☕
   </button>
 
-  <KoFiModal :is-open="isKoFiModalOpen" @close="closeKoFiModal" />
+  <BuyMeACoffeeModal :is-open="isBuyMeACoffeeModalOpen" @close="closeBuyMeACoffeeModal" />
 </template>
