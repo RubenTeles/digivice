@@ -92,4 +92,4 @@ Reconstrução da UI do zero em `ui-next/`, sem tocar no `App.vue` nem em `ui/`:
 - `main.ts` monta `ui-next/UiSwitcher.vue` só com `import.meta.env.DEV` (via `defineAsyncComponent`); o release monta `App.vue` e elimina o chunk de `ui-next/`.
 - `F3` alterna entre `App.vue` e `AppNext.vue` (estado em `localStorage`, chave `ui-next-active`; `ui-next/composables/use-ui-switcher.ts`).
 - `UiSwitcher` concentra o controle de fluxo da tela nova: chama `useBootLoader`, monta o `AppNext` só em `Healthy` (`useGameState()` seguro) e monta o debug monitor. Em `Error` a tela nova fica em branco por enquanto.
-- `AppNext.vue` começa em branco; componentes novos entram em `ui-next/components/`.
+- Layout do `AppNext.vue` "em volta do emulador": `EmulatorSlot` à esquerda (altura disponível, `aspect-4/3`, sem padding, área vazia onde o jogador encaixa a janela do DuckStation), `SidePanel` à direita com o resto da largura, `Footer` na largura toda. A janela continua maximizada. Componentes novos entram em `ui-next/components/`.
