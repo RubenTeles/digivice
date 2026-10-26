@@ -1,0 +1,9 @@
+{
+  "mainPanel": {
+    "previousSection": "Seção anterior",
+    "nextSection": "Próxima seção",
+    "sections": {
+      "party": "Grupo"
+    }
+  }
+}

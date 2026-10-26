@@ -52,6 +52,7 @@ import tamer from "./tamer.json";
 import duelIsland from "./duel-island.json";
 import npcs from "./npcs.json";
 import emulatorSlot from "./emulator-slot.json";
+import mainPanel from "./main-panel.json";
 export default {
   ...seabed,
   ...mobiusDesert,
@@ -107,4 +108,5 @@ export default {
   ...duelIsland,
   ...npcs,
   ...emulatorSlot,
+  ...mainPanel,
 };

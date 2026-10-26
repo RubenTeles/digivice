@@ -1,0 +1,9 @@
+{
+  "mainPanel": {
+    "previousSection": "Previous section",
+    "nextSection": "Next section",
+    "sections": {
+      "party": "Party"
+    }
+  }
+}
