@@ -13,7 +13,7 @@ const sectionLabel = computed(() => {
 </script>
 
 <template>
-  <aside class="h-full flex flex-col bg-[#000a2b] border-l-2 border-[#0033aa]">
+  <aside class="h-full flex flex-col bg-surface border-l-2 border-frame">
     <MainPanelMenu :label="sectionLabel" @previous="showPrevious" @next="showNext" />
     <section class="flex-1 min-h-0 overflow-y-auto"></section>
   </aside>

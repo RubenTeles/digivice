@@ -2,10 +2,12 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useEmulatorToggle } from "@/ui-next/composables/use-emulator-fit";
+import { useServerThemeToggle } from "@/ui-next/composables/use-server-theme";
 import FooterIconButton from "@/ui-next/components/footer/FooterIconButton.vue";
 
 const { t } = useI18n();
 const { isFitted, isFitting, toggle } = useEmulatorToggle();
+const { isAmaterasu, toggle: toggleServerTheme } = useServerThemeToggle();
 
 const fitLabel = computed(() => {
   return isFitted.value ? t("emulatorSlot.releaseButton") : t("emulatorSlot.fitButton");
@@ -21,6 +23,12 @@ const fitLabel = computed(() => {
         :is-active="isFitted"
         :is-disabled="isFitting"
         @click="toggle"
+      />
+      <FooterIconButton
+        icon="🌸"
+        :label="t('serverTheme.amaterasuButton')"
+        :is-active="isAmaterasu"
+        @click="toggleServerTheme"
       />
     </div>
   </footer>

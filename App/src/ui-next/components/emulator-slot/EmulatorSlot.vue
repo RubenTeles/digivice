@@ -9,7 +9,7 @@ const { errorCode } = useEmulatorSlot(slotElement);
 <template>
   <section
     ref="slotElement"
-    class="flex flex-col items-center justify-center p-8 bg-[#000a2b] text-center"
+    class="flex flex-col items-center justify-center p-8 bg-surface text-center"
   >
     <p v-if="errorCode" class="max-w-md text-[0.6rem] leading-relaxed text-red-400">
       {{ $t(`emulatorSlot.errors.${errorCode}`) }}

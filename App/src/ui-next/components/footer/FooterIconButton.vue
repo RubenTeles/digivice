@@ -21,7 +21,7 @@ const emit = defineEmits<{
     type="button"
     class="bg-transparent border-0 px-1 py-0.5 leading-none hover:scale-110 transition-transform cursor-pointer grayscale hover:grayscale-0 flex items-center justify-center rounded-sm disabled:opacity-50 disabled:cursor-wait"
     :class="{
-      'grayscale-0 ring-2 ring-sky-50 ring-offset-1 ring-offset-surface': isActive,
+      'grayscale-0 ring-2 ring-highlight ring-offset-1 ring-offset-surface': isActive,
     }"
     :disabled="isDisabled"
     :title="label"

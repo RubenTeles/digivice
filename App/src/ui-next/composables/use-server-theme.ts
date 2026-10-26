@@ -19,3 +19,12 @@ export function useServerThemeRoot() {
     delete document.documentElement.dataset.server;
   });
 }
+
+/** Temporary manual switch for testing the themes. */
+export function useServerThemeToggle() {
+  function toggle() {
+    isAmaterasu.value = !isAmaterasu.value;
+  }
+
+  return { isAmaterasu, toggle };
+}

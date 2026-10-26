@@ -10,7 +10,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <nav class="flex items-center justify-between px-4 py-3 border-b-2 border-[#0033aa]">
+  <nav class="flex items-center justify-between px-4 py-3 border-b-2 border-frame">
     <button
       type="button"
       class="bg-transparent border-0 px-1 py-0.5 leading-none hover:scale-110 transition-transform cursor-pointer"

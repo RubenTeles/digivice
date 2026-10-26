@@ -53,6 +53,7 @@ import duelIsland from "./duel-island.json";
 import npcs from "./npcs.json";
 import emulatorSlot from "./emulator-slot.json";
 import mainPanel from "./main-panel.json";
+import serverTheme from "./server-theme.json";
 export default {
   ...seabed,
   ...mobiusDesert,
@@ -109,4 +110,5 @@ export default {
   ...npcs,
   ...emulatorSlot,
   ...mainPanel,
+  ...serverTheme,
 };
