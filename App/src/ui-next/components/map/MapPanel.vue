@@ -43,9 +43,12 @@ const enemyGroups = computed(() => {
         class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-lighten"
         :style="{ backgroundImage: `url(${backgroundImageUrl})` }"
       ></div>
+      <div
+        class="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/85 via-black/50 to-transparent"
+      ></div>
     </div>
 
-    <div class="relative z-10 px-2 py-2 flex flex-col gap-1.5">
+    <div class="relative z-10 px-2 py-2 flex flex-col items-center gap-1.5">
       <MapEnemyGroup
         v-for="group in enemyGroups"
         :key="group.icon"

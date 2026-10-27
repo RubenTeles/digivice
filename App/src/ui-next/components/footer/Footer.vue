@@ -4,7 +4,6 @@ import { useI18n } from "vue-i18n";
 import { useEmulatorToggle } from "@/ui-next/composables/use-emulator-fit";
 import { useServerThemeToggle } from "@/ui-next/composables/use-server-theme";
 import FooterIconButton from "@/ui-next/components/footer/FooterIconButton.vue";
-
 const { t } = useI18n();
 const { isFitted, isFitting, toggle } = useEmulatorToggle();
 const { isAmaterasu, toggle: toggleServerTheme } = useServerThemeToggle();
