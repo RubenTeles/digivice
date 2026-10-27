@@ -6,6 +6,8 @@ const { digievolutions, activeDigievolutionId } = defineProps<{
   digievolutions: PartyDigievolutionSlotMock[];
   activeDigievolutionId: number | null;
 }>();
+
+const TierIndicators = ["stars", "stars", "none"] as const;
 </script>
 
 <template>
@@ -17,6 +19,7 @@ const { digievolutions, activeDigievolutionId } = defineProps<{
       :is-active="
         digievolution !== null && digievolution.digievolutionId === activeDigievolutionId
       "
+      :tier-indicator="TierIndicators[index] ?? 'none'"
     />
   </div>
 </template>

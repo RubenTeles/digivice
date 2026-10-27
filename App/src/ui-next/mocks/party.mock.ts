@@ -27,7 +27,7 @@ export type PartySlotMock = PartyDigimonMock | null;
 
 const DigievolutionsMock: PartyDigievolutionSlotMock[] = [
   { digievolutionId: 260, level: 61, dvexpInLevel: 2, dvexpPerLevel: 10, isDnaActive: true },
-  { digievolutionId: 381, level: 1, dvexpInLevel: 5, dvexpPerLevel: 10, isDnaActive: false },
+  { digievolutionId: 381, level: 1, dvexpInLevel: 5, dvexpPerLevel: 10, isDnaActive: true },
   null,
 ];
 
