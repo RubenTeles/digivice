@@ -2,10 +2,24 @@
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Modal from "@/components/modal/Modal.vue";
+import Tooltip from "@/components/tooltip/Tooltip.vue";
 import CardAlbumCard from "@/components/card-album-modal/CardAlbumCard.vue";
 import WikiCardPanel from "@/components/wiki-modal/wiki-card-panel/WikiCardPanel.vue";
+import WikiDropsPanel from "@/components/wiki-modal/wiki-drops-panel/WikiDropsPanel.vue";
+import WikiCardShopPanel from "@/components/wiki-modal/wiki-card-shop-panel/WikiCardShopPanel.vue";
+import WikiLocationsPanel from "@/components/wiki-modal/wiki-locations-panel/WikiLocationsPanel.vue";
+import WikiEnemyPanel from "@/components/wiki-modal/wiki-enemy-panel/WikiEnemyPanel.vue";
+import WikiNpcPanel from "@/components/wiki-modal/wiki-npc-panel/WikiNpcPanel.vue";
+import SearchBar from "@/components/search/SearchBar.vue";
 import { CardAlbumPresenter } from "@/presenters/card-album/card-album.presenter";
+import { WikiModalPresenter } from "@/presenters/map/wiki-modal.presenter";
+import { CardRepository } from "@/repositories/card.repository";
+import { ImageCatalog } from "@/catalogs/image.catalog";
 import { useGameState } from "@/composables/use-game-state";
+import { useTooltipPosition } from "@/composables/use-tooltip-position";
+import type { DropType } from "@/repositories/tables/raws/drop/drop-type";
+import type { DropSourceKind } from "@/types/drop-source-kind.type";
+import type { SearchItemKind } from "@/viewmodels/search/search-item.viewmodel";
 
 const props = defineProps<{
   isOpen: boolean;
@@ -17,9 +31,129 @@ const emit = defineEmits<{
 
 const gameState = useGameState();
 const { t } = useI18n();
-const currentPage = ref(1);
-const selectedCardId = ref<string | null>(null);
 
+// Album State
+const currentPage = ref(1);
+
+// Detail / Wiki Navigation State
+type WikiView = "enemy" | "drops" | "cards" | "locations" | "npc" | "cardShops";
+
+interface HistoryEntry {
+  view: WikiView;
+  selectedEnemyId: string | null;
+  selectedDropId: string | null;
+  selectedDropType: DropType | null;
+  selectedCardId: string | null;
+  selectedLocationId: string | null;
+  selectedNpcId: string | null;
+  selectedCardShopId: string | null;
+  initialNpcBattleOptionId: string | null;
+}
+
+const view = ref<WikiView>("cards");
+const selectedCardId = ref<string | null>(null);
+const selectedDropId = ref<string | null>(null);
+const selectedDropType = ref<DropType | null>(null);
+const selectedEnemyId = ref<string | null>(null);
+const selectedLocationId = ref<string | null>(null);
+const selectedNpcId = ref<string | null>(null);
+const selectedCardShopId = ref<string | null>(null);
+const initialNpcBattleOptionId = ref<string | null>(null);
+const navigationHistory = ref<HistoryEntry[]>([]);
+
+const isDetailModalOpen = computed(() => {
+  return (
+    selectedCardId.value !== null ||
+    selectedDropId.value !== null ||
+    selectedCardShopId.value !== null ||
+    selectedEnemyId.value !== null ||
+    selectedLocationId.value !== null ||
+    selectedNpcId.value !== null
+  );
+});
+
+// Card sequential navigation (Next / Previous card)
+const sortedCardIds = computed(() => {
+  return CardRepository.getCardIds().sort((a, b) => Number(a) - Number(b));
+});
+
+const currentCardIndex = computed(() => {
+  if (selectedCardId.value === null) {
+    return -1;
+  }
+  return sortedCardIds.value.indexOf(selectedCardId.value);
+});
+
+const currentCardNumber = computed(() => {
+  if (currentCardIndex.value === -1) {
+    return 0;
+  }
+  return currentCardIndex.value + 1;
+});
+
+const hasPreviousCard = computed(() => {
+  return currentCardIndex.value > 0;
+});
+
+const hasNextCard = computed(() => {
+  return (
+    currentCardIndex.value >= 0 &&
+    currentCardIndex.value < sortedCardIds.value.length - 1
+  );
+});
+
+const syncAlbumPageWithCurrentCard = () => {
+  if (currentCardNumber.value > 0) {
+    currentPage.value = Math.floor((currentCardNumber.value - 1) / 12) + 1;
+  }
+};
+
+const goToPreviousCard = () => {
+  if (!hasPreviousCard.value) {
+    return;
+  }
+  const prevId = sortedCardIds.value[currentCardIndex.value - 1];
+  if (prevId) {
+    selectedCardId.value = prevId;
+    syncAlbumPageWithCurrentCard();
+  }
+};
+
+const goToNextCard = () => {
+  if (!hasNextCard.value) {
+    return;
+  }
+  const nextId = sortedCardIds.value[currentCardIndex.value + 1];
+  if (nextId) {
+    selectedCardId.value = nextId;
+    syncAlbumPageWithCurrentCard();
+  }
+};
+
+// Tooltip setup for enemy & NPC panels
+const tooltipPlacement = "below" as const;
+const { show: tooltipShow, x: tooltipX, y: tooltipY, showAt, move, hide } = useTooltipPosition(250);
+const tooltipTitle = ref("");
+
+const showEnemyStatKeyTooltip = (event: MouseEvent, statKey: string) => {
+  tooltipTitle.value = t(`stat.${statKey}`);
+  showAt(event, { maxWidth: 250, placement: tooltipPlacement });
+};
+
+const showEnemyConditionTooltip = (event: MouseEvent, tooltipKey: string) => {
+  tooltipTitle.value = t(tooltipKey);
+  showAt(event, { maxWidth: 250, placement: tooltipPlacement });
+};
+
+const hideEnemyStatTooltip = () => {
+  hide();
+};
+
+const moveEnemyStatTooltip = (event: MouseEvent) => {
+  move(event, tooltipPlacement);
+};
+
+// Album View Model
 const pageViewModel = computed(() => {
   return CardAlbumPresenter.getPageViewModel(
     currentPage.value,
@@ -37,13 +171,257 @@ const collectionPercentage = computed(() => {
   ).toFixed(1);
 });
 
-const selectedCardName = computed(() => {
-  if (!selectedCardId.value) {
-    return "";
-  }
-  return t(`card.${selectedCardId.value}.name`);
+// Search integration
+const isLocationsView = computed(() => view.value === "locations");
+const isDropsView = computed(() => view.value === "drops");
+const isCardsView = computed(() => view.value === "cards");
+const isNpcView = computed(() => view.value === "npc");
+const isCardShopsView = computed(() => view.value === "cardShops");
+
+const allSearchItems = computed(() => {
+  return WikiModalPresenter.getAllSearchItems(
+    (labelKey) => t(labelKey),
+    (cardId) => t(`card.${cardId}.name`),
+    (locationId) => t(`map.${locationId}`),
+    (cardShopId) => t(`cardShop.${cardShopId}.name`),
+    (tamerId) => t(`tamers.${tamerId}.name`),
+    (duelIslandId) => t(`duelIsland.${duelIslandId}.name`),
+    (npcId) => t(`npcs.${npcId}.name`),
+  );
 });
 
+const selectedSearchId = computed(() => {
+  if (isDropsView.value && selectedDropId.value !== null) {
+    return selectedDropId.value;
+  }
+  if (isCardsView.value && selectedCardId.value !== null) {
+    return selectedCardId.value;
+  }
+  if (isLocationsView.value && selectedLocationId.value !== null) {
+    return selectedLocationId.value;
+  }
+  if (isNpcView.value && selectedNpcId.value !== null) {
+    return selectedNpcId.value;
+  }
+  if (isCardShopsView.value && selectedCardShopId.value !== null) {
+    return selectedCardShopId.value;
+  }
+  return selectedEnemyId.value ?? undefined;
+});
+
+const selectedSearchKind = computed((): SearchItemKind | undefined => {
+  if (isDropsView.value && selectedDropType.value !== null) {
+    return selectedDropType.value;
+  }
+  if (isCardsView.value) {
+    return "card";
+  }
+  if (isLocationsView.value) {
+    return "location";
+  }
+  if (isCardShopsView.value) {
+    return "cardShop";
+  }
+  if (isNpcView.value) {
+    return undefined;
+  }
+  if (selectedEnemyId.value !== null) {
+    return "enemy";
+  }
+  return undefined;
+});
+
+const enemy = computed(() => {
+  if (selectedEnemyId.value === null) {
+    return null;
+  }
+  return WikiModalPresenter.getEnemyById(selectedEnemyId.value);
+});
+
+const enemyImageUrl = computed(() => {
+  if (enemy.value === null) {
+    return null;
+  }
+  return ImageCatalog.getEnemyImageUrl(enemy.value.name);
+});
+
+// Navigation handlers
+function clearSelection(): void {
+  selectedEnemyId.value = null;
+  selectedDropId.value = null;
+  selectedDropType.value = null;
+  selectedCardId.value = null;
+  selectedLocationId.value = null;
+  selectedNpcId.value = null;
+  selectedCardShopId.value = null;
+  initialNpcBattleOptionId.value = null;
+}
+
+function pushCurrentState(): void {
+  navigationHistory.value.push({
+    view: view.value,
+    selectedEnemyId: selectedEnemyId.value,
+    selectedDropId: selectedDropId.value,
+    selectedDropType: selectedDropType.value,
+    selectedCardId: selectedCardId.value,
+    selectedLocationId: selectedLocationId.value,
+    selectedNpcId: selectedNpcId.value,
+    selectedCardShopId: selectedCardShopId.value,
+    initialNpcBattleOptionId: initialNpcBattleOptionId.value,
+  });
+}
+
+function navigateBack(): void {
+  const previous = navigationHistory.value.pop();
+  if (!previous) {
+    return;
+  }
+  hide();
+  clearSelection();
+  view.value = previous.view;
+  selectedEnemyId.value = previous.selectedEnemyId;
+  selectedDropId.value = previous.selectedDropId;
+  selectedDropType.value = previous.selectedDropType;
+  selectedCardId.value = previous.selectedCardId;
+  selectedLocationId.value = previous.selectedLocationId;
+  selectedNpcId.value = previous.selectedNpcId;
+  selectedCardShopId.value = previous.selectedCardShopId;
+  initialNpcBattleOptionId.value = previous.initialNpcBattleOptionId;
+}
+
+function navigateTo(
+  nextView: WikiView,
+  id: string,
+  options?: { battleOptionId?: string | null; dropType?: DropType },
+): void {
+  hide();
+  pushCurrentState();
+  clearSelection();
+  view.value = nextView;
+
+  if (nextView === "enemy") {
+    selectedEnemyId.value = id;
+    return;
+  }
+
+  if (nextView === "drops") {
+    selectedDropId.value = id;
+    selectedDropType.value = options?.dropType ?? null;
+    return;
+  }
+
+  if (nextView === "cards") {
+    selectedCardId.value = id;
+    return;
+  }
+
+  if (nextView === "locations") {
+    selectedLocationId.value = id;
+    return;
+  }
+
+  if (nextView === "cardShops") {
+    selectedCardShopId.value = id;
+    return;
+  }
+
+  if (nextView === "npc") {
+    selectedNpcId.value = id;
+    initialNpcBattleOptionId.value = options?.battleOptionId ?? null;
+  }
+}
+
+const openNpcView = (npcId: string, battleOptionId?: string | null) => {
+  navigateTo("npc", npcId, { battleOptionId });
+};
+
+const openDropsView = (payload: { dropId: string; dropType: DropType }) => {
+  navigateTo("drops", payload.dropId, { dropType: payload.dropType });
+};
+
+const openLocationsView = (locationId: string) => {
+  navigateTo("locations", locationId);
+};
+
+const openCardShopsView = (cardShopId: string) => {
+  navigateTo("cardShops", cardShopId);
+};
+
+const openEnemyFromDropSource = (enemyId: string) => {
+  const npcContext = WikiModalPresenter.resolveNpcBattleFromEnemyId(enemyId);
+  if (npcContext !== null) {
+    openNpcView(npcContext.npcId, npcContext.battleOptionId);
+    return;
+  }
+  navigateTo("enemy", enemyId);
+};
+
+const openDropSource = (payload: { kind: DropSourceKind; sourceId: string }) => {
+  if (payload.kind === "enemy") {
+    openEnemyFromDropSource(payload.sourceId);
+    return;
+  }
+  openNpcView(payload.sourceId);
+};
+
+const openCardFromBooster = (cardId: string) => {
+  navigateTo("cards", cardId);
+};
+
+const handleSearchSelect = (payload: { id: string; kind?: SearchItemKind }) => {
+  const { id, kind } = payload;
+
+  if (kind === "enemy") {
+    const npcContext = WikiModalPresenter.resolveNpcBattleFromEnemyId(id);
+    if (npcContext !== null) {
+      openNpcView(npcContext.npcId, npcContext.battleOptionId);
+      return;
+    }
+    navigateTo("enemy", id);
+    return;
+  }
+
+  if (WikiModalPresenter.isDropSearchKind(kind)) {
+    navigateTo("drops", id, { dropType: kind });
+    return;
+  }
+
+  if (kind === "card") {
+    navigateTo("cards", id);
+    return;
+  }
+
+  if (kind === "location") {
+    navigateTo("locations", id);
+    return;
+  }
+
+  if (kind === "cardShop") {
+    navigateTo("cardShops", id);
+    return;
+  }
+
+  if (WikiModalPresenter.isNpcSearchKind(kind)) {
+    openNpcView(id);
+  }
+};
+
+const handleSelectCard = (cardId: string) => {
+  hide();
+  clearSelection();
+  navigationHistory.value = [];
+  view.value = "cards";
+  selectedCardId.value = cardId;
+};
+
+const closeCardDetails = () => {
+  hide();
+  clearSelection();
+  navigationHistory.value = [];
+  view.value = "cards";
+};
+
+// Pagination
 const nextPage = () => {
   if (currentPage.value < CardAlbumPresenter.TOTAL_PAGES) {
     currentPage.value++;
@@ -64,22 +442,30 @@ const lastPage = () => {
   currentPage.value = CardAlbumPresenter.TOTAL_PAGES;
 };
 
-const handleSelectCard = (cardId: string) => {
-  selectedCardId.value = cardId;
-};
-
-const closeCardDetails = () => {
-  selectedCardId.value = null;
-};
-
 const handleKeydown = (event: KeyboardEvent) => {
   if (!props.isOpen) {
     return;
   }
 
-  if (selectedCardId.value !== null) {
+  if (isDetailModalOpen.value) {
     if (event.key === "Escape") {
-      closeCardDetails();
+      if (navigationHistory.value.length > 0) {
+        navigateBack();
+      } else {
+        closeCardDetails();
+      }
+      return;
+    }
+
+    if (view.value === "cards" && selectedCardId.value !== null) {
+      if (event.key === "ArrowLeft") {
+        goToPreviousCard();
+        return;
+      }
+      if (event.key === "ArrowRight") {
+        goToNextCard();
+        return;
+      }
     }
     return;
   }
@@ -100,7 +486,7 @@ onUnmounted(() => {
 });
 
 const handleClose = () => {
-  if (selectedCardId.value !== null) {
+  if (isDetailModalOpen.value) {
     closeCardDetails();
     return;
   }
@@ -241,11 +627,11 @@ const handleClose = () => {
       </div>
     </div>
 
-    <!-- Card Detail Modal Overlay (WikiCardPanel layout matching the Wiki) -->
+    <!-- Wiki Detail Modal Overlay (Full Wiki Navigation from Cards) -->
     <Teleport to="body">
       <Transition name="modal-fade">
         <div
-          v-if="selectedCardId !== null"
+          v-if="isDetailModalOpen"
           class="fixed inset-0 z-150 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs"
           @click.self="closeCardDetails"
         >
@@ -255,35 +641,156 @@ const handleClose = () => {
             <!-- Hex Pattern Overlay -->
             <div class="absolute inset-0 opacity-[0.03] pointer-events-none" />
 
-            <!-- Header matching Wiki Modal -->
+            <!-- Header matching Wiki Modal with SearchBar, Card Nav, and Back Button -->
             <div class="relative z-10 flex items-center justify-between p-4 border-b border-blue-900/60 bg-[#001433]/80 shrink-0">
-              <div class="flex items-center gap-6 flex-1 min-w-0 pr-4">
+              <div class="flex items-center gap-4 flex-1 min-w-0 pr-4">
+                <!-- Back Button when navigating inside Wiki -->
+                <button
+                  v-if="navigationHistory.length > 0"
+                  type="button"
+                  class="px-2.5 py-1 rounded border border-blue-700 bg-blue-950 text-cyan-300 hover:bg-blue-900 hover:border-cyan-400 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shrink-0"
+                  title="Voltar"
+                  @click="navigateBack"
+                >
+                  ‹
+                </button>
+
                 <div class="flex items-center gap-2 shrink-0 min-w-0">
                   <h2 class="text-white font-bold tracking-widest drop-shadow whitespace-nowrap">
                     {{ t("enemy.wiki") }}
                   </h2>
                 </div>
 
-                <div
-                  class="flex-1 max-w-md bg-[#000a1a] border border-blue-900/60 rounded px-3 py-1.5 text-cyan-300 font-bold text-xs flex items-center shadow-inner"
-                >
-                  <span>{{ selectedCardName }}</span>
+                <div class="flex-1 max-w-md min-w-0">
+                  <SearchBar
+                    :items="allSearchItems"
+                    :selected-id="selectedSearchId"
+                    :selected-kind="selectedSearchKind"
+                    :placeholder="t('enemy.searchPlaceholder')"
+                    :no-results-label="t('enemy.searchNoResults')"
+                    @select="handleSearchSelect"
+                  />
                 </div>
               </div>
 
-              <!-- Close button -->
-              <button
-                type="button"
-                class="w-7 h-7 flex items-center justify-center rounded border border-blue-800/80 bg-blue-950/80 text-gray-400 hover:text-white hover:border-cyan-400 hover:bg-blue-900 transition-colors cursor-pointer text-xs font-bold shrink-0"
-                @click="closeCardDetails"
-              >
-                ✕
-              </button>
+              <!-- Right Section: Previous / Next Card Controls + Close button -->
+              <div class="flex items-center shrink-0">
+                <!-- Previous / Next Card Controls (only visible on cards view) -->
+                <div
+                  v-if="view === 'cards' && selectedCardId !== null"
+                  class="flex items-center gap-1.5 shrink-0 mr-3"
+                >
+                  <button
+                    type="button"
+                    class="flex items-center justify-center w-7 h-7 rounded border border-blue-700 bg-blue-950 text-cyan-300 hover:bg-blue-900 hover:text-white hover:border-cyan-400 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer text-sm font-bold shadow-xs"
+                    :disabled="!hasPreviousCard"
+                    :title="t('cardAlbum.previousCard')"
+                    @click="goToPreviousCard"
+                  >
+                    ‹
+                  </button>
+
+                  <div class="px-2.5 py-0.5 rounded bg-[#000a1a] border border-blue-900/60 text-cyan-400 font-mono font-bold text-xs shadow-inner whitespace-nowrap">
+                    #{{ String(currentCardNumber).padStart(3, "0") }} / {{ sortedCardIds.length }}
+                  </div>
+
+                  <button
+                    type="button"
+                    class="flex items-center justify-center w-7 h-7 rounded border border-blue-700 bg-blue-950 text-cyan-300 hover:bg-blue-900 hover:text-white hover:border-cyan-400 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer text-sm font-bold shadow-xs"
+                    :disabled="!hasNextCard"
+                    :title="t('cardAlbum.nextCard')"
+                    @click="goToNextCard"
+                  >
+                    ›
+                  </button>
+                </div>
+
+                <!-- Close button -->
+                <button
+                  type="button"
+                  class="w-7 h-7 flex items-center justify-center rounded border border-blue-800/80 bg-blue-950/80 text-gray-400 hover:text-white hover:border-cyan-400 hover:bg-blue-900 transition-colors cursor-pointer text-xs font-bold shrink-0"
+                  @click="closeCardDetails"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
 
-            <!-- Body with WikiCardPanel -->
-            <div class="relative z-10 flex-1 min-h-0 overflow-hidden">
-              <WikiCardPanel :card-id="selectedCardId" />
+            <!-- Body with Wiki Panels and Side Nav Arrows -->
+            <div class="relative z-10 flex-1 min-h-0 overflow-hidden flex items-center">
+              <!-- Left Floating Arrow for Previous Card -->
+              <button
+                v-if="view === 'cards' && selectedCardId !== null && hasPreviousCard"
+                type="button"
+                class="absolute left-1 z-20 w-8 h-12 flex items-center justify-center rounded-r bg-[#001433]/85 hover:bg-blue-900/95 border-y border-r border-cyan-500/60 text-cyan-300 hover:text-white hover:scale-105 transition-all cursor-pointer shadow-lg backdrop-blur-xs text-base font-bold select-none"
+                :title="t('cardAlbum.previousCard')"
+                @click="goToPreviousCard"
+              >
+                ‹
+              </button>
+
+              <div class="flex-1 h-full min-h-0 overflow-hidden">
+                <WikiCardPanel
+                  v-if="view === 'cards' && selectedCardId !== null"
+                  :card-id="selectedCardId"
+                  @open-drop="openDropsView"
+                  @open-card-shop="openCardShopsView"
+                />
+                <WikiDropsPanel
+                  v-else-if="view === 'drops' && selectedDropId !== null && selectedDropType !== null"
+                  :drop-id="selectedDropId"
+                  :drop-type="selectedDropType"
+                  @open-source="openDropSource"
+                  @open-card="openCardFromBooster"
+                />
+                <WikiCardShopPanel
+                  v-else-if="view === 'cardShops' && selectedCardShopId !== null"
+                  :card-shop-id="selectedCardShopId"
+                  @open-card="openCardFromBooster"
+                  @open-location="openLocationsView"
+                />
+                <WikiLocationsPanel
+                  v-else-if="view === 'locations' && selectedLocationId !== null"
+                  :location-id="selectedLocationId"
+                  @open-enemy="openEnemyFromDropSource"
+                  @open-npc="openNpcView"
+                  @open-card-shop="openCardShopsView"
+                />
+                <WikiEnemyPanel
+                  v-else-if="view === 'enemy' && enemy !== null"
+                  :enemy="enemy"
+                  :enemy-image-url="enemyImageUrl"
+                  @open-drops="openDropsView"
+                  @open-locations="openLocationsView"
+                  @show-stat-key-tooltip="showEnemyStatKeyTooltip"
+                  @show-condition-tooltip="showEnemyConditionTooltip"
+                  @move-stat-tooltip="moveEnemyStatTooltip"
+                  @hide-stat-tooltip="hideEnemyStatTooltip"
+                />
+                <WikiNpcPanel
+                  v-else-if="view === 'npc' && selectedNpcId !== null"
+                  :npc-id="selectedNpcId"
+                  :initial-battle-option-id="initialNpcBattleOptionId"
+                  @open-locations="openLocationsView"
+                  @open-drops="openDropsView"
+                  @open-card="openCardFromBooster"
+                  @show-stat-key-tooltip="showEnemyStatKeyTooltip"
+                  @show-condition-tooltip="showEnemyConditionTooltip"
+                  @move-stat-tooltip="moveEnemyStatTooltip"
+                  @hide-stat-tooltip="hideEnemyStatTooltip"
+                />
+              </div>
+
+              <!-- Right Floating Arrow for Next Card -->
+              <button
+                v-if="view === 'cards' && selectedCardId !== null && hasNextCard"
+                type="button"
+                class="absolute right-1 z-20 w-8 h-12 flex items-center justify-center rounded-l bg-[#001433]/85 hover:bg-blue-900/95 border-y border-l border-cyan-500/60 text-cyan-300 hover:text-white hover:scale-105 transition-all cursor-pointer shadow-lg backdrop-blur-xs text-base font-bold select-none"
+                :title="t('cardAlbum.nextCard')"
+                @click="goToNextCard"
+              >
+                ›
+              </button>
             </div>
 
             <!-- Footer bar accent -->
@@ -293,4 +800,13 @@ const handleClose = () => {
       </Transition>
     </Teleport>
   </Modal>
+
+  <Tooltip
+    :show="tooltipShow"
+    :x="tooltipX"
+    :y="tooltipY"
+    :title="tooltipTitle"
+    :max-width="900"
+    placement="below"
+  />
 </template>
