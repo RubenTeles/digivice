@@ -13,6 +13,16 @@
     "nextCard": "Próxima Carta",
     "emptySlot": "Vazio",
     "cardDetails": "Detalhes da Carta",
+    "boosters": "Pacotes",
+    "cards": "Cartas",
+    "complete": "Completo",
+    "incomplete": "Incompleto",
+    "completedBoosters": "Pacotes Completos",
+    "allBoosters": "Todos os Pacotes",
+    "seriesA": "Série A",
+    "seriesB": "Série B",
+    "seriesR": "Série R",
+    "cardsObtained": "cartas obtidas",
     "close": "Fechar"
   }
 }

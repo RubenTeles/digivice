@@ -23,3 +23,16 @@ export interface CardAlbumPageViewModel {
   totalCards: number; // 314
   totalCopies: number;
 }
+
+export type BoosterSeries = "A" | "B" | "R";
+
+export interface CardAlbumBoosterItemViewModel {
+  id: number;
+  code: string;
+  nameKey: string;
+  series: BoosterSeries;
+  totalCards: number;
+  ownedCards: number;
+  percentage: string;
+  isComplete: boolean;
+}

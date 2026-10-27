@@ -12,6 +12,8 @@ import WikiEnemyPanel from "@/components/wiki-modal/wiki-enemy-panel/WikiEnemyPa
 import WikiNpcPanel from "@/components/wiki-modal/wiki-npc-panel/WikiNpcPanel.vue";
 import SearchBar from "@/components/search/SearchBar.vue";
 import { CardAlbumPresenter } from "@/presenters/card-album/card-album.presenter";
+import { CardAlbumBoosterPresenter } from "@/presenters/card-album/card-album-booster.presenter";
+import CardAlbumBoostersView from "@/components/card-album-modal/CardAlbumBoostersView.vue";
 import { WikiModalPresenter } from "@/presenters/map/wiki-modal.presenter";
 import { CardRepository } from "@/repositories/card.repository";
 import { ImageCatalog } from "@/catalogs/image.catalog";
@@ -32,8 +34,25 @@ const emit = defineEmits<{
 const gameState = useGameState();
 const { t } = useI18n();
 
-// Album State
+// Mode State: "cards" (Cards album) vs "boosters" (Boosters completion overview)
+type AlbumMode = "cards" | "boosters";
+const albumMode = ref<AlbumMode>("cards");
+
+const toggleAlbumMode = () => {
+  albumMode.value = albumMode.value === "cards" ? "boosters" : "cards";
+};
+
+// Album Cards State
 const currentPage = ref(1);
+
+// Boosters Summary for Header Stats
+const boostersSummary = computed(() => {
+  return CardAlbumBoosterPresenter.getSummary(gameState.value.cardInventory);
+});
+const totalBoosters = computed(() => boostersSummary.value.totalBoosters);
+const completedBoostersCount = computed(() => boostersSummary.value.completedCount);
+const completedBoostersPercentage = computed(() => boostersSummary.value.percentage);
+
 
 // Detail / Wiki Navigation State
 type WikiView = "enemy" | "drops" | "cards" | "locations" | "npc" | "cardShops";
@@ -421,7 +440,7 @@ const closeCardDetails = () => {
   view.value = "cards";
 };
 
-// Pagination
+// Pagination for cards mode
 const nextPage = () => {
   if (currentPage.value < CardAlbumPresenter.TOTAL_PAGES) {
     currentPage.value++;
@@ -470,10 +489,12 @@ const handleKeydown = (event: KeyboardEvent) => {
     return;
   }
 
-  if (event.key === "ArrowLeft") {
-    previousPage();
-  } else if (event.key === "ArrowRight") {
-    nextPage();
+  if (albumMode.value === "cards") {
+    if (event.key === "ArrowLeft") {
+      previousPage();
+    } else if (event.key === "ArrowRight") {
+      nextPage();
+    }
   }
 };
 
@@ -506,33 +527,57 @@ const handleClose = () => {
       <div class="flex items-center justify-between w-full pr-4 gap-4">
         <!-- Title & Icon -->
         <div class="flex items-center gap-3 shrink-0">
-          <span class="text-2xl leading-none">🎴</span>
+          <span class="text-2xl leading-none">{{ albumMode === 'boosters' ? '🃏' : '🎴' }}</span>
           <h2 class="text-white font-bold tracking-widest drop-shadow whitespace-nowrap text-lg">
-            {{ $t("cardAlbum.title") }}
+            {{ albumMode === 'boosters' ? $t("cardAlbum.boosters") : $t("cardAlbum.title") }}
           </h2>
         </div>
 
-        <!-- Collection Progress & Stats -->
-        <div class="flex items-center gap-4 sm:gap-6 text-xs">
-          <!-- Total copies badge -->
+        <!-- Collection Progress & Stats & Mode Toggle Button -->
+        <div class="flex items-center gap-4 sm:gap-5 text-xs">
+          <!-- Total copies in trunk badge -->
           <div class="hidden sm:flex items-center gap-2 bg-[#001433]/70 border border-blue-800/50 px-3 py-1 rounded-md text-blue-200 shadow-inner">
             <span class="text-gray-400 font-medium">{{ $t("cardAlbum.totalCopies") }}:</span>
             <span class="font-bold text-amber-400 font-mono">{{ pageViewModel.totalCopies }}</span>
           </div>
 
-          <!-- Unique Collection Progress -->
-          <div class="flex items-center gap-3 bg-[#001433]/70 border border-blue-800/50 px-3 py-1 rounded-md shadow-inner">
-            <span class="text-gray-400 font-medium">{{ $t("cardAlbum.collection") }}:</span>
-            <span class="font-bold text-emerald-400 font-mono">
-              {{ pageViewModel.totalUniqueOwned }} / {{ pageViewModel.totalCards }}
-            </span>
-            <span class="text-[10px] text-cyan-300 font-mono">({{ collectionPercentage }}%)</span>
+          <!-- Mode Toggle Button (Pacotes <-> Cartas) -->
+          <button
+            type="button"
+            class="flex items-center gap-2 px-3 py-1 rounded-md border text-xs font-bold transition-all cursor-pointer shadow-sm select-none"
+            :class="
+              albumMode === 'boosters'
+                ? 'bg-cyan-950/90 border-cyan-400 text-cyan-300 hover:bg-cyan-900/90 hover:text-white shadow-[0_0_12px_rgba(0,200,255,0.4)]'
+                : 'bg-blue-950/90 border-blue-700 text-blue-300 hover:bg-blue-900 hover:text-white hover:border-cyan-400'
+            "
+            @click="toggleAlbumMode"
+          >
+            <span class="text-sm leading-none">{{ albumMode === 'boosters' ? '🎴' : '🃏' }}</span>
+            <span>{{ albumMode === 'boosters' ? $t("cardAlbum.cards") : $t("cardAlbum.boosters") }}</span>
+          </button>
 
-            <!-- Progress Bar -->
+          <!-- Overall Progress: Cards or Boosters completion -->
+          <div class="flex items-center gap-3 bg-[#001433]/70 border border-blue-800/50 px-3 py-1 rounded-md shadow-inner">
+            <span class="text-gray-400 font-medium">
+              {{ albumMode === 'boosters' ? $t("cardAlbum.completedBoosters") : $t("cardAlbum.collection") }}:
+            </span>
+            <span class="font-bold text-emerald-400 font-mono">
+              <template v-if="albumMode === 'boosters'">
+                {{ completedBoostersCount }} / {{ totalBoosters }}
+              </template>
+              <template v-else>
+                {{ pageViewModel.totalUniqueOwned }} / {{ pageViewModel.totalCards }}
+              </template>
+            </span>
+            <span class="text-[10px] text-cyan-300 font-mono">
+              ({{ albumMode === 'boosters' ? completedBoostersPercentage : collectionPercentage }}%)
+            </span>
+
+            <!-- Glowing Progress Bar -->
             <div class="w-24 sm:w-32 h-2.5 bg-blue-950 border border-blue-800 rounded-full overflow-hidden shrink-0 shadow-inner">
               <div
                 class="h-full bg-linear-to-r from-cyan-500 via-teal-400 to-emerald-400 transition-all duration-300 rounded-full"
-                :style="{ width: `${collectionPercentage}%` }"
+                :style="{ width: `${albumMode === 'boosters' ? completedBoostersPercentage : collectionPercentage}%` }"
               />
             </div>
           </div>
@@ -540,94 +585,104 @@ const handleClose = () => {
       </div>
     </template>
 
-    <!-- Album 12-Card Direct Grid Body -->
+    <!-- Main Content Area: Cards Album Mode or Boosters Mode -->
     <div class="relative flex flex-1 flex-col min-h-0 h-full p-4 overflow-hidden select-none">
-      <!-- 6x2 Cards Grid (12 Cards Per Page) -->
-      <div class="flex-1 min-h-0 bg-[#000a18]/60 border border-blue-900/40 rounded-lg p-3 shadow-inner overflow-hidden">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 h-full">
-          <CardAlbumCard
-            v-for="(card, index) in pageViewModel.cards"
-            :key="card ? card.cardId : `empty-slot-${index}`"
-            :card="card"
-            :slot-index="(currentPage - 1) * 12 + index + 1"
-            @select="handleSelectCard"
-          />
-        </div>
-      </div>
-
-      <!-- Pagination Navigation Bar -->
-      <div class="flex items-center justify-between mt-3 pt-2 border-t border-blue-900/50 shrink-0">
-        <!-- Quick Jump Buttons (Previous / First) -->
-        <div class="flex items-center gap-1.5">
-          <button
-            type="button"
-            class="px-2.5 py-1 text-xs font-bold rounded bg-blue-950/80 border border-blue-800 text-blue-300 hover:bg-blue-900 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
-            :disabled="currentPage === 1"
-            :title="$t('cardAlbum.firstPage')"
-            @click="firstPage"
-          >
-            «
-          </button>
-          <button
-            type="button"
-            class="px-3 py-1 text-xs font-bold rounded bg-blue-950/80 border border-blue-800 text-blue-300 hover:bg-blue-900 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
-            :disabled="currentPage === 1"
-            :title="$t('cardAlbum.previousPage')"
-            @click="previousPage"
-          >
-            ‹ {{ $t("cardAlbum.previousPage") }}
-          </button>
+      <!-- 1. CARDS MODE -->
+      <template v-if="albumMode === 'cards'">
+        <!-- 6x2 Cards Grid (12 Cards Per Page) -->
+        <div class="flex-1 min-h-0 bg-[#000a18]/60 border border-blue-900/40 rounded-lg p-3 shadow-inner overflow-hidden">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 h-full">
+            <CardAlbumCard
+              v-for="(card, index) in pageViewModel.cards"
+              :key="card ? card.cardId : `empty-slot-${index}`"
+              :card="card"
+              :slot-index="(currentPage - 1) * 12 + index + 1"
+              @select="handleSelectCard"
+            />
+          </div>
         </div>
 
-        <!-- Current Page Indicator & Quick Page Select Dropdown -->
-        <div class="flex items-center gap-2">
-          <span class="text-xs text-gray-300 font-medium">
-            {{ $t("cardAlbum.page") }}
-          </span>
-
-          <select
-            v-model.number="currentPage"
-            class="bg-[#000f2b] border border-blue-700 text-cyan-300 font-bold font-mono text-xs rounded px-2.5 py-1 outline-none cursor-pointer hover:border-cyan-400 focus:border-cyan-400 transition-colors"
-          >
-            <option
-              v-for="p in CardAlbumPresenter.TOTAL_PAGES"
-              :key="p"
-              :value="p"
+        <!-- Pagination Navigation Bar -->
+        <div class="flex items-center justify-between mt-3 pt-2 border-t border-blue-900/50 shrink-0">
+          <!-- Quick Jump Buttons (Previous / First) -->
+          <div class="flex items-center gap-1.5">
+            <button
+              type="button"
+              class="px-2.5 py-1 text-xs font-bold rounded bg-blue-950/80 border border-blue-800 text-blue-300 hover:bg-blue-900 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
+              :disabled="currentPage === 1"
+              :title="$t('cardAlbum.firstPage')"
+              @click="firstPage"
             >
-              {{ p }} (Cards #{{ String((p - 1) * 12 + 1).padStart(3, "0") }} - #{{ String(Math.min(p * 12, 314)).padStart(3, "0") }})
-            </option>
-          </select>
+              «
+            </button>
+            <button
+              type="button"
+              class="px-3 py-1 text-xs font-bold rounded bg-blue-950/80 border border-blue-800 text-blue-300 hover:bg-blue-900 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
+              :disabled="currentPage === 1"
+              :title="$t('cardAlbum.previousPage')"
+              @click="previousPage"
+            >
+              ‹ {{ $t("cardAlbum.previousPage") }}
+            </button>
+          </div>
 
-          <span class="text-xs text-gray-300 font-medium">
-            {{ $t("cardAlbum.of") }} {{ CardAlbumPresenter.TOTAL_PAGES }}
-          </span>
-        </div>
+          <!-- Current Page Indicator & Quick Page Select Dropdown -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-300 font-medium">
+              {{ $t("cardAlbum.page") }}
+            </span>
 
-        <!-- Next & Last Page Buttons -->
-        <div class="flex items-center gap-1.5">
-          <button
-            type="button"
-            class="px-3 py-1 text-xs font-bold rounded bg-blue-950/80 border border-blue-800 text-blue-300 hover:bg-blue-900 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
-            :disabled="currentPage === CardAlbumPresenter.TOTAL_PAGES"
-            :title="$t('cardAlbum.nextPage')"
-            @click="nextPage"
-          >
-            {{ $t("cardAlbum.nextPage") }} ›
-          </button>
-          <button
-            type="button"
-            class="px-2.5 py-1 text-xs font-bold rounded bg-blue-950/80 border border-blue-800 text-blue-300 hover:bg-blue-900 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
-            :disabled="currentPage === CardAlbumPresenter.TOTAL_PAGES"
-            :title="$t('cardAlbum.lastPage')"
-            @click="lastPage"
-          >
-            »
-          </button>
+            <select
+              v-model.number="currentPage"
+              class="bg-[#000f2b] border border-blue-700 text-cyan-300 font-bold font-mono text-xs rounded px-2.5 py-1 outline-none cursor-pointer hover:border-cyan-400 focus:border-cyan-400 transition-colors"
+            >
+              <option
+                v-for="p in CardAlbumPresenter.TOTAL_PAGES"
+                :key="p"
+                :value="p"
+              >
+                {{ p }} (Cards #{{ String((p - 1) * 12 + 1).padStart(3, "0") }} - #{{ String(Math.min(p * 12, 314)).padStart(3, "0") }})
+              </option>
+            </select>
+
+            <span class="text-xs text-gray-300 font-medium">
+              {{ $t("cardAlbum.of") }} {{ CardAlbumPresenter.TOTAL_PAGES }}
+            </span>
+          </div>
+
+          <!-- Next & Last Page Buttons -->
+          <div class="flex items-center gap-1.5">
+            <button
+              type="button"
+              class="px-3 py-1 text-xs font-bold rounded bg-blue-950/80 border border-blue-800 text-blue-300 hover:bg-blue-900 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
+              :disabled="currentPage === CardAlbumPresenter.TOTAL_PAGES"
+              :title="$t('cardAlbum.nextPage')"
+              @click="nextPage"
+            >
+              {{ $t("cardAlbum.nextPage") }} ›
+            </button>
+            <button
+              type="button"
+              class="px-2.5 py-1 text-xs font-bold rounded bg-blue-950/80 border border-blue-800 text-blue-300 hover:bg-blue-900 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
+              :disabled="currentPage === CardAlbumPresenter.TOTAL_PAGES"
+              :title="$t('cardAlbum.lastPage')"
+              @click="lastPage"
+            >
+              »
+            </button>
+          </div>
         </div>
-      </div>
+      </template>
+
+      <!-- 2. BOOSTERS / CARDS OF BOOSTERS MODE -->
+      <CardAlbumBoostersView
+        v-else
+        @open-booster="(boosterId) => openDropsView({ dropId: String(boosterId), dropType: 'booster' })"
+        @switch-to-cards="albumMode = 'cards'"
+      />
     </div>
 
-    <!-- Wiki Detail Modal Overlay (Full Wiki Navigation from Cards) -->
+    <!-- Wiki Detail Modal Overlay (Full Wiki Navigation from Cards or Boosters) -->
     <Teleport to="body">
       <Transition name="modal-fade">
         <div
