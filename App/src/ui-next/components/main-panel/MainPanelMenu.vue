@@ -18,7 +18,7 @@ const emit = defineEmits<{
       :aria-label="$t('mainPanel.previousSection')"
       @click="emit('previous')"
     >
-      <span class="inline-flex leading-none text-[1.2rem] -translate-y-0.5 font-emoji">&#x2B05;</span>
+      <span class="inline-flex leading-none text-[1.2rem] -translate-y-0.5 font-emoji text-white">&#x2B05;</span>
     </button>
 
     <span class="text-[0.7rem] uppercase tracking-widest">{{ label }}</span>
@@ -30,7 +30,7 @@ const emit = defineEmits<{
       :aria-label="$t('mainPanel.nextSection')"
       @click="emit('next')"
     >
-      <span class="inline-flex leading-none text-[1.2rem] -translate-y-0.5 font-emoji">&#x27A1;</span>
+      <span class="inline-flex leading-none text-[1.2rem] -translate-y-0.5 font-emoji text-white">&#x27A1;</span>
     </button>
   </nav>
 </template>
