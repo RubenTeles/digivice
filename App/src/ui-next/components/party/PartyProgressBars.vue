@@ -6,6 +6,7 @@ import BlastProgressBar from "@/ui-next/components/party/progress-bar/BlastProgr
 import DigievolutionsButton from "@/ui-next/components/party/DigievolutionsButton.vue";
 import TrainingPoints from "@/ui-next/components/party/TrainingPoints.vue";
 import PartyDigievolutions from "@/ui-next/components/party/digievolutions/PartyDigievolutions.vue";
+import PartyStats from "@/ui-next/components/party/stats/PartyStats.vue";
 import type { PartyDigimonMock } from "@/ui-next/mocks/party.mock";
 
 const { digimon } = defineProps<{
@@ -32,5 +33,6 @@ const { digimon } = defineProps<{
       :digievolutions="digimon.digievolutions"
       :active-digievolution-id="digimon.activeDigievolutionId"
     />
+    <PartyStats class="mt-2" :stats="digimon.stats" />
   </div>
 </template>

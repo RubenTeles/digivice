@@ -1,0 +1,48 @@
+<script setup lang="ts">
+import { computed } from "vue";
+import type { PartyStatMock } from "@/ui-next/mocks/party.mock";
+
+const { icon, label, stat } = defineProps<{
+  icon: string;
+  label: string;
+  stat: PartyStatMock;
+}>();
+
+const displayValue = computed(() => {
+  return stat.value + stat.battleDelta;
+});
+
+const valueColorClass = computed(() => {
+  if (stat.battleDelta > 0) {
+    return "text-green-400";
+  }
+
+  if (stat.battleDelta < 0) {
+    return "text-red-400";
+  }
+
+  return "text-white";
+});
+</script>
+
+<template>
+  <div class="flex items-center gap-1.5 min-w-0 cursor-help" :title="label">
+    <span
+      class="w-5 shrink-0 flex justify-center text-[14px] leading-none font-emoji text-white"
+    >
+      {{ icon }}
+    </span>
+    <span
+      class="min-w-[3ch] text-right tabular-nums text-[12px] font-bold font-chakra-petch shadow-text"
+      :class="valueColorClass"
+    >
+      {{ displayValue }}
+    </span>
+    <span
+      v-if="stat.digievolutionBonus > 0"
+      class="text-[12px] font-bold font-chakra-petch text-dw3-gold shadow-text-dark"
+    >
+      +{{ stat.digievolutionBonus }}
+    </span>
+  </div>
+</template>

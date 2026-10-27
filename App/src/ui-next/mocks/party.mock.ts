@@ -1,4 +1,6 @@
 import type { Vital } from "@/state/models";
+import type { DigimonAttribute } from "@/shared/constants/digimon-attribute.constant";
+import type { DigimonElement } from "@/shared/constants/digimon-element.constant";
 
 export type PartyDigievolutionMock = {
   digievolutionId: number;
@@ -9,6 +11,17 @@ export type PartyDigievolutionMock = {
 };
 
 export type PartyDigievolutionSlotMock = PartyDigievolutionMock | null;
+
+export type PartyStatMock = {
+  value: number;
+  digievolutionBonus: number;
+  battleDelta: number;
+};
+
+export type PartyStatsMock = {
+  attributes: Record<DigimonAttribute, PartyStatMock>;
+  elements: Record<DigimonElement, PartyStatMock>;
+};
 
 export type PartyDigimonMock = {
   digimonId: number;
@@ -21,6 +34,7 @@ export type PartyDigimonMock = {
   blast: number;
   digievolutions: PartyDigievolutionSlotMock[];
   activeDigievolutionId: number | null;
+  stats: PartyStatsMock;
 };
 
 export type PartySlotMock = PartyDigimonMock | null;
@@ -30,6 +44,10 @@ const DigievolutionsMock: PartyDigievolutionSlotMock[] = [
   { digievolutionId: 381, level: 1, dvexpInLevel: 5, dvexpPerLevel: 10, isDnaActive: true },
   null,
 ];
+
+const createStat = (value: number, digievolutionBonus = 0, battleDelta = 0): PartyStatMock => {
+  return { value, digievolutionBonus, battleDelta };
+};
 
 export const PartySlotsMock: PartySlotMock[] = [
   {
@@ -43,6 +61,25 @@ export const PartySlotsMock: PartySlotMock[] = [
     blast: 850,
     digievolutions: DigievolutionsMock,
     activeDigievolutionId: 381,
+    stats: {
+      attributes: {
+        strength: createStat(142, 30, 20),
+        defense: createStat(98, 25),
+        spirit: createStat(76, 10),
+        wisdom: createStat(64),
+        speed: createStat(110, 15, -12),
+        charisma: createStat(35),
+      },
+      elements: {
+        fire: createStat(48, 12),
+        water: createStat(22),
+        ice: createStat(18),
+        wind: createStat(30, 5),
+        thunder: createStat(26),
+        machine: createStat(40, 8),
+        dark: createStat(15),
+      },
+    },
   },
   {
     digimonId: 6,
@@ -55,6 +92,25 @@ export const PartySlotsMock: PartySlotMock[] = [
     blast: 600,
     digievolutions: DigievolutionsMock,
     activeDigievolutionId: 381,
+    stats: {
+      attributes: {
+        strength: createStat(84, 18),
+        defense: createStat(72, 0, -15),
+        spirit: createStat(128, 30),
+        wisdom: createStat(115, 20),
+        speed: createStat(134, 10, 18),
+        charisma: createStat(52),
+      },
+      elements: {
+        fire: createStat(20),
+        water: createStat(34, 6),
+        ice: createStat(44, 10),
+        wind: createStat(50, 12),
+        thunder: createStat(18),
+        machine: createStat(12),
+        dark: createStat(38, 8),
+      },
+    },
   },
   {
     digimonId: 1,
@@ -67,5 +123,24 @@ export const PartySlotsMock: PartySlotMock[] = [
     blast: 200,
     digievolutions: DigievolutionsMock,
     activeDigievolutionId: 381,
+    stats: {
+      attributes: {
+        strength: createStat(96),
+        defense: createStat(120, 22),
+        spirit: createStat(60),
+        wisdom: createStat(48),
+        speed: createStat(58),
+        charisma: createStat(28),
+      },
+      elements: {
+        fire: createStat(10),
+        water: createStat(36),
+        ice: createStat(62, 15),
+        wind: createStat(14),
+        thunder: createStat(20),
+        machine: createStat(24),
+        dark: createStat(8),
+      },
+    },
   },
 ];
