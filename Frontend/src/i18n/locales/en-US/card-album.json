@@ -1,0 +1,16 @@
+{
+  "cardAlbum": {
+    "title": "Card Album",
+    "page": "Page",
+    "of": "of",
+    "collection": "Collection",
+    "totalCopies": "Total in Trunk",
+    "firstPage": "First Page",
+    "previousPage": "Previous Page",
+    "nextPage": "Next Page",
+    "lastPage": "Last Page",
+    "emptySlot": "Empty",
+    "cardDetails": "Card Details",
+    "close": "Close"
+  }
+}

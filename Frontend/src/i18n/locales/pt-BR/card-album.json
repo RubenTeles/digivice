@@ -1,0 +1,16 @@
+{
+  "cardAlbum": {
+    "title": "Álbum de Cartas",
+    "page": "Página",
+    "of": "de",
+    "collection": "Coleção",
+    "totalCopies": "Total no Baú",
+    "firstPage": "Primeira Página",
+    "previousPage": "Página Anterior",
+    "nextPage": "Próxima Página",
+    "lastPage": "Última Página",
+    "emptySlot": "Vazio",
+    "cardDetails": "Detalhes da Carta",
+    "close": "Fechar"
+  }
+}
