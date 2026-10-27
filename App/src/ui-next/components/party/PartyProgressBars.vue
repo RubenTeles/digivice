@@ -7,6 +7,7 @@ import DigievolutionsButton from "@/ui-next/components/party/DigievolutionsButto
 import TrainingPoints from "@/ui-next/components/party/TrainingPoints.vue";
 import PartyDigievolutions from "@/ui-next/components/party/digievolutions/PartyDigievolutions.vue";
 import PartyStats from "@/ui-next/components/party/stats/PartyStats.vue";
+import PartyEquipments from "@/ui-next/components/party/equipments/PartyEquipments.vue";
 import type { PartyDigimonMock } from "@/ui-next/mocks/party.mock";
 
 const { digimon } = defineProps<{
@@ -33,6 +34,9 @@ const { digimon } = defineProps<{
       :digievolutions="digimon.digievolutions"
       :active-digievolution-id="digimon.activeDigievolutionId"
     />
-    <PartyStats class="mt-2" :stats="digimon.stats" />
+    <div class="mt-2 flex items-stretch gap-1">
+      <PartyStats class="flex-1 min-w-0" :stats="digimon.stats" />
+      <PartyEquipments :equipments="digimon.equipments" />
+    </div>
   </div>
 </template>

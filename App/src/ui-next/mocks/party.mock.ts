@@ -1,6 +1,7 @@
 import type { Vital } from "@/state/models";
 import type { DigimonAttribute } from "@/shared/constants/digimon-attribute.constant";
 import type { DigimonElement } from "@/shared/constants/digimon-element.constant";
+import type { EquipmentSlot } from "@/shared/types/equipment-slot.type";
 
 export type PartyDigievolutionMock = {
   digievolutionId: number;
@@ -23,6 +24,8 @@ export type PartyStatsMock = {
   elements: Record<DigimonElement, PartyStatMock>;
 };
 
+export type PartyEquipmentsMock = Record<EquipmentSlot, number | null>;
+
 export type PartyDigimonMock = {
   digimonId: number;
   name: string;
@@ -35,6 +38,7 @@ export type PartyDigimonMock = {
   digievolutions: PartyDigievolutionSlotMock[];
   activeDigievolutionId: number | null;
   stats: PartyStatsMock;
+  equipments: PartyEquipmentsMock;
 };
 
 export type PartySlotMock = PartyDigimonMock | null;
@@ -80,6 +84,14 @@ export const PartySlotsMock: PartySlotMock[] = [
         dark: createStat(15),
       },
     },
+    equipments: {
+      head: 12,
+      body: 34,
+      right: 56,
+      left: null,
+      accessory1: 78,
+      accessory2: null,
+    },
   },
   {
     digimonId: 6,
@@ -111,6 +123,14 @@ export const PartySlotsMock: PartySlotMock[] = [
         dark: createStat(38, 8),
       },
     },
+    equipments: {
+      head: null,
+      body: null,
+      right: 21,
+      left: 43,
+      accessory1: 65,
+      accessory2: 87,
+    },
   },
   {
     digimonId: 1,
@@ -141,6 +161,14 @@ export const PartySlotsMock: PartySlotMock[] = [
         machine: createStat(24),
         dark: createStat(8),
       },
+    },
+    equipments: {
+      head: 15,
+      body: null,
+      right: null,
+      left: null,
+      accessory1: null,
+      accessory2: null,
     },
   },
 ];
