@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "./ui-next/styles/theme.css";
 
+@theme {
+  --font-emoji: "Noto Emoji", sans-serif;
+}
+
 html,
 body {
   margin: 0;
