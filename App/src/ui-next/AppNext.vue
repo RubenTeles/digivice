@@ -8,12 +8,12 @@ useServerThemeRoot();
 </script>
 
 <template>
-  <main class="h-screen overflow-hidden flex flex-col text-white">
-    <div class="flex-1 min-h-0 flex">
-      <EmulatorSlot class="h-full aspect-4/3 shrink-0" />
-      <MainPanel class="flex-1 min-w-0" />
+  <main class="h-screen overflow-hidden flex text-white">
+    <div class="h-full shrink-0 flex flex-col">
+      <EmulatorSlot class="h-[calc(100%-3rem)] aspect-4/3" />
+      <Footer class="shrink-0" />
     </div>
 
-    <Footer class="shrink-0" />
+    <MainPanel class="flex-1 min-w-0" />
   </main>
 </template>
