@@ -7,6 +7,8 @@ const {
   transitionDurationClass,
   label,
   borderColorClass = "border-frame-dark",
+  heightClass = "h-6",
+  textSizeClass = "text-[12px]",
   fillExtraClass = "",
   trackExtraClass = "",
 } = defineProps<{
@@ -17,6 +19,8 @@ const {
   transitionDurationClass: string;
   label: string;
   borderColorClass?: string;
+  heightClass?: string;
+  textSizeClass?: string;
   fillExtraClass?: string;
   trackExtraClass?: string;
 }>();
@@ -24,8 +28,8 @@ const {
 
 <template>
   <div
-    class="relative w-full h-6 bg-track rounded overflow-hidden shadow-inner flex items-center justify-center border-2 font-chakra-petch cursor-help"
-    :class="[borderColorClass, trackExtraClass]"
+    class="relative w-full bg-track rounded overflow-hidden shadow-inner flex items-center justify-center border-2 font-chakra-petch cursor-help"
+    :class="[heightClass, borderColorClass, trackExtraClass]"
     :title="label"
   >
     <div
@@ -35,7 +39,8 @@ const {
     ></div>
 
     <span
-      class="relative z-10 text-[12px] font-bold text-white text-outline-black px-1 tracking-wider"
+      class="relative z-10 font-bold text-white text-outline-black px-1 tracking-wider"
+      :class="textSizeClass"
     >
       {{ `${currentValue} / ${maxValue}` }}
     </span>
