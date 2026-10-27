@@ -6,6 +6,8 @@ import "@/core/extensions/math.extensions";
 import "@fontsource/press-start-2p/latin-400.css";
 import "@fontsource/exo-2/latin-400.css";
 import "@fontsource/exo-2/latin-700.css";
+import "@fontsource/chakra-petch/latin-400.css";
+import "@fontsource/chakra-petch/latin-700.css";
 import "@fontsource/noto-emoji/400.css";
 import "./style.css";
 

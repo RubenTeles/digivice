@@ -2,11 +2,15 @@
 @theme {
   --color-surface: #000a2b;
   --color-frame: #0033aa;
+  --color-frame-dark: #001a55;
   --color-highlight: oklch(97.7% 0.013 236.62);
+  --color-track: #000e3f;
 }
 
 [data-server="amaterasu"] {
   --color-surface: #2b0018;
   --color-frame: #aa0055;
+  --color-frame-dark: #55002b;
   --color-highlight: oklch(97.1% 0.014 343.198);
+  --color-track: #3f0022;
 }

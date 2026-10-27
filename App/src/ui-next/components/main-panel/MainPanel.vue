@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import MainPanelMenu from "@/ui-next/components/main-panel/MainPanelMenu.vue";
+import Party from "@/ui-next/components/party/Party.vue";
 import { useMainPanelSection } from "@/ui-next/composables/use-main-panel-section";
 
 const { t } = useI18n();
@@ -15,6 +16,8 @@ const sectionLabel = computed(() => {
 <template>
   <aside class="h-full flex flex-col bg-surface border-l-2 border-frame">
     <MainPanelMenu :label="sectionLabel" @previous="showPrevious" @next="showNext" />
-    <section class="flex-1 min-h-0 overflow-y-auto"></section>
+    <section class="flex-1 min-h-0 overflow-y-auto">
+      <Party v-if="activeSection === 'party'" />
+    </section>
   </aside>
 </template>
