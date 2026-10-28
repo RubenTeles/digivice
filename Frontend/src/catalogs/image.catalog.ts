@@ -60,6 +60,11 @@ const BossAssetConfig = {
   extension: "png",
 } as const;
 
+const DriAgentEnemyAssetConfig = {
+  pathSuffix: "/dri-agents-enemies/",
+  extension: "png",
+} as const;
+
 const StoreAssetConfig = {
   pathSuffix: "/stores/",
   extension: "png",
@@ -120,6 +125,11 @@ const bossModules = import.meta.glob<string>("@/assets/bosses/*.png", {
   as: "url",
 });
 
+const driAgentEnemyModules = import.meta.glob<string>("@/assets/dri-agents-enemies/*.png", {
+  eager: true,
+  as: "url",
+});
+
 const storeModules = import.meta.glob<string>("@/assets/stores/*.png", {
   eager: true,
   as: "url",
@@ -166,13 +176,25 @@ export class ImageCatalog {
     );
   }
 
-  public static getEnemyImageUrl(enemyName: string | null): string | null {
+  public static getDriAgentEnemyImageUrl(enemyName: string | null): string | null {
     return getImageUrl(
+      driAgentEnemyModules,
+      DriAgentEnemyAssetConfig.pathSuffix,
+      DriAgentEnemyAssetConfig.extension,
+      enemyName,
+    );
+  }
+
+  public static getEnemyImageUrl(enemyName: string | null): string | null {
+    const enemyUrl = getImageUrl(
       enemyIconModules,
       EnemyIconAssetConfig.pathSuffix,
       EnemyIconAssetConfig.extension,
       enemyName,
     );
+    if (enemyUrl) return enemyUrl;
+
+    return this.getDriAgentEnemyImageUrl(enemyName);
   }
 
   public static getDigievolutionImageUrl(digievolutionName: string | null): string | null {

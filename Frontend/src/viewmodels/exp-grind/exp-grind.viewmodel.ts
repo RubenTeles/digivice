@@ -1,6 +1,6 @@
 export interface ExpEncounterSpot {
   mapId: string;
-  source: "walking" | "fishing" | "kickingTree" | "seabed" | "boss";
+  source: "walking" | "fishing" | "kickingTree" | "seabed" | "boss" | "dna";
 }
 
 export interface ExpEnemyViewModel {
@@ -22,8 +22,18 @@ export interface ExpEnemyViewModel {
     kickingTree: boolean;
     boss: boolean;
     seabed?: boolean;
+    dna?: boolean;
   };
   isBoss: boolean;
+  isDna?: boolean;
+  isDefeated?: boolean;
+  dnaPartner?: string;
+  driAgentName?: string;
+  partyLevelRange?: {
+    min: number;
+    max: number;
+  };
+  status?: "available" | "defeated" | "locked";
   locations?: string[];
   encounterSpots?: ExpEncounterSpot[];
   mainQuestAvailabilityWindow?: {
@@ -44,6 +54,7 @@ export interface ExpGrindMapViewModel {
   visitedMapsCount: number;
   availableBosses: ExpEnemyViewModel[];
   upcomingBosses: ExpEnemyViewModel[];
+  dnaEnemies: ExpEnemyViewModel[];
   characterBattles: ExpCharacterBattleViewModel[];
   upcomingCharacterBattles: ExpCharacterBattleViewModel[];
   partyCharisma: number;

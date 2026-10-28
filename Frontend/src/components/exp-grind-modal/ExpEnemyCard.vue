@@ -11,8 +11,14 @@ const emit = defineEmits<{
 }>();
 
 const borderClass = computed(() => {
+  if (props.enemy.isDefeated) {
+    return "border-emerald-600/50 bg-[#00141a]/90 hover:border-emerald-400 opacity-85 hover:opacity-100";
+  }
   if (props.enemy.isBoss) {
     return "border-amber-500/50 bg-[#000d24]/90 hover:border-amber-400";
+  }
+  if (props.enemy.isDna) {
+    return "border-purple-600/50 bg-[#0a0822]/90 hover:border-purple-400";
   }
   return "border-blue-900/60 bg-[#000d24]/80 hover:border-blue-700";
 });
@@ -38,15 +44,36 @@ const handleClick = () => {
 
       <div class="flex items-center gap-1 shrink-0">
         <span
-          v-if="enemy.isBoss"
+          v-if="enemy.isDefeated"
+          class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/80 shrink-0 font-mono"
+        >
+          ✅ Derrotado
+        </span>
+        <span
+          v-else-if="enemy.isBoss"
           class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-950 text-amber-300 border border-amber-500/80 shrink-0 font-mono"
         >
           👑 Boss
+        </span>
+        <span
+          v-if="enemy.isDna"
+          class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-purple-950 text-purple-300 border border-purple-500/80 shrink-0 font-mono"
+        >
+          🧬 ADN
         </span>
         <span class="text-[10px] font-mono font-bold text-gray-400 shrink-0">
           Lv.{{ enemy.level }}
         </span>
       </div>
+    </div>
+
+    <!-- DNA Info Row -->
+    <div
+      v-if="enemy.dnaPartner"
+      class="text-[10px] text-cyan-300 font-mono font-semibold flex items-center justify-between pb-1 -mt-1"
+    >
+      <span>DDNA de {{ enemy.dnaPartner }}</span>
+      <span v-if="enemy.partyLevelRange" class="text-indigo-300 text-[9px]">Nv. {{ enemy.partyLevelRange.min }}-{{ enemy.partyLevelRange.max }}</span>
     </div>
 
     <!-- Center: Avatar + Stats -->
@@ -93,6 +120,7 @@ const handleClick = () => {
         <span v-if="enemy.origin.fishing" title="Pesca">🎣</span>
         <span v-if="enemy.origin.kickingTree" title="Árvore">🌲</span>
         <span v-if="enemy.origin.seabed" title="Subaquático">🤿</span>
+        <span v-if="enemy.origin.dna" title="Digimon ADN">🧬</span>
       </div>
 
       <span class="text-gray-300">❤️ {{ enemy.hp }} HP</span>

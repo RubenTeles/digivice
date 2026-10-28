@@ -1,6 +1,7 @@
 import { MapId } from "@/constants/map-id.constant";
 import { StoryNpcDigimonBattleId } from "@/constants/npc-battle.constant";
 import type { State } from "@/models/state";
+import type { Journal } from "@/models/journal/journal";
 import { EnemyRepository } from "@/repositories/enemy.repository";
 import { MapRepository } from "@/repositories/map.repository";
 import { TamerRepository } from "@/repositories/tamer.repository";
@@ -86,7 +87,10 @@ export class ExpGrindPresenter {
       new Set(allVisitedIds),
       currentLocationId,
       lastCompletedMainQuestStep,
+      gameState.journal,
     );
+
+    const dnaEnemies = this.resolveDnaEnemies(gameState);
 
     return {
       locationId: gameState.player.mapId,
@@ -97,6 +101,7 @@ export class ExpGrindPresenter {
       visitedMapsCount: allVisitedIds.length,
       availableBosses,
       upcomingBosses,
+      dnaEnemies,
       characterBattles,
       upcomingCharacterBattles,
       partyCharisma,
@@ -568,10 +573,52 @@ export class ExpGrindPresenter {
     return { characterBattles, upcomingCharacterBattles };
   }
 
+  private static isBossDefeated(
+    enemyId: string,
+    journal: Journal,
+    lastCompletedMainQuestStep: number,
+  ): boolean {
+    if (enemyId === "1") {
+      // Pharaohmon -> eternally
+      const quest = journal.legendaryWeapons.find((q) => q.id === "eternally");
+      return quest?.steps.some((s) => s.number === 1 && s.isDone) ?? false;
+    }
+    if (enemyId === "2") {
+      // MasterTyrannomon -> invincible
+      const quest = journal.legendaryWeapons.find((q) => q.id === "invincible");
+      return quest?.steps.some((s) => s.number === 1 && s.isDone) ?? false;
+    }
+    if (enemyId === "20") {
+      // Zanbamon -> muramasa
+      const quest = journal.legendaryWeapons.find((q) => q.id === "muramasa");
+      return quest?.steps.some((s) => s.number === 1 && s.isDone) ?? false;
+    }
+    if (enemyId === "16") {
+      // Datamon -> superNova
+      const quest = journal.legendaryWeapons.find((q) => q.id === "superNova");
+      return quest?.steps.some((s) => s.number === 1 && s.isDone) ?? false;
+    }
+    if (enemyId === "14") {
+      // HiAndromon -> punishment
+      const quest = journal.legendaryWeapons.find((q) => q.id === "punishment");
+      return quest?.steps.some((s) => s.number === 1 && s.isDone) ?? false;
+    }
+    if (enemyId === "21") {
+      // Bulbmon (Bulk Bridge)
+      return lastCompletedMainQuestStep >= 14;
+    }
+    if (enemyId === "15") {
+      // WaruMonzaemon (Dum Dum Factory Secret Room)
+      return lastCompletedMainQuestStep >= 61;
+    }
+    return false;
+  }
+
   private static resolveBossEnemies(
     visitedMapIdSet: Set<string>,
     currentMapId: string,
     lastCompletedMainQuestStep: number,
+    journal: Journal,
   ): {
     availableBosses: ExpEnemyViewModel[];
     upcomingBosses: ExpEnemyViewModel[];
@@ -595,12 +642,19 @@ export class ExpGrindPresenter {
       const efficiency = exp / hp;
       const bitsEfficiency = bits / hp;
 
+      const isDefeated = this.isBossDefeated(
+        enemyId,
+        journal,
+        lastCompletedMainQuestStep,
+      );
+
       const isAvailable = QuestService.isOnMainQuestRange(
         lastCompletedMainQuestStep,
         window,
       );
 
       const isUpcoming =
+        !isDefeated &&
         window?.starts !== undefined &&
         lastCompletedMainQuestStep < window.starts;
 
@@ -624,20 +678,28 @@ export class ExpGrindPresenter {
           boss: true,
         },
         isBoss: true,
+        isDefeated,
+        status: isDefeated ? "defeated" : (isAvailable ? "available" : "locked"),
         locations: mapId ? [mapId] : [],
         encounterSpots: mapId ? [{ mapId, source: "boss" }] : [],
         mainQuestAvailabilityWindow: window,
         isAvailable,
       };
 
-      if (isAvailable) {
+      if (isAvailable || isDefeated) {
         availableBosses.push(item);
       } else if (isUpcoming) {
         upcomingBosses.push(item);
       }
     }
 
-    availableBosses.sort((a, b) => b.exp - a.exp);
+    // Sort available bosses: alive bosses first by EXP, then defeated bosses by EXP
+    availableBosses.sort((a, b) => {
+      if (a.isDefeated !== b.isDefeated) {
+        return a.isDefeated ? 1 : -1;
+      }
+      return b.exp - a.exp;
+    });
 
     upcomingBosses.sort((a, b) => {
       const startA = a.mainQuestAvailabilityWindow?.starts ?? 0;
@@ -649,5 +711,217 @@ export class ExpGrindPresenter {
     });
 
     return { availableBosses, upcomingBosses };
+  }
+
+  private static resolveDnaEnemies(gameState: State): ExpEnemyViewModel[] {
+    const partyLevel = PartyService.getLevel(gameState.party);
+    const lastCompletedMainQuestStep = QuestService.getLastCompletedMainQuestStep(
+      gameState.journal.mainQuest,
+    );
+
+    const dnaDefs = [
+      {
+        id: "dna-paildramon",
+        enemyId: "dna-paildramon",
+        questId: "driAgentVeemon",
+        name: "Paildramon",
+        partnerName: "Veemon",
+        driAgentName: "DRI Matthew",
+        level: 30,
+        hp: 1000,
+        exp: 250,
+        bits: 500,
+        dvexp: 30,
+        locationId: "022D", // Ponte Bulk
+        levelMin: 1,
+        levelMax: 30,
+        leaderRequisite: "byakkoLeader" as const,
+      },
+      {
+        id: "dna-metalgreymon",
+        enemyId: "dna-metalgreymon",
+        questId: "driAgentAgumon",
+        name: "MetalGreymon",
+        partnerName: "Agumon",
+        driAgentName: "DRI Johann",
+        level: 35,
+        hp: 1200,
+        exp: 300,
+        bits: 600,
+        dvexp: 35,
+        locationId: "0233", // Pântano Bulk
+        levelMin: 30,
+        levelMax: 45,
+        leaderRequisite: "seiryuLeader" as const,
+      },
+      {
+        id: "dna-wargrowlmon",
+        enemyId: "dna-wargrowlmon",
+        questId: "driAgentGuilmon",
+        name: "WarGrowlmon",
+        partnerName: "Guilmon",
+        driAgentName: "DRI Jimmy",
+        level: 35,
+        hp: 1250,
+        exp: 320,
+        bits: 640,
+        dvexp: 35,
+        locationId: "023C", // Selva Sepultura
+        levelMin: 30,
+        levelMax: 45,
+        leaderRequisite: "seiryuLeader" as const,
+      },
+      {
+        id: "dna-magnaangemon",
+        enemyId: "dna-magnaangemon",
+        questId: "driAgentPatamon",
+        name: "MagnaAngemon",
+        partnerName: "Patamon",
+        driAgentName: "DRI Bob",
+        level: 45,
+        hp: 1600,
+        exp: 420,
+        bits: 840,
+        dvexp: 45,
+        locationId: "0239", // Terra Erma Sul
+        levelMin: 45,
+        levelMax: 60,
+      },
+      {
+        id: "dna-taomon",
+        enemyId: "dna-taomon",
+        questId: "driAgentRenamon",
+        name: "Taomon",
+        partnerName: "Renamon",
+        driAgentName: "DRI Taion",
+        level: 45,
+        hp: 1550,
+        exp: 410,
+        bits: 820,
+        dvexp: 45,
+        locationId: "024E", // Terra Erma Norte O
+        levelMin: 45,
+        levelMax: 60,
+      },
+      {
+        id: "dna-kyukimon",
+        enemyId: "dna-kyukimon",
+        questId: "driAgentKotemon",
+        name: "Kyukimon",
+        partnerName: "Kotemon",
+        driAgentName: "DRI Ken",
+        level: 55,
+        hp: 2000,
+        exp: 520,
+        bits: 1040,
+        dvexp: 55,
+        locationId: "023F", // Lago Subterrâneo Suzaku
+        levelMin: 60,
+        levelMax: 90,
+      },
+      {
+        id: "dna-grapleomon",
+        enemyId: "dna-grapleomon",
+        questId: "driAgentKumamon",
+        name: "GrapLeomon",
+        partnerName: "Kumamon",
+        driAgentName: "DRI Claster",
+        level: 55,
+        hp: 2100,
+        exp: 540,
+        bits: 1080,
+        dvexp: 55,
+        locationId: "0241", // Selva Éter
+        levelMin: 60,
+        levelMax: 90,
+      },
+      {
+        id: "dna-armormon",
+        enemyId: "dna-armormon",
+        questId: "driAgentMonmon",
+        name: "Armormon",
+        partnerName: "Monmon",
+        driAgentName: "DRI Mike",
+        level: 55,
+        hp: 2050,
+        exp: 530,
+        bits: 1060,
+        dvexp: 55,
+        locationId: "025C", // Ilha do Duelo
+        levelMin: 60,
+        levelMax: 90,
+      },
+    ];
+
+    const result: ExpEnemyViewModel[] = [];
+
+    for (const def of dnaDefs) {
+      const quest = gameState.journal.driAgents.find((q) => q.id === def.questId);
+      const step2Done = quest?.steps.some((s) => s.number === 2 && s.isDone) ?? false;
+      const step3Done = quest?.steps.some((s) => s.number === 3 && s.isDone) ?? false;
+      const isDefeated = step2Done || step3Done;
+
+      const levelSatisfied = partyLevel >= def.levelMin && partyLevel <= def.levelMax;
+      let leaderSatisfied = true;
+      if (def.leaderRequisite === "seiryuLeader") {
+        const reqDone = quest?.requisites.find((r) => r.id === "seiryuLeader")?.isDone ?? false;
+        leaderSatisfied = reqDone || lastCompletedMainQuestStep >= 2;
+      } else if (def.leaderRequisite === "byakkoLeader") {
+        const reqDone = quest?.requisites.find((r) => r.id === "byakkoLeader")?.isDone ?? false;
+        leaderSatisfied = reqDone || lastCompletedMainQuestStep >= 48;
+      }
+
+      const isAvailable = !isDefeated && levelSatisfied && leaderSatisfied;
+      const status: "available" | "defeated" | "locked" = isDefeated
+        ? "defeated"
+        : (isAvailable ? "available" : "locked");
+
+      const efficiency = def.exp / def.hp;
+      const bitsEfficiency = def.bits / def.hp;
+
+      result.push({
+        enemyId: def.enemyId,
+        name: def.name,
+        imageUrl: ImageCatalog.getDriAgentEnemyImageUrl(def.name),
+        level: def.level,
+        hp: def.hp,
+        exp: def.exp,
+        dvexp: def.dvexp,
+        bits: def.bits,
+        efficiency,
+        efficiencyDisplay: efficiency.toFixed(2),
+        bitsEfficiency,
+        bitsEfficiencyDisplay: bitsEfficiency.toFixed(2),
+        origin: {
+          walking: false,
+          fishing: false,
+          kickingTree: false,
+          boss: false,
+          dna: true,
+        },
+        isBoss: false,
+        isDna: true,
+        isDefeated,
+        dnaPartner: def.partnerName,
+        driAgentName: def.driAgentName,
+        partyLevelRange: { min: def.levelMin, max: def.levelMax },
+        status,
+        locations: [def.locationId],
+        encounterSpots: [{ mapId: def.locationId, source: "dna" }],
+        isAvailable,
+      });
+    }
+
+    result.sort((a, b) => {
+      const order = { available: 0, locked: 1, defeated: 2 };
+      const statusA = a.status ? order[a.status] : 1;
+      const statusB = b.status ? order[b.status] : 1;
+      if (statusA !== statusB) {
+        return statusA - statusB;
+      }
+      return a.level - b.level;
+    });
+
+    return result;
   }
 }

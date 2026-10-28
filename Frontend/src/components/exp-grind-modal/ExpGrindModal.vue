@@ -29,9 +29,17 @@ const visitedMapsStore = useVisitedMapsStore();
 type MainCategory = "monsters" | "npcs";
 const activeCategory = ref<MainCategory>("monsters");
 
-// Sub-navigation for Digimons: Mapa Atual, Mapas Visitados, Bosses Disponíveis, Próximos Bosses
-type MonsterSubTab = "currentMap" | "visitedMaps" | "availableBosses" | "upcomingBosses";
+// Sub-navigation for Digimons: Mapa Atual, Mapas Visitados, Digimons ADN, Bosses Disponíveis, Próximos Bosses
+type MonsterSubTab = "currentMap" | "visitedMaps" | "dnaEnemies" | "availableBosses" | "upcomingBosses";
 const monsterSubTab = ref<MonsterSubTab>("currentMap");
+
+// Status filter for Bosses (Todos / Vivos / Derrotados)
+type BossStatusFilter = "all" | "alive" | "defeated";
+const bossStatusFilter = ref<BossStatusFilter>("all");
+
+// Status filter for Digimons ADN (Todos / Disponíveis / Bloqueados / Derrotados)
+type DnaStatusFilter = "all" | "available" | "locked" | "defeated";
+const dnaStatusFilter = ref<DnaStatusFilter>("all");
 
 // Sub-navigation for NPCs: Disponíveis vs Próximos
 type NpcSubTab = "available" | "upcoming";
@@ -139,12 +147,59 @@ const sortedVisitedEnemies = computed(() => {
 });
 
 // Boss lists
+const filteredAvailableBosses = computed(() => {
+  let list = mapViewModel.value.availableBosses;
+  if (bossStatusFilter.value === "alive") {
+    list = list.filter((b) => !b.isDefeated);
+  } else if (bossStatusFilter.value === "defeated") {
+    list = list.filter((b) => b.isDefeated);
+  }
+  return list;
+});
+
 const sortedAvailableBosses = computed(() => {
-  return sortEnemyList(mapViewModel.value.availableBosses);
+  return sortEnemyList(filteredAvailableBosses.value);
+});
+
+const aliveBossesCount = computed(() => {
+  return mapViewModel.value.availableBosses.filter((b) => !b.isDefeated).length;
+});
+
+const defeatedBossesCount = computed(() => {
+  return mapViewModel.value.availableBosses.filter((b) => b.isDefeated).length;
 });
 
 const sortedUpcomingBosses = computed(() => {
   return sortEnemyList(mapViewModel.value.upcomingBosses);
+});
+
+// DNA Digimons lists
+const filteredDnaEnemies = computed(() => {
+  let list = mapViewModel.value.dnaEnemies;
+  if (dnaStatusFilter.value === "available") {
+    list = list.filter((d) => d.status === "available");
+  } else if (dnaStatusFilter.value === "locked") {
+    list = list.filter((d) => d.status === "locked");
+  } else if (dnaStatusFilter.value === "defeated") {
+    list = list.filter((d) => d.status === "defeated");
+  }
+  return list;
+});
+
+const sortedDnaEnemies = computed(() => {
+  return sortEnemyList(filteredDnaEnemies.value);
+});
+
+const availableDnaCount = computed(() => {
+  return mapViewModel.value.dnaEnemies.filter((d) => d.status === "available").length;
+});
+
+const lockedDnaCount = computed(() => {
+  return mapViewModel.value.dnaEnemies.filter((d) => d.status === "locked").length;
+});
+
+const defeatedDnaCount = computed(() => {
+  return mapViewModel.value.dnaEnemies.filter((d) => d.status === "defeated").length;
 });
 
 // 2. NPCs Disponíveis lists
@@ -226,7 +281,12 @@ const totalMonstersCount = computed(() => {
   const mapCount = mapViewModel.value.currentMapEnemies.length > 0
     ? mapViewModel.value.currentMapEnemies.length
     : mapViewModel.value.visitedMapsEnemies.length;
-  return mapCount + mapViewModel.value.availableBosses.length + mapViewModel.value.upcomingBosses.length;
+  return (
+    mapCount +
+    mapViewModel.value.dnaEnemies.length +
+    mapViewModel.value.availableBosses.length +
+    mapViewModel.value.upcomingBosses.length
+  );
 });
 
 const totalNpcsCount = computed(() => {
@@ -447,7 +507,28 @@ const handleClearVisited = () => {
                 </span>
               </button>
 
-              <!-- Sub-tab 3: Bosses Disponíveis -->
+              <!-- Sub-tab 3: Digimons ADN -->
+              <button
+                type="button"
+                class="px-3 py-1 rounded text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                :class="
+                  monsterSubTab === 'dnaEnemies'
+                    ? 'bg-purple-950 text-purple-300 border border-purple-500/60 shadow-xs'
+                    : 'text-gray-400 hover:text-white'
+                "
+                @click="monsterSubTab = 'dnaEnemies'"
+              >
+                <span>🧬</span>
+                <span>{{ $t("expGrind.dnaDigimons") }}</span>
+                <span
+                  v-if="sortedDnaEnemies.length > 0"
+                  class="px-1.5 py-0.2 rounded-full text-[10px] bg-purple-900/80 text-purple-200 font-mono font-bold"
+                >
+                  {{ sortedDnaEnemies.length }}
+                </span>
+              </button>
+
+              <!-- Sub-tab 4: Bosses Disponíveis -->
               <button
                 type="button"
                 class="px-3 py-1 rounded text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
@@ -468,7 +549,7 @@ const handleClearVisited = () => {
                 </span>
               </button>
 
-              <!-- Sub-tab 4: Próximos Bosses -->
+              <!-- Sub-tab 5: Próximos Bosses -->
               <button
                 type="button"
                 class="px-3 py-1 rounded text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
@@ -490,9 +571,107 @@ const handleClearVisited = () => {
               </button>
             </div>
 
+            <!-- Status Filter Pill for Bosses (Todos / Vivos / Derrotados) -->
+            <div
+              v-if="monsterSubTab === 'availableBosses'"
+              class="flex items-center bg-[#000818] border border-blue-900/80 rounded-lg p-0.5 text-[11px] font-bold"
+            >
+              <button
+                type="button"
+                class="px-2 py-0.5 rounded transition-colors cursor-pointer"
+                :class="
+                  bossStatusFilter === 'all'
+                    ? 'bg-amber-950 text-amber-300 border border-amber-500/60 shadow-xs'
+                    : 'text-gray-400 hover:text-white'
+                "
+                @click="bossStatusFilter = 'all'"
+              >
+                Todos
+              </button>
+              <button
+                type="button"
+                class="px-2 py-0.5 rounded transition-colors cursor-pointer"
+                :class="
+                  bossStatusFilter === 'alive'
+                    ? 'bg-amber-950 text-amber-300 border border-amber-500/60 shadow-xs'
+                    : 'text-gray-400 hover:text-white'
+                "
+                @click="bossStatusFilter = 'alive'"
+              >
+                ⚔️ Vivos ({{ aliveBossesCount }})
+              </button>
+              <button
+                type="button"
+                class="px-2 py-0.5 rounded transition-colors cursor-pointer"
+                :class="
+                  bossStatusFilter === 'defeated'
+                    ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/60 shadow-xs'
+                    : 'text-gray-400 hover:text-white'
+                "
+                @click="bossStatusFilter = 'defeated'"
+              >
+                ✅ Derrotados ({{ defeatedBossesCount }})
+              </button>
+            </div>
+
+            <!-- Status Filter Pill for Digimons ADN (Todos / Disponíveis / Bloqueados / Derrotados) -->
+            <div
+              v-else-if="monsterSubTab === 'dnaEnemies'"
+              class="flex items-center bg-[#000818] border border-blue-900/80 rounded-lg p-0.5 text-[11px] font-bold"
+            >
+              <button
+                type="button"
+                class="px-2 py-0.5 rounded transition-colors cursor-pointer"
+                :class="
+                  dnaStatusFilter === 'all'
+                    ? 'bg-purple-950 text-purple-300 border border-purple-500/60 shadow-xs'
+                    : 'text-gray-400 hover:text-white'
+                "
+                @click="dnaStatusFilter = 'all'"
+              >
+                Todos
+              </button>
+              <button
+                type="button"
+                class="px-2 py-0.5 rounded transition-colors cursor-pointer"
+                :class="
+                  dnaStatusFilter === 'available'
+                    ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/60 shadow-xs'
+                    : 'text-gray-400 hover:text-white'
+                "
+                @click="dnaStatusFilter = 'available'"
+              >
+                ⚔️ Disponíveis ({{ availableDnaCount }})
+              </button>
+              <button
+                type="button"
+                class="px-2 py-0.5 rounded transition-colors cursor-pointer"
+                :class="
+                  dnaStatusFilter === 'locked'
+                    ? 'bg-blue-950 text-blue-300 border border-blue-500/60 shadow-xs'
+                    : 'text-gray-400 hover:text-white'
+                "
+                @click="dnaStatusFilter = 'locked'"
+              >
+                🔒 Bloqueados ({{ lockedDnaCount }})
+              </button>
+              <button
+                type="button"
+                class="px-2 py-0.5 rounded transition-colors cursor-pointer"
+                :class="
+                  dnaStatusFilter === 'defeated'
+                    ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/60 shadow-xs'
+                    : 'text-gray-400 hover:text-white'
+                "
+                @click="dnaStatusFilter = 'defeated'"
+              >
+                ✅ Derrotados ({{ defeatedDnaCount }})
+              </button>
+            </div>
+
             <!-- Clear Visited history button if in Visited Maps -->
             <button
-              v-if="monsterSubTab === 'visitedMaps' && sortedVisitedEnemies.length > 0"
+              v-else-if="monsterSubTab === 'visitedMaps' && sortedVisitedEnemies.length > 0"
               type="button"
               class="px-2.5 py-1 rounded text-[11px] bg-red-950/60 border border-red-800/70 text-red-300 hover:bg-red-900/80 transition-colors cursor-pointer font-mono flex items-center gap-1"
               :title="$t('expGrind.clearVisited')"
@@ -879,7 +1058,74 @@ const handleClearVisited = () => {
         </template>
       </div>
 
-      <!-- VIEW 3: DIGIMONS - BOSSES DISPONÍVEIS -->
+      <!-- VIEW: DIGIMONS - DIGIMONS ADN -->
+      <div
+        v-else-if="activeCategory === 'monsters' && monsterSubTab === 'dnaEnemies'"
+        class="flex-1 min-h-0 flex flex-col gap-2 overflow-y-auto custom-scroll pr-1"
+      >
+        <!-- Subtitle Info -->
+        <div class="flex items-center justify-between text-xs text-gray-300 shrink-0 bg-purple-950/20 px-3 py-1.5 rounded-lg border border-purple-900/40">
+          <span class="font-bold text-purple-300 uppercase tracking-wider text-[11px] font-mono">
+            🧬 {{ $t("expGrind.dnaDigimonsSubtitle", { count: sortedDnaEnemies.length }) }}
+          </span>
+        </div>
+
+        <!-- Empty state -->
+        <div
+          v-if="sortedDnaEnemies.length === 0"
+          class="flex flex-col items-center justify-center p-8 rounded-xl bg-[#001026]/70 border border-blue-900/60 text-center gap-3 my-auto shadow-inner"
+        >
+          <span class="text-4xl">🧬</span>
+          <h3 class="text-base font-bold text-white uppercase tracking-wider">
+            {{ $t("expGrind.dnaEmptyTitle") }}
+          </h3>
+          <p class="text-xs text-purple-200 max-w-md leading-relaxed">
+            {{ $t("expGrind.dnaEmptyDescription") }}
+          </p>
+        </div>
+
+        <template v-else>
+          <!-- List View Header -->
+          <div
+            v-if="viewMode === 'list'"
+            class="hidden sm:flex items-center justify-between px-3 py-1.5 text-[10px] uppercase font-bold text-blue-400/80 border-b border-blue-900/40 shrink-0 font-mono"
+          >
+            <div class="flex items-center gap-3">
+              <span>Digimon ADN & Localização</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="min-w-22 text-right">EXP (EXP/HP)</span>
+              <span class="min-w-22 text-right">Bits (Bits/HP)</span>
+              <span class="min-w-14 text-right hidden sm:inline">DV EXP</span>
+              <span class="min-w-16 text-right hidden md:inline">HP</span>
+              <span class="w-4"></span>
+            </div>
+          </div>
+
+          <!-- Leaderboard List View -->
+          <div v-if="viewMode === 'list'" class="flex flex-col gap-1.5">
+            <ExpEnemyRow
+              v-for="enemy in sortedDnaEnemies"
+              :key="enemy.enemyId"
+              :enemy="enemy"
+              :active-sort="sortBy === 'charismaAsc' ? 'exp' : sortBy"
+              @select="handleSelectEnemy"
+            />
+          </div>
+
+          <!-- Card Grid View -->
+          <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            <ExpEnemyCard
+              v-for="enemy in sortedDnaEnemies"
+              :key="enemy.enemyId"
+              :enemy="enemy"
+              @select="handleSelectEnemy"
+            />
+          </div>
+        </template>
+      </div>
+
+      <!-- VIEW 4: DIGIMONS - BOSSES DISPONÍVEIS -->
       <div
         v-else-if="activeCategory === 'monsters' && monsterSubTab === 'availableBosses'"
         class="flex-1 min-h-0 flex flex-col gap-2 overflow-y-auto custom-scroll pr-1"

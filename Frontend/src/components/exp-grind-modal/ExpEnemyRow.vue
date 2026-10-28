@@ -12,8 +12,14 @@ const emit = defineEmits<{
 }>();
 
 const borderClass = computed(() => {
+  if (props.enemy.isDefeated) {
+    return "border-emerald-600/40 bg-linear-to-r from-emerald-950/25 via-[#00171a] to-[#000a18] hover:border-emerald-400 opacity-85 hover:opacity-100";
+  }
   if (props.enemy.isBoss) {
     return "border-amber-500/40 bg-linear-to-r from-amber-950/20 via-[#000f28] to-[#000a18] hover:border-amber-400";
+  }
+  if (props.enemy.isDna) {
+    return "border-purple-500/50 bg-linear-to-r from-purple-950/25 via-[#0c0a24] to-[#000a18] hover:border-purple-400";
   }
   return "border-blue-900/45 bg-[#000c22]/70 hover:border-blue-700/80";
 });
@@ -46,11 +52,48 @@ const borderClass = computed(() => {
           </span>
 
           <span
-            v-if="enemy.isBoss"
+            v-if="enemy.isDefeated"
+            class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-emerald-950/90 text-emerald-300 border border-emerald-500/80 shadow-[0_0_8px_rgba(16,185,129,0.3)] shrink-0 font-mono flex items-center gap-1"
+          >
+            <span>✅</span>
+            <span>Derrotado</span>
+          </span>
+
+          <span
+            v-else-if="enemy.isBoss"
             class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-500/80 shadow-[0_0_8px_rgba(251,191,36,0.3)] shrink-0 font-mono flex items-center gap-1"
           >
             <span>👑</span>
             <span>Boss</span>
+          </span>
+
+          <span
+            v-if="enemy.isDna"
+            class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-purple-950/90 text-purple-300 border border-purple-500/80 shadow-[0_0_8px_rgba(168,85,247,0.3)] shrink-0 font-mono flex items-center gap-1"
+          >
+            <span>🧬</span>
+            <span>Digimon ADN</span>
+          </span>
+
+          <span
+            v-if="enemy.dnaPartner"
+            class="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-cyan-950 text-cyan-300 border border-cyan-500/60 shrink-0"
+          >
+            DDNA de {{ enemy.dnaPartner }}
+          </span>
+
+          <span
+            v-if="enemy.driAgentName"
+            class="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-blue-950 text-blue-300 border border-blue-600/60 shrink-0"
+          >
+            {{ enemy.driAgentName }}
+          </span>
+
+          <span
+            v-if="enemy.partyLevelRange"
+            class="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-indigo-950 text-indigo-300 border border-indigo-600/60 shrink-0"
+          >
+            Nv. {{ enemy.partyLevelRange.min }}-{{ enemy.partyLevelRange.max }}
           </span>
 
           <span
@@ -70,6 +113,7 @@ const borderClass = computed(() => {
             <span v-if="enemy.origin.fishing" title="Pesca">🎣</span>
             <span v-if="enemy.origin.kickingTree" title="Árvore">🌲</span>
             <span v-if="enemy.origin.seabed" title="Subaquático">🤿</span>
+            <span v-if="enemy.origin.dna" title="Digimon ADN">🧬</span>
           </div>
         </div>
 
