@@ -8,5 +8,6 @@ namespace Backend.Memory.Addresses
         public AuctionAddresses DramonShield { get; set; } = new();
         public AuctionAddresses YinYangWand { get; set; } = new();
         public AuctionAddresses HazardFang { get; set; } = new();
+        public AuctionAddresses SniperCannon { get; set; } = new();
     }
 }

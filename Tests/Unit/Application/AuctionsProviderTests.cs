@@ -18,6 +18,7 @@ public class AuctionsProviderTests
             DramonShield = 0x00,
             YinYangWand = 0x10,
             HazardFang = 0x20,
+            SniperCannon = 0x00,
         };
 
         var loaderMock = new Mock<IAuctionsLoader>();
@@ -32,6 +33,7 @@ public class AuctionsProviderTests
         Assert.False(result.DramonShield);
         Assert.True(result.YinYangWand);
         Assert.True(result.HazardFang);
+        Assert.False(result.SniperCannon);
         loaderMock.Verify(loader => loader.Load(), Times.Once);
     }
 }

@@ -26,5 +26,6 @@ public class AuctionsLoaderTests : LoaderIntegrationTestBase
         Assert.Equal((byte)0x00, resource.DramonShield);
         Assert.Equal((byte)0x00, resource.YinYangWand);
         Assert.Equal((byte)0x00, resource.HazardFang);
+        Assert.Equal((byte)0x00, resource.SniperCannon);
     }
 }

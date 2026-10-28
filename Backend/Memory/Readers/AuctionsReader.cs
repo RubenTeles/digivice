@@ -16,6 +16,7 @@ namespace Backend.Memory.Readers
                 DramonShield = memoryReader.ReadByte(addresses.DramonShield.Address, addresses.DramonShield.BitMask),
                 YinYangWand = memoryReader.ReadByte(addresses.YinYangWand.Address, addresses.YinYangWand.BitMask),
                 HazardFang = memoryReader.ReadByte(addresses.HazardFang.Address, addresses.HazardFang.BitMask),
+                SniperCannon = memoryReader.ReadByte(addresses.SniperCannon.Address, addresses.SniperCannon.BitMask),
             };
         }
     }

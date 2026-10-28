@@ -16,6 +16,7 @@ public class AuctionsConverterTests
             DramonShield = false,
             YinYangWand = true,
             HazardFang = true,
+            SniperCannon = false,
         };
 
         var dto = AuctionsConverter.ToDTO(auctions);
@@ -32,5 +33,7 @@ public class AuctionsConverterTests
         Assert.True(dto.YinYangWand.Value);
         Assert.True(dto.HazardFang.HasValue);
         Assert.True(dto.HazardFang.Value);
+        Assert.True(dto.SniperCannon.HasValue);
+        Assert.False(dto.SniperCannon.Value);
     }
 }

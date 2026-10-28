@@ -22,5 +22,9 @@
     "HazardFang": {
         "Address": "0x0004B38A",
         "BitMask": "0x20"
+    },
+    "SniperCannon": {
+        "Address": "0x0004B38A",
+        "BitMask": "0x40"
     }
 }

@@ -44,6 +44,10 @@ public static class AuctionsDiffer
         {
             dto = dto with { HazardFang = newAuctions.HazardFang };
         }
+        if (newAuctions.SniperCannon != previousAuctions.SniperCannon)
+        {
+            dto = dto with { SniperCannon = newAuctions.SniperCannon };
+        }
 
         return dto;
     }

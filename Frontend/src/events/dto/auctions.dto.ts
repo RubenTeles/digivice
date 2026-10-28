@@ -5,4 +5,5 @@ export interface AuctionsDTO {
   dramonShield?: boolean;
   yinYangWand?: boolean;
   hazardFang?: boolean;
+  sniperCannon?: boolean;
 }

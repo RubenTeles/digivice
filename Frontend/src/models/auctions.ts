@@ -5,4 +5,5 @@ export interface Auctions {
   dramonShield: boolean;
   yinYangWand: boolean;
   hazardFang: boolean;
+  sniperCannon: boolean;
 }

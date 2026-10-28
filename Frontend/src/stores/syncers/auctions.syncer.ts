@@ -21,5 +21,8 @@ export class AuctionsSyncer {
     if (newAuctionsDto.hazardFang !== undefined) {
       previousAuctions.hazardFang = newAuctionsDto.hazardFang;
     }
+    if (newAuctionsDto.sniperCannon !== undefined) {
+      previousAuctions.sniperCannon = newAuctionsDto.sniperCannon;
+    }
   }
 }

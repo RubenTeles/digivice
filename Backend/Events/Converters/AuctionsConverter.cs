@@ -14,7 +14,8 @@ public static class AuctionsConverter
             SniperShield = auctions.SniperShield,
             DramonShield = auctions.DramonShield,
             YinYangWand = auctions.YinYangWand,
-            HazardFang = auctions.HazardFang
+            HazardFang = auctions.HazardFang,
+            SniperCannon = auctions.SniperCannon
         };
     }
 }

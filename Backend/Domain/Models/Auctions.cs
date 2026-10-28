@@ -8,5 +8,6 @@ namespace Backend.Domain.Models
         public bool DramonShield { get; set; }
         public bool YinYangWand { get; set; }
         public bool HazardFang { get; set; }
+        public bool SniperCannon { get; set; }
     }
 }

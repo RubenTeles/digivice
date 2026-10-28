@@ -19,6 +19,7 @@ public class AuctionsDifferTests
         Assert.False(result.DramonShield.HasValue);
         Assert.False(result.YinYangWand.HasValue);
         Assert.False(result.HazardFang.HasValue);
+        Assert.False(result.SniperCannon.HasValue);
     }
 
     [Fact]
@@ -74,6 +75,7 @@ public class AuctionsDifferTests
             DramonShield = false,
             YinYangWand = false,
             HazardFang = false,
+            SniperCannon = false,
         };
     }
 }

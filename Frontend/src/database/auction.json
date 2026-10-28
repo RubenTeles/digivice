@@ -58,5 +58,15 @@
     },
     "bid": 2700,
     "resale": 30000
+  },
+  {
+    "id": "sniperCannon",
+    "equipmentId": "124",
+    "mainQuestAvailabilityWindow": {
+      "starts": 87,
+      "ends": 999
+    },
+    "bid": 4000,
+    "resale": 30000
   }
 ]
