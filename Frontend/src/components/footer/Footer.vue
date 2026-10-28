@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import LanguageSelector from "@/components/footer/LanguageSelector.vue";
 import CardAlbumButton from "@/components/footer/CardAlbumButton.vue";
+import BestExpButton from "@/components/footer/BestExpButton.vue";
 import SeabedButton from "@/components/footer/SeabedButton.vue";
 import MobiusDesertButton from "@/components/footer/MobiusDesertButton.vue";
 import KoFiButton from "@/components/footer/KoFiButton.vue";
@@ -24,6 +25,22 @@ const { show: tooltipShow, x: tooltipX, y: tooltipY, showAt, move, hide } = tool
 const tooltipTitle = ref("");
 const tooltipText = ref("");
 const isTitleOnlyTooltip = ref(false);
+
+const showBestExpTooltip = (event: MouseEvent) => {
+  isTitleOnlyTooltip.value = true;
+  tooltipTitle.value = t("expGrind.tooltip");
+  tooltipText.value = "";
+  showAt(event, { maxWidth: 300, placement: "above", align: "left" });
+};
+
+const moveBestExpTooltip = (event: MouseEvent) => {
+  move(event, "above");
+};
+
+const hideBestExpTooltip = () => {
+  hide();
+  isTitleOnlyTooltip.value = false;
+};
 
 const showCardAlbumTooltip = (event: MouseEvent) => {
   isTitleOnlyTooltip.value = true;
@@ -167,11 +184,16 @@ const groupPartyLevel = computed(() => {
       class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-4 text-sm opacity-80"
     >
       <div class="flex items-center gap-3 border-r border-blue-900 pr-4 mr-2">
-      <CardAlbumButton
-            @show-tooltip="showCardAlbumTooltip"
-            @move-tooltip="moveCardAlbumTooltip"
-            @hide-tooltip="hideCardAlbumTooltip"
-          />
+        <BestExpButton
+          @show-tooltip="showBestExpTooltip"
+          @move-tooltip="moveBestExpTooltip"
+          @hide-tooltip="hideBestExpTooltip"
+        />
+        <CardAlbumButton
+          @show-tooltip="showCardAlbumTooltip"
+          @move-tooltip="moveCardAlbumTooltip"
+          @hide-tooltip="hideCardAlbumTooltip"
+        />
       </div>
       <div class="flex items-center gap-3 border-r border-blue-900 pr-4 mr-2">
         <SeabedButton

@@ -30,6 +30,14 @@ body {
   }
 }
 
+/* High-definition Digimon artwork rendering (overrides pixelated downscaling blur) */
+.digimon-artwork {
+  image-rendering: auto !important;
+  image-rendering: -webkit-optimize-contrast !important;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 /* DW3 Global Utility Classes */
 .dw3-beveled {
   clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);

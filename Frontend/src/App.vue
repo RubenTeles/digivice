@@ -1,12 +1,37 @@
 <script setup lang="ts">
+import { watch } from "vue";
 import Journal from "@/components/journal/Journal.vue";
 import Map from "@/components/map/Map.vue";
 import Footer from "@/components/footer/Footer.vue";
 import Party from "@/components/party/Party.vue";
 import AppHealthyScreen from "@/components/app-healthy/AppHealthyScreen.vue";
 import { useAppHealthyScreen } from "@/composables/use-app-healthy-screen";
+import { useGameStore } from "@/stores/use-game-store";
+import { useVisitedMapsStore } from "@/stores/use-visited-maps-store";
 
 const healthyScreen = useAppHealthyScreen();
+const gameStore = useGameStore();
+const visitedMapsStore = useVisitedMapsStore();
+
+watch(
+  () => gameStore.currentState?.player.mapId,
+  (newMapId) => {
+    if (newMapId) {
+      visitedMapsStore.recordMapVisit(newMapId);
+    }
+  },
+  { immediate: true },
+);
+
+watch(
+  () => gameStore.currentState?.player.previousMapId,
+  (prevMapId) => {
+    if (prevMapId) {
+      visitedMapsStore.recordMapVisit(prevMapId);
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
